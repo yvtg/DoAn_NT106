@@ -10,11 +10,17 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    public partial class Form1 : Form
+    public partial class Background : Form
     {
-        public Form1()
+        public Background()
         {
             InitializeComponent();
+        }
+
+        private void loginBtn_Click(object sender, EventArgs e)
+        {
+            Form loginForm = new Login();
+            loginForm.Show();
         }
     }
 }
