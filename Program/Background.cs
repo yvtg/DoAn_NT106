@@ -19,8 +19,7 @@ namespace WindowsFormsApp1
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-            Form loginForm = new Login();
-            loginForm.Show();
+
         }
     }
 }
