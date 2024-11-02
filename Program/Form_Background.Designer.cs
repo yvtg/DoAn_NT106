@@ -28,36 +28,50 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.loginBtn = new System.Windows.Forms.Button();
-            this.regBtn = new System.Windows.Forms.Button();
+            this.logButton = new System.Windows.Forms.Button();
+            this.regButton = new System.Windows.Forms.Button();
+            this.lawButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // loginBtn
+            // logButton
             // 
-            this.loginBtn.Location = new System.Drawing.Point(272, 204);
-            this.loginBtn.Name = "loginBtn";
-            this.loginBtn.Size = new System.Drawing.Size(207, 71);
-            this.loginBtn.TabIndex = 0;
-            this.loginBtn.Text = "Đăng Nhập";
-            this.loginBtn.UseVisualStyleBackColor = true;
-            this.loginBtn.Click += new System.EventHandler(this.loginBtn_Click);
+            this.logButton.Location = new System.Drawing.Point(125, 311);
+            this.logButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.logButton.Name = "logButton";
+            this.logButton.Size = new System.Drawing.Size(221, 60);
+            this.logButton.TabIndex = 0;
+            this.logButton.Text = "Đăng Nhập";
+            this.logButton.UseVisualStyleBackColor = true;
+            this.logButton.Click += new System.EventHandler(this.loginBtn_Click);
             // 
-            // regBtn
+            // regButton
             // 
-            this.regBtn.Location = new System.Drawing.Point(272, 314);
-            this.regBtn.Name = "regBtn";
-            this.regBtn.Size = new System.Drawing.Size(207, 71);
-            this.regBtn.TabIndex = 1;
-            this.regBtn.Text = "Đăng Ký";
-            this.regBtn.UseVisualStyleBackColor = true;
+            this.regButton.Location = new System.Drawing.Point(125, 389);
+            this.regButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.regButton.Name = "regButton";
+            this.regButton.Size = new System.Drawing.Size(221, 60);
+            this.regButton.TabIndex = 1;
+            this.regButton.Text = "Đăng Ký";
+            this.regButton.UseVisualStyleBackColor = true;
+            // 
+            // lawButton
+            // 
+            this.lawButton.Location = new System.Drawing.Point(125, 470);
+            this.lawButton.Name = "lawButton";
+            this.lawButton.Size = new System.Drawing.Size(221, 58);
+            this.lawButton.TabIndex = 2;
+            this.lawButton.Text = "Luật Chơi";
+            this.lawButton.UseVisualStyleBackColor = true;
             // 
             // Background
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.regBtn);
-            this.Controls.Add(this.loginBtn);
+            this.ClientSize = new System.Drawing.Size(464, 558);
+            this.Controls.Add(this.lawButton);
+            this.Controls.Add(this.regButton);
+            this.Controls.Add(this.logButton);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Background";
             this.Text = "Background";
             this.ResumeLayout(false);
@@ -66,8 +80,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button loginBtn;
-        private System.Windows.Forms.Button regBtn;
+        private System.Windows.Forms.Button logButton;
+        private System.Windows.Forms.Button regButton;
+        private System.Windows.Forms.Button lawButton;
     }
 }
 
