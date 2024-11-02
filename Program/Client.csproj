@@ -157,8 +157,19 @@
     <Compile Include="Form_Register.cs">
       <SubType>Form</SubType>
     </Compile>
+<<<<<<< HEAD:Program/Client.csproj
     <Compile Include="Form_Register.Designer.cs">
       <DependentUpon>Form_Register.cs</DependentUpon>
+=======
+    <Compile Include="Background.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+>>>>>>> 334f13d22cb5f7dc5cd6261e6788dace413c7602:Program/DoAn_NT106.csproj
     </Compile>
     <Compile Include="Form_Home.cs">
       <SubType>Form</SubType>
@@ -229,6 +240,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Room.resx">
       <DependentUpon>Form_Room.cs</DependentUpon>
+    </EmbeddedResource>
+   <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
