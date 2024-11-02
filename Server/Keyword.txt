@@ -3,11 +3,11 @@ Sách
 Biển
 Hoa hồng
 Bóng đá
-Mặt trời
+Mặt trăng
 Núi
 Trời mưa
-Chó
-Mèo
+con heo
+con bò
 Xe đạp
 Điện thoại
 Máy tính
@@ -74,23 +74,23 @@ Thời trang
 Kinh doanh
 Bông hoa
 Tô màu
-Ngày lễ
+ngủ
 Du lịch
 Nhạc cụ
 Tiếng động
-Nơi ở
+nhà cửa
 Nước chấm
 Khu rừng
-Mèo con
-Chó con
-Số phận
+con mèo
+con chó
+bát quái
 Địa cầu
 Quả chanh
 Cà tím
 Bánh xèo
 Chảo
 Mùa hè
-Ngày vui
+Mặt trời
 Giáng sinh
 Bầu trời
 Tàu ngầm
