@@ -72,7 +72,7 @@
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.35.0\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
     <Reference Include="System">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -154,16 +154,81 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Background.cs">
+    <Compile Include="Form_Register.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Background.Designer.cs">
-      <DependentUpon>Background.cs</DependentUpon>
+    <Compile Include="Form_Register.Designer.cs">
+      <DependentUpon>Form_Register.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Home.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Home.Designer.cs">
+      <DependentUpon>Form_Home.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Join.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Join.Designer.cs">
+      <DependentUpon>Form_Join.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Create_Room.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Create_Room.Designer.cs">
+      <DependentUpon>Form_Create_Room.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Room.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Room.Designer.cs">
+      <DependentUpon>Form_Room.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_End_Game.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_End_Game.Designer.cs">
+      <DependentUpon>Form_End_Game.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Login.Designer.cs">
+      <DependentUpon>Form_Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Background.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Background.Designer.cs">
+      <DependentUpon>Form_Background.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Manager.cs" />
+    <Compile Include="Packet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Background.resx">
-      <DependentUpon>Background.cs</DependentUpon>
+    <EmbeddedResource Include="Form_Background.resx">
+      <DependentUpon>Form_Background.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Create_Room.resx">
+      <DependentUpon>Form_Create_Room.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_End_Game.resx">
+      <DependentUpon>Form_End_Game.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Home.resx">
+      <DependentUpon>Form_Home.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Join.resx">
+      <DependentUpon>Form_Join.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Login.resx">
+      <DependentUpon>Form_Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Register.resx">
+      <DependentUpon>Form_Register.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Room.resx">
+      <DependentUpon>Form_Room.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
