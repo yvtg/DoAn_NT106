@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace Program
 {
-    public partial class Form_Create_Room : Form
+    public partial class Form_Law : Form
     {
-        public Form_Create_Room()
+        public Form_Law()
         {
             InitializeComponent();
+        }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.answerTextbox = new System.Windows.Forms.RichTextBox();
             this.sendButton = new System.Windows.Forms.Button();
             this.descriptionRichtextbox = new System.Windows.Forms.RichTextBox();
             this.playerDatagridview = new System.Windows.Forms.DataGridView();
@@ -37,23 +36,13 @@
             this.gameTimer = new System.Windows.Forms.Timer(this.components);
             this.wordTextbox = new System.Windows.Forms.TextBox();
             this.chatRichtextbox = new System.Windows.Forms.RichTextBox();
-            this.chatTextbox = new System.Windows.Forms.TextBox();
-            this.chatButton = new System.Windows.Forms.Button();
+            this.usernameTextbox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.playerDatagridview)).BeginInit();
             this.SuspendLayout();
             // 
-            // answerTextbox
-            // 
-            this.answerTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.answerTextbox.Location = new System.Drawing.Point(166, 352);
-            this.answerTextbox.Name = "answerTextbox";
-            this.answerTextbox.Size = new System.Drawing.Size(428, 34);
-            this.answerTextbox.TabIndex = 0;
-            this.answerTextbox.Text = "";
-            // 
             // sendButton
             // 
-            this.sendButton.Location = new System.Drawing.Point(589, 352);
+            this.sendButton.Location = new System.Drawing.Point(703, 352);
             this.sendButton.Name = "sendButton";
             this.sendButton.Size = new System.Drawing.Size(93, 34);
             this.sendButton.TabIndex = 1;
@@ -110,41 +99,31 @@
             this.chatRichtextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.chatRichtextbox.Location = new System.Drawing.Point(703, 52);
             this.chatRichtextbox.Name = "chatRichtextbox";
-            this.chatRichtextbox.Size = new System.Drawing.Size(148, 278);
+            this.chatRichtextbox.Size = new System.Drawing.Size(145, 278);
             this.chatRichtextbox.TabIndex = 6;
             this.chatRichtextbox.Text = "";
             // 
-            // chatTextbox
+            // usernameTextbox
             // 
-            this.chatTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.chatTextbox.Location = new System.Drawing.Point(703, 358);
-            this.chatTextbox.Name = "chatTextbox";
-            this.chatTextbox.Size = new System.Drawing.Size(100, 22);
-            this.chatTextbox.TabIndex = 7;
-            // 
-            // chatButton
-            // 
-            this.chatButton.Location = new System.Drawing.Point(809, 356);
-            this.chatButton.Name = "chatButton";
-            this.chatButton.Size = new System.Drawing.Size(43, 27);
-            this.chatButton.TabIndex = 8;
-            this.chatButton.Text = "Chat";
-            this.chatButton.UseVisualStyleBackColor = true;
+            this.usernameTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.usernameTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameTextbox.Location = new System.Drawing.Point(166, 355);
+            this.usernameTextbox.Name = "usernameTextbox";
+            this.usernameTextbox.Size = new System.Drawing.Size(516, 31);
+            this.usernameTextbox.TabIndex = 7;
             // 
             // Form_Room
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(853, 419);
-            this.Controls.Add(this.chatButton);
-            this.Controls.Add(this.chatTextbox);
+            this.Controls.Add(this.usernameTextbox);
             this.Controls.Add(this.chatRichtextbox);
             this.Controls.Add(this.wordTextbox);
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.playerDatagridview);
             this.Controls.Add(this.descriptionRichtextbox);
             this.Controls.Add(this.sendButton);
-            this.Controls.Add(this.answerTextbox);
             this.Name = "Form_Room";
             this.Text = "Room";
             this.Load += new System.EventHandler(this.Form_Room_Load);
@@ -155,8 +134,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox answerTextbox;
         private System.Windows.Forms.Button sendButton;
         private System.Windows.Forms.RichTextBox descriptionRichtextbox;
         private System.Windows.Forms.DataGridView playerDatagridview;
@@ -164,7 +141,6 @@
         private System.Windows.Forms.Timer gameTimer;
         private System.Windows.Forms.TextBox wordTextbox;
         private System.Windows.Forms.RichTextBox chatRichtextbox;
-        private System.Windows.Forms.TextBox chatTextbox;
-        private System.Windows.Forms.Button chatButton;
+        private System.Windows.Forms.TextBox usernameTextbox;
     }
 }

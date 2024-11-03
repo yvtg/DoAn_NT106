@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApp1
 {
-    partial class Background
+    partial class Form_Background
     {
         /// <summary>
         /// Required designer variable.
@@ -36,7 +36,7 @@
             // logButton
             // 
             this.logButton.Location = new System.Drawing.Point(125, 311);
-            this.logButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.logButton.Margin = new System.Windows.Forms.Padding(4);
             this.logButton.Name = "logButton";
             this.logButton.Size = new System.Drawing.Size(221, 60);
             this.logButton.TabIndex = 0;
@@ -47,12 +47,13 @@
             // regButton
             // 
             this.regButton.Location = new System.Drawing.Point(125, 389);
-            this.regButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.regButton.Margin = new System.Windows.Forms.Padding(4);
             this.regButton.Name = "regButton";
             this.regButton.Size = new System.Drawing.Size(221, 60);
             this.regButton.TabIndex = 1;
             this.regButton.Text = "Đăng Ký";
             this.regButton.UseVisualStyleBackColor = true;
+            this.regButton.Click += new System.EventHandler(this.regButton_Click);
             // 
             // lawButton
             // 
@@ -62,8 +63,9 @@
             this.lawButton.TabIndex = 2;
             this.lawButton.Text = "Luật Chơi";
             this.lawButton.UseVisualStyleBackColor = true;
+            this.lawButton.Click += new System.EventHandler(this.lawButton_Click);
             // 
-            // Background
+            // Form_Background
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -71,8 +73,8 @@
             this.Controls.Add(this.lawButton);
             this.Controls.Add(this.regButton);
             this.Controls.Add(this.logButton);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Name = "Background";
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Name = "Form_Background";
             this.Text = "Background";
             this.ResumeLayout(false);
 

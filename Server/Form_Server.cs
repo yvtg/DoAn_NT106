@@ -16,5 +16,10 @@ namespace Server
         {
             InitializeComponent();
         }
+
+        private void Form_Server_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

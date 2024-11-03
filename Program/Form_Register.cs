@@ -10,11 +10,27 @@ using System.Windows.Forms;
 
 namespace Program
 {
-    public partial class Form2 : Form
+    public partial class Form_Register : Form
     {
-        public Form2()
+        public Form_Register()
         {
             InitializeComponent();
+        }
+
+        private void passTextbox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void registerButton_Click(object sender, EventArgs e)
+        {
+            //Kiểm tra và tạo tài khoản mới
+            this.Close();
         }
     }
 }

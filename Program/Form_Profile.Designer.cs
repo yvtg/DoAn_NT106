@@ -28,113 +28,135 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.nameTextbox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.scoreTextbox = new System.Windows.Forms.TextBox();
+            this.usernameLabel = new System.Windows.Forms.Label();
+            this.maxscoreLabel = new System.Windows.Forms.Label();
+            this.maxrankLabel = new System.Windows.Forms.Label();
+            this.minrankLabel = new System.Windows.Forms.Label();
+            this.countLabel = new System.Windows.Forms.Label();
+            this.usernameTextbox = new System.Windows.Forms.TextBox();
+            this.maxscoreTextbox = new System.Windows.Forms.TextBox();
             this.maxrankTextbox = new System.Windows.Forms.TextBox();
             this.minrankTextbox = new System.Windows.Forms.TextBox();
             this.countTextbox = new System.Windows.Forms.TextBox();
+            this.backButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // label1
+            // usernameLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 158);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 16);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Tên đăng nhập";
+            this.usernameLabel.AutoSize = true;
+            this.usernameLabel.Location = new System.Drawing.Point(16, 221);
+            this.usernameLabel.Name = "usernameLabel";
+            this.usernameLabel.Size = new System.Drawing.Size(98, 16);
+            this.usernameLabel.TabIndex = 0;
+            this.usernameLabel.Text = "Tên đăng nhập";
             // 
-            // nameTextbox
+            // maxscoreLabel
             // 
-            this.nameTextbox.Location = new System.Drawing.Point(143, 155);
-            this.nameTextbox.Name = "nameTextbox";
-            this.nameTextbox.Size = new System.Drawing.Size(223, 22);
-            this.nameTextbox.TabIndex = 1;
+            this.maxscoreLabel.AutoSize = true;
+            this.maxscoreLabel.Location = new System.Drawing.Point(16, 285);
+            this.maxscoreLabel.Name = "maxscoreLabel";
+            this.maxscoreLabel.Size = new System.Drawing.Size(92, 16);
+            this.maxscoreLabel.TabIndex = 2;
+            this.maxscoreLabel.Text = "Điểm cao nhất";
             // 
-            // label2
+            // maxrankLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 200);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 16);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Điểm cao nhất";
+            this.maxrankLabel.AutoSize = true;
+            this.maxrankLabel.Location = new System.Drawing.Point(16, 347);
+            this.maxrankLabel.Name = "maxrankLabel";
+            this.maxrankLabel.Size = new System.Drawing.Size(117, 16);
+            this.maxrankLabel.TabIndex = 3;
+            this.maxrankLabel.Text = "Thứ hạng cao nhất";
             // 
-            // label3
+            // minrankLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 243);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(117, 16);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Thứ hạng cao nhất";
+            this.minrankLabel.AutoSize = true;
+            this.minrankLabel.Location = new System.Drawing.Point(16, 411);
+            this.minrankLabel.Name = "minrankLabel";
+            this.minrankLabel.Size = new System.Drawing.Size(120, 16);
+            this.minrankLabel.TabIndex = 4;
+            this.minrankLabel.Text = "Thứ hạng thấp nhất";
             // 
-            // label4
+            // countLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 285);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(120, 16);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Thứ hạng thấp nhất";
+            this.countLabel.AutoSize = true;
+            this.countLabel.Location = new System.Drawing.Point(16, 470);
+            this.countLabel.Name = "countLabel";
+            this.countLabel.Size = new System.Drawing.Size(73, 16);
+            this.countLabel.TabIndex = 5;
+            this.countLabel.Text = "Số lần chơi";
             // 
-            // label5
+            // usernameTextbox
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 324);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(73, 16);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Số lần chơi";
+            this.usernameTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.usernameTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameTextbox.Location = new System.Drawing.Point(142, 213);
+            this.usernameTextbox.Name = "usernameTextbox";
+            this.usernameTextbox.Size = new System.Drawing.Size(310, 31);
+            this.usernameTextbox.TabIndex = 7;
             // 
-            // scoreTextbox
+            // maxscoreTextbox
             // 
-            this.scoreTextbox.Location = new System.Drawing.Point(143, 197);
-            this.scoreTextbox.Name = "scoreTextbox";
-            this.scoreTextbox.Size = new System.Drawing.Size(223, 22);
-            this.scoreTextbox.TabIndex = 8;
+            this.maxscoreTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.maxscoreTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxscoreTextbox.Location = new System.Drawing.Point(142, 277);
+            this.maxscoreTextbox.Name = "maxscoreTextbox";
+            this.maxscoreTextbox.Size = new System.Drawing.Size(310, 31);
+            this.maxscoreTextbox.TabIndex = 8;
             // 
             // maxrankTextbox
             // 
-            this.maxrankTextbox.Location = new System.Drawing.Point(143, 237);
+            this.maxrankTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.maxrankTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxrankTextbox.Location = new System.Drawing.Point(142, 339);
             this.maxrankTextbox.Name = "maxrankTextbox";
-            this.maxrankTextbox.Size = new System.Drawing.Size(223, 22);
+            this.maxrankTextbox.Size = new System.Drawing.Size(310, 31);
             this.maxrankTextbox.TabIndex = 9;
             // 
             // minrankTextbox
             // 
-            this.minrankTextbox.Location = new System.Drawing.Point(143, 279);
+            this.minrankTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.minrankTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.minrankTextbox.Location = new System.Drawing.Point(142, 403);
             this.minrankTextbox.Name = "minrankTextbox";
-            this.minrankTextbox.Size = new System.Drawing.Size(223, 22);
+            this.minrankTextbox.Size = new System.Drawing.Size(310, 31);
             this.minrankTextbox.TabIndex = 10;
             // 
             // countTextbox
             // 
-            this.countTextbox.Location = new System.Drawing.Point(143, 318);
+            this.countTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.countTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.countTextbox.Location = new System.Drawing.Point(142, 462);
             this.countTextbox.Name = "countTextbox";
-            this.countTextbox.Size = new System.Drawing.Size(223, 22);
+            this.countTextbox.Size = new System.Drawing.Size(310, 31);
             this.countTextbox.TabIndex = 11;
+            // 
+            // backButton
+            // 
+            this.backButton.Location = new System.Drawing.Point(172, 507);
+            this.backButton.Name = "backButton";
+            this.backButton.Size = new System.Drawing.Size(144, 39);
+            this.backButton.TabIndex = 12;
+            this.backButton.Text = "Quay về";
+            this.backButton.UseVisualStyleBackColor = true;
+            this.backButton.Click += new System.EventHandler(this.backButton_Click);
             // 
             // Form_Profile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 362);
+            this.ClientSize = new System.Drawing.Size(464, 558);
+            this.Controls.Add(this.backButton);
             this.Controls.Add(this.countTextbox);
             this.Controls.Add(this.minrankTextbox);
             this.Controls.Add(this.maxrankTextbox);
-            this.Controls.Add(this.scoreTextbox);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.nameTextbox);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.maxscoreTextbox);
+            this.Controls.Add(this.usernameTextbox);
+            this.Controls.Add(this.countLabel);
+            this.Controls.Add(this.minrankLabel);
+            this.Controls.Add(this.maxrankLabel);
+            this.Controls.Add(this.maxscoreLabel);
+            this.Controls.Add(this.usernameLabel);
             this.Name = "Form_Profile";
             this.Text = "Form_Profile";
             this.ResumeLayout(false);
@@ -144,15 +166,16 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox nameTextbox;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox scoreTextbox;
+        private System.Windows.Forms.Label usernameLabel;
+        private System.Windows.Forms.Label maxscoreLabel;
+        private System.Windows.Forms.Label maxrankLabel;
+        private System.Windows.Forms.Label minrankLabel;
+        private System.Windows.Forms.Label countLabel;
+        private System.Windows.Forms.TextBox usernameTextbox;
+        private System.Windows.Forms.TextBox maxscoreTextbox;
         private System.Windows.Forms.TextBox maxrankTextbox;
         private System.Windows.Forms.TextBox minrankTextbox;
         private System.Windows.Forms.TextBox countTextbox;
+        private System.Windows.Forms.Button backButton;
     }
 }
