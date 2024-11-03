@@ -16,5 +16,15 @@ namespace Program
         {
             InitializeComponent();
         }
+
+        private void timeLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form_Room_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
