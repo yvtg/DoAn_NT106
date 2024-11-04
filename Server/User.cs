@@ -7,20 +7,12 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    internal class User
+    public class User
     {
         public string Name { get; set; }
         public int Score { get; set; }
         public bool IsDrawing { get; set; }
-        private TcpClient client;
 
-        public User(TcpClient client, string name)
-        {
-            this.client = client;
-            Name = name;
-            Score = 0;
-            IsDrawing = false;
-        }
 
         public void SendPacket(Packet packet)
         {
