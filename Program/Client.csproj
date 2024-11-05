@@ -208,7 +208,7 @@
     <Compile Include="Form_Background.Designer.cs">
       <DependentUpon>Form_Background.cs</DependentUpon>
     </Compile>
-    <Compile Include="Manager.cs" />
+    <Compile Include="Client.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

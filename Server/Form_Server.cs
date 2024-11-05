@@ -12,14 +12,33 @@ namespace Server
 {
     public partial class Form_Server : Form
     {
+        private Server server;
+
         public Form_Server()
         {
             InitializeComponent();
+            server = new Server(UpdateLog);
         }
 
-        private void Form_Server_Load(object sender, EventArgs e)
+        private void UpdateLog(string message)
         {
+            if (logRichTextBox.InvokeRequired)
+            {
+                logRichTextBox.Invoke(new Action(() => UpdateLog(message)));
+            }
+            else
+            {
+                logRichTextBox.AppendText($"{DateTime.Now}: {message}\r\n");
+                logRichTextBox.SelectionStart = logRichTextBox.Text.Length; // Scroll to the bottom
+                logRichTextBox.ScrollToCaret();
+            }
+        }
 
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            server.StopServer();
+            UpdateLog("Server has been stopped.");
+            base.OnFormClosing(e); 
         }
     }
 }

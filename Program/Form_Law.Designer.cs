@@ -35,18 +35,20 @@
             // lawRichtextbox
             // 
             this.lawRichtextbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lawRichtextbox.Location = new System.Drawing.Point(2, 77);
+            this.lawRichtextbox.Location = new System.Drawing.Point(2, 63);
+            this.lawRichtextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lawRichtextbox.Name = "lawRichtextbox";
             this.lawRichtextbox.ReadOnly = true;
-            this.lawRichtextbox.Size = new System.Drawing.Size(463, 418);
+            this.lawRichtextbox.Size = new System.Drawing.Size(347, 340);
             this.lawRichtextbox.TabIndex = 0;
             this.lawRichtextbox.Text = "";
             // 
             // backButton
             // 
-            this.backButton.Location = new System.Drawing.Point(182, 501);
+            this.backButton.Location = new System.Drawing.Point(136, 407);
+            this.backButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.backButton.Name = "backButton";
-            this.backButton.Size = new System.Drawing.Size(129, 45);
+            this.backButton.Size = new System.Drawing.Size(97, 37);
             this.backButton.TabIndex = 1;
             this.backButton.Text = "Quay về";
             this.backButton.UseVisualStyleBackColor = true;
@@ -54,11 +56,12 @@
             // 
             // Form_Law
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(464, 558);
+            this.ClientSize = new System.Drawing.Size(348, 453);
             this.Controls.Add(this.backButton);
             this.Controls.Add(this.lawRichtextbox);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form_Law";
             this.Text = "Form_Law";
             this.ResumeLayout(false);
