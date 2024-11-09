@@ -43,7 +43,7 @@ namespace Server
             RoomId = GenerateRoomId();
 
             // Cài đặt bộ đếm thời gian cho vòng chơi (60 giây)
-            roundTimer = new Timer(roundTime * 1000); // roundTime * 1000 ms = 60 seconds
+            roundTimer = new Timer(roundTime * 1000);
             roundTimer.Elapsed += OnRoundTimeElapsed;
             roundTimer.AutoReset = false;
         }
@@ -56,18 +56,14 @@ namespace Server
 
             if (players.Count > 2)
             {
-                // Chọn người vẽ tiếp theo trong danh sách
                 currentDrawerIndex = (currentDrawerIndex + 1) % players.Count;
                 currentDrawer = players[currentDrawerIndex];
                 currentDrawer.IsDrawing = true;
 
-                // Chọn từ khóa ngẫu nhiên cho người vẽ
                 currentKeyword = GenerateRandomKeyword();
 
-                // Gửi thông tin vòng chơi mới
                 BroadcastNewRoundInfo();
 
-                // Bắt đầu bộ đếm thời gian cho vòng chơi
                 roundTimer.Start();
             }
         }
@@ -109,20 +105,18 @@ namespace Server
         {
             if (guess.Equals(currentKeyword, StringComparison.OrdinalIgnoreCase))
             {
-                // Nếu đoán đúng, cập nhật điểm cho người đoán và người vẽ
+
                 player.Score += 10;
                 if (currentDrawer != null)
                 {
                     currentDrawer.Score += 5;
                 }
 
-                // Cập nhật trạng thái game cho tất cả người chơi
                 BroadcastMessage($"{player.Name} đã đoán đúng từ khóa và nhận được 10 điểm! và {currentDrawer.Name} được cộng 5 điểm!");
 
-                // Dừng vòng chơi hiện tại và bắt đầu vòng chơi mới
                 roundTimer.Stop();
-                StartNewRound();
 
+                StartNewRound();
                 return true;
             }
             return false;
@@ -131,16 +125,24 @@ namespace Server
         // Gửi tin nhắn đến tất cả người chơi trong phòng
         public void BroadcastMessage(string message)
         {
-            // cần xây dựng class Packet trước
+            string roundInfo = $"Người vẽ hiện tại: {currentDrawer.Name}, Từ khóa: {currentKeyword}";
+            foreach (var player in players)
+            {
+                Packet newRoundPacket = new DescribePacket($"{RoomId};System;{roundInfo}");
+                player.SendPacket(newRoundPacket);
+            }
         }
 
         // Gửi thông tin vòng chơi mới
         public void BroadcastNewRoundInfo()
         {
-            // cần xây dựng class Packet trước
+            string roundInfo = $"Người vẽ hiện tại: {currentDrawer.Name}, Từ khóa: {currentKeyword}";
+            foreach (var player in players)
+            {
+                Packet newRoundPacket = new DescribePacket($"{RoomId};System;{roundInfo}");
+                player.SendPacket(newRoundPacket);
+            }
         }
-
-        // Gửi tin nhắn đến tất cả người chơi trong phòng
 
         // Lấy danh sách điểm của các người chơi dưới dạng chuỗi
         public string GetScores()

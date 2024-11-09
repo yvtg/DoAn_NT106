@@ -25,7 +25,8 @@ namespace Server
         }
         public void SendPacket(Packet packet)
         {
-            // Giả định rằng lớp Packet có phương thức để chuyển dữ liệu thành byte
+            byte[] data = packet.ToBytes();
+            UserSocket.Send(data);
         }
     }
 }
