@@ -50,6 +50,27 @@ namespace Server.DataAccess
             var collection = GetCollection<T>(collectionName);
             collection.DeleteOne(filter);
         }
+
+        ////Cách dùng:
+        //string connectionString = "mongodb://localhost:27017";
+        //string databaseName = "MyDatabase";
+
+        //// Khởi tạo DatabaseHelper
+        //DatabaseHelper dbHelper = new DatabaseHelper(connectionString, databaseName);
+
+        //// Tên collection
+        //string collectionName = "Users";
+
+        //// Thêm một tài liệu (document) mới
+        //var newUser = new BsonDocument
+        //{
+        //    { "Name", "Alice" },
+        //    { "Age", 25 },
+        //    { "Email", "alice@example.com" }
+        //};
+        //dbHelper.InsertDocument(collectionName, newUser);
+        //Console.WriteLine("Thêm người dùng mới thành công.");
+
         /*
         private readonly string _connectionString;
 
