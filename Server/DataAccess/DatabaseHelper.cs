@@ -52,7 +52,7 @@ namespace Server.DataAccess
         }
 
         ////Cách dùng:
-        //string connectionString = "mongodb://localhost:27017";
+        //string connectionString = "mongodb://localhost:27017";//gắn link mongodb vào
         //string databaseName = "MyDatabase";
 
         //// Khởi tạo DatabaseHelper
