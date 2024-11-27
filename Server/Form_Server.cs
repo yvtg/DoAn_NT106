@@ -18,6 +18,7 @@ namespace Server
         {
             InitializeComponent();
             server = new Server(UpdateLog);
+
         }
 
         private void UpdateLog(string message)

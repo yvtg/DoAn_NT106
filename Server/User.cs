@@ -28,5 +28,10 @@ namespace Server
             byte[] data = packet.ToBytes();
             UserSocket.Send(data);
         }
+
+        public void Stop(bool abortThread = false)
+        {
+            UserSocket.Close();
+        }
     }
 }

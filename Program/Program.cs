@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Program;
+using System;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
     internal static class Program
     {
+        public static Client client;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -13,7 +15,11 @@ namespace WindowsFormsApp1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form_Background()); 
+
+            client = new Client();
+            client.Connect();
+
+            Application.Run(new Form_Background(client));
         }
     }
 }

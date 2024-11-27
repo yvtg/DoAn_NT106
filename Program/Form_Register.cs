@@ -12,9 +12,13 @@ namespace Program
 {
     public partial class Form_Register : Form
     {
-        public Form_Register()
+        private Client client;
+        public Form_Register(Client client)
         {
             InitializeComponent();
+            Client.RegisterSuccessful += OnRegisterSuccessful;
+
+            this.client = client;
         }
 
         private void passTextbox_TextChanged(object sender, EventArgs e)
@@ -29,7 +33,30 @@ namespace Program
 
         private void registerButton_Click(object sender, EventArgs e)
         {
-            //Kiểm tra và tạo tài khoản mới
+            string username = usernameTextbox.Text;
+            string password = passwordTextbox.Text;
+            string email = emailTextbox.Text;
+            string confirmpw = confirmpassTextbox.Text;
+
+            if (username == "" || password == "" || email == "")
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin");
+                return;
+            }
+
+            if (password != confirmpw)
+            {
+                MessageBox.Show("Mật khẩu không khớp");
+                return;
+            }
+
+            // Gửi thông tin đăng ký lên server
+            RegisterPacket packet = new RegisterPacket($"{username};{email};{password}");
+            client.SendData(packet);
+        }
+
+        private void OnRegisterSuccessful()
+        {
             this.Close();
         }
     }

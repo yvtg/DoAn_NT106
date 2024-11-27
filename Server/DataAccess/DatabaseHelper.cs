@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Server.DataAccess
 {
@@ -50,6 +52,70 @@ namespace Server.DataAccess
             var collection = GetCollection<T>(collectionName);
             collection.DeleteOne(filter);
         }
+
+        // Hàm mã hóa mật khẩu (hashing)
+        public static string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        // Kiểm tra mật khẩu có khớp với băm đã lưu trữ không
+        public static bool VerifyPassword(string storedHash, string password)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, storedHash);
+        }
+
+        // Hàm đăng ký người dùng
+        public bool RegisterUser(string username, string email, string password)
+        {
+            var collection = GetCollection<BsonDocument>("User");
+
+            // Kiểm tra nếu người dùng đã tồn tại (theo email)
+            var existingUser = collection.Find(Builders<BsonDocument>.Filter.Eq("Username", username)).FirstOrDefault();
+            if (existingUser != null)
+            {
+                return false; // Người dùng đã tồn tại
+            }
+
+            // Mã hóa mật khẩu
+            string hashedPassword = HashPassword(password);
+
+            // Tạo document người dùng mới
+            var newUser = new BsonDocument
+            {
+                { "Username", username },
+                { "Email", email },
+                { "Password", hashedPassword },
+                { "HighestScore", 0 },
+                { "HighestRank", 0 },
+                { "LowestRank", 0 },
+                { "GamesPlayed", 0 }
+            };
+
+            // Thêm người dùng vào database
+            collection.InsertOne(newUser);
+            return true; // Đăng ký thành công
+        }
+
+
+        // Hàm đăng nhập người dùng
+        public bool LoginUser(string username, string password)
+        {
+            var collection = GetCollection<BsonDocument>("User");
+
+            // Tìm người dùng theo username
+            var user = collection.Find(Builders<BsonDocument>.Filter.Eq("Username", username)).FirstOrDefault();
+            if (user == null)
+            {
+                return false; // Người dùng không tồn tại
+            }
+
+            // Kiểm tra mật khẩu
+            string storedHashedPassword = user["Password"].AsString;
+
+            return VerifyPassword(storedHashedPassword, password); // So sánh mật khẩu đã mã hóa
+        }
+
 
         ////Cách dùng:
         //string connectionString = "mongodb://localhost:27017";//gắn link mongodb vào

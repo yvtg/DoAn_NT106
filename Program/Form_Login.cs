@@ -12,9 +12,13 @@ namespace Program
 {
     public partial class Form_Login : Form
     {
-        public Form_Login()
+        private Client client;
+        public Form_Login(Client client)
         {
             InitializeComponent();
+            Client.LoginSuccessful += OnLoginSuccessful;
+
+            this.client = client;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -34,14 +38,29 @@ namespace Program
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            //Kiểm tra tài khoản đăng nhập
-            Form_Home homeform = new Form_Home();
+            string username = usernameTextbox.Text;
+            string password = passTextbox.Text;
+
+            if (username == "" || password == "")
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin");
+                return;
+            }
+
+            // Gửi thông tin đăng nhập lên server
+            LoginPacket packet = new LoginPacket($"{username};{password}");
+            client.SendData(packet);
+        }
+
+        private void OnLoginSuccessful()
+        {
+            string username = usernameTextbox.Text;
+            Form_Home homeform = new Form_Home(client,username);
             homeform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
             homeform.Location = this.Location; // Đặt vị trí của Form_Home giống với Form_Background
             this.Hide();
             homeform.ShowDialog();
             this.Show();
-
         }
     }
 }

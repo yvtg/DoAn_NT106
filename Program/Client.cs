@@ -6,76 +6,79 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using System.Windows.Forms;
+using System.Net.Http;
 
 namespace Program
 {
     public class Client
     {
-        public static Socket clientSocket;
-        public static Thread recvThread;
+        TcpClient tcpClient = new TcpClient();
+        NetworkStream ns;
+        public static event Action RegisterSuccessful;
+        public static event Action LoginSuccessful;
 
-        public static void Connect(IPEndPoint serverEP)
+        public void Connect()
         {
             try
             {
-                clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                clientSocket.Connect(serverEP);
-                recvThread = new Thread(ReceiveData);
-                recvThread.IsBackground = true;
-                recvThread.Start();
+                IPAddress ipServer = IPAddress.Parse("127.0.0.1");
+                IPEndPoint ipEP = new IPEndPoint(ipServer, 8080);
+                tcpClient.Connect(ipEP);
+                Task.Run(() => ReceiveData());
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Lỗi khi kết nối server: " + ex.Message);
+                MessageBox.Show("Lỗi khi kết nối: " + ex.Message);
             }
         }
 
-        public static void SendData(Packet packet)
-        {
-            try
-            {
-                byte[] buffer = packet.ToBytes();
-                clientSocket.Send(buffer);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Lỗi khi gửi dữ liệu: " + ex.Message);
-            }
-        }
 
-        private static void ReceiveData()
+        public void SendData(Packet packet)
         {
-            try
+            if (tcpClient != null && tcpClient.Connected)
             {
-                byte[] buffer = new byte[1024];
-                while (clientSocket.Connected)
+                try
                 {
-                    // Nhận dữ liệu từ server
-                    int receivedBytes = clientSocket.Receive(buffer);
-                    if (receivedBytes > 0)
-                    {
-                        // Chuyển đổi dữ liệu nhận được thành chuỗi
-                        string msg = Encoding.UTF8.GetString(buffer, 0, receivedBytes);
+                    ns = tcpClient.GetStream();
+                    byte[] byteData = packet.ToBytes();
+                    ns.Write(byteData, 0, byteData.Length);
+                    ns.Flush(); // Ensure all data is sent
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi gửi dữ liệu: " + ex.Message); // Error sending data
+                }
+            }
+            else
+            {
+                MessageBox.Show("Client không kết nối với server."); // Client is not connected to the server
+            }
+        }
 
-                        // Phân tích cú pháp packet từ chuỗi nhận được
-                        Packet packet = ParsePacket(msg);
-                        if (packet != null)
-                        {
-                            AnalyzingPacket(packet);
-                        }
-                    }
+
+        public void ReceiveData()
+        {
+            try
+            {
+                ns = tcpClient.GetStream();
+                byte[] byteData = new byte[1024];
+                int byteRec;
+
+                while ((byteRec = ns.Read(byteData, 0, byteData.Length)) != 0)
+                {
+                    string data = Encoding.ASCII.GetString(byteData, 0, byteRec);
+                    Packet packet = ParsePacket(data);
+                    AnalyzingPacket(packet);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Lỗi khi nhận dữ liệu từ server: " + ex.Message);
-            }
-            finally
-            {
-                clientSocket.Close();
-                Console.WriteLine("Đã ngắt kết nối với server");
+                MessageBox.Show("Lỗi khi nhận dữ liệu: " + ex.Message);
             }
         }
+
+
 
         private static Packet ParsePacket(string msg)
         {
@@ -84,6 +87,8 @@ namespace Program
             {
                 return null; // Không có dữ liệu
             }
+            // Lấy phần còn lại của msg, bỏ payload[0] (command)
+            string remainingMsg = string.Join(";", payload.Skip(1));
 
             // Xác định loại packet dựa trên phần tử đầu tiên
             PacketType packetType;
@@ -92,19 +97,19 @@ namespace Program
                 switch (packetType)
                 {
                     case PacketType.LOGIN_RESULT:
-                        return new LoginResultPacket(msg);
+                        return new LoginResultPacket(remainingMsg);
                     case PacketType.REGISTER_RESULT:
-                        return new RegisterResultPacket(msg);
+                        return new RegisterResultPacket(remainingMsg);
                     case PacketType.ROOM_INFO:
-                        return new RoomInfoPacket(msg);
+                        return new RoomInfoPacket(remainingMsg);
                     case PacketType.OTHER_INFO:
-                        return new OtherInfoPacket(msg);
+                        return new OtherInfoPacket(remainingMsg);
                     case PacketType.ROUND_UPDATE:
-                        return new RoundUpdatePacket(msg);
+                        return new RoundUpdatePacket(remainingMsg);
                     case PacketType.GUESS_RESULT:
-                        return new GuessResultPacket(msg);
+                        return new GuessResultPacket(remainingMsg);
                     case PacketType.LEADER_BOARD_INFO:
-                        return new LeaderBoardInfoPacket(msg);
+                        return new LeaderBoardInfoPacket(remainingMsg);
                     default:
                         return null; // Không biết loại packet
                 }
@@ -117,8 +122,28 @@ namespace Program
             switch (packet.Type)
             {
                 case PacketType.LOGIN_RESULT:
+                    LoginResultPacket loginResultPacket = (LoginResultPacket)packet;
+                    if (loginResultPacket.result == "success")
+                    {
+                        MessageBox.Show("Đăng nhập thành công");
+                        LoginSuccessful?.Invoke();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Đăng nhập thất bại");
+                    }
                     break;
                 case PacketType.REGISTER_RESULT:
+                    RegisterResultPacket registerResultPacket = (RegisterResultPacket)packet;
+                    if (registerResultPacket.result== "success")
+                    {
+                        MessageBox.Show("Đăng ký thành công");
+                        RegisterSuccessful?.Invoke();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Username đã tồn tại!");
+                    }
                     break;
                 case PacketType.ROOM_INFO:
                     break;

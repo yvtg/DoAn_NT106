@@ -7,14 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp1;
 
 namespace Program
 {
     public partial class Form_Home : Form
     {
-        public Form_Home()
+        private Client client;
+        private string username;
+        public Form_Home(Client client, string username)
         {
             InitializeComponent();
+            this.client = client;
+            this.username = username;
         }
 
         private void joinButton_Click(object sender, EventArgs e)
@@ -32,6 +37,19 @@ namespace Program
             profileform.Location = this.Location; // Đặt vị trí của Form_Profile giống với Form_Background
             this.Hide();
             profileform.ShowDialog();
+            this.Show();
+        }
+
+        private void logoutBtn_Click(object sender, EventArgs e)
+        {
+            LogoutPacket logoutPacket = new LogoutPacket(username);
+            client.SendData(logoutPacket);
+
+            Form_Background backgroundform = new Form_Background(client);
+            backgroundform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
+            backgroundform.Location = this.Location; // Đặt vị trí của Form_Background giống với Form_Home
+            this.Hide();
+            backgroundform.ShowDialog();
             this.Show();
         }
     }
