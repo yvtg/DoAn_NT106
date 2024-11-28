@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1;
+using Models;
 
 namespace Program
 {
@@ -53,7 +54,18 @@ namespace Program
             homeform.Location = this.Location; // Đặt vị trí của Form_Home giống với Form_Background
             this.Hide();
             homeform.ShowDialog();
-            this.Show();
+        }
+
+        private void showPwCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (showPwCheckBox.Checked)
+            {
+                passTextbox.PasswordChar = '\0'; // Hiển thị mật khẩu
+            }
+            else
+            {
+                passTextbox.PasswordChar = '*'; // Ẩn mật khẩu
+            }
         }
     }
 }

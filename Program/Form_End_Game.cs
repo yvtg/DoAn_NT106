@@ -26,5 +26,10 @@ namespace Program
         {
 
         }
+
+        private void profileButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

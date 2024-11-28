@@ -236,6 +236,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form_Create.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Create.Designer.cs">
+      <DependentUpon>Form_Create.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Law.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -291,9 +297,11 @@
       <DependentUpon>Form_Background.cs</DependentUpon>
     </Compile>
     <Compile Include="Client.cs" />
-    <Compile Include="Packet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form_Create.resx">
+      <DependentUpon>Form_Create.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_Background.resx">
       <DependentUpon>Form_Background.cs</DependentUpon>
     </EmbeddedResource>
@@ -351,6 +359,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mongocrypt.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.5.2.0\build\net462\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.5.2.0\build\net462\Microsoft.Data.SqlClient.SNI.targets')" />

@@ -24,12 +24,13 @@ namespace Program
 
         private void joinButton_Click(object sender, EventArgs e)
         {
-            Form_Room roomform = new Form_Room();
-            roomform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            roomform.Location = this.Location; // Đặt vị trí của Form_Room giống với Form_Background
-            this.Hide();
-            roomform.ShowDialog();
-            this.Show();
+
+            //Form_Room roomform = new Form_Room(client,username);
+            //roomform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
+            //roomform.Location = this.Location; // Đặt vị trí của Form_Room giống với Form_Background
+            //this.Hide();
+            //roomform.ShowDialog();
+            //this.Show();
         }
     }
 }

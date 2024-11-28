@@ -40,6 +40,7 @@
             this.passwordTextbox = new ReaLTaiizor.Controls.HopeTextBox();
             this.registerButton = new ReaLTaiizor.Controls.HopeButton();
             this.backButton = new ReaLTaiizor.Controls.HopeButton();
+            this.showPwCheckBox = new ReaLTaiizor.Controls.HopeCheckBox();
             this.SuspendLayout();
             // 
             // passwordLabel
@@ -163,7 +164,7 @@
             this.confirmpassTextbox.MaxLength = 32767;
             this.confirmpassTextbox.Multiline = false;
             this.confirmpassTextbox.Name = "confirmpassTextbox";
-            this.confirmpassTextbox.PasswordChar = '\0';
+            this.confirmpassTextbox.PasswordChar = '*';
             this.confirmpassTextbox.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.confirmpassTextbox.SelectedText = "";
             this.confirmpassTextbox.SelectionLength = 0;
@@ -187,7 +188,7 @@
             this.passwordTextbox.MaxLength = 32767;
             this.passwordTextbox.Multiline = false;
             this.passwordTextbox.Name = "passwordTextbox";
-            this.passwordTextbox.PasswordChar = '\0';
+            this.passwordTextbox.PasswordChar = '*';
             this.passwordTextbox.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.passwordTextbox.SelectedText = "";
             this.passwordTextbox.SelectionLength = 0;
@@ -207,7 +208,7 @@
             this.registerButton.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.registerButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             this.registerButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.registerButton.Location = new System.Drawing.Point(195, 352);
+            this.registerButton.Location = new System.Drawing.Point(187, 369);
             this.registerButton.Name = "registerButton";
             this.registerButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
             this.registerButton.Size = new System.Drawing.Size(104, 36);
@@ -228,7 +229,7 @@
             this.backButton.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.backButton.Location = new System.Drawing.Point(54, 352);
+            this.backButton.Location = new System.Drawing.Point(48, 369);
             this.backButton.Name = "backButton";
             this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
             this.backButton.Size = new System.Drawing.Size(104, 36);
@@ -239,12 +240,34 @@
             this.backButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.backButton.Click += new System.EventHandler(this.backButton_Click_1);
             // 
+            // showPwCheckBox
+            // 
+            this.showPwCheckBox.AutoSize = true;
+            this.showPwCheckBox.CheckedColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            this.showPwCheckBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showPwCheckBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(198)))), ((int)(((byte)(202)))));
+            this.showPwCheckBox.DisabledStringColor = System.Drawing.Color.FromArgb(((int)(((byte)(186)))), ((int)(((byte)(187)))), ((int)(((byte)(189)))));
+            this.showPwCheckBox.Enable = true;
+            this.showPwCheckBox.EnabledCheckedColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            this.showPwCheckBox.EnabledStringColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+            this.showPwCheckBox.EnabledUncheckedColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(158)))), ((int)(((byte)(161)))));
+            this.showPwCheckBox.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showPwCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
+            this.showPwCheckBox.Location = new System.Drawing.Point(151, 323);
+            this.showPwCheckBox.Name = "showPwCheckBox";
+            this.showPwCheckBox.Size = new System.Drawing.Size(165, 20);
+            this.showPwCheckBox.TabIndex = 26;
+            this.showPwCheckBox.Text = "Hiện mật khẩu";
+            this.showPwCheckBox.UseVisualStyleBackColor = true;
+            this.showPwCheckBox.CheckedChanged += new System.EventHandler(this.showPwCheckBox_CheckedChanged);
+            // 
             // Form_Register
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
             this.ClientSize = new System.Drawing.Size(348, 453);
+            this.Controls.Add(this.showPwCheckBox);
             this.Controls.Add(this.registerButton);
             this.Controls.Add(this.backButton);
             this.Controls.Add(this.confirmpassTextbox);
@@ -257,7 +280,7 @@
             this.Controls.Add(this.passwordLabel);
             this.Controls.Add(this.usernameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Register";
@@ -280,5 +303,6 @@
         private ReaLTaiizor.Controls.HopeTextBox passwordTextbox;
         private ReaLTaiizor.Controls.HopeButton registerButton;
         private ReaLTaiizor.Controls.HopeButton backButton;
+        private ReaLTaiizor.Controls.HopeCheckBox showPwCheckBox;
     }
 }

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Timers;
 
-namespace Server
+namespace Models
 {
     public class Room
     {
@@ -13,7 +14,7 @@ namespace Server
         public List<User> players;  // Danh sách người chơi trong phòng
         public string currentKeyword; // Từ khóa hiện tại
         public int roundTime = 60; // Thời gian của mỗi vòng chơi (tính bằng giây)
-        public Timer roundTimer; // Timer đếm ngược cho mỗi vòng chơi
+        public System.Timers.Timer roundTimer; // Timer đếm ngược cho mỗi vòng chơi
         public bool roomActive = false; // Trạng thái phòng (đang hoạt động hay không)
         public bool IsGameStarted = false; // Trạng thái vòng chơi (đang diễn ra hay không)
         public int maxPlayers; // Số lượng người chơi tối đa trong phòng
@@ -33,7 +34,7 @@ namespace Server
             this.maxPlayers = maxPlayers;
             roomActive = true;
             // Cài đặt bộ đếm thời gian cho vòng chơi (60 giây)
-            roundTimer = new Timer(roundTime * 1000);
+            roundTimer = new System.Timers.Timer(roundTime * 1000);
             roundTimer.Elapsed += OnRoundTimeElapsed;
             roundTimer.AutoReset = false;
         }

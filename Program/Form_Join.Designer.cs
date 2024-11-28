@@ -105,7 +105,7 @@
             this.joinButton.Size = new System.Drawing.Size(104, 36);
             this.joinButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.joinButton.TabIndex = 18;
-            this.joinButton.Text = "Tham gia";
+            this.joinButton.Text = "Join";
             this.joinButton.TextColor = System.Drawing.Color.White;
             this.joinButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.joinButton.Click += new System.EventHandler(this.joinButton_Click);
@@ -143,7 +143,7 @@
             this.Controls.Add(this.hopeForm1);
             this.Controls.Add(this.idLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Join";

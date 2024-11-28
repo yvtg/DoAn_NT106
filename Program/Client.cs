@@ -8,6 +8,8 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Net.Http;
+using Models;
+
 
 namespace Program
 {

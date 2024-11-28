@@ -5,9 +5,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
-namespace Server
+namespace Models
 {
     public enum PacketType
     {
@@ -289,14 +288,24 @@ namespace Server
     public class CreateRoomPacket : Packet
     {
         public int Max_player { get; set; }
+        public string username { get; set; }
         public CreateRoomPacket(string payload) : base(PacketType.CREATE_ROOM, payload)
         {
-            Max_player = Int32.Parse(payload);
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 3)
+            {
+                username = parsePayload[0];
+                Max_player = Int32.Parse(parsePayload[1]);
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
         }
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"CREATE_ROOM;{Max_player}");
+            return Encoding.ASCII.GetBytes($"CREATE_ROOM;{username};{Max_player}");
         }
     }
 

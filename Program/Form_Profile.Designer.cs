@@ -112,7 +112,7 @@
             this.hopeForm1.Name = "hopeForm1";
             this.hopeForm1.Size = new System.Drawing.Size(348, 40);
             this.hopeForm1.TabIndex = 13;
-            this.hopeForm1.Text = "Login";
+            this.hopeForm1.Text = "Profile";
             this.hopeForm1.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             // 
             // minrankTextbox

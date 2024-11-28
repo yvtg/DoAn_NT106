@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1;
+using Models;
 
 namespace Program
 {
@@ -34,7 +35,8 @@ namespace Program
 
         private void createButton_Click(object sender, EventArgs e)
         {
-
+            Form_Create createform = new Form_Create(client,username);
+            createform.Show();
         }
 
         private void joinButton_Click_1(object sender, EventArgs e)
