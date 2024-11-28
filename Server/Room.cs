@@ -11,37 +11,27 @@ namespace Server
         // Thuộc tính
         public string RoomId; // ID của phòng gồm 4 ký tự số và chữ in hoa
         public List<User> players;  // Danh sách người chơi trong phòng
-        public User currentDrawer; // Người chơi hiện đang vẽ
         public string currentKeyword; // Từ khóa hiện tại
         public int roundTime = 60; // Thời gian của mỗi vòng chơi (tính bằng giây)
         public Timer roundTimer; // Timer đếm ngược cho mỗi vòng chơi
-        public bool gameActive = false; // Trạng thái game
+        public bool roomActive = false; // Trạng thái phòng (đang hoạt động hay không)
+        public bool IsGameStarted = false; // Trạng thái vòng chơi (đang diễn ra hay không)
         public int maxPlayers; // Số lượng người chơi tối đa trong phòng
         public Random random;
+        public User host; // chủ phòng
+
+        public User currentDrawer; // Người chơi hiện đang vẽ
         public int currentDrawerIndex; // Vị trí của người vẽ hiện tại trong danh sách người chơi
 
-        private string GenerateRoomId()
-        {
-            int length = 4; // Độ dài mã phòng
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Các ký tự cho mã phòng
-            Random random = new Random();
-            char[] RoomID = new char[length];
 
-            for (int i = 0; i < length; i++)
-            {
-                RoomID[i] = chars[random.Next(chars.Length)];
-            }
-
-            return new string(RoomID);
-        }
-
-        public Room()
+        public Room(string RoomId, int maxPlayers)
         {
             players = new List<User>();
             random = new Random();
             currentDrawerIndex = -1;
-            RoomId = GenerateRoomId();
-
+            this.RoomId = RoomId;
+            this.maxPlayers = maxPlayers;
+            roomActive = true;
             // Cài đặt bộ đếm thời gian cho vòng chơi (60 giây)
             roundTimer = new Timer(roundTime * 1000);
             roundTimer.Elapsed += OnRoundTimeElapsed;
@@ -51,6 +41,7 @@ namespace Server
         // Bắt đầu vòng chơi mới
         public void StartNewRound()
         {
+            IsGameStarted = true;
             // Dừng bộ đếm thời gian hiện tại (nếu có)
             roundTimer.Stop();
 

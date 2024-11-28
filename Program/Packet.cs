@@ -285,18 +285,17 @@ namespace Program
             return Encoding.ASCII.GetBytes($"LOGOUT;{Username}");
         }
     }
-
     public class CreateRoomPacket : Packet
     {
-        public string Username { get; set; }
+        public int Max_player { get; set; }
         public CreateRoomPacket(string payload) : base(PacketType.CREATE_ROOM, payload)
         {
-            Username = payload;
+            Max_player = Int32.Parse(payload);
         }
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"CREATE_ROOM;{Username}");
+            return Encoding.ASCII.GetBytes($"CREATE_ROOM;{Max_player}");
         }
     }
 
@@ -309,8 +308,8 @@ namespace Program
             string[] parsePayload = payload.Split(';');
             if (parsePayload.Length >= 2)
             {
-                RoomId = parsePayload[0];
-                Username = parsePayload[1];
+                Username = parsePayload[0];
+                RoomId = parsePayload[1];
             }
             else
             {
@@ -332,8 +331,8 @@ namespace Program
             string[] parsePayload = payload.Split(';');
             if (parsePayload.Length >= 2)
             {
-                RoomId = parsePayload[0];
-                Username = parsePayload[1];
+                Username = parsePayload[0];
+                RoomId = parsePayload[1];
             }
             else
             {

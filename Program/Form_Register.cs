@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp1;
 
 namespace Program
 {
@@ -21,17 +22,7 @@ namespace Program
             this.client = client;
         }
 
-        private void passTextbox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void backButton_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void registerButton_Click(object sender, EventArgs e)
+        private void registerButton_Click_1(object sender, EventArgs e)
         {
             string username = usernameTextbox.Text;
             string password = passwordTextbox.Text;
@@ -57,7 +48,20 @@ namespace Program
 
         private void OnRegisterSuccessful()
         {
-            this.Close();
+            Form_Background form_Background = new Form_Background(client);
+            form_Background.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
+            form_Background.Location = this.Location; // Đặt vị trí của Form_Law giống với Form_Background
+            this.Hide();
+            form_Background.ShowDialog();
+        }
+
+        private void backButton_Click_1(object sender, EventArgs e)
+        {
+            Form_Background form_Background = new Form_Background(client);
+            form_Background.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
+            form_Background.Location = this.Location; // Đặt vị trí của Form_Law giống với Form_Background
+            this.Hide();
+            form_Background.ShowDialog();
         }
     }
 }

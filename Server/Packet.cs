@@ -288,15 +288,15 @@ namespace Server
 
     public class CreateRoomPacket : Packet
     {
-        public string Username { get; set; }
+        public int Max_player { get; set; }
         public CreateRoomPacket(string payload) : base(PacketType.CREATE_ROOM, payload)
         {
-            Username = payload;
+            Max_player = Int32.Parse(payload);
         }
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"CREATE_ROOM;{Username}");
+            return Encoding.ASCII.GetBytes($"CREATE_ROOM;{Max_player}");
         }
     }
 

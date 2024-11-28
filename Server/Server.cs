@@ -168,6 +168,21 @@ namespace Server
             return null; 
         }
 
+        private string GenerateRoomId()
+        {
+            int length = 4; // Độ dài mã phòng
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Các ký tự cho mã phòng
+            Random random = new Random();
+            char[] RoomID = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                RoomID[i] = chars[random.Next(chars.Length)];
+            }
+
+            return new string(RoomID);
+        }
+
 
         // xu ly sau khi nhan du lieu tu client
         private void analyzingPacket(User client, Packet packet)
@@ -209,6 +224,16 @@ namespace Server
                     UpdateLog.Invoke($"{logoutPacket.Username} đã đăng xuất");
                     break;
                 case PacketType.CREATE_ROOM:
+                    CreateRoomPacket createRoomPacket = (CreateRoomPacket)packet;
+                    User host = client;
+                    string roomId = GenerateRoomId();
+                    int maxPlayers = createRoomPacket.Max_player;
+                    Room room = new Room(roomId, maxPlayers);
+                    room.host = host;
+                    room.players.Add(host);
+                    RoomInfoPacket roomInfoPacket = new RoomInfoPacket($"{roomId};{client.Name};{0};{room.players.Count};{host.Name}");
+                    sendData(client, roomInfoPacket);
+                    UpdateLog.Invoke($"{client.Name} đã tạo phòng {roomId}");
                     break;
                 case PacketType.JOIN_ROOM:
                     break;

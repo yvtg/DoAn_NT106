@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp1;
 
 namespace Program
 {
@@ -17,26 +18,19 @@ namespace Program
         {
             InitializeComponent();
             Client.LoginSuccessful += OnLoginSuccessful;
-
             this.client = client;
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void backButton_Click_1(object sender, EventArgs e)
         {
-
+            Form_Background form_Background = new Form_Background(client);
+            form_Background.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
+            form_Background.Location = this.Location; // Đặt vị trí của Form_Law giống với Form_Background
+            this.Hide();
+            form_Background.ShowDialog();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void backButton_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void loginButton_Click(object sender, EventArgs e)
+        private void loginButton_Click_1(object sender, EventArgs e)
         {
             string username = usernameTextbox.Text;
             string password = passTextbox.Text;
@@ -51,11 +45,10 @@ namespace Program
             LoginPacket packet = new LoginPacket($"{username};{password}");
             client.SendData(packet);
         }
-
         private void OnLoginSuccessful()
         {
             string username = usernameTextbox.Text;
-            Form_Home homeform = new Form_Home(client,username);
+            Form_Home homeform = new Form_Home(client, username);
             homeform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
             homeform.Location = this.Location; // Đặt vị trí của Form_Home giống với Form_Background
             this.Hide();

@@ -12,7 +12,7 @@ namespace Server
         public string Name { get; set; }
         public int Score { get; set; }
         public bool IsDrawing { get; set; }
-        public bool isHost { get; set; }
+        public int Turn { get; set; }
         public Socket UserSocket;
 
         public User(Socket UserSocket)
@@ -20,7 +20,6 @@ namespace Server
             this.Name = "";
             this.Score = 0;
             this.IsDrawing = false;
-            this.isHost = false;
             this.UserSocket = UserSocket;
         }
         public void SendPacket(Packet packet)

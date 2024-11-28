@@ -28,85 +28,164 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Login));
             this.usernameLabel = new System.Windows.Forms.Label();
             this.passLabel = new System.Windows.Forms.Label();
-            this.backButton = new System.Windows.Forms.Button();
-            this.loginButton = new System.Windows.Forms.Button();
-            this.usernameTextbox = new System.Windows.Forms.TextBox();
-            this.passTextbox = new System.Windows.Forms.TextBox();
+            this.backButton = new ReaLTaiizor.Controls.HopeButton();
+            this.loginButton = new ReaLTaiizor.Controls.HopeButton();
+            this.usernameTextbox = new ReaLTaiizor.Controls.HopeTextBox();
+            this.passTextbox = new ReaLTaiizor.Controls.HopeTextBox();
+            this.hopeForm1 = new ReaLTaiizor.Forms.HopeForm();
             this.SuspendLayout();
             // 
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(12, 238);
+            this.usernameLabel.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameLabel.Location = new System.Drawing.Point(11, 199);
+            this.usernameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(98, 16);
+            this.usernameLabel.Size = new System.Drawing.Size(126, 20);
             this.usernameLabel.TabIndex = 0;
             this.usernameLabel.Text = "Tên đăng nhập";
-            this.usernameLabel.Click += new System.EventHandler(this.label1_Click);
             // 
             // passLabel
             // 
             this.passLabel.AutoSize = true;
-            this.passLabel.Location = new System.Drawing.Point(12, 300);
+            this.passLabel.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.passLabel.Location = new System.Drawing.Point(11, 243);
+            this.passLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.passLabel.Name = "passLabel";
-            this.passLabel.Size = new System.Drawing.Size(61, 16);
+            this.passLabel.Size = new System.Drawing.Size(81, 20);
             this.passLabel.TabIndex = 1;
             this.passLabel.Text = "Mật khẩu";
             // 
             // backButton
             // 
-            this.backButton.Location = new System.Drawing.Point(71, 357);
+            this.backButton.BorderColor = System.Drawing.Color.Black;
+            this.backButton.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
+            this.backButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.backButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.backButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.backButton.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
+            this.backButton.Location = new System.Drawing.Point(53, 312);
             this.backButton.Name = "backButton";
-            this.backButton.Size = new System.Drawing.Size(139, 44);
-            this.backButton.TabIndex = 4;
+            this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.backButton.Size = new System.Drawing.Size(104, 36);
+            this.backButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.backButton.TabIndex = 8;
             this.backButton.Text = "Quay về";
-            this.backButton.UseVisualStyleBackColor = true;
-            this.backButton.Click += new System.EventHandler(this.backButton_Click);
+            this.backButton.TextColor = System.Drawing.Color.White;
+            this.backButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            this.backButton.Click += new System.EventHandler(this.backButton_Click_1);
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(258, 357);
+            this.loginButton.BorderColor = System.Drawing.Color.Black;
+            this.loginButton.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
+            this.loginButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.loginButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.loginButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.loginButton.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loginButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            this.loginButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
+            this.loginButton.Location = new System.Drawing.Point(201, 312);
             this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(139, 44);
-            this.loginButton.TabIndex = 5;
+            this.loginButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.loginButton.Size = new System.Drawing.Size(104, 36);
+            this.loginButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.loginButton.TabIndex = 9;
             this.loginButton.Text = "Đăng nhập";
-            this.loginButton.UseVisualStyleBackColor = true;
-            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
+            this.loginButton.TextColor = System.Drawing.Color.White;
+            this.loginButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            this.loginButton.Click += new System.EventHandler(this.loginButton_Click_1);
             // 
             // usernameTextbox
             // 
-            this.usernameTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.usernameTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usernameTextbox.Location = new System.Drawing.Point(125, 230);
+            this.usernameTextbox.BackColor = System.Drawing.Color.White;
+            this.usernameTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.usernameTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.usernameTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.usernameTextbox.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
+            this.usernameTextbox.Hint = "";
+            this.usernameTextbox.Location = new System.Drawing.Point(151, 190);
+            this.usernameTextbox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.usernameTextbox.MaxLength = 32767;
+            this.usernameTextbox.Multiline = false;
             this.usernameTextbox.Name = "usernameTextbox";
-            this.usernameTextbox.Size = new System.Drawing.Size(327, 31);
-            this.usernameTextbox.TabIndex = 6;
+            this.usernameTextbox.PasswordChar = '\0';
+            this.usernameTextbox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.usernameTextbox.SelectedText = "";
+            this.usernameTextbox.SelectionLength = 0;
+            this.usernameTextbox.SelectionStart = 0;
+            this.usernameTextbox.Size = new System.Drawing.Size(185, 36);
+            this.usernameTextbox.TabIndex = 10;
+            this.usernameTextbox.TabStop = false;
+            this.usernameTextbox.UseSystemPasswordChar = false;
             // 
             // passTextbox
             // 
-            this.passTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.passTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.passTextbox.Location = new System.Drawing.Point(125, 292);
+            this.passTextbox.BackColor = System.Drawing.Color.White;
+            this.passTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.passTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.passTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.passTextbox.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.passTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
+            this.passTextbox.Hint = "";
+            this.passTextbox.Location = new System.Drawing.Point(151, 234);
+            this.passTextbox.MaxLength = 32767;
+            this.passTextbox.Multiline = false;
             this.passTextbox.Name = "passTextbox";
-            this.passTextbox.Size = new System.Drawing.Size(327, 31);
-            this.passTextbox.TabIndex = 7;
+            this.passTextbox.PasswordChar = '\0';
+            this.passTextbox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.passTextbox.SelectedText = "";
+            this.passTextbox.SelectionLength = 0;
+            this.passTextbox.SelectionStart = 0;
+            this.passTextbox.Size = new System.Drawing.Size(185, 36);
+            this.passTextbox.TabIndex = 11;
+            this.passTextbox.TabStop = false;
+            this.passTextbox.UseSystemPasswordChar = false;
+            // 
+            // hopeForm1
+            // 
+            this.hopeForm1.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
+            this.hopeForm1.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.hopeForm1.ControlBoxColorN = System.Drawing.Color.White;
+            this.hopeForm1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.hopeForm1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.hopeForm1.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.hopeForm1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
+            this.hopeForm1.Image = ((System.Drawing.Image)(resources.GetObject("hopeForm1.Image")));
+            this.hopeForm1.Location = new System.Drawing.Point(0, 0);
+            this.hopeForm1.Name = "hopeForm1";
+            this.hopeForm1.Size = new System.Drawing.Size(348, 40);
+            this.hopeForm1.TabIndex = 12;
+            this.hopeForm1.Text = "Login";
+            this.hopeForm1.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             // 
             // Form_Login
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(464, 558);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
+            this.ClientSize = new System.Drawing.Size(348, 453);
+            this.Controls.Add(this.hopeForm1);
             this.Controls.Add(this.passTextbox);
             this.Controls.Add(this.usernameTextbox);
             this.Controls.Add(this.loginButton);
             this.Controls.Add(this.backButton);
             this.Controls.Add(this.passLabel);
             this.Controls.Add(this.usernameLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaximumSize = new System.Drawing.Size(1920, 1032);
+            this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Login";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -116,9 +195,10 @@
 
         private System.Windows.Forms.Label usernameLabel;
         private System.Windows.Forms.Label passLabel;
-        private System.Windows.Forms.Button backButton;
-        private System.Windows.Forms.Button loginButton;
-        private System.Windows.Forms.TextBox usernameTextbox;
-        private System.Windows.Forms.TextBox passTextbox;
+        private ReaLTaiizor.Controls.HopeButton backButton;
+        private ReaLTaiizor.Controls.HopeButton loginButton;
+        private ReaLTaiizor.Controls.HopeTextBox usernameTextbox;
+        private ReaLTaiizor.Controls.HopeTextBox passTextbox;
+        private ReaLTaiizor.Forms.HopeForm hopeForm1;
     }
 }

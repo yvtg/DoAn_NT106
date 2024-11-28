@@ -17,6 +17,7 @@ namespace Program
         NetworkStream ns;
         public static event Action RegisterSuccessful;
         public static event Action LoginSuccessful;
+        public static event Action CreateSuccessful;
 
         public void Connect()
         {
@@ -146,6 +147,8 @@ namespace Program
                     }
                     break;
                 case PacketType.ROOM_INFO:
+                    RoomInfoPacket roomInfoPacket = (RoomInfoPacket)packet;
+
                     break;
                 case PacketType.OTHER_INFO:
                     break;
