@@ -36,12 +36,15 @@ namespace Program
         private void createButton_Click(object sender, EventArgs e)
         {
             Form_Create createform = new Form_Create(client,username);
-            createform.Show();
+            createform.StartPosition = FormStartPosition.Manual;
+            createform.Location = this.Location;
+            this.Hide();
+            createform.ShowDialog();
         }
 
         private void joinButton_Click_1(object sender, EventArgs e)
         {
-            Form_Join joinform = new Form_Join();
+            Form_Join joinform = new Form_Join(client,username);
             joinform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
             joinform.Location = this.Location; // Đặt vị trí của Form_Join giống với Form_Background
             joinform.ShowDialog();

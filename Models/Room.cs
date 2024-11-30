@@ -15,7 +15,7 @@ namespace Models
         public string currentKeyword; // Từ khóa hiện tại
         public int roundTime = 60; // Thời gian của mỗi vòng chơi (tính bằng giây)
         public System.Timers.Timer roundTimer; // Timer đếm ngược cho mỗi vòng chơi
-        public bool roomActive = false; // Trạng thái phòng (đang hoạt động hay không)
+        public string status; // waiting, playing, finished
         public bool IsGameStarted = false; // Trạng thái vòng chơi (đang diễn ra hay không)
         public int maxPlayers; // Số lượng người chơi tối đa trong phòng
         public Random random;
@@ -32,7 +32,7 @@ namespace Models
             currentDrawerIndex = -1;
             this.RoomId = RoomId;
             this.maxPlayers = maxPlayers;
-            roomActive = true;
+
             // Cài đặt bộ đếm thời gian cho vòng chơi (60 giây)
             roundTimer = new System.Timers.Timer(roundTime * 1000);
             roundTimer.Elapsed += OnRoundTimeElapsed;

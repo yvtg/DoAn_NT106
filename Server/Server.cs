@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Configuration;
 using System.Windows.Forms;
 using Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Server
 {
@@ -50,20 +51,41 @@ namespace Server
                 Socket clientSocket;
                 while (isRunning)
                 {
+                    // Chờ kết nối từ client
                     clientSocket = serverSocket.Accept();
                     User client = new User(clientSocket);
                     clients.Add(client);
                     UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
 
+                    // Tạo thread để xử lý dữ liệu từ client
                     Thread receivingThread = new Thread(() =>
                     {
-                        while (true)
+                        try
                         {
-                            receiveData(client); // Nhận và xử lý dữ liệu từ client
+                            // Nhận và xử lý dữ liệu từ client
+                            while (true)
+                            {
+                                receiveData(client); // Nhận dữ liệu
+                                if (!client.IsConnected) // Kiểm tra nếu client đã ngắt kết nối
+                                {
+                                    break; // Thoát vòng lặp nếu client ngắt kết nối
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            UpdateLog?.Invoke($"Lỗi khi nhận dữ liệu từ {clientSocket.RemoteEndPoint}: {ex.Message}");
+                        }
+                        finally
+                        {
+                            // Đảm bảo ngừng kết nối và loại bỏ client nếu có lỗi hoặc client ngắt kết nối
+                            client.Stop();
+                            clients.Remove(client);
+                            UpdateLog?.Invoke($"Đã ngắt kết nối với {clientSocket.RemoteEndPoint}");
                         }
                     })
                     {
-                        IsBackground = true
+                        IsBackground = true // Thiết lập thread nền
                     };
                     receivingThread.Start();
                 }
@@ -98,6 +120,8 @@ namespace Server
             catch (SocketException ex)
             {
                 MessageBox.Show("Socket exception: " + ex.Message);
+                client.Stop();
+                clients.Remove(client);
             }
             catch (Exception ex)
             {
@@ -116,7 +140,7 @@ namespace Server
                 // Gửi dữ liệu qua socket
                 client.UserSocket.Send(msgBytes);
 
-                UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.UserSocket.RemoteEndPoint}");
+                UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.UserSocket.RemoteEndPoint} {packet.Payload}");
             }
             catch (SocketException ex)
             {
@@ -197,6 +221,7 @@ namespace Server
                         LoginResultPacket result = new LoginResultPacket("success");
                         sendData(client, result);
                         UpdateLog.Invoke($"{loginPacket.Username} đăng nhập thành công");
+                        client.Name = loginPacket.Username;
                     }
                     else
                     {
@@ -226,17 +251,57 @@ namespace Server
                     break;
                 case PacketType.CREATE_ROOM:
                     CreateRoomPacket createRoomPacket = (CreateRoomPacket)packet;
+
                     User host = client;
+                    client.Name = createRoomPacket.username;
+
+                    // Tạo phòng mới
                     string roomId = GenerateRoomId();
                     int maxPlayers = createRoomPacket.Max_player;
+
                     Room room = new Room(roomId, maxPlayers);
                     room.host = host;
                     room.players.Add(host);
-                    RoomInfoPacket roomInfoPacket = new RoomInfoPacket($"{roomId};{client.Name};{0};{room.players.Count};{host.Name}");
+                    room.status = "waiting";
+
+                    rooms.Add(room);
+
+                    RoomInfoPacket roomInfoPacket = new RoomInfoPacket($"{roomId};{client.Name};{room.status};{maxPlayers};{room.players.Count};0");
                     sendData(client, roomInfoPacket);
                     UpdateLog.Invoke($"{client.Name} đã tạo phòng {roomId}");
                     break;
                 case PacketType.JOIN_ROOM:
+                    JoinRoomPacket joinRoomPacket = (JoinRoomPacket)packet;
+                    string roomIdToJoin = joinRoomPacket.RoomId;
+                    string ussername = joinRoomPacket.Username;
+
+                    room = rooms.FirstOrDefault(r => r.RoomId == roomIdToJoin);
+                    string join_result = "SUCCESS";
+
+                    // Kiểm tra xem phòng có tồn tại không
+                    if (room == null)
+                    {
+                        join_result = "NOT_EXIST";
+                    }
+                    // kiểm tra phòng đang chơi
+                    if (room.status == "playing" || room.status == "finished")
+                    {
+                        join_result = "PLAYING";
+                    }
+                    // kiểm tra phòng đầy
+                    if (room.players.Count == room.maxPlayers)
+                    {
+                        join_result = "FULL";
+                    }
+
+                    if (join_result=="SUCCESS")
+                    {
+                        room.players.Add(client);
+                        roomInfoPacket = new RoomInfoPacket($"{roomIdToJoin};{room.host.Name};{room.status};{room.maxPlayers};{room.players.Count};0");
+                        sendData(client, roomInfoPacket);
+                        UpdateLog.Invoke($"{client.Name} đã tham gia phòng {roomIdToJoin}");
+                    }
+
                     break;
                 case PacketType.LEAVE_ROOM:
                     break;

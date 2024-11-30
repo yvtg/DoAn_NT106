@@ -33,5 +33,21 @@ namespace Models
         {
             UserSocket.Close();
         }
+
+        public bool IsConnected
+        {
+            get
+            {
+                try
+                {
+                    // Kiểm tra kết nối bằng cách gọi UserSocket.Connected
+                    return UserSocket.Connected;
+                }
+                catch (Exception)
+                {
+                    return false; // Trả về false nếu có lỗi (chẳng hạn socket đã bị đóng)
+                }
+            }
+        }
     }
 }

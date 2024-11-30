@@ -19,7 +19,7 @@ namespace Program
         NetworkStream ns;
         public static event Action RegisterSuccessful;
         public static event Action LoginSuccessful;
-        public static event Action CreateSuccessful;
+        public static event Action<string,string,int> ReceiveRoomInfo;
 
         public void Connect()
         {
@@ -113,6 +113,8 @@ namespace Program
                         return new GuessResultPacket(remainingMsg);
                     case PacketType.LEADER_BOARD_INFO:
                         return new LeaderBoardInfoPacket(remainingMsg);
+                    case PacketType.JOIN_RESULT:
+                        return new JoinResultPacket(remainingMsg);
                     default:
                         return null; // Không biết loại packet
                 }
@@ -150,6 +152,14 @@ namespace Program
                     break;
                 case PacketType.ROOM_INFO:
                     RoomInfoPacket roomInfoPacket = (RoomInfoPacket)packet;
+
+                    string roomId = roomInfoPacket.RoomId;
+                    string host = roomInfoPacket.Host;
+                    string status = roomInfoPacket.Status;
+                    int playerCount = roomInfoPacket.CurrentPlayers;
+                    int maxPlayer = roomInfoPacket.MaxPlayers;
+
+                    ReceiveRoomInfo?.Invoke(roomId,host,maxPlayer);
 
                     break;
                 case PacketType.OTHER_INFO:

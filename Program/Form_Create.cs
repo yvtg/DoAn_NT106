@@ -20,25 +20,50 @@ namespace Program
             InitializeComponent();
             this.client = client;
             this.username = username;
+            Client.ReceiveRoomInfo += OnReceiveRoomInfo;
+
+            numeric.MinNum = 1;
+            numeric.MaxNum = 5;
+            numeric.ValueNumber = 2;
+
         }
 
         private void createBtn_Click(object sender, EventArgs e)
         {
-            this.Close();
-
-            Form homeform = Application.OpenForms["Form_Home"];
-            if (homeform != null)
+            try
             {
-                homeform.Close();
+                int maxPlayers = (int)numeric.ValueNumber;
+                CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers}");
+                client.SendData(createRoomPacket);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for further investigation
+                Console.WriteLine(ex.Message);
+                MessageBox.Show("An error occurred while creating the room.");
             }
 
-            // tạo phòng mới
-            int max_player = Int32.Parse(maxTextbox.Text);
-            CreateRoomPacket packet = new CreateRoomPacket($"{username};{max_player}");
-            client.SendData(packet);
-
-            Form_Room roomform = new Form_Room(client,username,max_player);
-
         }
+
+        private void OnReceiveRoomInfo(string roomId, string host, int MaxPlayers)
+        {
+            MessageBox.Show($"Room Info: {roomId} {host} {MaxPlayers}");
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    Form_Room roomForm = new Form_Room(client, roomId, username, MaxPlayers);
+                    roomForm.Show();
+                    this.Hide();
+                }));
+            }
+            else
+            {
+                Form_Room roomForm = new Form_Room(client, roomId, username, MaxPlayers);
+                roomForm.Show();
+                this.Hide();
+            }
+        }
+
     }
 }

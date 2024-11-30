@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +13,13 @@ namespace Program
 {
     public partial class Form_Join : Form
     {
-        public Form_Join()
+        private Client client;
+        private string username;
+        public Form_Join(Client client, string username)
         {
+            this.client = client;
+            this.username = username;
+            Client.ReceiveRoomInfo += OnReceiveRoomInfo;
             InitializeComponent();
         }
 
@@ -24,13 +30,24 @@ namespace Program
 
         private void joinButton_Click(object sender, EventArgs e)
         {
+            string roomId = idTextbox.Text;
+            if (roomId == "")
+            {
+                MessageBox.Show("Please enter the room ID.");
+                return;
+            }
 
-            //Form_Room roomform = new Form_Room(client,username);
-            //roomform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            //roomform.Location = this.Location; // Đặt vị trí của Form_Room giống với Form_Background
-            //this.Hide();
-            //roomform.ShowDialog();
-            //this.Show();
+            JoinRoomPacket joinRoomPacket = new JoinRoomPacket($"{username};{roomId}");
+            client.SendData(joinRoomPacket);
+        }
+
+        private void OnReceiveRoomInfo(string roomId, string host, int MaxPlayers)
+        {
+            Form_Room roomform = new Form_Room(client, roomId, username, MaxPlayers);
+            roomform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
+            roomform.Location = this.Location; // Đặt vị trí của Form_Room giống với Form_Background
+            this.Hide();
+            roomform.ShowDialog();
         }
     }
 }

@@ -39,6 +39,8 @@
             this.Room = new ReaLTaiizor.Forms.HopeForm();
             this.sendButton = new ReaLTaiizor.Controls.HopeButton();
             this.hopeTextBox1 = new ReaLTaiizor.Controls.HopeTextBox();
+            this.roomIdLabel = new System.Windows.Forms.Label();
+            this.userLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.playerDatagridview)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,7 +48,7 @@
             // 
             this.descriptionRichtextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.descriptionRichtextbox.Location = new System.Drawing.Point(139, 109);
-            this.descriptionRichtextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.descriptionRichtextbox.Margin = new System.Windows.Forms.Padding(2);
             this.descriptionRichtextbox.Name = "descriptionRichtextbox";
             this.descriptionRichtextbox.Size = new System.Drawing.Size(388, 256);
             this.descriptionRichtextbox.TabIndex = 2;
@@ -57,7 +59,7 @@
             this.playerDatagridview.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.playerDatagridview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.playerDatagridview.Location = new System.Drawing.Point(11, 109);
-            this.playerDatagridview.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.playerDatagridview.Margin = new System.Windows.Forms.Padding(2);
             this.playerDatagridview.Name = "playerDatagridview";
             this.playerDatagridview.RowHeadersWidth = 51;
             this.playerDatagridview.RowTemplate.Height = 24;
@@ -75,7 +77,6 @@
             this.timeLabel.Size = new System.Drawing.Size(39, 20);
             this.timeLabel.TabIndex = 4;
             this.timeLabel.Text = "time";
-            this.timeLabel.Click += new System.EventHandler(this.timeLabel_Click);
             // 
             // gameTimer
             // 
@@ -85,7 +86,7 @@
             // 
             this.wordTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.wordTextbox.Location = new System.Drawing.Point(244, 70);
-            this.wordTextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.wordTextbox.Margin = new System.Windows.Forms.Padding(2);
             this.wordTextbox.Name = "wordTextbox";
             this.wordTextbox.Size = new System.Drawing.Size(182, 20);
             this.wordTextbox.TabIndex = 5;
@@ -94,10 +95,10 @@
             // 
             this.chatRichtextbox.BackColor = System.Drawing.SystemColors.Window;
             this.chatRichtextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.chatRichtextbox.Location = new System.Drawing.Point(569, 109);
-            this.chatRichtextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chatRichtextbox.Location = new System.Drawing.Point(575, 109);
+            this.chatRichtextbox.Margin = new System.Windows.Forms.Padding(2);
             this.chatRichtextbox.Name = "chatRichtextbox";
-            this.chatRichtextbox.Size = new System.Drawing.Size(110, 273);
+            this.chatRichtextbox.Size = new System.Drawing.Size(110, 184);
             this.chatRichtextbox.TabIndex = 6;
             this.chatRichtextbox.Text = "";
             // 
@@ -162,12 +163,34 @@
             this.hopeTextBox1.TabStop = false;
             this.hopeTextBox1.UseSystemPasswordChar = false;
             // 
+            // roomIdLabel
+            // 
+            this.roomIdLabel.AutoSize = true;
+            this.roomIdLabel.Font = new System.Drawing.Font("Roboto Mono Medium", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.roomIdLabel.Location = new System.Drawing.Point(12, 54);
+            this.roomIdLabel.Name = "roomIdLabel";
+            this.roomIdLabel.Size = new System.Drawing.Size(110, 21);
+            this.roomIdLabel.TabIndex = 28;
+            this.roomIdLabel.Text = "Mã phòng: ";
+            // 
+            // userLabel
+            // 
+            this.userLabel.AutoSize = true;
+            this.userLabel.Font = new System.Drawing.Font("Roboto Mono Medium", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userLabel.Location = new System.Drawing.Point(12, 79);
+            this.userLabel.Name = "userLabel";
+            this.userLabel.Size = new System.Drawing.Size(110, 21);
+            this.userLabel.TabIndex = 29;
+            this.userLabel.Text = "Username: ";
+            // 
             // Form_Room
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
             this.ClientSize = new System.Drawing.Size(710, 467);
+            this.Controls.Add(this.userLabel);
+            this.Controls.Add(this.roomIdLabel);
             this.Controls.Add(this.hopeTextBox1);
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.Room);
@@ -177,13 +200,12 @@
             this.Controls.Add(this.playerDatagridview);
             this.Controls.Add(this.descriptionRichtextbox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Room";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Room";
-            this.Load += new System.EventHandler(this.Form_Room_Load);
             ((System.ComponentModel.ISupportInitialize)(this.playerDatagridview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -200,5 +222,7 @@
         private ReaLTaiizor.Forms.HopeForm Room;
         private ReaLTaiizor.Controls.HopeButton sendButton;
         private ReaLTaiizor.Controls.HopeTextBox hopeTextBox1;
+        private System.Windows.Forms.Label roomIdLabel;
+        private System.Windows.Forms.Label userLabel;
     }
 }

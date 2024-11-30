@@ -15,22 +15,16 @@ namespace Program
         private Client client;
         private string username;
         private int max_player;
-        public Form_Room(Client client, string username, int max_player)
+        private string roomId;
+        public Form_Room(Client client, string roomId, string username, int max_player)
         {
-            InitializeComponent();
             this.client = client;
             this.username = username;
             this.max_player = max_player;
-        }
-
-        private void timeLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form_Room_Load(object sender, EventArgs e)
-        {
-
+            this.roomId = roomId;
+            roomIdLabel.Text += roomId;
+            userLabel.Text += username;
+            InitializeComponent();
         }
     }
 }

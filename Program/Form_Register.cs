@@ -17,10 +17,10 @@ namespace Program
         private Client client;
         public Form_Register(Client client)
         {
-            InitializeComponent();
             Client.RegisterSuccessful += OnRegisterSuccessful;
 
             this.client = client;
+            InitializeComponent();
         }
 
         private void registerButton_Click_1(object sender, EventArgs e)

@@ -16,17 +16,19 @@ namespace WindowsFormsApp1
         private Client client;
         public Form_Background(Client client)
         {
-            InitializeComponent();
             this.client = client;
+            InitializeComponent();
         }
 
         private void logButton_Click(object sender, EventArgs e)
         {
+            this.Hide();
             Form_Login loginform = new Form_Login(client);
             loginform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
             loginform.Location = this.Location; // Đặt vị trí của Form_Login giống với Form_Background
-            this.Hide();
-            loginform.ShowDialog();
+            loginform.Closed += (s, args) => this.Close();
+            loginform.Show();
+
         }
 
         private void regButton_Click(object sender, EventArgs e)
@@ -34,8 +36,8 @@ namespace WindowsFormsApp1
             Form_Register registerform = new Form_Register(client);
             registerform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
             registerform.Location = this.Location; // Đặt vị trí của Form_Register giống với Form_Background
+            registerform.Show();
             this.Hide();
-            registerform.ShowDialog();
         }
 
         private void lawButton_Click_1(object sender, EventArgs e)
@@ -43,8 +45,8 @@ namespace WindowsFormsApp1
             Form_Law lawform = new Form_Law(client);
             lawform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
             lawform.Location = this.Location; // Đặt vị trí của Form_Law giống với Form_Background
+            lawform.Show();
             this.Hide();
-            lawform.ShowDialog();
         }
     }
 }
