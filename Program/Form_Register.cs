@@ -15,11 +15,11 @@ namespace Program
     public partial class Form_Register : Form
     {
         private Client client;
-        public Form_Register(Client client)
+        public Form_Register()
         {
             Client.RegisterSuccessful += OnRegisterSuccessful;
 
-            this.client = client;
+            this.client = WindowsFormsApp1.Program.client;
             InitializeComponent();
         }
 
@@ -47,23 +47,6 @@ namespace Program
             client.SendData(packet);
         }
 
-        private void OnRegisterSuccessful()
-        {
-            Form_Background form_Background = new Form_Background(client);
-            form_Background.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            form_Background.Location = this.Location; // Đặt vị trí của Form_Law giống với Form_Background
-            this.Hide();
-            form_Background.ShowDialog();
-        }
-
-        private void backButton_Click_1(object sender, EventArgs e)
-        {
-            Form_Background form_Background = new Form_Background(client);
-            form_Background.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            form_Background.Location = this.Location; // Đặt vị trí của Form_Law giống với Form_Background
-            this.Hide();
-            form_Background.ShowDialog();
-        }
 
         private void showPwCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -78,5 +61,26 @@ namespace Program
                 confirmpassTextbox.PasswordChar = '*'; // Ẩn mật khẩu
             }
         }
+        #region điều hướng
+        private void OnRegisterSuccessful()
+        {
+            this.Hide();
+            Form_Login LoginForm = new Form_Login();
+            LoginForm.StartPosition = FormStartPosition.Manual;
+            LoginForm.Location = this.Location;
+            LoginForm.ShowDialog();
+            this.Close();
+        }
+
+        private void backButton_Click_1(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form_Login LoginForm = new Form_Login();
+            LoginForm.StartPosition = FormStartPosition.Manual;
+            LoginForm.Location = this.Location;
+            LoginForm.ShowDialog();
+            this.Close();
+        }
+        #endregion
     }
 }

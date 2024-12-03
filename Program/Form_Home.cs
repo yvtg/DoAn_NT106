@@ -9,57 +9,61 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1;
 using Models;
+using ReaLTaiizor.Forms;
 
 namespace Program
 {
     public partial class Form_Home : Form
     {
-        private Client client;
         private string username;
-        public Form_Home(Client client, string username)
+        public Form_Home(string username)
         {
-            InitializeComponent();
-            this.client = client;
             this.username = username;
+            InitializeComponent();
         }
+        #region ĐIỀU HƯỚNG
 
         private void profileButton_Click_1(object sender, EventArgs e)
         {
-            Form_Profile profileform = new Form_Profile();
-            profileform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            profileform.Location = this.Location; // Đặt vị trí của Form_Profile giống với Form_Background
             this.Hide();
+            Form_Profile profileform = new Form_Profile(username);
+            profileform.StartPosition = FormStartPosition.Manual;
+            profileform.Location = this.Location;
             profileform.ShowDialog();
-            this.Show();
-        }
-
-        private void createButton_Click(object sender, EventArgs e)
-        {
-            Form_Create createform = new Form_Create(client,username);
-            createform.StartPosition = FormStartPosition.Manual;
-            createform.Location = this.Location;
-            this.Hide();
-            createform.ShowDialog();
-        }
-
-        private void joinButton_Click_1(object sender, EventArgs e)
-        {
-            Form_Join joinform = new Form_Join(client,username);
-            joinform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            joinform.Location = this.Location; // Đặt vị trí của Form_Join giống với Form_Background
-            joinform.ShowDialog();
+            this.Close();
         }
 
         private void logoutBtn_Click_1(object sender, EventArgs e)
         {
             LogoutPacket logoutPacket = new LogoutPacket(username);
-            client.SendData(logoutPacket);
+            WindowsFormsApp1.Program.client.SendData(logoutPacket);
 
-            Form_Background backgroundform = new Form_Background(client);
-            backgroundform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            backgroundform.Location = this.Location; // Đặt vị trí của Form_Background giống với Form_Home
             this.Hide();
-            backgroundform.ShowDialog();
+            Form_Login LoginForm = new Form_Login();
+            LoginForm.StartPosition = FormStartPosition.Manual;
+            LoginForm.Location = this.Location;
+            this.Close();
         }
+        private void createButton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form_Create createform = new Form_Create(username);
+            createform.StartPosition = FormStartPosition.Manual;
+            createform.Location = this.Location;
+            createform.ShowDialog();
+            this.Close();
+        }
+
+        private void joinButton_Click_1(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form_Join joinform = new Form_Join(username);
+            joinform.StartPosition = FormStartPosition.Manual;
+            joinform.Location = this.Location;
+            joinform.ShowDialog();
+            this.Close();
+        }
+        #endregion
+
     }
 }

@@ -19,7 +19,7 @@ namespace WindowsFormsApp1
             client = new Client();
             client.Connect();
 
-            Application.Run(new Form_Background(client));
+            Application.Run(new Form_Login());
         }
     }
 }

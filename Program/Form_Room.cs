@@ -12,19 +12,30 @@ namespace Program
 {
     public partial class Form_Room : Form
     {
-        private Client client;
+        private string roomId;
         private string username;
         private int max_player;
-        private string roomId;
-        public Form_Room(Client client, string roomId, string username, int max_player)
+        public Form_Room(string roomId, string username, int max_player)
         {
-            this.client = client;
+            InitializeComponent();
+
+            this.roomId = roomId;
             this.username = username;
             this.max_player = max_player;
-            this.roomId = roomId;
-            roomIdLabel.Text += roomId;
-            userLabel.Text += username;
-            InitializeComponent();
+            try
+            {
+                roomIdLabel.Text += roomId;
+                userLabel.Text += username;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error in Form_Room constructor: {ex.Message}");
+            }
+        }
+
+        private void sendButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

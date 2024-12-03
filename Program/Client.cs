@@ -18,8 +18,8 @@ namespace Program
         TcpClient tcpClient = new TcpClient();
         NetworkStream ns;
         public static event Action RegisterSuccessful;
-        public static event Action LoginSuccessful;
-        public static event Action<string,string,int> ReceiveRoomInfo;
+        public event Action LoginSuccessful;
+        public event Action<string, string, int> ReceiveRoomInfo;
 
         public void Connect()
         {
@@ -83,7 +83,7 @@ namespace Program
 
 
 
-        private static Packet ParsePacket(string msg)
+        private Packet ParsePacket(string msg)
         {
             string[] payload = msg.Split(';');
             if (payload.Length == 0)
@@ -122,7 +122,7 @@ namespace Program
             return null;
         }
 
-        private static void AnalyzingPacket(Packet packet)
+        private void AnalyzingPacket(Packet packet)
         {
             switch (packet.Type)
             {
@@ -152,15 +152,12 @@ namespace Program
                     break;
                 case PacketType.ROOM_INFO:
                     RoomInfoPacket roomInfoPacket = (RoomInfoPacket)packet;
-
                     string roomId = roomInfoPacket.RoomId;
                     string host = roomInfoPacket.Host;
                     string status = roomInfoPacket.Status;
                     int playerCount = roomInfoPacket.CurrentPlayers;
                     int maxPlayer = roomInfoPacket.MaxPlayers;
-
-                    ReceiveRoomInfo?.Invoke(roomId,host,maxPlayer);
-
+                    ReceiveRoomInfo?.Invoke(roomId, host, maxPlayer);
                     break;
                 case PacketType.OTHER_INFO:
                     break;

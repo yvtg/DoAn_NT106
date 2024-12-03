@@ -48,7 +48,6 @@ namespace Models
     public class LoginResultPacket : Packet
     {
         public string result { get; set; }
-        public string username { get; set; }
         public LoginResultPacket(string payload) : base(PacketType.LOGIN_RESULT, payload)
         {
             string[] parsePayload = payload.Split(';');
@@ -111,7 +110,7 @@ namespace Models
             return Encoding.ASCII.GetBytes($"JOIN_RESULT;{result}");
         }
     }
-        public class RoomInfoPacket : Packet
+    public class RoomInfoPacket : Packet
     {
         public string RoomId { get; set; }
         public string Host { get; set; }
@@ -125,22 +124,30 @@ namespace Models
             string[] parsePayload = payload.Split(';');
             if (parsePayload.Length >= 6)
             {
-                RoomId = parsePayload[0];
-                Host = parsePayload[1];
-                Status = parsePayload[2];
-                MaxPlayers = int.Parse(parsePayload[3]);
-                CurrentPlayers = int.Parse(parsePayload[4]);
-                CurrentRound = int.Parse(parsePayload[5]);
+                try
+                {
+                    RoomId = parsePayload[0];
+                    Host = parsePayload[1];
+                    Status = parsePayload[2];
+                    MaxPlayers = int.Parse(parsePayload[3]);
+                    CurrentPlayers = int.Parse(parsePayload[4]);
+                    CurrentRound = int.Parse(parsePayload[5]);
+                }
+                catch (FormatException ex)
+                {
+                    throw new ArgumentException("Dữ liệu không hợp lệ trong payload", ex);
+                }
             }
             else
             {
-                throw new ArgumentException("Payload không hợp lệ");
+                throw new ArgumentException("Payload không hợp lệ. Thiếu dữ liệu.");
             }
         }
 
+
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"ROOM_INFO;{RoomId};{Host};{Status};{MaxPlayers};{CurrentPlayers};{CurrentRound}");
+            return Encoding.UTF8.GetBytes($"ROOM_INFO;{RoomId};{Host};{Status};{MaxPlayers};{CurrentPlayers};{CurrentRound}");
         }
     }
 

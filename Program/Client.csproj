@@ -294,20 +294,11 @@
     <Compile Include="Form_Login.Designer.cs">
       <DependentUpon>Form_Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form_Background.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form_Background.Designer.cs">
-      <DependentUpon>Form_Background.cs</DependentUpon>
-    </Compile>
     <Compile Include="Client.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form_Create.resx">
       <DependentUpon>Form_Create.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form_Background.resx">
-      <DependentUpon>Form_Background.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_End_Game.resx">
       <DependentUpon>Form_End_Game.cs</DependentUpon>

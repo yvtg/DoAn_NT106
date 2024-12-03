@@ -33,6 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numeric = new ReaLTaiizor.Controls.HopeNumeric();
             this.hopeForm1 = new ReaLTaiizor.Forms.HopeForm();
+            this.backButton = new ReaLTaiizor.Controls.HopeButton();
             this.SuspendLayout();
             // 
             // createBtn
@@ -109,12 +110,34 @@
             this.hopeForm1.Text = "Home";
             this.hopeForm1.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             // 
+            // backButton
+            // 
+            this.backButton.BorderColor = System.Drawing.Color.Black;
+            this.backButton.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
+            this.backButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.backButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.backButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.backButton.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
+            this.backButton.Location = new System.Drawing.Point(84, 312);
+            this.backButton.Name = "backButton";
+            this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.backButton.Size = new System.Drawing.Size(169, 36);
+            this.backButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.backButton.TabIndex = 26;
+            this.backButton.Text = "Quay về";
+            this.backButton.TextColor = System.Drawing.Color.White;
+            this.backButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            this.backButton.Click += new System.EventHandler(this.backButton_Click);
+            // 
             // Form_Create
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
             this.ClientSize = new System.Drawing.Size(348, 453);
+            this.Controls.Add(this.backButton);
             this.Controls.Add(this.hopeForm1);
             this.Controls.Add(this.numeric);
             this.Controls.Add(this.label1);
@@ -125,6 +148,7 @@
             this.Name = "Form_Create";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form_Create_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -135,5 +159,6 @@
         private System.Windows.Forms.Label label1;
         private ReaLTaiizor.Controls.HopeNumeric numeric;
         private ReaLTaiizor.Forms.HopeForm hopeForm1;
+        private ReaLTaiizor.Controls.HopeButton backButton;
     }
 }

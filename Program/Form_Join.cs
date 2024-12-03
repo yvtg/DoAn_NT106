@@ -15,16 +15,21 @@ namespace Program
     {
         private Client client;
         private string username;
-        public Form_Join(Client client, string username)
+        public Form_Join(string username)
         {
-            this.client = client;
+            this.client = WindowsFormsApp1.Program.client;
             this.username = username;
-            Client.ReceiveRoomInfo += OnReceiveRoomInfo;
+            client.ReceiveRoomInfo += OnReceiveRoomInfo;
             InitializeComponent();
         }
 
         private void backButton_Click_1(object sender, EventArgs e)
         {
+            this.Hide();
+            Form_Home homeForm = new Form_Home(username);
+            homeForm.StartPosition = FormStartPosition.Manual;
+            homeForm.Location = this.Location;
+            homeForm.ShowDialog();
             this.Close();
         }
 
@@ -43,11 +48,20 @@ namespace Program
 
         private void OnReceiveRoomInfo(string roomId, string host, int MaxPlayers)
         {
-            Form_Room roomform = new Form_Room(client, roomId, username, MaxPlayers);
-            roomform.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            roomform.Location = this.Location; // Đặt vị trí của Form_Room giống với Form_Background
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => OnReceiveRoomInfo(roomId, host, MaxPlayers)));
+                return;
+            }
+
+            MessageBox.Show($"Room Info: {roomId} {host} {MaxPlayers}");
             this.Hide();
-            roomform.ShowDialog();
+
+            Form_Room roomForm = new Form_Room(roomId, username, 4);
+            roomForm.StartPosition = FormStartPosition.Manual;
+            roomForm.Location = this.Location;
+            roomForm.ShowDialog();
+            this.Close();
         }
     }
 }

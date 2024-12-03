@@ -8,24 +8,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Models;
+using ReaLTaiizor.Forms;
 
 namespace Program
 {
     public partial class Form_Create : Form
     {
-        private Client client;
         private string username;
-        public Form_Create(Client client, string username)
+        private Client client;
+        public Form_Create(string username)
         {
             InitializeComponent();
-            this.client = client;
+            this.client = WindowsFormsApp1.Program.client;
+            client.ReceiveRoomInfo += OnReceiveRoomInfo;
             this.username = username;
-            Client.ReceiveRoomInfo += OnReceiveRoomInfo;
-
-            numeric.MinNum = 1;
-            numeric.MaxNum = 5;
-            numeric.ValueNumber = 2;
-
         }
 
         private void createBtn_Click(object sender, EventArgs e)
@@ -34,36 +30,48 @@ namespace Program
             {
                 int maxPlayers = (int)numeric.ValueNumber;
                 CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers}");
-                client.SendData(createRoomPacket);
+                WindowsFormsApp1.Program.client.SendData(createRoomPacket);
             }
             catch (Exception ex)
             {
-                // Log the exception for further investigation
-                Console.WriteLine(ex.Message);
                 MessageBox.Show("An error occurred while creating the room.");
             }
 
         }
 
-        private void OnReceiveRoomInfo(string roomId, string host, int MaxPlayers)
+        private void OnReceiveRoomInfo(string roomId, string host, int maxPlayers)
         {
-            MessageBox.Show($"Room Info: {roomId} {host} {MaxPlayers}");
-            if (this.InvokeRequired)
+            this.Invoke((MethodInvoker)(()=>
             {
-                this.Invoke(new Action(() =>
-                {
-                    Form_Room roomForm = new Form_Room(client, roomId, username, MaxPlayers);
-                    roomForm.Show();
-                    this.Hide();
-                }));
+                //this.Hide();
+                //MessageBox.Show($"Room Info: {roomId} {username} {maxPlayers}");
+                //Form_Room roomForm = new Form_Room(roomId, username, maxPlayers);
+                //roomForm.StartPosition = FormStartPosition.Manual;
+                //roomForm.Location = this.Location;
+                //roomForm.ShowDialog();
+                //this.Close();
+                MessageBox.Show("Room created successfully.");
             }
-            else
-            {
-                Form_Room roomForm = new Form_Room(client, roomId, username, MaxPlayers);
-                roomForm.Show();
-                this.Hide();
-            }
+            ));
         }
 
+
+
+        private void Form_Create_Load(object sender, EventArgs e)
+        {
+            numeric.MinNum = 1;
+            numeric.MaxNum = 5;
+            numeric.ValueNumber = 2;
+        }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form_Home homeForm = new Form_Home(username);
+            homeForm.StartPosition = FormStartPosition.Manual;
+            homeForm.Location = this.Location;
+            homeForm.ShowDialog();
+            this.Close();
+        }
     }
 }

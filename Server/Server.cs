@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Windows.Forms;
 using Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Server
 {
@@ -22,15 +23,24 @@ namespace Server
         private bool isRunning;
         private static string connectionString = "mongodb+srv://admin1:5VGZBpaXfZC15LPN@cluster0.qq9lk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
         DataAccess.DatabaseHelper db = new DataAccess.DatabaseHelper(connectionString, "Datagame");
+        private CancellationTokenSource cancellationTokenSource;
 
         public Server(Action<string> updateLog)
         {
+            cancellationTokenSource = new CancellationTokenSource();
             UpdateLog = updateLog;
-            Thread serverThread = new Thread(StartServer) { IsBackground = true };
+        }
+        #region Connect
+        public void StartServer()
+        {
+            Thread serverThread = new Thread(() => InitializeServer(cancellationTokenSource.Token))
+            {
+                IsBackground = true
+            };
             serverThread.Start();
         }
 
-        private void StartServer()
+        private void InitializeServer(CancellationToken cancellationToken)
         {
             try
             {
@@ -39,7 +49,7 @@ namespace Server
                 IPAddress ipAddr = IPAddress.Parse(SERVER_IPADDRESS);
                 IPEndPoint ipEP = new IPEndPoint(ipAddr, SERVER_PORT);
 
-                //khoi tao server
+                // Khởi tạo server
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 serverSocket.Bind(ipEP);
                 serverSocket.Listen(10);
@@ -47,47 +57,66 @@ namespace Server
 
                 UpdateLog?.Invoke("Chờ người chơi kết nối...");
 
-                //chap nhan ket noi
-                Socket clientSocket;
+                Socket clientSocket = null;
                 while (isRunning)
                 {
-                    // Chờ kết nối từ client
-                    clientSocket = serverSocket.Accept();
-                    User client = new User(clientSocket);
-                    clients.Add(client);
-                    UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
-
-                    // Tạo thread để xử lý dữ liệu từ client
-                    Thread receivingThread = new Thread(() =>
+                    try
                     {
-                        try
+                        // Kiểm tra xem có yêu cầu hủy bỏ việc chờ kết nối
+                        if (cancellationToken.IsCancellationRequested)
                         {
-                            // Nhận và xử lý dữ liệu từ client
-                            while (true)
+                            break; // Dừng server nếu nhận được yêu cầu hủy
+                        }
+
+                        // Chờ kết nối từ client
+                        clientSocket = serverSocket.Accept();
+                        User client = new User(clientSocket);
+                        clients.Add(client);
+                        UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
+
+                        // Tạo thread để xử lý dữ liệu từ client
+                        Thread receivingThread = new Thread(() =>
+                        {
+                            try
                             {
-                                receiveData(client); // Nhận dữ liệu
-                                if (!client.IsConnected) // Kiểm tra nếu client đã ngắt kết nối
+                                // Nhận và xử lý dữ liệu từ client
+                                while (true)
                                 {
-                                    break; // Thoát vòng lặp nếu client ngắt kết nối
+                                    receiveData(client); // Nhận dữ liệu
+                                    if (!client.IsConnected) // Kiểm tra nếu client đã ngắt kết nối
+                                    {
+                                        break; // Thoát vòng lặp nếu client ngắt kết nối
+                                    }
                                 }
                             }
-                        }
-                        catch (Exception ex)
+                            catch (Exception ex)
+                            {
+                                UpdateLog?.Invoke($"Lỗi khi nhận dữ liệu từ {clientSocket.RemoteEndPoint}: {ex.Message}");
+                            }
+                            finally
+                            {
+                                // Đảm bảo ngừng kết nối và loại bỏ client nếu có lỗi hoặc client ngắt kết nối
+                                client.Stop();
+                                clients.Remove(client);
+                                UpdateLog?.Invoke($"Đã ngắt kết nối với {clientSocket.RemoteEndPoint}");
+                            }
+                        })
                         {
-                            UpdateLog?.Invoke($"Lỗi khi nhận dữ liệu từ {clientSocket.RemoteEndPoint}: {ex.Message}");
-                        }
-                        finally
-                        {
-                            // Đảm bảo ngừng kết nối và loại bỏ client nếu có lỗi hoặc client ngắt kết nối
-                            client.Stop();
-                            clients.Remove(client);
-                            UpdateLog?.Invoke($"Đã ngắt kết nối với {clientSocket.RemoteEndPoint}");
-                        }
-                    })
+                            IsBackground = true // Thiết lập thread nền
+                        };
+                        receivingThread.Start();
+                    }
+                    catch (ObjectDisposedException)
                     {
-                        IsBackground = true // Thiết lập thread nền
-                    };
-                    receivingThread.Start();
+                        // Bắt lỗi khi socket bị đóng trong khi đang chờ kết nối
+                        UpdateLog?.Invoke("Socket đã bị đóng trong khi chờ kết nối.");
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        UpdateLog?.Invoke("Lỗi khi khởi tạo server: " + ex.Message);
+                        break;
+                    }
                 }
             }
             catch (Exception ex)
@@ -96,6 +125,50 @@ namespace Server
             }
         }
 
+
+        public void StopServer()
+        {
+            // Hủy bỏ việc chờ kết nối
+            cancellationTokenSource.Cancel();
+
+            // Đảm bảo rằng server socket không gặp lỗi khi bị đóng
+            if (serverSocket != null && serverSocket.Connected)
+            {
+                try
+                {
+                    serverSocket.Shutdown(SocketShutdown.Both);
+                }
+                catch (Exception ex)
+                {
+                    UpdateLog?.Invoke("Lỗi khi tắt socket server: " + ex.Message);
+                }
+                finally
+                {
+                    serverSocket.Close();
+                    serverSocket = null;
+                }
+            }
+
+            // Đóng các kết nối của client
+            foreach (var client in clients)
+            {
+                try
+                {
+                    client.Stop();
+                }
+                catch (Exception ex)
+                {
+                    UpdateLog?.Invoke("Lỗi khi đóng kết nối client: " + ex.Message);
+                }
+            }
+
+            // Đảm bảo rằng không còn client nào trong danh sách
+            clients.Clear();
+            UpdateLog?.Invoke("Server đã ngừng.");
+        }
+        #endregion
+
+        #region Data
         private void receiveData(User client)
         {
             try
@@ -140,7 +213,7 @@ namespace Server
                 // Gửi dữ liệu qua socket
                 client.UserSocket.Send(msgBytes);
 
-                UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.UserSocket.RemoteEndPoint} {packet.Payload}");
+                UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.UserSocket.RemoteEndPoint} {packet.Type};{packet.Payload}");
             }
             catch (SocketException ex)
             {
@@ -255,7 +328,7 @@ namespace Server
                     User host = client;
                     client.Name = createRoomPacket.username;
 
-                    // Tạo phòng mới
+                    // Create a new room
                     string roomId = GenerateRoomId();
                     int maxPlayers = createRoomPacket.Max_player;
 
@@ -263,11 +336,13 @@ namespace Server
                     room.host = host;
                     room.players.Add(host);
                     room.status = "waiting";
-
                     rooms.Add(room);
+                    int currentPlayers = room.players.Count;
+                    int currentRound = 0;
 
-                    RoomInfoPacket roomInfoPacket = new RoomInfoPacket($"{roomId};{client.Name};{room.status};{maxPlayers};{room.players.Count};0");
-                    sendData(client, roomInfoPacket);
+                    RoomInfoPacket roomInfo = new RoomInfoPacket($"{roomId};{host.Name};{room.status};{maxPlayers};{currentPlayers};{currentRound}");
+                    sendData(client, roomInfo);
+
                     UpdateLog.Invoke($"{client.Name} đã tạo phòng {roomId}");
                     break;
                 case PacketType.JOIN_ROOM:
@@ -297,8 +372,8 @@ namespace Server
                     if (join_result=="SUCCESS")
                     {
                         room.players.Add(client);
-                        roomInfoPacket = new RoomInfoPacket($"{roomIdToJoin};{room.host.Name};{room.status};{room.maxPlayers};{room.players.Count};0");
-                        sendData(client, roomInfoPacket);
+                        roomInfo = new RoomInfoPacket($"{roomIdToJoin};{room.host.Name};{room.status};{room.maxPlayers};{room.players.Count};0");
+                        sendData(client, roomInfo);
                         UpdateLog.Invoke($"{client.Name} đã tham gia phòng {roomIdToJoin}");
                     }
 
@@ -315,19 +390,7 @@ namespace Server
                     break;
             }
         }
-
-
-
-
-        public void StopServer()
-        {
-            foreach (var client in clients)
-            {
-                client.Stop();
-            }
-            serverSocket.Close();
-            serverSocket = null;
-        }
+        #endregion
 
     }
 }
