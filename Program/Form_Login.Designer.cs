@@ -42,22 +42,20 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usernameLabel.Location = new System.Drawing.Point(11, 199);
-            this.usernameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.usernameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameLabel.Location = new System.Drawing.Point(15, 245);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(126, 20);
+            this.usernameLabel.Size = new System.Drawing.Size(141, 24);
             this.usernameLabel.TabIndex = 0;
             this.usernameLabel.Text = "Tên đăng nhập";
             // 
             // passLabel
             // 
             this.passLabel.AutoSize = true;
-            this.passLabel.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.passLabel.Location = new System.Drawing.Point(11, 243);
-            this.passLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.passLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.passLabel.Location = new System.Drawing.Point(15, 299);
             this.passLabel.Name = "passLabel";
-            this.passLabel.Size = new System.Drawing.Size(81, 20);
+            this.passLabel.Size = new System.Drawing.Size(86, 24);
             this.passLabel.TabIndex = 1;
             this.passLabel.Text = "Mật khẩu";
             // 
@@ -68,13 +66,14 @@
             this.backButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.backButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.backButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.backButton.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.backButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.backButton.Location = new System.Drawing.Point(45, 329);
+            this.backButton.Location = new System.Drawing.Point(60, 405);
+            this.backButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.backButton.Name = "backButton";
             this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.backButton.Size = new System.Drawing.Size(104, 36);
+            this.backButton.Size = new System.Drawing.Size(139, 44);
             this.backButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.backButton.TabIndex = 8;
             this.backButton.Text = "Quay về";
@@ -89,13 +88,14 @@
             this.loginButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.loginButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.loginButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.loginButton.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loginButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             this.loginButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.loginButton.Location = new System.Drawing.Point(193, 329);
+            this.loginButton.Location = new System.Drawing.Point(257, 405);
+            this.loginButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.loginButton.Name = "loginButton";
             this.loginButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.loginButton.Size = new System.Drawing.Size(104, 36);
+            this.loginButton.Size = new System.Drawing.Size(139, 44);
             this.loginButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.loginButton.TabIndex = 9;
             this.loginButton.Text = "Đăng nhập";
@@ -109,11 +109,11 @@
             this.usernameTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
             this.usernameTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
             this.usernameTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.usernameTextbox.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.usernameTextbox.Hint = "";
-            this.usernameTextbox.Location = new System.Drawing.Point(151, 190);
-            this.usernameTextbox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.usernameTextbox.Location = new System.Drawing.Point(201, 234);
+            this.usernameTextbox.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
             this.usernameTextbox.MaxLength = 32767;
             this.usernameTextbox.Multiline = false;
             this.usernameTextbox.Name = "usernameTextbox";
@@ -122,7 +122,7 @@
             this.usernameTextbox.SelectedText = "";
             this.usernameTextbox.SelectionLength = 0;
             this.usernameTextbox.SelectionStart = 0;
-            this.usernameTextbox.Size = new System.Drawing.Size(185, 36);
+            this.usernameTextbox.Size = new System.Drawing.Size(247, 38);
             this.usernameTextbox.TabIndex = 10;
             this.usernameTextbox.TabStop = false;
             this.usernameTextbox.UseSystemPasswordChar = false;
@@ -133,10 +133,11 @@
             this.passTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
             this.passTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
             this.passTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.passTextbox.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.passTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.passTextbox.Hint = "";
-            this.passTextbox.Location = new System.Drawing.Point(151, 234);
+            this.passTextbox.Location = new System.Drawing.Point(201, 288);
+            this.passTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.passTextbox.MaxLength = 32767;
             this.passTextbox.Multiline = false;
             this.passTextbox.Name = "passTextbox";
@@ -145,7 +146,7 @@
             this.passTextbox.SelectedText = "";
             this.passTextbox.SelectionLength = 0;
             this.passTextbox.SelectionStart = 0;
-            this.passTextbox.Size = new System.Drawing.Size(185, 36);
+            this.passTextbox.Size = new System.Drawing.Size(247, 38);
             this.passTextbox.TabIndex = 11;
             this.passTextbox.TabStop = false;
             this.passTextbox.UseSystemPasswordChar = false;
@@ -161,8 +162,9 @@
             this.hopeForm1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.hopeForm1.Image = ((System.Drawing.Image)(resources.GetObject("hopeForm1.Image")));
             this.hopeForm1.Location = new System.Drawing.Point(0, 0);
+            this.hopeForm1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.hopeForm1.Name = "hopeForm1";
-            this.hopeForm1.Size = new System.Drawing.Size(348, 40);
+            this.hopeForm1.Size = new System.Drawing.Size(464, 40);
             this.hopeForm1.TabIndex = 12;
             this.hopeForm1.Text = "Login";
             this.hopeForm1.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
@@ -178,11 +180,12 @@
             this.showPwCheckBox.EnabledCheckedColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             this.showPwCheckBox.EnabledStringColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.showPwCheckBox.EnabledUncheckedColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(158)))), ((int)(((byte)(161)))));
-            this.showPwCheckBox.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showPwCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showPwCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
-            this.showPwCheckBox.Location = new System.Drawing.Point(151, 286);
+            this.showPwCheckBox.Location = new System.Drawing.Point(201, 352);
+            this.showPwCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.showPwCheckBox.Name = "showPwCheckBox";
-            this.showPwCheckBox.Size = new System.Drawing.Size(165, 20);
+            this.showPwCheckBox.Size = new System.Drawing.Size(162, 20);
             this.showPwCheckBox.TabIndex = 13;
             this.showPwCheckBox.Text = "Hiện mật khẩu";
             this.showPwCheckBox.UseVisualStyleBackColor = true;
@@ -190,10 +193,10 @@
             // 
             // Form_Login
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
-            this.ClientSize = new System.Drawing.Size(348, 453);
+            this.ClientSize = new System.Drawing.Size(464, 558);
             this.Controls.Add(this.showPwCheckBox);
             this.Controls.Add(this.hopeForm1);
             this.Controls.Add(this.passTextbox);
@@ -203,8 +206,8 @@
             this.Controls.Add(this.passLabel);
             this.Controls.Add(this.usernameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximumSize = new System.Drawing.Size(1920, 1032);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximumSize = new System.Drawing.Size(2560, 1270);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

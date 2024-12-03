@@ -24,6 +24,7 @@ namespace Program
         private Point previousPoint;
         private bool isDrawing = false;
         private bool isErasing = false; // Thêm biến để kiểm tra trạng thái xóa
+        private int eraseWidth = 10; // Kích thước bút khi xóa
 
         public Form_Room(Client client, string username, int max_player)
         {
@@ -66,7 +67,7 @@ namespace Program
         {
             if (isDrawing)
             {
-                using (Pen pen = new Pen(isErasing ? Color.White : Color.Black, 2))
+                using (Pen pen = new Pen(isErasing ? Color.White : Color.Black, isErasing ? eraseWidth : 2))
                 {
                     graphics.DrawLine(pen, previousPoint, e.Location);
                 }
@@ -87,7 +88,7 @@ namespace Program
         // Sự kiện khi nhấn vào hình cái bút
         private void PencilPictureBox_Click(object sender, EventArgs e)
         {
-            isErasing = false; 
+            isErasing = false;
         }
 
         // Sự kiện khi nhấn vào hình cái cục gôm
