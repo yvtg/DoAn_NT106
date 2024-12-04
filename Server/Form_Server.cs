@@ -19,7 +19,8 @@ namespace Server
         public Form_Server()
         {
             InitializeComponent();
-            server = new Server(UpdateLog);
+            server = new Server();
+            server.UpdateLog += UpdateLog;
         }
 
         private void UpdateLog(string message)
@@ -39,14 +40,13 @@ namespace Server
 
         private void startBtn_Click(object sender, EventArgs e)
         {
+            isServerStopping = false;
             server.StartServer();
-            UpdateLog("Server has been started.");
         }
 
         private void stopBtn_Click(object sender, EventArgs e)
         {
             server.StopServer();
-            UpdateLog("Server stopped.");
         }
 
         private void Form_Server_FormClosing(object sender, FormClosingEventArgs e)
@@ -62,8 +62,6 @@ namespace Server
 
             // Dừng server
             server.StopServer();
-
-            UpdateLog("Server has been stopped.");
 
             base.OnFormClosing(e);
         }

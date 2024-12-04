@@ -28,7 +28,8 @@ namespace Models
         OTHER_INFO,
         ROUND_UPDATE,
         GUESS_RESULT,
-        LEADER_BOARD_INFO
+        LEADER_BOARD_INFO,
+        DISCONNECT
 
     }
     public abstract class Packet
@@ -449,6 +450,19 @@ namespace Models
         public override byte[] ToBytes()
         {
             return Encoding.ASCII.GetBytes($"GUESS;{RoomId};{playerName};{GuessMessage}");
+        }
+    }
+    
+    public class DisconnectPacket : Packet
+    {
+        public DisconnectPacket(string payload) : base(PacketType.DISCONNECT, payload)
+        {
+            
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.ASCII.GetBytes($"DISCONNECT");
         }
     }
 }

@@ -141,7 +141,7 @@
             this.passTextbox.MaxLength = 32767;
             this.passTextbox.Multiline = false;
             this.passTextbox.Name = "passTextbox";
-            this.passTextbox.PasswordChar = '*';
+            this.passTextbox.PasswordChar = '\0';
             this.passTextbox.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.passTextbox.SelectedText = "";
             this.passTextbox.SelectionLength = 0;
@@ -149,7 +149,7 @@
             this.passTextbox.Size = new System.Drawing.Size(185, 36);
             this.passTextbox.TabIndex = 11;
             this.passTextbox.TabStop = false;
-            this.passTextbox.UseSystemPasswordChar = false;
+            this.passTextbox.UseSystemPasswordChar = true;
             // 
             // hopeForm1
             // 
@@ -232,6 +232,7 @@
             this.Name = "Form_Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Login_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

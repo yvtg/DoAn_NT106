@@ -30,11 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Server));
             this.logRichTextBox = new System.Windows.Forms.RichTextBox();
-            this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.startBtn = new ReaLTaiizor.Controls.HopeRoundButton();
             this.stopBtn = new ReaLTaiizor.Controls.HopeRoundButton();
             this.hopeForm2 = new ReaLTaiizor.Forms.HopeForm();
-            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
             // logRichTextBox
@@ -45,11 +43,6 @@
             this.logRichTextBox.Size = new System.Drawing.Size(513, 366);
             this.logRichTextBox.TabIndex = 0;
             this.logRichTextBox.Text = "";
-            // 
-            // fileSystemWatcher1
-            // 
-            this.fileSystemWatcher1.EnableRaisingEvents = true;
-            this.fileSystemWatcher1.SynchronizingObject = this;
             // 
             // startBtn
             // 
@@ -127,7 +120,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Server";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Server_FormClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -135,7 +127,6 @@
         #endregion
 
         private System.Windows.Forms.RichTextBox logRichTextBox;
-        private System.IO.FileSystemWatcher fileSystemWatcher1;
         private ReaLTaiizor.Controls.HopeRoundButton startBtn;
         private ReaLTaiizor.Controls.HopeRoundButton stopBtn;
         private ReaLTaiizor.Forms.HopeForm hopeForm2;

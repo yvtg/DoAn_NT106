@@ -17,30 +17,27 @@ namespace Server
     public class Server
     {
         public static Socket serverSocket;
-        public static List<User> clients = new List<User>();
-        public List<Room> rooms = new List<Room>();
-        public Action<string> UpdateLog; // Delegate để cập nhật log trên UI
-        private bool isRunning;
+        public static List<User> clients = new List<User>(); // danh sách client đang kết nối tới
+        public List<Room> rooms = new List<Room>(); // danh sách phòng chơi đang có
+        private CancellationTokenSource cancellationTokenSource;
         private static string connectionString = "mongodb+srv://admin1:5VGZBpaXfZC15LPN@cluster0.qq9lk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
         DataAccess.DatabaseHelper db = new DataAccess.DatabaseHelper(connectionString, "Datagame");
-        private CancellationTokenSource cancellationTokenSource;
+        private bool isRunning;
 
-        public Server(Action<string> updateLog)
-        {
-            cancellationTokenSource = new CancellationTokenSource();
-            UpdateLog = updateLog;
-        }
+        public event Action<string> UpdateLog; // cập nhật log trên UI
+
         #region Connect
         public void StartServer()
         {
-            Thread serverThread = new Thread(() => InitializeServer(cancellationTokenSource.Token))
-            {
-                IsBackground = true
-            };
-            serverThread.Start();
+            if (isRunning) return;
+
+            cancellationTokenSource = new CancellationTokenSource();
+            isRunning = true;
+
+            Task.Run(() => InitializeServer(cancellationTokenSource.Token));
         }
 
-        private void InitializeServer(CancellationToken cancellationToken)
+        private async Task InitializeServer(CancellationToken cancellationToken)
         {
             try
             {
@@ -51,71 +48,32 @@ namespace Server
 
                 // Khởi tạo server
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                serverSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 serverSocket.Bind(ipEP);
                 serverSocket.Listen(10);
-                isRunning = true;
 
-                UpdateLog?.Invoke("Chờ người chơi kết nối...");
+                UpdateLog?.Invoke($"Server đã khởi động trên {ipEP}. Đang chờ kết nối...");
 
-                Socket clientSocket = null;
                 while (isRunning)
                 {
+                    // Kiểm tra xem có yêu cầu hủy bỏ việc chờ kết nối
+                    if (cancellationToken.IsCancellationRequested) break;
                     try
                     {
-                        // Kiểm tra xem có yêu cầu hủy bỏ việc chờ kết nối
-                        if (cancellationToken.IsCancellationRequested)
+                        // Kiểm tra trạng thái của serverSocket
+                        if (serverSocket == null || !serverSocket.IsBound)
                         {
-                            break; // Dừng server nếu nhận được yêu cầu hủy
+                            UpdateLog?.Invoke("Socket server đã bị đóng.");
+                            break;
                         }
 
                         // Chờ kết nối từ client
-                        clientSocket = serverSocket.Accept();
-                        User client = new User(clientSocket);
-                        clients.Add(client);
-                        UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
-
-                        // Tạo thread để xử lý dữ liệu từ client
-                        Thread receivingThread = new Thread(() =>
-                        {
-                            try
-                            {
-                                // Nhận và xử lý dữ liệu từ client
-                                while (true)
-                                {
-                                    receiveData(client); // Nhận dữ liệu
-                                    if (!client.IsConnected) // Kiểm tra nếu client đã ngắt kết nối
-                                    {
-                                        break; // Thoát vòng lặp nếu client ngắt kết nối
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                UpdateLog?.Invoke($"Lỗi khi nhận dữ liệu từ {clientSocket.RemoteEndPoint}: {ex.Message}");
-                            }
-                            finally
-                            {
-                                // Đảm bảo ngừng kết nối và loại bỏ client nếu có lỗi hoặc client ngắt kết nối
-                                client.Stop();
-                                clients.Remove(client);
-                                UpdateLog?.Invoke($"Đã ngắt kết nối với {clientSocket.RemoteEndPoint}");
-                            }
-                        })
-                        {
-                            IsBackground = true // Thiết lập thread nền
-                        };
-                        receivingThread.Start();
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        // Bắt lỗi khi socket bị đóng trong khi đang chờ kết nối
-                        UpdateLog?.Invoke("Socket đã bị đóng trong khi chờ kết nối.");
-                        break;
+                        Socket clientSocket = await serverSocket.AcceptAsync();
+                        HandleClientConnection(clientSocket);
                     }
                     catch (Exception ex)
                     {
-                        UpdateLog?.Invoke("Lỗi khi khởi tạo server: " + ex.Message);
-                        break;
+                        UpdateLog?.Invoke($"Lỗi khi chấp nhận kết nối: {ex.Message}");
                     }
                 }
             }
@@ -123,83 +81,123 @@ namespace Server
             {
                 UpdateLog?.Invoke("Lỗi khi khởi tạo server: " + ex.Message);
             }
+            finally
+            {
+                StopServer();
+            }
         }
 
-
-        public void StopServer()
+        private void HandleClientConnection(Socket clientSocket)
         {
-            // Hủy bỏ việc chờ kết nối
-            cancellationTokenSource.Cancel();
+            var client = new User(clientSocket);
+            if (client != null)
+            {
+                clients.Add(client);
+            }
+            else
+            {
+                UpdateLog?.Invoke("Failed to create client object.");
+            }
+            UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
 
-            // Đảm bảo rằng server socket không gặp lỗi khi bị đóng
-            if (serverSocket != null && serverSocket.Connected)
+            Task.Run(async () =>
             {
                 try
                 {
-                    serverSocket.Shutdown(SocketShutdown.Both);
+                    while (client.IsConnected)
+                    {
+                        string msg = await ReceiveDataAsync(client);
+                        if (msg != null)
+                        {
+                            UpdateLog?.Invoke($"{clientSocket.RemoteEndPoint}: {msg}");
+                            Packet packet = ParsePacket(client, msg);
+                            analyzingPacket(client, packet);
+                        }
+                        else break;
+                    }
                 }
                 catch (Exception ex)
                 {
-                    UpdateLog?.Invoke("Lỗi khi tắt socket server: " + ex.Message);
+                    UpdateLog?.Invoke($"Lỗi khi xử lý client {clientSocket.RemoteEndPoint}: {ex.Message}");
                 }
                 finally
                 {
-                    serverSocket.Close();
-                    serverSocket = null;
+                    // đóng kết nối client
+                    if (client != null)
+                    {
+                        client.Stop();
+                        clients.Remove(client);
+                    }
+                    UpdateLog?.Invoke($"Client đã ngắt kết nối: {clientSocket.RemoteEndPoint}");
                 }
-            }
+            });
+        }
 
-            // Đóng các kết nối của client
-            foreach (var client in clients)
+        public void StopServer()
+        {
+            if (!isRunning) return;
+            isRunning = false;
+
+            // Hủy bỏ việc chờ kết nối
+            cancellationTokenSource?.Cancel();
+
+            // Đóng socket server
+            try
             {
-                try
+                if (serverSocket != null && serverSocket.Connected)
                 {
-                    client.Stop();
-                }
-                catch (Exception ex)
-                {
-                    UpdateLog?.Invoke("Lỗi khi đóng kết nối client: " + ex.Message);
+                    serverSocket.Close();
                 }
             }
+            catch (Exception ex)
+            {
+                UpdateLog?.Invoke($"Lỗi khi đóng socket server: {ex.Message}");
+            } 
+            finally 
+            {
+                serverSocket = null;
+            }
 
-            // Đảm bảo rằng không còn client nào trong danh sách
+            // Đóng tất cả kết nối client
+            foreach (var client in clients.ToArray())
+            {
+                client.Stop();
+            }
+
             clients.Clear();
-            UpdateLog?.Invoke("Server đã ngừng.");
+            UpdateLog?.Invoke("Server đã ngừng hoạt động.");
         }
         #endregion
 
         #region Data
-        private void receiveData(User client)
+        private async Task<string> ReceiveDataAsync(User client)
         {
             try
             {
-                // Tạo buffer để lưu dữ liệu nhận được
                 byte[] buffer = new byte[1024];
-                int bytesReceived = client.UserSocket.Receive(buffer);
-
-                if (bytesReceived == 0)
+                int receivedBytes = await Task.Run(() => client.UserSocket.Receive(buffer, SocketFlags.None));
+                if (receivedBytes > 0)
                 {
-                    // Client đã ngắt kết nối
-                    UpdateLog?.Invoke($"{client.UserSocket.RemoteEndPoint} đã ngắt kết nối");
+                    return Encoding.UTF8.GetString(buffer, 0, receivedBytes);
                 }
 
-                // Chuyển đổi byte thành chuỗi (sử dụng UTF-8 encoding)
-                string message = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
-                UpdateLog?.Invoke($"Dữ liệu nhận được từ {client.UserSocket.RemoteEndPoint}: {message}");
+                // client đóng socket
+                if (receivedBytes == 0)
+                {
+                    client.Stop();
+                    clients.Remove(client);
+                    UpdateLog?.Invoke($"Client {client.UserSocket.RemoteEndPoint} đã ngắt kết nối.");
+                    return null;
+                }
 
-                Packet packet = ParsePacket(client, message);
-                analyzingPacket(client, packet);
             }
-            catch (SocketException ex)
+            catch (SocketException)
             {
-                MessageBox.Show("Socket exception: " + ex.Message);
                 client.Stop();
                 clients.Remove(client);
+                UpdateLog?.Invoke($"Client {client.UserSocket.RemoteEndPoint} đã ngắt kết nối.");
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            return null;
         }
 
 
@@ -259,6 +257,8 @@ namespace Server
                         return new DescribePacket(remainingMsg);
                     case PacketType.GUESS:
                         return new GuessPacket(remainingMsg);
+                    case PacketType.DISCONNECT:
+                        return new DisconnectPacket(remainingMsg);
                     default:
                         return null; // Không biết loại packet
                 }
@@ -285,6 +285,7 @@ namespace Server
         // xu ly sau khi nhan du lieu tu client
         private void analyzingPacket(User client, Packet packet)
         {
+            string clientIP = client.UserSocket.RemoteEndPoint.ToString();
             switch (packet.Type)
             {
                 case PacketType.LOGIN:
@@ -386,6 +387,15 @@ namespace Server
                     break;
                 case PacketType.GUESS:
                     break;
+                case PacketType.DISCONNECT:
+                    UpdateLog?.Invoke($"Client {clientIP} đã ngắt kết nối.");
+                    if (client.IsConnected)
+                    {
+                        client.Stop();
+                        clients.Remove(client);
+                    }
+                    break;
+
                 default:
                     break;
             }

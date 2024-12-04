@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,11 +23,6 @@ namespace Program
 
         private void backButton_Click_1(object sender, EventArgs e)
         {
-            this.Hide();
-            Form_Login LoginForm = new Form_Login();
-            LoginForm.StartPosition = FormStartPosition.Manual;
-            LoginForm.Location = this.Location;
-            LoginForm.ShowDialog();
             this.Close();
         }
     }

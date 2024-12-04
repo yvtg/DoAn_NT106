@@ -52,33 +52,30 @@ namespace Program
         {
             if (showPwCheckBox.Checked)
             {
-                passwordTextbox.PasswordChar = '\0'; // Hiển thị mật khẩu
-                confirmpassTextbox.PasswordChar = '\0'; // Hiển thị mật khẩu
+                // Hiển thị mật khẩu
+                passwordTextbox.UseSystemPasswordChar = false; 
+                confirmpassTextbox.UseSystemPasswordChar = false;
             }
             else
             {
-                passwordTextbox.PasswordChar = '*'; // Ẩn mật khẩu
-                confirmpassTextbox.PasswordChar = '*'; // Ẩn mật khẩu
+                // Ẩn mật khẩu
+                passwordTextbox.UseSystemPasswordChar = true;
+                confirmpassTextbox.UseSystemPasswordChar = true;
             }
         }
         #region điều hướng
         private void OnRegisterSuccessful()
         {
-            this.Hide();
-            Form_Login LoginForm = new Form_Login();
-            LoginForm.StartPosition = FormStartPosition.Manual;
-            LoginForm.Location = this.Location;
-            LoginForm.ShowDialog();
-            this.Close();
+            navigateToLoginForm();
         }
 
         private void backButton_Click_1(object sender, EventArgs e)
         {
-            this.Hide();
-            Form_Login LoginForm = new Form_Login();
-            LoginForm.StartPosition = FormStartPosition.Manual;
-            LoginForm.Location = this.Location;
-            LoginForm.ShowDialog();
+            navigateToLoginForm();
+        }
+
+        private void navigateToLoginForm()
+        {
             this.Close();
         }
         #endregion

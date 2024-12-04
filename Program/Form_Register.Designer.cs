@@ -164,7 +164,7 @@
             this.confirmpassTextbox.MaxLength = 32767;
             this.confirmpassTextbox.Multiline = false;
             this.confirmpassTextbox.Name = "confirmpassTextbox";
-            this.confirmpassTextbox.PasswordChar = '*';
+            this.confirmpassTextbox.PasswordChar = '\0';
             this.confirmpassTextbox.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.confirmpassTextbox.SelectedText = "";
             this.confirmpassTextbox.SelectionLength = 0;
@@ -172,7 +172,7 @@
             this.confirmpassTextbox.Size = new System.Drawing.Size(185, 36);
             this.confirmpassTextbox.TabIndex = 23;
             this.confirmpassTextbox.TabStop = false;
-            this.confirmpassTextbox.UseSystemPasswordChar = false;
+            this.confirmpassTextbox.UseSystemPasswordChar = true;
             // 
             // passwordTextbox
             // 
@@ -188,7 +188,7 @@
             this.passwordTextbox.MaxLength = 32767;
             this.passwordTextbox.Multiline = false;
             this.passwordTextbox.Name = "passwordTextbox";
-            this.passwordTextbox.PasswordChar = '*';
+            this.passwordTextbox.PasswordChar = '\0';
             this.passwordTextbox.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.passwordTextbox.SelectedText = "";
             this.passwordTextbox.SelectionLength = 0;
@@ -196,7 +196,7 @@
             this.passwordTextbox.Size = new System.Drawing.Size(185, 36);
             this.passwordTextbox.TabIndex = 22;
             this.passwordTextbox.TabStop = false;
-            this.passwordTextbox.UseSystemPasswordChar = false;
+            this.passwordTextbox.UseSystemPasswordChar = true;
             // 
             // registerButton
             // 

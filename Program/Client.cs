@@ -36,6 +36,25 @@ namespace Program
             }
         }
 
+        public void Stop()
+        {
+            if (tcpClient != null && tcpClient.Connected)
+            {
+                try
+                {
+                    tcpClient.Client.Shutdown(SocketShutdown.Both); // Ngắt kết nối
+                    tcpClient.Close(); // Giải phóng tài nguyên
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi đóng kết nối socket: {ex.Message}");
+                }
+                finally
+                {
+                    tcpClient = null;
+                }
+            }
+        }
 
         public void SendData(Packet packet)
         {

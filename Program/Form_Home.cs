@@ -30,7 +30,8 @@ namespace Program
             profileform.StartPosition = FormStartPosition.Manual;
             profileform.Location = this.Location;
             profileform.ShowDialog();
-            this.Close();
+            this.Show();
+            FormClosed += (s, args) => this.Close();
         }
 
         private void logoutBtn_Click_1(object sender, EventArgs e)
@@ -38,10 +39,6 @@ namespace Program
             LogoutPacket logoutPacket = new LogoutPacket(username);
             WindowsFormsApp1.Program.client.SendData(logoutPacket);
 
-            this.Hide();
-            Form_Login LoginForm = new Form_Login();
-            LoginForm.StartPosition = FormStartPosition.Manual;
-            LoginForm.Location = this.Location;
             this.Close();
         }
         private void createButton_Click(object sender, EventArgs e)
@@ -51,7 +48,7 @@ namespace Program
             createform.StartPosition = FormStartPosition.Manual;
             createform.Location = this.Location;
             createform.ShowDialog();
-            this.Close();
+            this.Show();
         }
 
         private void joinButton_Click_1(object sender, EventArgs e)
@@ -61,7 +58,7 @@ namespace Program
             joinform.StartPosition = FormStartPosition.Manual;
             joinform.Location = this.Location;
             joinform.ShowDialog();
-            this.Close();
+            this.Show();
         }
         #endregion
 
