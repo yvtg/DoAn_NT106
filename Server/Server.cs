@@ -19,6 +19,7 @@ namespace Server
         public static Socket serverSocket;
         public static List<User> clients = new List<User>(); // danh sách client đang kết nối tới
         public List<Room> rooms = new List<Room>(); // danh sách phòng chơi đang có
+
         private CancellationTokenSource cancellationTokenSource;
         private static string connectionString = "mongodb+srv://admin1:5VGZBpaXfZC15LPN@cluster0.qq9lk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
         DataAccess.DatabaseHelper db = new DataAccess.DatabaseHelper(connectionString, "Datagame");
@@ -201,15 +202,12 @@ namespace Server
         }
 
 
-        private void sendData(User client, Packet packet)
+        private void sendPacket(User client, Packet packet)
         {
             try
             {
                 // Chuẩn bị dữ liệu để gửi
-                byte[] msgBytes = packet.ToBytes();
-
-                // Gửi dữ liệu qua socket
-                client.UserSocket.Send(msgBytes);
+                client.SendPacket(packet);
 
                 UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.UserSocket.RemoteEndPoint} {packet.Type};{packet.Payload}");
             }
@@ -266,6 +264,7 @@ namespace Server
             return null; 
         }
 
+        // tạo mã phòng random
         private string GenerateRoomId()
         {
             int length = 4; // Độ dài mã phòng
@@ -293,14 +292,14 @@ namespace Server
                     if (db.LoginUser(loginPacket.Username, loginPacket.Password))
                     {
                         LoginResultPacket result = new LoginResultPacket("success");
-                        sendData(client, result);
+                        sendPacket(client, result);
                         UpdateLog.Invoke($"{loginPacket.Username} đăng nhập thành công");
                         client.Name = loginPacket.Username;
                     }
                     else
                     {
                         LoginResultPacket result = new LoginResultPacket("fail");
-                        sendData(client, result);
+                        sendPacket(client, result);
                         UpdateLog.Invoke($"{loginPacket.Username} đăng nhập thất bại");
                     }
                     break;
@@ -309,13 +308,13 @@ namespace Server
                     if (db.RegisterUser(registerPacket.Username, registerPacket.Email, registerPacket.Password))
                     {
                         RegisterResultPacket result = new RegisterResultPacket("success");
-                        sendData(client, result);
+                        sendPacket(client, result);
                         UpdateLog.Invoke($"{registerPacket.Username} đăng ký tài khoản thành công");
                     }
                     else
                     {
                         RegisterResultPacket result = new RegisterResultPacket("fail");
-                        sendData(client, result);
+                        sendPacket(client, result);
                         UpdateLog.Invoke($"{registerPacket.Username} đăng ký tài khoản thất bại");
                     }
                     break;
@@ -326,23 +325,20 @@ namespace Server
                 case PacketType.CREATE_ROOM:
                     CreateRoomPacket createRoomPacket = (CreateRoomPacket)packet;
 
-                    User host = client;
                     client.Name = createRoomPacket.username;
 
                     // Create a new room
                     string roomId = GenerateRoomId();
                     int maxPlayers = createRoomPacket.Max_player;
 
-                    Room room = new Room(roomId, maxPlayers);
-                    room.host = host;
-                    room.players.Add(host);
-                    room.status = "waiting";
+                    Room room = new Room(roomId, client.Name, maxPlayers, client);
+                    room.players.Add(client);
                     rooms.Add(room);
                     int currentPlayers = room.players.Count;
                     int currentRound = 0;
 
-                    RoomInfoPacket roomInfo = new RoomInfoPacket($"{roomId};{host.Name};{room.status};{maxPlayers};{currentPlayers};{currentRound}");
-                    sendData(client, roomInfo);
+                    RoomInfoPacket roomInfo = new RoomInfoPacket($"{roomId};{room.host};{room.status};{maxPlayers};{currentPlayers};{currentRound}");
+                    sendPacket(client, roomInfo);
 
                     UpdateLog.Invoke($"{client.Name} đã tạo phòng {roomId}");
                     break;
@@ -350,31 +346,43 @@ namespace Server
                     JoinRoomPacket joinRoomPacket = (JoinRoomPacket)packet;
                     string roomIdToJoin = joinRoomPacket.RoomId;
                     string ussername = joinRoomPacket.Username;
-
-                    room = rooms.FirstOrDefault(r => r.RoomId == roomIdToJoin);
                     string join_result = "SUCCESS";
 
-                    // Kiểm tra xem phòng có tồn tại không
+                    room = rooms.FirstOrDefault(r => r.RoomId == roomIdToJoin);
                     if (room == null)
                     {
                         join_result = "NOT_EXIST";
+                        // Xử lý lỗi, không tiếp tục
+                        sendPacket(client, new JoinResultPacket(join_result));
+                        return;
                     }
                     // kiểm tra phòng đang chơi
-                    if (room.status == "playing" || room.status == "finished")
+                    else if (room.status == "playing")
                     {
                         join_result = "PLAYING";
+                        sendPacket(client, new JoinResultPacket(join_result));
+                        return;
+                    }
+                    // kiểm tra phòng đã kết thúc
+                    else if (room.status == "finished")
+                    {
+                        join_result = "FINISHED";
+                        sendPacket(client, new JoinResultPacket(join_result));
+                        return;
                     }
                     // kiểm tra phòng đầy
-                    if (room.players.Count == room.maxPlayers)
+                    else if (room.players.Count > room.maxPlayers)
                     {
                         join_result = "FULL";
+                        sendPacket(client, new JoinResultPacket(join_result));
+                        return;
                     }
 
-                    if (join_result=="SUCCESS")
+                    else if (join_result=="SUCCESS")
                     {
                         room.players.Add(client);
-                        roomInfo = new RoomInfoPacket($"{roomIdToJoin};{room.host.Name};{room.status};{room.maxPlayers};{room.players.Count};0");
-                        sendData(client, roomInfo);
+                        roomInfo = new RoomInfoPacket($"{roomIdToJoin};{room.host};{room.status};{room.maxPlayers};{room.players.Count};0");
+                        sendPacket(client, roomInfo);
                         UpdateLog.Invoke($"{client.Name} đã tham gia phòng {roomIdToJoin}");
                     }
 

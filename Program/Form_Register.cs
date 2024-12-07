@@ -44,7 +44,7 @@ namespace Program
 
             // Gửi thông tin đăng ký lên server
             RegisterPacket packet = new RegisterPacket($"{username};{email};{password}");
-            client.SendData(packet);
+            client.SendPacket(packet);
         }
 
 

@@ -19,19 +19,24 @@ namespace Models
         public bool IsGameStarted = false; // Trạng thái vòng chơi (đang diễn ra hay không)
         public int maxPlayers; // Số lượng người chơi tối đa trong phòng
         public Random random;
-        public User host; // chủ phòng
+        public string host;
 
         public User currentDrawer; // Người chơi hiện đang vẽ
         public int currentDrawerIndex; // Vị trí của người vẽ hiện tại trong danh sách người chơi
 
 
-        public Room(string RoomId, int maxPlayers)
+        public Room(string RoomId, string host, int maxPlayers, User player)
         {
             players = new List<User>();
             random = new Random();
             currentDrawerIndex = -1;
             this.RoomId = RoomId;
             this.maxPlayers = maxPlayers;
+            this.status = "WAITING";
+            this.host = host;
+            this.currentKeyword = "";
+            players.Add(player);
+            currentDrawer = player;
 
             // Cài đặt bộ đếm thời gian cho vòng chơi (60 giây)
             roundTimer = new System.Timers.Timer(roundTime * 1000);
@@ -102,9 +107,9 @@ namespace Models
                 if (currentDrawer != null)
                 {
                     currentDrawer.Score += 5;
+                    BroadcastMessage($"{player.Name} đã đoán đúng từ khóa và nhận được 10 điểm! và {currentDrawer.Name} được cộng 5 điểm!");
                 }
 
-                BroadcastMessage($"{player.Name} đã đoán đúng từ khóa và nhận được 10 điểm! và {currentDrawer.Name} được cộng 5 điểm!");
 
                 roundTimer.Stop();
 

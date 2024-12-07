@@ -37,7 +37,7 @@ namespace Program
             {
                 // Gửi thông tin đăng nhập lên server
                 LoginPacket packet = new LoginPacket($"{username};{password}");
-                client.SendData(packet);
+                client.SendPacket(packet);
             }
             catch (Exception ex)
             {
@@ -101,7 +101,7 @@ namespace Program
         private void Form_Login_FormClosing(object sender, FormClosingEventArgs e)
         {
             DisconnectPacket disconnectPacket = new DisconnectPacket("");
-            client.SendData(disconnectPacket);
+            client.SendPacket(disconnectPacket);
             client.Stop();
         }
     }

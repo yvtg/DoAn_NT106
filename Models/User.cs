@@ -13,7 +13,6 @@ namespace Models
         public string Name { get; set; }
         public int Score { get; set; }
         public bool IsDrawing { get; set; }
-        public int Turn { get; set; }
         public Socket UserSocket;
 
         public User(Socket UserSocket)

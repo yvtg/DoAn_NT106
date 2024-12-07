@@ -33,14 +33,13 @@
             this.hopeForm1 = new ReaLTaiizor.Forms.HopeForm();
             this.idTextbox = new ReaLTaiizor.Controls.HopeTextBox();
             this.joinButton = new ReaLTaiizor.Controls.HopeButton();
-            this.backButton = new ReaLTaiizor.Controls.HopeButton();
             this.SuspendLayout();
             // 
             // idLabel
             // 
             this.idLabel.AutoSize = true;
             this.idLabel.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.idLabel.Location = new System.Drawing.Point(114, 143);
+            this.idLabel.Location = new System.Drawing.Point(117, 58);
             this.idLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.idLabel.Name = "idLabel";
             this.idLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -62,7 +61,7 @@
             this.hopeForm1.Name = "hopeForm1";
             this.hopeForm1.Size = new System.Drawing.Size(348, 40);
             this.hopeForm1.TabIndex = 15;
-            this.hopeForm1.Text = "Home";
+            this.hopeForm1.Text = "Join Room";
             this.hopeForm1.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             // 
             // idTextbox
@@ -74,7 +73,7 @@
             this.idTextbox.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.idTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.idTextbox.Hint = "";
-            this.idTextbox.Location = new System.Drawing.Point(75, 179);
+            this.idTextbox.Location = new System.Drawing.Point(78, 94);
             this.idTextbox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.idTextbox.MaxLength = 32767;
             this.idTextbox.Multiline = false;
@@ -99,7 +98,7 @@
             this.joinButton.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.joinButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             this.joinButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.joinButton.Location = new System.Drawing.Point(195, 269);
+            this.joinButton.Location = new System.Drawing.Point(117, 152);
             this.joinButton.Name = "joinButton";
             this.joinButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
             this.joinButton.Size = new System.Drawing.Size(104, 36);
@@ -110,35 +109,13 @@
             this.joinButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.joinButton.Click += new System.EventHandler(this.joinButton_Click);
             // 
-            // backButton
-            // 
-            this.backButton.BorderColor = System.Drawing.Color.Black;
-            this.backButton.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
-            this.backButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.backButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
-            this.backButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.backButton.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
-            this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.backButton.Location = new System.Drawing.Point(47, 269);
-            this.backButton.Name = "backButton";
-            this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.backButton.Size = new System.Drawing.Size(104, 36);
-            this.backButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
-            this.backButton.TabIndex = 17;
-            this.backButton.Text = "Quay về";
-            this.backButton.TextColor = System.Drawing.Color.White;
-            this.backButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
-            this.backButton.Click += new System.EventHandler(this.backButton_Click_1);
-            // 
             // Form_Join
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
-            this.ClientSize = new System.Drawing.Size(348, 453);
+            this.ClientSize = new System.Drawing.Size(348, 219);
             this.Controls.Add(this.joinButton);
-            this.Controls.Add(this.backButton);
             this.Controls.Add(this.idTextbox);
             this.Controls.Add(this.hopeForm1);
             this.Controls.Add(this.idLabel);
@@ -160,6 +137,5 @@
         private ReaLTaiizor.Forms.HopeForm hopeForm1;
         private ReaLTaiizor.Controls.HopeTextBox idTextbox;
         private ReaLTaiizor.Controls.HopeButton joinButton;
-        private ReaLTaiizor.Controls.HopeButton backButton;
     }
 }

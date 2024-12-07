@@ -19,7 +19,6 @@ namespace Program
         {
             this.client = WindowsFormsApp1.Program.client;
             this.username = username;
-            client.ReceiveRoomInfo += OnReceiveRoomInfo;
             InitializeComponent();
         }
 
@@ -38,29 +37,12 @@ namespace Program
             string roomId = idTextbox.Text;
             if (roomId == "")
             {
-                MessageBox.Show("Please enter the room ID.");
+                MessageBox.Show("Vui lòng nhập mã phòng.");
                 return;
             }
 
-            JoinRoomPacket joinRoomPacket = new JoinRoomPacket($"{username};{roomId}");
-            client.SendData(joinRoomPacket);
-        }
-
-        private void OnReceiveRoomInfo(string roomId, string host, int MaxPlayers)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new Action(() => OnReceiveRoomInfo(roomId, host, MaxPlayers)));
-                return;
-            }
-
-            MessageBox.Show($"Room Info: {roomId} {host} {MaxPlayers}");
-            this.Hide();
-
-            Form_Room roomForm = new Form_Room(roomId, username, 4);
-            roomForm.StartPosition = FormStartPosition.Manual;
-            roomForm.Location = this.Location;
-            roomForm.ShowDialog();
+            JoinRoomPacket joinRoomPacket = new JoinRoomPacket($"{roomId};{username}");
+            client.SendPacket(joinRoomPacket);
             this.Close();
         }
     }

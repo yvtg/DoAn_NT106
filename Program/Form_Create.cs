@@ -20,42 +20,20 @@ namespace Program
         {
             InitializeComponent();
             this.client = WindowsFormsApp1.Program.client;
-            client.ReceiveRoomInfo += OnReceiveRoomInfo;
             this.username = username;
         }
 
         private void createBtn_Click(object sender, EventArgs e)
         {
-            try
-            {
-                int maxPlayers = (int)numeric.ValueNumber;
-                CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers}");
-                WindowsFormsApp1.Program.client.SendData(createRoomPacket);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred while creating the room.");
-            }
+
+            int maxPlayers = (int)numeric.ValueNumber;
+            CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers}");
+            WindowsFormsApp1.Program.client.SendPacket(createRoomPacket);
+
+            //đóng form create sau khi tạo phòng
+            this.Close();
 
         }
-
-        private void OnReceiveRoomInfo(string roomId, string host, int maxPlayers)
-        {
-            this.Invoke((MethodInvoker)(()=>
-            {
-                //this.Hide();
-                //MessageBox.Show($"Room Info: {roomId} {username} {maxPlayers}");
-                //Form_Room roomForm = new Form_Room(roomId, username, maxPlayers);
-                //roomForm.StartPosition = FormStartPosition.Manual;
-                //roomForm.Location = this.Location;
-                //roomForm.ShowDialog();
-                //this.Close();
-                MessageBox.Show("Room created successfully.");
-            }
-            ));
-        }
-
-
 
         private void Form_Create_Load(object sender, EventArgs e)
         {
@@ -64,14 +42,5 @@ namespace Program
             numeric.ValueNumber = 2;
         }
 
-        private void backButton_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            Form_Home homeForm = new Form_Home(username);
-            homeForm.StartPosition = FormStartPosition.Manual;
-            homeForm.Location = this.Location;
-            homeForm.ShowDialog();
-            this.Close();
-        }
     }
 }

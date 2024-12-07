@@ -17,6 +17,7 @@ namespace Program
     {
         TcpClient tcpClient = new TcpClient();
         NetworkStream ns;
+
         public static event Action RegisterSuccessful;
         public event Action LoginSuccessful;
         public event Action<string, string, int> ReceiveRoomInfo;
@@ -56,7 +57,7 @@ namespace Program
             }
         }
 
-        public void SendData(Packet packet)
+        public void SendPacket(Packet packet)
         {
             if (tcpClient != null && tcpClient.Connected)
             {
@@ -149,12 +150,11 @@ namespace Program
                     LoginResultPacket loginResultPacket = (LoginResultPacket)packet;
                     if (loginResultPacket.result == "success")
                     {
-                        MessageBox.Show("Đăng nhập thành công");
                         LoginSuccessful?.Invoke();
                     }
                     else
                     {
-                        MessageBox.Show("Đăng nhập thất bại");
+                        MessageBox.Show("Kiểm tra username hoặc mật khẩu và thử lại!");
                     }
                     break;
                 case PacketType.REGISTER_RESULT:
@@ -177,6 +177,25 @@ namespace Program
                     int playerCount = roomInfoPacket.CurrentPlayers;
                     int maxPlayer = roomInfoPacket.MaxPlayers;
                     ReceiveRoomInfo?.Invoke(roomId, host, maxPlayer);
+                    break;
+                case PacketType.JOIN_RESULT:
+                    JoinResultPacket joinResultPacket = (JoinResultPacket)packet;
+                    string result = joinResultPacket.result;
+                    switch (result)
+                    {
+                        case "NOT_EXIST":
+                            MessageBox.Show("Phòng không tồn tại!");
+                            break;
+                        case "PLAYING":
+                            MessageBox.Show("Phòng đang chơi!");
+                            break;
+                        case "FULL":
+                            MessageBox.Show("Phòng đã đầy!");
+                            break;
+                        case "FINISHED":
+                            MessageBox.Show("Phòng đã kết thúc!");
+                            break;
+                    }
                     break;
                 case PacketType.OTHER_INFO:
                     break;
