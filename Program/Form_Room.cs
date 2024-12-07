@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Models;
 
 namespace Program
 {
@@ -15,6 +16,15 @@ namespace Program
         private string roomId;
         private string username;
         private int max_player;
+        public Room room;
+
+        // Các thành phần liên quan đến tính năng vẽ
+        private Bitmap drawingBitmap;
+        private Graphics graphics;
+        private Point previousPoint;
+        private bool isDrawing = false;
+        private bool isErasing = false; // Thêm biến để kiểm tra trạng thái xóa
+
         public Form_Room(string roomId, string username, int max_player)
         {
             InitializeComponent();
@@ -22,20 +32,76 @@ namespace Program
             this.roomId = roomId;
             this.username = username;
             this.max_player = max_player;
-            try
+
+            roomIdText.Text += roomId;
+            usernameText.Text += username;
+
+            // Kiểm tra điều kiện và bật/tắt nút startButton
+            startButton.Enabled = max_player >= 2;
+
+            // Khởi tạo Bitmap và Graphics
+            drawingBitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            graphics = Graphics.FromImage(drawingBitmap);
+            graphics.Clear(Color.White);
+
+            // Liên kết Bitmap với pictureBox1
+            pictureBox1.Image = drawingBitmap;
+
+            // Gắn sự kiện chuột cho pictureBox1
+            pictureBox1.MouseDown += PictureBox_MouseDown;
+            pictureBox1.MouseMove += PictureBox_MouseMove;
+            pictureBox1.MouseUp += PictureBox_MouseUp;
+        }
+
+        // Bắt đầu vẽ khi nhấn chuột
+        private void PictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
             {
-                roomIdLabel.Text += roomId;
-                userLabel.Text += username;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error in Form_Room constructor: {ex.Message}");
+                isDrawing = true;
+                previousPoint = e.Location;
             }
         }
 
-        private void sendButton_Click(object sender, EventArgs e)
+        // Rê chuột để vẽ hoặc xóa
+        private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
+            if (isDrawing)
+            {
+                using (Pen pen = new Pen(isErasing ? Color.White : Color.Black, 2))
+                {
+                    graphics.DrawLine(pen, previousPoint, e.Location);
+                }
+                previousPoint = e.Location;
+                pictureBox1.Invalidate();
+            }
+        }
 
+        // Dừng vẽ khi nhả chuột
+        private void PictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDrawing = false;
+            }
+        }
+
+        // Sự kiện khi nhấn vào hình cái bút
+        private void PencilPictureBox_Click(object sender, EventArgs e)
+        {
+            isErasing = false;
+        }
+
+        // Sự kiện khi nhấn vào hình cái cục gôm
+        private void EraserPictureBox_Click(object sender, EventArgs e)
+        {
+            isErasing = true;
+        }
+
+        private void startButton_Click(object sender, EventArgs e)
+        {
+            room.StartNewRound();
+            wordTextbox.Text = room.currentKeyword;
         }
     }
 }

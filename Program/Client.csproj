@@ -323,6 +323,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Room.resx">
       <DependentUpon>Form_Room.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -332,6 +333,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="libmongocrypt.dylib" />
     <None Include="libmongocrypt.so" />
@@ -354,6 +356,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mongocrypt.dll" />
+    <None Include="Resources\Screenshot 2024-12-03 023500.png" />
+    <None Include="Resources\Screenshot 2024-12-03 023531.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />

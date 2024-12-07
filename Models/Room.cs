@@ -72,6 +72,7 @@ namespace Models
             StartNewRound();
         }
 
+
         // Sinh từ khóa ngẫu nhiên từ file Keywords.txt
         public string GenerateRandomKeyword()
         {
