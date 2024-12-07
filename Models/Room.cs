@@ -15,24 +15,29 @@ namespace Models
         public string currentKeyword; // Từ khóa hiện tại
         public int roundTime = 60; // Thời gian của mỗi vòng chơi (tính bằng giây)
         public System.Timers.Timer roundTimer; // Timer đếm ngược cho mỗi vòng chơi
-        public bool roomActive = false; // Trạng thái phòng (đang hoạt động hay không)
+        public string status; // waiting, playing, finished
         public bool IsGameStarted = false; // Trạng thái vòng chơi (đang diễn ra hay không)
         public int maxPlayers; // Số lượng người chơi tối đa trong phòng
         public Random random;
-        public User host; // chủ phòng
+        public string host;
 
         public User currentDrawer; // Người chơi hiện đang vẽ
         public int currentDrawerIndex; // Vị trí của người vẽ hiện tại trong danh sách người chơi
 
 
-        public Room(string RoomId, int maxPlayers)
+        public Room(string RoomId, string host, int maxPlayers, User player)
         {
             players = new List<User>();
             random = new Random();
             currentDrawerIndex = -1;
             this.RoomId = RoomId;
             this.maxPlayers = maxPlayers;
-            roomActive = true;
+            this.status = "WAITING";
+            this.host = host;
+            this.currentKeyword = "";
+            players.Add(player);
+            currentDrawer = player;
+
             // Cài đặt bộ đếm thời gian cho vòng chơi (60 giây)
             roundTimer = new System.Timers.Timer(roundTime * 1000);
             roundTimer.Elapsed += OnRoundTimeElapsed;
@@ -103,9 +108,9 @@ namespace Models
                 if (currentDrawer != null)
                 {
                     currentDrawer.Score += 5;
+                    BroadcastMessage($"{player.Name} đã đoán đúng từ khóa và nhận được 10 điểm! và {currentDrawer.Name} được cộng 5 điểm!");
                 }
 
-                BroadcastMessage($"{player.Name} đã đoán đúng từ khóa và nhận được 10 điểm! và {currentDrawer.Name} được cộng 5 điểm!");
 
                 roundTimer.Stop();
 

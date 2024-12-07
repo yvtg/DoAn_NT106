@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Runtime.InteropServices;
 
 namespace Models
 {
@@ -22,10 +24,12 @@ namespace Models
         LOGIN_RESULT,
         REGISTER_RESULT,
         ROOM_INFO,
+        JOIN_RESULT,
         OTHER_INFO,
         ROUND_UPDATE,
         GUESS_RESULT,
-        LEADER_BOARD_INFO
+        LEADER_BOARD_INFO,
+        DISCONNECT
 
     }
     public abstract class Packet
@@ -45,7 +49,6 @@ namespace Models
     public class LoginResultPacket : Packet
     {
         public string result { get; set; }
-        public string username { get; set; }
         public LoginResultPacket(string payload) : base(PacketType.LOGIN_RESULT, payload)
         {
             string[] parsePayload = payload.Split(';');
@@ -87,25 +90,15 @@ namespace Models
         }
     }
 
-    public class RoomInfoPacket : Packet
+    public class JoinResultPacket : Packet
     {
-        public string RoomId { get; set; }
-        public string playerName { get; set; }
-        public bool isDrawer { get; set; }
-        public int playerCount { get; set; }
-        public bool isHost { get; set; }
-        public int Score { get; set; }
-        public RoomInfoPacket(string payload) : base(PacketType.ROOM_INFO, payload)
+        public string result { get; set; }
+        public JoinResultPacket(string payload) : base(PacketType.JOIN_RESULT, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 6)
+            if (parsePayload.Length >= 1)
             {
-                RoomId = parsePayload[0];
-                playerName = parsePayload[1];
-                isDrawer = bool.Parse(parsePayload[2]);
-                playerCount = int.Parse(parsePayload[3]);
-                isHost = bool.Parse(parsePayload[4]);
-                Score = int.Parse(parsePayload[5]);
+                result = parsePayload[0];
             }
             else
             {
@@ -115,9 +108,51 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"ROOM_INFO;{RoomId};{playerName};{isDrawer};{playerCount};{isHost};{Score}");
+            return Encoding.ASCII.GetBytes($"JOIN_RESULT;{result}");
         }
     }
+    public class RoomInfoPacket : Packet
+    {
+        public string RoomId { get; set; }
+        public string Host { get; set; }
+        public string Status { get; set; } // "WAITING", "PLAYING", "FINISHED"
+        public int MaxPlayers { get; set; }
+        public int CurrentPlayers { get; set; }
+        public int CurrentRound { get; set; }
+
+        public RoomInfoPacket(string payload) : base(PacketType.ROOM_INFO, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 6)
+            {
+                try
+                {
+                    RoomId = parsePayload[0];
+                    Host = parsePayload[1];
+                    Status = parsePayload[2];
+                    MaxPlayers = int.Parse(parsePayload[3]);
+                    CurrentPlayers = int.Parse(parsePayload[4]);
+                    CurrentRound = int.Parse(parsePayload[5]);
+                }
+                catch (FormatException ex)
+                {
+                    throw new ArgumentException("Dữ liệu không hợp lệ trong payload", ex);
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ. Thiếu dữ liệu.");
+            }
+        }
+
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"ROOM_INFO;{RoomId};{Host};{Status};{MaxPlayers};{CurrentPlayers};{CurrentRound}");
+        }
+    }
+
+
 
     public class OtherInfoPacket : Packet
     {
@@ -287,12 +322,12 @@ namespace Models
 
     public class CreateRoomPacket : Packet
     {
-        public int Max_player { get; set; }
         public string username { get; set; }
+        public int Max_player { get; set; }
         public CreateRoomPacket(string payload) : base(PacketType.CREATE_ROOM, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 3)
+            if (parsePayload.Length >= 2)
             {
                 username = parsePayload[0];
                 Max_player = Int32.Parse(parsePayload[1]);
@@ -415,6 +450,19 @@ namespace Models
         public override byte[] ToBytes()
         {
             return Encoding.ASCII.GetBytes($"GUESS;{RoomId};{playerName};{GuessMessage}");
+        }
+    }
+    
+    public class DisconnectPacket : Packet
+    {
+        public DisconnectPacket(string payload) : base(PacketType.DISCONNECT, payload)
+        {
+            
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.ASCII.GetBytes($"DISCONNECT");
         }
     }
 }

@@ -12,14 +12,17 @@ namespace Program
 {
     public partial class Form_Profile : Form
     {
-        public Form_Profile()
+        string username;
+        public Form_Profile(string username)
         {
             InitializeComponent();
+            this.username = username;
         }
-
+        #region UI
         private void backButton_Click_1(object sender, EventArgs e)
         {
             this.Close();
         }
+        #endregion
     }
 }

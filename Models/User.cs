@@ -13,7 +13,6 @@ namespace Models
         public string Name { get; set; }
         public int Score { get; set; }
         public bool IsDrawing { get; set; }
-        public int Turn { get; set; }
         public Socket UserSocket;
 
         public User(Socket UserSocket)
@@ -32,6 +31,22 @@ namespace Models
         public void Stop(bool abortThread = false)
         {
             UserSocket.Close();
+        }
+
+        public bool IsConnected
+        {
+            get
+            {
+                try
+                {
+                    // Kiểm tra kết nối bằng cách gọi UserSocket.Connected
+                    return UserSocket.Connected;
+                }
+                catch (Exception)
+                {
+                    return false; // Trả về false nếu có lỗi (chẳng hạn socket đã bị đóng)
+                }
+            }
         }
     }
 }

@@ -40,7 +40,7 @@
             this.rankListbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
             this.rankListbox.FormattingEnabled = true;
             this.rankListbox.Location = new System.Drawing.Point(38, 98);
-            this.rankListbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rankListbox.Margin = new System.Windows.Forms.Padding(2);
             this.rankListbox.Name = "rankListbox";
             this.rankListbox.Size = new System.Drawing.Size(282, 290);
             this.rankListbox.TabIndex = 0;
@@ -102,6 +102,7 @@
             this.homeButton.Text = "Home";
             this.homeButton.TextColor = System.Drawing.Color.White;
             this.homeButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            this.homeButton.Click += new System.EventHandler(this.homeButton_Click_1);
             // 
             // Form_End_Game
             // 
@@ -114,7 +115,7 @@
             this.Controls.Add(this.hopeForm1);
             this.Controls.Add(this.rankListbox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_End_Game";

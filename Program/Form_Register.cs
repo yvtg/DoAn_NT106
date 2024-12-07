@@ -15,12 +15,12 @@ namespace Program
     public partial class Form_Register : Form
     {
         private Client client;
-        public Form_Register(Client client)
+        public Form_Register()
         {
-            InitializeComponent();
             Client.RegisterSuccessful += OnRegisterSuccessful;
 
-            this.client = client;
+            this.client = WindowsFormsApp1.Program.client;
+            InitializeComponent();
         }
 
         private void registerButton_Click_1(object sender, EventArgs e)
@@ -44,39 +44,40 @@ namespace Program
 
             // Gửi thông tin đăng ký lên server
             RegisterPacket packet = new RegisterPacket($"{username};{email};{password}");
-            client.SendData(packet);
+            client.SendPacket(packet);
         }
 
-        private void OnRegisterSuccessful()
-        {
-            Form_Background form_Background = new Form_Background(client);
-            form_Background.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            form_Background.Location = this.Location; // Đặt vị trí của Form_Law giống với Form_Background
-            this.Hide();
-            form_Background.ShowDialog();
-        }
-
-        private void backButton_Click_1(object sender, EventArgs e)
-        {
-            Form_Background form_Background = new Form_Background(client);
-            form_Background.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            form_Background.Location = this.Location; // Đặt vị trí của Form_Law giống với Form_Background
-            this.Hide();
-            form_Background.ShowDialog();
-        }
 
         private void showPwCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (showPwCheckBox.Checked)
             {
-                passwordTextbox.PasswordChar = '\0'; // Hiển thị mật khẩu
-                confirmpassTextbox.PasswordChar = '\0'; // Hiển thị mật khẩu
+                // Hiển thị mật khẩu
+                passwordTextbox.UseSystemPasswordChar = false; 
+                confirmpassTextbox.UseSystemPasswordChar = false;
             }
             else
             {
-                passwordTextbox.PasswordChar = '*'; // Ẩn mật khẩu
-                confirmpassTextbox.PasswordChar = '*'; // Ẩn mật khẩu
+                // Ẩn mật khẩu
+                passwordTextbox.UseSystemPasswordChar = true;
+                confirmpassTextbox.UseSystemPasswordChar = true;
             }
         }
+        #region điều hướng
+        private void OnRegisterSuccessful()
+        {
+            navigateToLoginForm();
+        }
+
+        private void backButton_Click_1(object sender, EventArgs e)
+        {
+            navigateToLoginForm();
+        }
+
+        private void navigateToLoginForm()
+        {
+            this.Close();
+        }
+        #endregion
     }
 }

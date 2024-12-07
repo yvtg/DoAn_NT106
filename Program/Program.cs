@@ -19,11 +19,7 @@ namespace WindowsFormsApp1
             client = new Client();
             client.Connect();
 
-            Client clientInstance = new Client(); // Tạo đối tượng Client
-            string roomName = "Room1";            // Một chuỗi tùy ý
-            int max_player = 3;
-
-            Application.Run(new Form_Room(clientInstance, roomName, max_player));
+            Application.Run(new Form_Login());
         }
     }
 }

@@ -17,9 +17,10 @@ namespace Program
     {
         TcpClient tcpClient = new TcpClient();
         NetworkStream ns;
+
         public static event Action RegisterSuccessful;
-        public static event Action LoginSuccessful;
-        public static event Action CreateSuccessful;
+        public event Action LoginSuccessful;
+        public event Action<string, string, int> ReceiveRoomInfo;
 
         public void Connect()
         {
@@ -36,8 +37,27 @@ namespace Program
             }
         }
 
+        public void Stop()
+        {
+            if (tcpClient != null && tcpClient.Connected)
+            {
+                try
+                {
+                    tcpClient.Client.Shutdown(SocketShutdown.Both); // Ngắt kết nối
+                    tcpClient.Close(); // Giải phóng tài nguyên
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi đóng kết nối socket: {ex.Message}");
+                }
+                finally
+                {
+                    tcpClient = null;
+                }
+            }
+        }
 
-        public void SendData(Packet packet)
+        public void SendPacket(Packet packet)
         {
             if (tcpClient != null && tcpClient.Connected)
             {
@@ -83,7 +103,7 @@ namespace Program
 
 
 
-        private static Packet ParsePacket(string msg)
+        private Packet ParsePacket(string msg)
         {
             string[] payload = msg.Split(';');
             if (payload.Length == 0)
@@ -113,6 +133,8 @@ namespace Program
                         return new GuessResultPacket(remainingMsg);
                     case PacketType.LEADER_BOARD_INFO:
                         return new LeaderBoardInfoPacket(remainingMsg);
+                    case PacketType.JOIN_RESULT:
+                        return new JoinResultPacket(remainingMsg);
                     default:
                         return null; // Không biết loại packet
                 }
@@ -120,7 +142,7 @@ namespace Program
             return null;
         }
 
-        private static void AnalyzingPacket(Packet packet)
+        private void AnalyzingPacket(Packet packet)
         {
             switch (packet.Type)
             {
@@ -128,12 +150,11 @@ namespace Program
                     LoginResultPacket loginResultPacket = (LoginResultPacket)packet;
                     if (loginResultPacket.result == "success")
                     {
-                        MessageBox.Show("Đăng nhập thành công");
                         LoginSuccessful?.Invoke();
                     }
                     else
                     {
-                        MessageBox.Show("Đăng nhập thất bại");
+                        MessageBox.Show("Kiểm tra username hoặc mật khẩu và thử lại!");
                     }
                     break;
                 case PacketType.REGISTER_RESULT:
@@ -150,7 +171,31 @@ namespace Program
                     break;
                 case PacketType.ROOM_INFO:
                     RoomInfoPacket roomInfoPacket = (RoomInfoPacket)packet;
-
+                    string roomId = roomInfoPacket.RoomId;
+                    string host = roomInfoPacket.Host;
+                    string status = roomInfoPacket.Status;
+                    int playerCount = roomInfoPacket.CurrentPlayers;
+                    int maxPlayer = roomInfoPacket.MaxPlayers;
+                    ReceiveRoomInfo?.Invoke(roomId, host, maxPlayer);
+                    break;
+                case PacketType.JOIN_RESULT:
+                    JoinResultPacket joinResultPacket = (JoinResultPacket)packet;
+                    string result = joinResultPacket.result;
+                    switch (result)
+                    {
+                        case "NOT_EXIST":
+                            MessageBox.Show("Phòng không tồn tại!");
+                            break;
+                        case "PLAYING":
+                            MessageBox.Show("Phòng đang chơi!");
+                            break;
+                        case "FULL":
+                            MessageBox.Show("Phòng đã đầy!");
+                            break;
+                        case "FINISHED":
+                            MessageBox.Show("Phòng đã kết thúc!");
+                            break;
+                    }
                     break;
                 case PacketType.OTHER_INFO:
                     break;

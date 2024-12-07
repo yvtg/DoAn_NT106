@@ -13,7 +13,7 @@ namespace Program
 {
     public partial class Form_Room : Form
     {
-        private Client client;
+        private string roomId;
         private string username;
         private int max_player;
         public Room room;
@@ -24,16 +24,17 @@ namespace Program
         private Point previousPoint;
         private bool isDrawing = false;
         private bool isErasing = false; // Thêm biến để kiểm tra trạng thái xóa
-        private int eraseWidth = 10; // Kích thước bút khi xóa
 
-        public Form_Room(Client client, string username, int max_player)
+        public Form_Room(string roomId, string username, int max_player)
         {
             InitializeComponent();
 
-            this.client = client;
+            this.roomId = roomId;
             this.username = username;
             this.max_player = max_player;
-            room = new Room("1", max_player);
+
+            roomIdText.Text += roomId;
+            usernameText.Text += username;
 
             // Kiểm tra điều kiện và bật/tắt nút startButton
             startButton.Enabled = max_player >= 2;
@@ -67,7 +68,7 @@ namespace Program
         {
             if (isDrawing)
             {
-                using (Pen pen = new Pen(isErasing ? Color.White : Color.Black, isErasing ? eraseWidth : 2))
+                using (Pen pen = new Pen(isErasing ? Color.White : Color.Black, 2))
                 {
                     graphics.DrawLine(pen, previousPoint, e.Location);
                 }

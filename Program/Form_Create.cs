@@ -8,37 +8,39 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Models;
+using ReaLTaiizor.Forms;
 
 namespace Program
 {
     public partial class Form_Create : Form
     {
-        private Client client;
         private string username;
-        public Form_Create(Client client, string username)
+        private Client client;
+        public Form_Create(string username)
         {
             InitializeComponent();
-            this.client = client;
+            this.client = WindowsFormsApp1.Program.client;
             this.username = username;
         }
 
         private void createBtn_Click(object sender, EventArgs e)
         {
+
+            int maxPlayers = (int)numeric.ValueNumber;
+            CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers}");
+            WindowsFormsApp1.Program.client.SendPacket(createRoomPacket);
+
+            //đóng form create sau khi tạo phòng
             this.Close();
 
-            Form homeform = Application.OpenForms["Form_Home"];
-            if (homeform != null)
-            {
-                homeform.Close();
-            }
-
-            // tạo phòng mới
-            int max_player = Int32.Parse(maxTextbox.Text);
-            CreateRoomPacket packet = new CreateRoomPacket($"{username};{max_player}");
-            client.SendData(packet);
-
-            Form_Room roomform = new Form_Room(client,username,max_player);
-
         }
+
+        private void Form_Create_Load(object sender, EventArgs e)
+        {
+            numeric.MinNum = 1;
+            numeric.MaxNum = 5;
+            numeric.ValueNumber = 2;
+        }
+
     }
 }
