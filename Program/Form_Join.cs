@@ -17,7 +17,7 @@ namespace Program
         private string username;
         public Form_Join(string username)
         {
-            this.client = WindowsFormsApp1.Program.client;
+            this.client = Form_Input_ServerIP.client;
             this.username = username;
             InitializeComponent();
         }

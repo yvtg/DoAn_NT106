@@ -13,10 +13,12 @@ namespace Program
     public partial class Form_Profile : Form
     {
         string username;
+        private Client client;
         public Form_Profile(string username)
         {
             InitializeComponent();
             this.username = username;
+            this.client = Form_Input_ServerIP.client;
         }
         #region UI
         private void backButton_Click_1(object sender, EventArgs e)

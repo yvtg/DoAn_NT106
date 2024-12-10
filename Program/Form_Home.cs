@@ -21,7 +21,7 @@ namespace Program
         {
             InitializeComponent();
             this.username = username;
-            this.client = WindowsFormsApp1.Program.client;
+            this.client = Form_Input_ServerIP.client;
             client.ReceiveRoomInfo += OnReceiveRoomInfo;
         }
         #region ĐIỀU HƯỚNG
@@ -40,7 +40,7 @@ namespace Program
         private void logoutBtn_Click_1(object sender, EventArgs e)
         {
             LogoutPacket logoutPacket = new LogoutPacket(username);
-            WindowsFormsApp1.Program.client.SendPacket(logoutPacket);
+            client.SendPacket(logoutPacket);
 
             this.Close();
         }

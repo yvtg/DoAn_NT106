@@ -246,6 +246,12 @@
     <Compile Include="Form_Create.Designer.cs">
       <DependentUpon>Form_Create.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Input_ServerIP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Input_ServerIP.Designer.cs">
+      <DependentUpon>Form_Input_ServerIP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Law.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -305,6 +311,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Home.resx">
       <DependentUpon>Form_Home.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Input_ServerIP.resx">
+      <DependentUpon>Form_Input_ServerIP.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Join.resx">
       <DependentUpon>Form_Join.cs</DependentUpon>

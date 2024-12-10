@@ -22,11 +22,11 @@ namespace Program
         public event Action LoginSuccessful;
         public event Action<string, string, int> ReceiveRoomInfo;
 
-        public void Connect()
+        public void Connect(string serverIP)
         {
             try
             {
-                IPAddress ipServer = IPAddress.Parse("127.0.0.1");
+                IPAddress ipServer = IPAddress.Parse(serverIP);
                 IPEndPoint ipEP = new IPEndPoint(ipServer, 8080);
                 tcpClient.Connect(ipEP);
                 Task.Run(() => ReceiveData());
@@ -72,10 +72,6 @@ namespace Program
                 {
                     MessageBox.Show("Lỗi khi gửi dữ liệu: " + ex.Message); // Error sending data
                 }
-            }
-            else
-            {
-                MessageBox.Show("Client không kết nối với server."); // Client is not connected to the server
             }
         }
 

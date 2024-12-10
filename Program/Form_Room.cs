@@ -17,6 +17,7 @@ namespace Program
         private string username;
         private int max_player;
         public Room room;
+        private Client client;
 
         // Các thành phần liên quan đến tính năng vẽ
         private Bitmap drawingBitmap;
@@ -28,6 +29,8 @@ namespace Program
         public Form_Room(string roomId, string username, int max_player)
         {
             InitializeComponent();
+
+            this.client = Form_Input_ServerIP.client;
 
             this.roomId = roomId;
             this.username = username;

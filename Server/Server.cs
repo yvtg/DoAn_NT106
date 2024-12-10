@@ -42,10 +42,7 @@ namespace Server
         {
             try
             {
-                const string SERVER_IPADDRESS = "127.0.0.1";
-                const int SERVER_PORT = 8080;
-                IPAddress ipAddr = IPAddress.Parse(SERVER_IPADDRESS);
-                IPEndPoint ipEP = new IPEndPoint(ipAddr, SERVER_PORT);
+                EndPoint ipEP = new IPEndPoint(IPAddress.Any, 8080);
 
                 // Khởi tạo server
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
