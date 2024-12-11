@@ -34,7 +34,7 @@
             this.gameTimer = new System.Windows.Forms.Timer(this.components);
             this.wordTextbox = new System.Windows.Forms.TextBox();
             this.chatRichtextbox = new System.Windows.Forms.RichTextBox();
-            this.Room = new ReaLTaiizor.Forms.HopeForm();
+            this.roomForm = new ReaLTaiizor.Forms.HopeForm();
             this.sendButton = new ReaLTaiizor.Controls.HopeButton();
             this.sendTextBox = new ReaLTaiizor.Controls.HopeTextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -44,10 +44,11 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.EraserPictureBox = new System.Windows.Forms.PictureBox();
             this.PencilPictureBox = new System.Windows.Forms.PictureBox();
-            this.roomIdText = new System.Windows.Forms.Label();
+            this.usernamText = new System.Windows.Forms.Label();
             this.hostText = new System.Windows.Forms.Label();
             this.leaveBtn = new ReaLTaiizor.Controls.HopeButton();
             this.userListView = new System.Windows.Forms.ListView();
+            this.maxText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EraserPictureBox)).BeginInit();
@@ -91,22 +92,22 @@
             this.chatRichtextbox.TabIndex = 6;
             this.chatRichtextbox.Text = "";
             // 
-            // Room
+            // roomForm
             // 
-            this.Room.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
-            this.Room.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
-            this.Room.ControlBoxColorN = System.Drawing.Color.White;
-            this.Room.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Room.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Room.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.Room.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
-            this.Room.Image = ((System.Drawing.Image)(resources.GetObject("Room.Image")));
-            this.Room.Location = new System.Drawing.Point(0, 0);
-            this.Room.Name = "Room";
-            this.Room.Size = new System.Drawing.Size(765, 40);
-            this.Room.TabIndex = 20;
-            this.Room.Text = "Register";
-            this.Room.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            this.roomForm.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
+            this.roomForm.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.roomForm.ControlBoxColorN = System.Drawing.Color.White;
+            this.roomForm.Cursor = System.Windows.Forms.Cursors.Default;
+            this.roomForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.roomForm.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.roomForm.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
+            this.roomForm.Image = ((System.Drawing.Image)(resources.GetObject("roomForm.Image")));
+            this.roomForm.Location = new System.Drawing.Point(0, 0);
+            this.roomForm.Name = "roomForm";
+            this.roomForm.Size = new System.Drawing.Size(765, 40);
+            this.roomForm.TabIndex = 20;
+            this.roomForm.Text = "Room - ";
+            this.roomForm.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             // 
             // sendButton
             // 
@@ -246,25 +247,25 @@
             this.PencilPictureBox.Tag = "";
             this.PencilPictureBox.Click += new System.EventHandler(this.PencilPictureBox_Click);
             // 
-            // roomIdText
+            // usernamText
             // 
-            this.roomIdText.AutoSize = true;
-            this.roomIdText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.roomIdText.Location = new System.Drawing.Point(6, 52);
-            this.roomIdText.Name = "roomIdText";
-            this.roomIdText.Size = new System.Drawing.Size(65, 15);
-            this.roomIdText.TabIndex = 35;
-            this.roomIdText.Text = "Room id:";
+            this.usernamText.AutoSize = true;
+            this.usernamText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernamText.Location = new System.Drawing.Point(6, 52);
+            this.usernamText.Name = "usernamText";
+            this.usernamText.Size = new System.Drawing.Size(85, 15);
+            this.usernamText.TabIndex = 35;
+            this.usernamText.Text = "Username:  ";
             // 
             // hostText
             // 
             this.hostText.AutoSize = true;
             this.hostText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hostText.Location = new System.Drawing.Point(6, 87);
+            this.hostText.Location = new System.Drawing.Point(6, 74);
             this.hostText.Name = "hostText";
-            this.hostText.Size = new System.Drawing.Size(40, 15);
+            this.hostText.Size = new System.Drawing.Size(44, 15);
             this.hostText.TabIndex = 36;
-            this.hostText.Text = "Host:";
+            this.hostText.Text = "Host: ";
             // 
             // leaveBtn
             // 
@@ -296,16 +297,27 @@
             this.userListView.TabIndex = 38;
             this.userListView.UseCompatibleStateImageBehavior = false;
             // 
+            // maxText
+            // 
+            this.maxText.AutoSize = true;
+            this.maxText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxText.Location = new System.Drawing.Point(6, 98);
+            this.maxText.Name = "maxText";
+            this.maxText.Size = new System.Drawing.Size(42, 15);
+            this.maxText.TabIndex = 39;
+            this.maxText.Text = "Max: ";
+            // 
             // Form_Room
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
             this.ClientSize = new System.Drawing.Size(765, 467);
+            this.Controls.Add(this.maxText);
             this.Controls.Add(this.userListView);
             this.Controls.Add(this.leaveBtn);
             this.Controls.Add(this.hostText);
-            this.Controls.Add(this.roomIdText);
+            this.Controls.Add(this.usernamText);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.label3);
@@ -313,7 +325,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.sendTextBox);
             this.Controls.Add(this.sendButton);
-            this.Controls.Add(this.Room);
+            this.Controls.Add(this.roomForm);
             this.Controls.Add(this.chatRichtextbox);
             this.Controls.Add(this.wordTextbox);
             this.Controls.Add(this.timeLabel);
@@ -338,7 +350,7 @@
         private System.Windows.Forms.Timer gameTimer;
         private System.Windows.Forms.TextBox wordTextbox;
         private System.Windows.Forms.RichTextBox chatRichtextbox;
-        private ReaLTaiizor.Forms.HopeForm Room;
+        private ReaLTaiizor.Forms.HopeForm roomForm;
         private ReaLTaiizor.Controls.HopeButton sendButton;
         private ReaLTaiizor.Controls.HopeTextBox sendTextBox;
         private System.Windows.Forms.PictureBox pictureBox1;
@@ -348,9 +360,10 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox PencilPictureBox;
         private System.Windows.Forms.PictureBox EraserPictureBox;
-        private System.Windows.Forms.Label roomIdText;
+        private System.Windows.Forms.Label usernamText;
         private System.Windows.Forms.Label hostText;
         private ReaLTaiizor.Controls.HopeButton leaveBtn;
         private System.Windows.Forms.ListView userListView;
+        private System.Windows.Forms.Label maxText;
     }
 }

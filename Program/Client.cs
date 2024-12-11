@@ -25,12 +25,12 @@ namespace Program
         public event Action<string, string, string> ReceiveMessage;
         public event Action<string, string, int, string> ReceiveOtherInfo;
 
-        public void Connect(string serverIP)
+        public void Connect(string serverIP, int port)
         {
             try
             {
                 IPAddress ipServer = IPAddress.Parse(serverIP);
-                IPEndPoint ipEP = new IPEndPoint(ipServer, 8080);
+                IPEndPoint ipEP = new IPEndPoint(ipServer, port);
                 tcpClient.Connect(ipEP);
                 Task.Run(() => ReceiveData());
             }
@@ -89,7 +89,7 @@ namespace Program
 
                 while ((byteRec = ns.Read(byteData, 0, byteData.Length)) != 0)
                 {
-                    string data = Encoding.ASCII.GetString(byteData, 0, byteRec);
+                    string data = Encoding.UTF8.GetString(byteData, 0, byteRec);
                     Packet packet = ParsePacket(data);
                     AnalyzingPacket(packet);
                 }
@@ -151,7 +151,7 @@ namespace Program
             {
                 case PacketType.LOGIN_RESULT:
                     LoginResultPacket loginResultPacket = (LoginResultPacket)packet;
-                    if (loginResultPacket.result == "success")
+                    if (loginResultPacket.result == "SUCCESS")
                     {
                         LoginSuccessful?.Invoke();
                     }
@@ -162,7 +162,7 @@ namespace Program
                     break;
                 case PacketType.REGISTER_RESULT:
                     RegisterResultPacket registerResultPacket = (RegisterResultPacket)packet;
-                    if (registerResultPacket.result== "success")
+                    if (registerResultPacket.result== "SUCCESS")
                     {
                         MessageBox.Show("Đăng ký thành công");
                         RegisterSuccessful?.Invoke();

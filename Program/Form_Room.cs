@@ -41,8 +41,10 @@ namespace Program
             this.max_player = max_player;
             this.username = username;
 
-            roomIdText.Text += roomId;
+            roomForm.Text += roomId;
+            usernamText.Text += username;
             hostText.Text += host;
+            maxText.Text += max_player;
 
             // Kiểm tra điều kiện và bật/tắt nút startButton
             startButton.Enabled = max_player >= 2;
@@ -63,7 +65,7 @@ namespace Program
             // Sự kiện nhận được tin nhắn của người khác
             client.ReceiveMessage += OnReceivedMessage;
 
-            // Cập nhật phòng
+            // Cập nhật danh sách người chơi
             client.ReceiveOtherInfo += OnRecivedOtherInfo;
 
             // chỉ chủ phòng mới có thể bắt đầu
@@ -165,49 +167,46 @@ namespace Program
 
             if (roomId == this.roomId)
             {
-                // khoi tao danh sach user
-                if (status == "JOINING")
+
+                switch (status)
                 {
-                    ListViewItem item = new ListViewItem(username);
-                    ListViewItem.ListViewSubItem score = new ListViewItem.ListViewSubItem(item, Score.ToString());
-                    item.SubItems.Add(score);
-                    userListView.Items.Add(item);
-                }
-                // khoi tao danh sach nhung nguoi choi da co san trong phong
-                else if (status == "JOINED")
-                {
-                    ListViewItem item = new ListViewItem(username);
-                    ListViewItem.ListViewSubItem score = new ListViewItem.ListViewSubItem(item, Score.ToString());
-                    item.SubItems.Add(score);
-                    userListView.Items.Add(item);
-                }
-                // cap nhat diem
-                else if (status == "GUESS_RIGHT")
-                {
-                    foreach (ListViewItem item in userListView.Items)
-                    {
-                        if (item.Text == username)  // item.Text là phần tử đầu tiên, tức là username
+                    case "JOINED":
+                    case "JOINING":
+                        // thêm user vô danh sách
+                        ListViewItem item = new ListViewItem(username);
+                        ListViewItem.ListViewSubItem score = new ListViewItem.ListViewSubItem(item, Score.ToString());
+                        item.SubItems.Add(score);
+                        userListView.Items.Add(item);
+                        break;
+
+                    case "GUESS":
+                        // cập nhật điểm
+                        foreach (ListViewItem user in userListView.Items)
                         {
-                            // Tìm subitem chứa điểm (score) và thay đổi giá trị
-                            item.SubItems[1].Text = Score.ToString(); // SubItem thứ 1 là score
-                            break;
+                            if (user.Text == username)
+                            {
+                                user.SubItems[1].Text = Score.ToString(); // Update score
+                                break;
+                            }
                         }
-                    }
-                }
-                // xoa user
-                else if (status == "LEAVE")
-                {
-                    foreach (ListViewItem item in userListView.Items)
-                    {
-                        // Kiểm tra nếu tên người chơi (username) trùng với item.Text
-                        if (item.Text == username)
+                        break;
+
+                    case "LEAVE":
+                        // xóa user khỏi danh sách
+                        foreach (ListViewItem user in userListView.Items)
                         {
-                            // Xóa item khỏi ListView
-                            userListView.Items.Remove(item);
-                            break; // Nếu đã tìm thấy, thoát vòng lặp
+                            if (user.Text == username)
+                            {
+                                userListView.Items.Remove(user);
+                                break;
+                            }
                         }
-                    }
+                        break;
+
+                    default:
+                        break;
                 }
+
                 userListView.Refresh();
             }
         }

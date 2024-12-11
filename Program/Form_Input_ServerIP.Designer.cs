@@ -34,6 +34,9 @@
             this.connectBtn = new ReaLTaiizor.Controls.HopeButton();
             this.serverIPTextBox = new ReaLTaiizor.Controls.HopeTextBox();
             this.idLabel = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.portTextBox = new ReaLTaiizor.Controls.HopeTextBox();
             this.SuspendLayout();
             // 
             // inputServerIP
@@ -48,7 +51,7 @@
             this.inputServerIP.Image = ((System.Drawing.Image)(resources.GetObject("inputServerIP.Image")));
             this.inputServerIP.Location = new System.Drawing.Point(0, 0);
             this.inputServerIP.Name = "inputServerIP";
-            this.inputServerIP.Size = new System.Drawing.Size(453, 40);
+            this.inputServerIP.Size = new System.Drawing.Size(485, 40);
             this.inputServerIP.TabIndex = 22;
             this.inputServerIP.Text = "Input Server IP";
             this.inputServerIP.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
@@ -63,7 +66,7 @@
             this.connectBtn.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.connectBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             this.connectBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.connectBtn.Location = new System.Drawing.Point(318, 91);
+            this.connectBtn.Location = new System.Drawing.Point(177, 157);
             this.connectBtn.Name = "connectBtn";
             this.connectBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
             this.connectBtn.Size = new System.Drawing.Size(104, 36);
@@ -83,7 +86,7 @@
             this.serverIPTextBox.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.serverIPTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.serverIPTextBox.Hint = "";
-            this.serverIPTextBox.Location = new System.Drawing.Point(32, 91);
+            this.serverIPTextBox.Location = new System.Drawing.Point(67, 91);
             this.serverIPTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.serverIPTextBox.MaxLength = 32767;
             this.serverIPTextBox.Multiline = false;
@@ -93,7 +96,7 @@
             this.serverIPTextBox.SelectedText = "";
             this.serverIPTextBox.SelectionLength = 0;
             this.serverIPTextBox.SelectionStart = 0;
-            this.serverIPTextBox.Size = new System.Drawing.Size(253, 36);
+            this.serverIPTextBox.Size = new System.Drawing.Size(174, 36);
             this.serverIPTextBox.TabIndex = 24;
             this.serverIPTextBox.TabStop = false;
             this.serverIPTextBox.UseSystemPasswordChar = false;
@@ -102,19 +105,70 @@
             // 
             this.idLabel.AutoSize = true;
             this.idLabel.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.idLabel.Location = new System.Drawing.Point(67, 55);
+            this.idLabel.Location = new System.Drawing.Point(165, 58);
             this.idLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.idLabel.Name = "idLabel";
             this.idLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.idLabel.Size = new System.Drawing.Size(270, 21);
+            this.idLabel.Size = new System.Drawing.Size(120, 21);
             this.idLabel.TabIndex = 23;
-            this.idLabel.Text = "Nhập địa chỉ IP của server\r\n";
+            this.idLabel.Text = "nhập server";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(23, 91);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.label1.Size = new System.Drawing.Size(30, 21);
+            this.label1.TabIndex = 26;
+            this.label1.Text = "IP";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(268, 91);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.label2.Size = new System.Drawing.Size(50, 21);
+            this.label2.TabIndex = 27;
+            this.label2.Text = "Port";
+            // 
+            // portTextBox
+            // 
+            this.portTextBox.BackColor = System.Drawing.Color.White;
+            this.portTextBox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.portTextBox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.portTextBox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.portTextBox.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.portTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
+            this.portTextBox.Hint = "";
+            this.portTextBox.Location = new System.Drawing.Point(335, 91);
+            this.portTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.portTextBox.MaxLength = 32767;
+            this.portTextBox.Multiline = false;
+            this.portTextBox.Name = "portTextBox";
+            this.portTextBox.PasswordChar = '\0';
+            this.portTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.portTextBox.SelectedText = "";
+            this.portTextBox.SelectionLength = 0;
+            this.portTextBox.SelectionStart = 0;
+            this.portTextBox.Size = new System.Drawing.Size(103, 36);
+            this.portTextBox.TabIndex = 28;
+            this.portTextBox.TabStop = false;
+            this.portTextBox.UseSystemPasswordChar = false;
             // 
             // Form_Input_ServerIP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(453, 158);
+            this.ClientSize = new System.Drawing.Size(485, 205);
+            this.Controls.Add(this.portTextBox);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.connectBtn);
             this.Controls.Add(this.serverIPTextBox);
             this.Controls.Add(this.idLabel);
@@ -137,5 +191,8 @@
         private ReaLTaiizor.Controls.HopeTextBox serverIPTextBox;
         private System.Windows.Forms.Label idLabel;
         private ReaLTaiizor.Controls.HopeButton connectBtn;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private ReaLTaiizor.Controls.HopeTextBox portTextBox;
     }
 }

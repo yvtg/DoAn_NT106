@@ -18,7 +18,7 @@ namespace Server
     public class Server
     {
         public static Socket serverSocket;
-        public static List<User> clients = new List<User>(); // danh sách client đang kết nối tới
+        public List<User> clients = new List<User>(); // danh sách client đang kết nối tới
         public List<Room> rooms = new List<Room>(); // danh sách phòng chơi đang có
 
         private CancellationTokenSource cancellationTokenSource;
@@ -27,6 +27,8 @@ namespace Server
         private bool isRunning;
 
         public event Action<string> UpdateLog; // cập nhật log trên UI
+        public event Action UpdateRoomList; // cập nhật danh sách phòng trên UI
+        public event Action UpdateClientList; // cập nhật danh sách client trên UI
 
         #region Connect
         public void StartServer()
@@ -68,7 +70,7 @@ namespace Server
 
                         // Chờ kết nối từ client
                         Socket clientSocket = await serverSocket.AcceptAsync();
-                        HandleClientConnection(clientSocket);
+                        HandleClientConnection(clientSocket, cancellationToken);
                     }
                     catch (Exception ex)
                     {
@@ -86,12 +88,13 @@ namespace Server
             }
         }
 
-        private void HandleClientConnection(Socket clientSocket)
+        private void HandleClientConnection(Socket clientSocket, CancellationToken cancellationToken)
         {
             var client = new User(clientSocket);
             if (client != null)
             {
                 clients.Add(client);
+                UpdateClientList?.Invoke();
             }
             else
             {
@@ -103,7 +106,7 @@ namespace Server
             {
                 try
                 {
-                    while (client.IsConnected)
+                    while (client.IsConnected && !cancellationToken.IsCancellationRequested)
                     {
                         string msg = await ReceiveDataAsync(client);
                         if (msg != null)
@@ -126,6 +129,7 @@ namespace Server
                     {
                         client.Stop();
                         clients.Remove(client);
+                        UpdateClientList?.Invoke();
                     }
                     UpdateLog?.Invoke($"Client đã ngắt kết nối: {clientSocket.RemoteEndPoint}");
                 }
@@ -185,6 +189,7 @@ namespace Server
                 {
                     client.Stop();
                     clients.Remove(client);
+                    UpdateClientList?.Invoke();
                     UpdateLog?.Invoke($"Client {client.UserSocket.RemoteEndPoint} đã ngắt kết nối.");
                     return null;
                 }
@@ -194,6 +199,7 @@ namespace Server
             {
                 client.Stop();
                 clients.Remove(client);
+                UpdateClientList?.Invoke();
                 UpdateLog?.Invoke($"Client {client.UserSocket.RemoteEndPoint} đã ngắt kết nối.");
             }
             return null;
@@ -215,6 +221,7 @@ namespace Server
                 // Xử lý client bị mất kết nối
                 client.Stop();
                 clients.Remove(client);
+                UpdateClientList?.Invoke();
             }
         }
 
@@ -297,31 +304,31 @@ namespace Server
                     LoginPacket loginPacket = (LoginPacket)packet;
                     if (db.LoginUser(loginPacket.Username, loginPacket.Password))
                     {
-                        LoginResultPacket result = new LoginResultPacket("success");
+                        LoginResultPacket result = new LoginResultPacket("SUCCESS");
                         sendPacket(client, result);
                         UpdateLog.Invoke($"{loginPacket.Username} đăng nhập thành công");
                         client.Name = loginPacket.Username;
                     }
                     else
                     {
-                        LoginResultPacket result = new LoginResultPacket("fail");
+                        LoginResultPacket result = new LoginResultPacket("FAIL");
                         sendPacket(client, result);
                         UpdateLog.Invoke($"{loginPacket.Username} đăng nhập thất bại");
                     }
-
+                    UpdateClientList?.Invoke();
                     break;
 
                 case PacketType.REGISTER:
                     RegisterPacket registerPacket = (RegisterPacket)packet;
                     if (db.RegisterUser(registerPacket.Username, registerPacket.Email, registerPacket.Password))
                     {
-                        RegisterResultPacket result = new RegisterResultPacket("success");
+                        RegisterResultPacket result = new RegisterResultPacket("SUCCESS");
                         sendPacket(client, result);
                         UpdateLog.Invoke($"{registerPacket.Username} đăng ký tài khoản thành công");
                     }
                     else
                     {
-                        RegisterResultPacket result = new RegisterResultPacket("fail");
+                        RegisterResultPacket result = new RegisterResultPacket("FAIL");
                         sendPacket(client, result);
                         UpdateLog.Invoke($"{registerPacket.Username} đăng ký tài khoản thất bại");
                     }
@@ -361,9 +368,11 @@ namespace Server
                     RoomInfoPacket roomInfo = new RoomInfoPacket($"{roomId};{room.host};{room.status};{maxPlayers};{currentPlayers};{currentRound}");
                     sendPacket(client, roomInfo);
 
-                    OtherInfoPacket otherInfoPacket = new OtherInfoPacket($"{roomId};{client.Name};{client.Score};JOINING");
-                    sendPacket(client, otherInfoPacket);
-
+                    //OtherInfoPacket otherInfoPacket = new OtherInfoPacket($"{roomId};{client.Name};{client.Score};JOINING");
+                    //sendPacket(client, otherInfoPacket);
+                    client.RoomId = roomId;
+                    UpdateClientList?.Invoke();
+                    UpdateRoomList?.Invoke();
                     UpdateLog.Invoke($"{client.Name} đã tạo phòng {roomId}");
 
                     break;
@@ -416,6 +425,8 @@ namespace Server
                     else if (join_result=="SUCCESS")
                     {
                         room.players.Add(client);
+                        client.RoomId = roomIdToJoin;
+                        UpdateClientList?.Invoke();
 
                         // cap nhat thong tin phong
                         roomInfo = new RoomInfoPacket($"{roomIdToJoin};{room.host};{room.status};{room.maxPlayers};{room.players.Count};0");
@@ -424,14 +435,17 @@ namespace Server
                         //cap nhat thong tin nhung nguoi co trong phong
                         foreach (var player in room.players)
                         {
-                            OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomIdToJoin};{player.Name};{player.Score};JOINED");
-                            sendPacket(client, otherInfo);
+                            if (player != null)
+                            {
+                                OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomIdToJoin};{player.Name};{player.Score};JOINED");
+                                sendPacket(client, otherInfo);
+                            }
                         }
 
-                        otherInfoPacket = new OtherInfoPacket($"{roomIdToJoin};{client.Name};{client.Score};JOINING");
+                        OtherInfoPacket otherInfoPacket = new OtherInfoPacket($"{roomIdToJoin};{client.Name};{client.Score};JOINING");
                         BroadcastPacket(room, otherInfoPacket);
 
-
+                        UpdateRoomList?.Invoke();
                         UpdateLog.Invoke($"{client.Name} đã tham gia phòng {roomIdToJoin}");
                     }
 
@@ -449,6 +463,7 @@ namespace Server
                         {
                             rooms.Remove(room);
                         }
+                        UpdateRoomList?.Invoke();
                         UpdateLog.Invoke($"{client.Name} đã rời phòng {roomId}");
                     }
 
@@ -469,7 +484,7 @@ namespace Server
                     if (room != null)
                     {
                         BroadcastPacket(room, guessPacket);
-                        OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};JOINED");
+                        OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};GUESS");
                         BroadcastPacket(room, otherInfo);
                         UpdateLog.Invoke($"{username} đã đoán: {msg}");
                     }
@@ -489,6 +504,7 @@ namespace Server
                         client.Stop();
                         clients.Remove(client);
                     }
+                    cancellationTokenSource.Cancel();
                     break;
                 default:
                     break;

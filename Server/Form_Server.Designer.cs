@@ -33,6 +33,10 @@
             this.startBtn = new ReaLTaiizor.Controls.HopeRoundButton();
             this.stopBtn = new ReaLTaiizor.Controls.HopeRoundButton();
             this.hopeForm2 = new ReaLTaiizor.Forms.HopeForm();
+            this.label1 = new System.Windows.Forms.Label();
+            this.clientListView = new System.Windows.Forms.ListView();
+            this.label2 = new System.Windows.Forms.Label();
+            this.roomListView = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
             // logRichTextBox
@@ -40,7 +44,7 @@
             this.logRichTextBox.Location = new System.Drawing.Point(28, 64);
             this.logRichTextBox.Name = "logRichTextBox";
             this.logRichTextBox.ReadOnly = true;
-            this.logRichTextBox.Size = new System.Drawing.Size(513, 366);
+            this.logRichTextBox.Size = new System.Drawing.Size(515, 205);
             this.logRichTextBox.TabIndex = 0;
             this.logRichTextBox.Text = "";
             // 
@@ -103,11 +107,51 @@
             this.hopeForm2.Text = "Server";
             this.hopeForm2.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(27, 286);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(87, 13);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Danh sách client";
+            // 
+            // clientListView
+            // 
+            this.clientListView.HideSelection = false;
+            this.clientListView.Location = new System.Drawing.Point(30, 308);
+            this.clientListView.Name = "clientListView";
+            this.clientListView.Size = new System.Drawing.Size(190, 147);
+            this.clientListView.TabIndex = 16;
+            this.clientListView.UseCompatibleStateImageBehavior = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(256, 286);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(92, 13);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "Danh sách phòng";
+            // 
+            // roomListView
+            // 
+            this.roomListView.HideSelection = false;
+            this.roomListView.Location = new System.Drawing.Point(259, 308);
+            this.roomListView.Name = "roomListView";
+            this.roomListView.Size = new System.Drawing.Size(425, 147);
+            this.roomListView.TabIndex = 18;
+            this.roomListView.UseCompatibleStateImageBehavior = false;
+            // 
             // Form_Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(698, 454);
+            this.ClientSize = new System.Drawing.Size(698, 467);
+            this.Controls.Add(this.roomListView);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.clientListView);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.hopeForm2);
             this.Controls.Add(this.stopBtn);
             this.Controls.Add(this.startBtn);
@@ -121,6 +165,7 @@
             this.Text = "Server";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Server_FormClosing);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -130,6 +175,10 @@
         private ReaLTaiizor.Controls.HopeRoundButton startBtn;
         private ReaLTaiizor.Controls.HopeRoundButton stopBtn;
         private ReaLTaiizor.Forms.HopeForm hopeForm2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListView clientListView;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ListView roomListView;
     }
 }
 

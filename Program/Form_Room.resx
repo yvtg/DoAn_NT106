@@ -121,7 +121,7 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="Room.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="roomForm.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         R0lGODlh9AH0AfQGAJm72fTv38PaiVt7l3mdP3yevv///+PZtaXFaK+jqfDf5o2zUdvIik9PT4euSFx7
         l529XYClRI2uzP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkUABMAIf8L
@@ -549,7 +549,7 @@
   <data name="EraserPictureBox.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wgAADsIBFShKgAAAB51JREFUaEPtmd+PE1UUx/mjfJEfiYmwsCBCwi6La5SVLIq7yw/jE2qIGhNAiDFG
+        wQAADsEBuJFr7QAAB51JREFUaEPtmd+PE1UUx/mjfJEfiYmwsCBCwi6La5SVLIq7yw/jE2qIGhNAiDFG
         9AWJrsubicYIxAceiIkiPiiaYIz9ud22207b6baddjvtzPGcc++dzkyn3f7a1RBPcjK7S3/cz3zP93vv
         hG2zs7PwOPQ2eEzqf5CBy7bFtW7C+vc/QfmDJTCufw2NaFL8fcD6VxSxq+tgIED94OtgjZ8Da/9rUDvx
         Lqz/+Ei+QML2UVsOQhDly59DY/9ZKI7Ng7ZnDvJ7XoX6U+egdv482OXf5Sv7q60BkTfYqlQZwhw/AwVc
@@ -588,7 +588,7 @@
   <data name="PencilPictureBox.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADEAAAAwCAYAAAC4wJK5AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wgAADsIBFShKgAAABqtJREFUaEPV2YlPFFccB3D/lDZNTBo1MVgPvOrFglXQqG0FDzzQRimHFqu2VlMT
+        wQAADsEBuJFr7QAABqtJREFUaEPV2YlPFFccB3D/lDZNTBo1MVgPvOrFglXQqG0FDzzQRimHFqu2VlMT
         E9OGtthqYpvaqi3WLoIH5RTlBoXlPgWkmgq7XLs7e83szs63v5mdBbYsMIu7QL/Jb4Fl97334b2ZebPM
         iYmJwf+95mCWhtUPwtBcC2u/Vn5m/MxKxIuCTGRvC0Z++EJkhgeh4+7v8m+8Z9Yhuu//gaxNC3Fv4wL8
         qZqPu2ELkLd5IVpSr8qvGJtZhWjpfY6M2K24t+otCaCW607ofAnSeutH+ZWemTWIulfd+Ln6Aa4+TkVq

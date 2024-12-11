@@ -64,7 +64,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"LOGIN_RESULT;{result}");
+            return Encoding.UTF8.GetBytes($"LOGIN_RESULT;{result}");
         }
     }
 
@@ -86,7 +86,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"REGISTER_RESULT;{result}");
+            return Encoding.UTF8.GetBytes($"REGISTER_RESULT;{result}");
         }
     }
 
@@ -108,7 +108,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"JOIN_RESULT;{result}");
+            return Encoding.UTF8.GetBytes($"JOIN_RESULT;{result}");
         }
     }
     public class RoomInfoPacket : Packet
@@ -179,7 +179,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"OTHER_INFO;{RoomId};{playerName};{Score};{Status}");
+            return Encoding.UTF8.GetBytes($"OTHER_INFO;{RoomId};{playerName};{Score};{Status}");
         }
     }
 
@@ -203,7 +203,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"ROUND_UPDATE;{RoomId};{Word}");
+            return Encoding.UTF8.GetBytes($"ROUND_UPDATE;{RoomId};{Word}");
         }
     }
 
@@ -229,7 +229,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"GUESS_WRONG;{RoomId};{playerName};{isRight}");
+            return Encoding.UTF8.GetBytes($"GUESS_WRONG;{RoomId};{playerName};{isRight}");
         }
     }
 
@@ -255,7 +255,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"LEADER_BOARD_INFO;{playerName1};{playerName2};{playerName3}");
+            return Encoding.UTF8.GetBytes($"LEADER_BOARD_INFO;{playerName1};{playerName2};{playerName3}");
         }
     }
 
@@ -279,7 +279,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"LOGIN;{Payload}");
+            return Encoding.UTF8.GetBytes($"LOGIN;{Payload}");
         }
     }
 
@@ -304,7 +304,7 @@ namespace Models
         }
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"REGISTER;{Payload}");
+            return Encoding.UTF8.GetBytes($"REGISTER;{Payload}");
         }
     }
 
@@ -318,7 +318,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"LOGOUT;{Username}");
+            return Encoding.UTF8.GetBytes($"LOGOUT;{Username}");
         }
     }
 
@@ -342,7 +342,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"CREATE_ROOM;{username};{Max_player}");
+            return Encoding.UTF8.GetBytes($"CREATE_ROOM;{username};{Max_player}");
         }
     }
 
@@ -365,7 +365,7 @@ namespace Models
         }
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"JOIN_ROOM;{RoomId};{Username}");
+            return Encoding.UTF8.GetBytes($"JOIN_ROOM;{RoomId};{Username}");
         }
     }
 
@@ -388,7 +388,7 @@ namespace Models
         }
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"LEAVE_ROOM;{RoomId};{Username}");
+            return Encoding.UTF8.GetBytes($"LEAVE_ROOM;{RoomId};{Username}");
         }
     }
 
@@ -401,7 +401,7 @@ namespace Models
         }
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"START;{RoomId}");
+            return Encoding.UTF8.GetBytes($"START;{RoomId}");
         }
     }
 
@@ -426,7 +426,7 @@ namespace Models
         }
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"DESCRIBE;{RoomId};{playerName};{DescribeMessage}");
+            return Encoding.UTF8.GetBytes($"DESCRIBE;{RoomId};{playerName};{DescribeMessage}");
         }
     }
 
@@ -451,7 +451,7 @@ namespace Models
         }
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"GUESS;{RoomId};{playerName};{GuessMessage}");
+            return Encoding.UTF8.GetBytes($"GUESS;{RoomId};{playerName};{GuessMessage}");
         }
     }
     
@@ -464,7 +464,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"DISCONNECT");
+            return Encoding.UTF8.GetBytes($"DISCONNECT");
         }
     }
 }

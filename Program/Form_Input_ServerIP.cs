@@ -19,12 +19,12 @@ namespace Program
             InitializeComponent();
         }
 
-        private bool Connect(string serverIP)
+        private bool Connect(string serverIP, int port)
         {
             try
             {
                 client = new Client();
-                client.Connect(serverIP);
+                client.Connect(serverIP, port);
                 return true;
             }
             catch (Exception ex)
@@ -37,10 +37,11 @@ namespace Program
         private void connectBtn_Click(object sender, EventArgs e)
         {
             string serverIP = serverIPTextBox.Text;
+            int port = Int32.Parse(portTextBox.Text);
             bool isServerIPValid = System.Net.IPAddress.TryParse(serverIP, out _);
             if (isServerIPValid)
             {
-                if (Connect(serverIP))
+                if (Connect(serverIP, port))
                 {
                     this.Hide();  
                     Form_Login form_Login = new Form_Login();
@@ -57,6 +58,5 @@ namespace Program
                 MessageBox.Show("Vui lòng nhập địa chỉ IP server hợp lệ!");
             }
         }
-
     }
 }
