@@ -21,6 +21,7 @@ namespace Program
 
         public static event Action RegisterSuccessful;
         public event Action LoginSuccessful;
+        public event Action ResetPasswordSuccessful;
         public event Action<string, string, int> ReceiveRoomInfo;
         public event Action<string, string, string> ReceiveMessage;
         public event Action<string, string, int, string> ReceiveOtherInfo;
@@ -66,15 +67,29 @@ namespace Program
             {
                 try
                 {
-                    ns = tcpClient.GetStream();
+                    // Nếu NetworkStream chưa được khởi tạo, hãy khởi tạo
+                    if (ns == null)
+                    {
+                        ns = tcpClient.GetStream();
+                    }
+
+                    // Chuyển đổi packet thành mảng byte
                     byte[] byteData = packet.ToBytes();
+
+                    // Gửi mảng byte qua NetworkStream
                     ns.Write(byteData, 0, byteData.Length);
-                    ns.Flush(); // Ensure all data is sent
+                    ns.Flush(); // Đảm bảo tất cả dữ liệu đã được gửi
                 }
                 catch (Exception ex)
                 {
+                    // Thông báo lỗi nếu có ngoại lệ xảy ra
                     MessageBox.Show("Lỗi khi gửi dữ liệu: " + ex.Message); // Error sending data
                 }
+            }
+            else
+            {
+                // Thông báo lỗi nếu client không kết nối với server
+                MessageBox.Show("Client không kết nối với server."); // Client is not connected to the server
             }
         }
 
@@ -170,6 +185,18 @@ namespace Program
                     else
                     {
                         MessageBox.Show("Username đã tồn tại!");
+                    }
+                    break;
+                case PacketType.RESET_PASSWORD_RESULT:
+                    ResetPasswordResultPacket resultPacket = (ResetPasswordResultPacket)packet;
+                    if (resultPacket.Status == "success")
+                    {
+                        MessageBox.Show("Mật khẩu đã được thay đổi thành công.");
+                        ResetPasswordSuccessful?.Invoke();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không thể thay đổi mật khẩu. Vui lòng thử lại.");
                     }
                     break;
                 case PacketType.ROOM_INFO:

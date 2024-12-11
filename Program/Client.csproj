@@ -250,8 +250,14 @@
     <Compile Include="Form_Input_ServerIP.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form_Input_ServerIP.Designer.cs">
-      <DependentUpon>Form_Input_ServerIP.cs</DependentUpon>
+	  <Compile Include="Form_Input_ServerIP.Designer.cs">
+		  <DependentUpon>Form_Input_ServerIP.cs</DependentUpon>
+	  </Compile>
+    <Compile Include="Form_Forget_Password.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Forget_Password.Designer.cs">
+      <DependentUpon>Form_Forget_Password.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_Law.cs">
       <SubType>Form</SubType>
@@ -309,6 +315,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_End_Game.resx">
       <DependentUpon>Form_End_Game.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Forget_Password.resx">
+      <DependentUpon>Form_Forget_Password.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Home.resx">
       <DependentUpon>Form_Home.cs</DependentUpon>

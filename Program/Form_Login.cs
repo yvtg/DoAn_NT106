@@ -104,5 +104,16 @@ namespace Program
             client.SendPacket(disconnectPacket);
             client.Stop();
         }
+
+        private void forgetLabel_Click(object sender, EventArgs e)
+        {
+            Form_Forget_Password forgetForm = new Form_Forget_Password();
+            this.Hide();
+            forgetForm.StartPosition = FormStartPosition.Manual;
+            forgetForm.Location = new Point(this.Location.X, this.Location.Y);
+            forgetForm.ShowDialog();
+            this.Show();
+            forgetForm.FormClosed += (s, args) => this.Close();
+        }
     }
 }
