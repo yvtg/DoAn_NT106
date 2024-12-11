@@ -29,8 +29,9 @@ namespace Models
         ROUND_UPDATE,
         GUESS_RESULT,
         LEADER_BOARD_INFO,
-        DISCONNECT
-
+        DISCONNECT,
+        RESET_PASSWORD,
+        RESET_PASSWORD_RESULT
     }
     public abstract class Packet
     {
@@ -111,6 +112,31 @@ namespace Models
             return Encoding.ASCII.GetBytes($"JOIN_RESULT;{result}");
         }
     }
+
+
+    public class ResetPasswordResultPacket : Packet
+    {
+        public string Status { get; set; }
+
+        public ResetPasswordResultPacket(string payload) : base(PacketType.RESET_PASSWORD_RESULT, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 1)
+            {
+                Status = parsePayload[0];
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.ASCII.GetBytes($"RESET_PASSWORD_RESULT;{Status}");
+        }
+    }
+
     public class RoomInfoPacket : Packet
     {
         public string RoomId { get; set; }
@@ -303,6 +329,23 @@ namespace Models
         public override byte[] ToBytes()
         {
             return Encoding.ASCII.GetBytes($"REGISTER;{Payload}");
+        }
+    }
+
+    public class ResetPasswordPacket : Packet
+    {
+        public string Email { get; set; }
+        public string NewPassword { get; set; }
+        public ResetPasswordPacket(string email, string newPassword)
+            : base(PacketType.RESET_PASSWORD, $"{email};{newPassword}")
+        {
+            Email = email;
+            NewPassword = newPassword;
+        }
+        public override byte[] ToBytes()
+        {
+            string data = $"{PacketType.RESET_PASSWORD};{Email};{NewPassword}";
+            return Encoding.ASCII.GetBytes(data);
         }
     }
 

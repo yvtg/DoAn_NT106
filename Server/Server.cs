@@ -322,6 +322,34 @@ namespace Server
                     LogoutPacket logoutPacket = (LogoutPacket)packet;
                     UpdateLog.Invoke($"{logoutPacket.Username} đã đăng xuất");
                     break;
+                case PacketType.RESET_PASSWORD:
+                    ResetPasswordPacket resetPacket = (ResetPasswordPacket)packet;
+                    string email = resetPacket.Email;
+                    string newPassword = resetPacket.NewPassword;
+
+                    if (db.ResetPasswordPacket(email))
+                    {
+                        bool resetSuccess = db.ResetPasswordPacket(email, newPassword);
+                        if (resetSuccess)
+                        {
+                            ResetPasswordResultPacket result = new ResetPasswordResultPacket("success");
+                            sendPacket(client, result);
+                            UpdateLog.Invoke($"Mật khẩu của {email} đã được thay đổi thành công.");
+                        }
+                        else
+                        {
+                            ResetPasswordResultPacket result = new ResetPasswordResultPacket("fail");
+                            sendPacket(client, result);
+                            UpdateLog.Invoke($"Không thể thay đổi mật khẩu cho {email}. Lỗi hệ thống.");
+                        }
+                    }
+                    else
+                    {
+                        ResetPasswordResultPacket result = new ResetPasswordResultPacket("fail");
+                        sendPacket(client, result);
+                        UpdateLog.Invoke($"Email {email} không tồn tại.");
+                    }
+                    break;
                 case PacketType.CREATE_ROOM:
                     CreateRoomPacket createRoomPacket = (CreateRoomPacket)packet;
 
