@@ -35,9 +35,9 @@
             this.loginButton = new ReaLTaiizor.Controls.HopeButton();
             this.usernameTextbox = new ReaLTaiizor.Controls.HopeTextBox();
             this.passTextbox = new ReaLTaiizor.Controls.HopeTextBox();
-            this.hopeForm1 = new ReaLTaiizor.Forms.HopeForm();
             this.showPwCheckBox = new ReaLTaiizor.Controls.HopeCheckBox();
             this.lawBtn = new ReaLTaiizor.Controls.HopeButton();
+            this.hopeForm1 = new ReaLTaiizor.Forms.HopeForm();
             this.SuspendLayout();
             // 
             // usernameLabel
@@ -154,23 +154,6 @@
             this.passTextbox.TabStop = false;
             this.passTextbox.UseSystemPasswordChar = true;
             // 
-            // hopeForm1
-            // 
-            this.hopeForm1.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
-            this.hopeForm1.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
-            this.hopeForm1.ControlBoxColorN = System.Drawing.Color.White;
-            this.hopeForm1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.hopeForm1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.hopeForm1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.hopeForm1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
-            this.hopeForm1.Image = ((System.Drawing.Image)(resources.GetObject("hopeForm1.Image")));
-            this.hopeForm1.Location = new System.Drawing.Point(0, 0);
-            this.hopeForm1.Name = "hopeForm1";
-            this.hopeForm1.Size = new System.Drawing.Size(348, 40);
-            this.hopeForm1.TabIndex = 12;
-            this.hopeForm1.Text = "Login";
-            this.hopeForm1.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
-            // 
             // showPwCheckBox
             // 
             this.showPwCheckBox.AutoSize = true;
@@ -215,6 +198,23 @@
             this.lawBtn.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.lawBtn.Click += new System.EventHandler(this.lawBtn_Click);
             // 
+            // hopeForm1
+            // 
+            this.hopeForm1.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
+            this.hopeForm1.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.hopeForm1.ControlBoxColorN = System.Drawing.Color.White;
+            this.hopeForm1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.hopeForm1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.hopeForm1.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.hopeForm1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
+            this.hopeForm1.Image = ((System.Drawing.Image)(resources.GetObject("hopeForm1.Image")));
+            this.hopeForm1.Location = new System.Drawing.Point(0, 0);
+            this.hopeForm1.Name = "hopeForm1";
+            this.hopeForm1.Size = new System.Drawing.Size(348, 40);
+            this.hopeForm1.TabIndex = 12;
+            this.hopeForm1.Text = "Login";
+            this.hopeForm1.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            // 
             // Form_Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -251,8 +251,8 @@
         private ReaLTaiizor.Controls.HopeButton loginButton;
         private ReaLTaiizor.Controls.HopeTextBox usernameTextbox;
         private ReaLTaiizor.Controls.HopeTextBox passTextbox;
-        private ReaLTaiizor.Forms.HopeForm hopeForm1;
         private ReaLTaiizor.Controls.HopeCheckBox showPwCheckBox;
         private ReaLTaiizor.Controls.HopeButton lawBtn;
+        private ReaLTaiizor.Forms.HopeForm hopeForm1;
     }
 }

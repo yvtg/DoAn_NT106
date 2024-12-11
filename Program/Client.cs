@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Net.Http;
 using Models;
+using Azure.Identity;
 
 
 namespace Program
@@ -21,6 +22,8 @@ namespace Program
         public static event Action RegisterSuccessful;
         public event Action LoginSuccessful;
         public event Action<string, string, int> ReceiveRoomInfo;
+        public event Action<string, string, string> ReceiveMessage;
+        public event Action<string, string, int, string> ReceiveOtherInfo;
 
         public void Connect(string serverIP)
         {
@@ -131,6 +134,8 @@ namespace Program
                         return new LeaderBoardInfoPacket(remainingMsg);
                     case PacketType.JOIN_RESULT:
                         return new JoinResultPacket(remainingMsg);
+                    case PacketType.GUESS:
+                        return new GuessPacket(remainingMsg);
                     default:
                         return null; // Không biết loại packet
                 }
@@ -140,6 +145,8 @@ namespace Program
 
         private void AnalyzingPacket(Packet packet)
         {
+            string roomId, host, status = "";
+            int playerCount, maxPlayer, score = 0;
             switch (packet.Type)
             {
                 case PacketType.LOGIN_RESULT:
@@ -167,11 +174,11 @@ namespace Program
                     break;
                 case PacketType.ROOM_INFO:
                     RoomInfoPacket roomInfoPacket = (RoomInfoPacket)packet;
-                    string roomId = roomInfoPacket.RoomId;
-                    string host = roomInfoPacket.Host;
-                    string status = roomInfoPacket.Status;
-                    int playerCount = roomInfoPacket.CurrentPlayers;
-                    int maxPlayer = roomInfoPacket.MaxPlayers;
+                    roomId = roomInfoPacket.RoomId;
+                    host = roomInfoPacket.Host;
+                    status = roomInfoPacket.Status;
+                    playerCount = roomInfoPacket.CurrentPlayers;
+                    maxPlayer = roomInfoPacket.MaxPlayers;
                     ReceiveRoomInfo?.Invoke(roomId, host, maxPlayer);
                     break;
                 case PacketType.JOIN_RESULT:
@@ -194,8 +201,31 @@ namespace Program
                     }
                     break;
                 case PacketType.OTHER_INFO:
+                    OtherInfoPacket otherInfoPacket = (OtherInfoPacket)packet;
+                    roomId = otherInfoPacket.RoomId;
+                    string username = otherInfoPacket.playerName;
+                    score = otherInfoPacket.Score;
+                    status = otherInfoPacket.Status;
+
+                    if (status == "JOINING")
+                    {
+                        ReceiveMessage?.Invoke(roomId, username, "đã tham gia phòng");
+                    }
+                    else if (status == "LEAVE")
+                    {
+                        ReceiveMessage?.Invoke(roomId, username, "đã rời phòng");
+                    }   
+
+                    ReceiveOtherInfo?.Invoke(roomId, username, score, status);
                     break;
                 case PacketType.ROUND_UPDATE:
+                    break;
+                case PacketType.GUESS:
+                    GuessPacket guessPacket = (GuessPacket)packet;
+                    roomId = guessPacket.RoomId;
+                    username = guessPacket.playerName;
+                    string guess = guessPacket.GuessMessage;
+                    ReceiveMessage?.Invoke(roomId, username, guess);
                     break;
                 case PacketType.GUESS_RESULT:
                     break;

@@ -25,13 +25,13 @@ namespace Program
             {
                 client = new Client();
                 client.Connect(serverIP);
+                return true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi kết nối: " + ex.Message);
                 return false;
             }
-            return true;
         }
 
         private void connectBtn_Click(object sender, EventArgs e)

@@ -63,7 +63,7 @@ namespace Program
                 this.Invoke(new Action(()=>OnReceiveRoomInfo(roomId,host,maxPlayers)));
                 return;
             }
-            Form_Room roomForm = new Form_Room(roomId, username, maxPlayers);
+            Form_Room roomForm = new Form_Room(roomId, host, maxPlayers,username);
             roomForm.StartPosition = FormStartPosition.Manual;
             roomForm.Location = this.Location;
             roomForm.Show();

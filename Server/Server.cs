@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using MongoDB.Driver.Core.Authentication;
 
 namespace Server
 {
@@ -217,6 +218,14 @@ namespace Server
             }
         }
 
+        private void BroadcastPacket(Room room, Packet packet)
+        {
+            foreach (var client in room.players)
+            {
+                sendPacket(client, packet);
+            }
+        }
+
         private Packet ParsePacket(User client, string msg)
         {
             string[] payload = msg.Split(';');
@@ -299,7 +308,9 @@ namespace Server
                         sendPacket(client, result);
                         UpdateLog.Invoke($"{loginPacket.Username} đăng nhập thất bại");
                     }
+
                     break;
+
                 case PacketType.REGISTER:
                     RegisterPacket registerPacket = (RegisterPacket)packet;
                     if (db.RegisterUser(registerPacket.Username, registerPacket.Email, registerPacket.Password))
@@ -314,11 +325,15 @@ namespace Server
                         sendPacket(client, result);
                         UpdateLog.Invoke($"{registerPacket.Username} đăng ký tài khoản thất bại");
                     }
+
                     break;
+
                 case PacketType.LOGOUT:
                     LogoutPacket logoutPacket = (LogoutPacket)packet;
                     UpdateLog.Invoke($"{logoutPacket.Username} đã đăng xuất");
+
                     break;
+
                 case PacketType.CREATE_ROOM:
                     CreateRoomPacket createRoomPacket = (CreateRoomPacket)packet;
 
@@ -329,16 +344,30 @@ namespace Server
                     int maxPlayers = createRoomPacket.Max_player;
 
                     Room room = new Room(roomId, client.Name, maxPlayers, client);
-                    room.players.Add(client);
                     rooms.Add(room);
+
+                    if (!room.players.Any(p => p.UserSocket.RemoteEndPoint.ToString() == client.UserSocket.RemoteEndPoint.ToString()))
+                    {
+                        room.players.Add(client);
+                    }
+                    else
+                    {
+                        UpdateLog.Invoke($"{client.Name} đã tồn tại trong phòng {roomId}.");
+                    }
+
                     int currentPlayers = room.players.Count;
                     int currentRound = 0;
 
                     RoomInfoPacket roomInfo = new RoomInfoPacket($"{roomId};{room.host};{room.status};{maxPlayers};{currentPlayers};{currentRound}");
                     sendPacket(client, roomInfo);
 
+                    OtherInfoPacket otherInfoPacket = new OtherInfoPacket($"{roomId};{client.Name};{client.Score};JOINING");
+                    sendPacket(client, otherInfoPacket);
+
                     UpdateLog.Invoke($"{client.Name} đã tạo phòng {roomId}");
+
                     break;
+
                 case PacketType.JOIN_ROOM:
                     JoinRoomPacket joinRoomPacket = (JoinRoomPacket)packet;
                     string roomIdToJoin = joinRoomPacket.RoomId;
@@ -374,23 +403,84 @@ namespace Server
                         sendPacket(client, new JoinResultPacket(join_result));
                         return;
                     }
+                    // Kiểm tra xem client đã trong phòng hay chưa
+                    else if (room.players.Any(p => p.UserSocket.RemoteEndPoint.ToString() == client.UserSocket.RemoteEndPoint.ToString()))
+                    {
+                        join_result = "ALREADY_JOINED";
+                        sendPacket(client, new JoinResultPacket(join_result));
+                        UpdateLog?.Invoke($"{client.Name} đã ở trong phòng {roomIdToJoin}.");
+                        return;
+                    }
+
 
                     else if (join_result=="SUCCESS")
                     {
                         room.players.Add(client);
+
+                        // cap nhat thong tin phong
                         roomInfo = new RoomInfoPacket($"{roomIdToJoin};{room.host};{room.status};{room.maxPlayers};{room.players.Count};0");
                         sendPacket(client, roomInfo);
+
+                        //cap nhat thong tin nhung nguoi co trong phong
+                        foreach (var player in room.players)
+                        {
+                            OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomIdToJoin};{player.Name};{player.Score};JOINED");
+                            sendPacket(client, otherInfo);
+                        }
+
+                        otherInfoPacket = new OtherInfoPacket($"{roomIdToJoin};{client.Name};{client.Score};JOINING");
+                        BroadcastPacket(room, otherInfoPacket);
+
+
                         UpdateLog.Invoke($"{client.Name} đã tham gia phòng {roomIdToJoin}");
                     }
 
                     break;
                 case PacketType.LEAVE_ROOM:
+                    LeaveRoomPacket leaveRoomPacket = (LeaveRoomPacket)packet;
+                    roomId = leaveRoomPacket.RoomId;
+                    room = rooms.FirstOrDefault(r => r.RoomId == roomId);
+                    if (room != null)
+                    {
+                        room.players.Remove(client);
+                        OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{client.Name};{client.Score};LEAVE");
+                        BroadcastPacket(room, otherInfo);
+                        if (room.players.Count == 0)
+                        {
+                            rooms.Remove(room);
+                        }
+                        UpdateLog.Invoke($"{client.Name} đã rời phòng {roomId}");
+                    }
+
                     break;
+
                 case PacketType.START:
                     break;
                 case PacketType.DESCRIBE:
                     break;
                 case PacketType.GUESS:
+                    GuessPacket guessPacket = (GuessPacket)packet;
+                    roomId = guessPacket.RoomId;
+                    string username = guessPacket.playerName;
+                    string msg = guessPacket.GuessMessage;
+
+                    // gui message toi tat ca client trong phong
+                    room = rooms.FirstOrDefault(r => r.RoomId == roomId);
+                    if (room != null)
+                    {
+                        BroadcastPacket(room, guessPacket);
+                        OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};JOINED");
+                        BroadcastPacket(room, otherInfo);
+                        UpdateLog.Invoke($"{username} đã đoán: {msg}");
+                    }
+
+                    // check coi ket qua dung ko
+                    if (room.CheckAnswer(msg, client))
+                    {
+                        // gui diem cho client de cap nhat
+                    }
+
+
                     break;
                 case PacketType.DISCONNECT:
                     UpdateLog?.Invoke($"Client {clientIP} đã ngắt kết nối.");
@@ -400,7 +490,6 @@ namespace Server
                         clients.Remove(client);
                     }
                     break;
-
                 default:
                     break;
             }

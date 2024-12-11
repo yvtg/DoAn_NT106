@@ -159,15 +159,17 @@ namespace Models
         public string RoomId { get; set; }
         public string playerName { get; set; }
         public int Score { get; set; }
+        public string Status { get; set; } // "JOINING", "JOINED", "LEAVE", "GUESS_RIGHT"
 
         public OtherInfoPacket(string payload) : base(PacketType.OTHER_INFO, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 3)
+            if (parsePayload.Length >= 4)
             {
                 RoomId = parsePayload[0];
                 playerName = parsePayload[1];
                 Score = int.Parse(parsePayload[2]);
+                Status = parsePayload[3];
             }
             else
             {
@@ -177,7 +179,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.ASCII.GetBytes($"OTHER_INFO;{RoomId};{playerName};{Score}");
+            return Encoding.ASCII.GetBytes($"OTHER_INFO;{RoomId};{playerName};{Score};{Status}");
         }
     }
 
