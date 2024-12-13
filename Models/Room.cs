@@ -35,7 +35,6 @@ namespace Models
             this.status = "WAITING";
             this.host = host;
             this.currentKeyword = "";
-            players.Add(player);
             currentDrawer = player;
 
             // Cài đặt bộ đếm thời gian cho vòng chơi (60 giây)

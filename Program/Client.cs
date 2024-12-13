@@ -9,6 +9,8 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Net.Http;
 using Models;
+using Azure.Identity;
+using System.IO;
 
 
 namespace Program
@@ -20,14 +22,17 @@ namespace Program
 
         public static event Action RegisterSuccessful;
         public event Action LoginSuccessful;
+        public event Action ResetPasswordSuccessful;
         public event Action<string, string, int> ReceiveRoomInfo;
+        public event Action<string, string, string> ReceiveMessage;
+        public event Action<string, string, int, string> ReceiveOtherInfo;
 
-        public void Connect()
+        public void Connect(string serverIP, int port)
         {
             try
             {
-                IPAddress ipServer = IPAddress.Parse("127.0.0.1");
-                IPEndPoint ipEP = new IPEndPoint(ipServer, 8080);
+                IPAddress ipServer = IPAddress.Parse(serverIP);
+                IPEndPoint ipEP = new IPEndPoint(ipServer, port);
                 tcpClient.Connect(ipEP);
                 Task.Run(() => ReceiveData());
             }
@@ -37,44 +42,34 @@ namespace Program
             }
         }
 
-        public void Stop()
-        {
-            if (tcpClient != null && tcpClient.Connected)
-            {
-                try
-                {
-                    tcpClient.Client.Shutdown(SocketShutdown.Both); // Ngắt kết nối
-                    tcpClient.Close(); // Giải phóng tài nguyên
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Lỗi khi đóng kết nối socket: {ex.Message}");
-                }
-                finally
-                {
-                    tcpClient = null;
-                }
-            }
-        }
-
         public void SendPacket(Packet packet)
         {
             if (tcpClient != null && tcpClient.Connected)
             {
                 try
                 {
-                    ns = tcpClient.GetStream();
+                    // Nếu NetworkStream chưa được khởi tạo, hãy khởi tạo
+                    if (ns == null)
+                    {
+                        ns = tcpClient.GetStream();
+                    }
+
+                    // Chuyển đổi packet thành mảng byte
                     byte[] byteData = packet.ToBytes();
+
+                    // Gửi mảng byte qua NetworkStream
                     ns.Write(byteData, 0, byteData.Length);
-                    ns.Flush(); // Ensure all data is sent
+                    ns.Flush(); // Đảm bảo tất cả dữ liệu đã được gửi
                 }
                 catch (Exception ex)
                 {
+                    // Thông báo lỗi nếu có ngoại lệ xảy ra
                     MessageBox.Show("Lỗi khi gửi dữ liệu: " + ex.Message); // Error sending data
                 }
             }
             else
             {
+                // Thông báo lỗi nếu client không kết nối với server
                 MessageBox.Show("Client không kết nối với server."); // Client is not connected to the server
             }
         }
@@ -88,18 +83,34 @@ namespace Program
                 byte[] byteData = new byte[1024];
                 int byteRec;
 
-                while ((byteRec = ns.Read(byteData, 0, byteData.Length)) != 0)
+                // Đọc dữ liệu trong khi kết nối vẫn còn mở
+                while (tcpClient.Connected && (byteRec = ns.Read(byteData, 0, byteData.Length)) != 0)
                 {
-                    string data = Encoding.ASCII.GetString(byteData, 0, byteRec);
-                    Packet packet = ParsePacket(data);
-                    AnalyzingPacket(packet);
+                    // Kiểm tra nếu kết nối bị ngắt đột ngột
+                    if (byteRec == 0)
+                        break;
+
+                    string receivedData = Encoding.UTF8.GetString(byteData, 0, byteRec);
+                    string[] packets = receivedData.Split('|');
+
+                    foreach (string payload in packets)
+                    {
+                        Console.WriteLine(payload);
+                        Packet packet = ParsePacket(payload);
+                        AnalyzingPacket(packet);
+                    }
                 }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Lỗi khi nhận dữ liệu (IOException): " + ex.Message);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi nhận dữ liệu: " + ex.Message);
             }
         }
+
 
 
 
@@ -135,6 +146,8 @@ namespace Program
                         return new LeaderBoardInfoPacket(remainingMsg);
                     case PacketType.JOIN_RESULT:
                         return new JoinResultPacket(remainingMsg);
+                    case PacketType.GUESS:
+                        return new GuessPacket(remainingMsg);
                     default:
                         return null; // Không biết loại packet
                 }
@@ -144,11 +157,13 @@ namespace Program
 
         private void AnalyzingPacket(Packet packet)
         {
+            string roomId, host, status = "";
+            int playerCount, maxPlayer, score = 0;
             switch (packet.Type)
             {
                 case PacketType.LOGIN_RESULT:
                     LoginResultPacket loginResultPacket = (LoginResultPacket)packet;
-                    if (loginResultPacket.result == "success")
+                    if (loginResultPacket.result == "SUCCESS")
                     {
                         LoginSuccessful?.Invoke();
                     }
@@ -159,7 +174,7 @@ namespace Program
                     break;
                 case PacketType.REGISTER_RESULT:
                     RegisterResultPacket registerResultPacket = (RegisterResultPacket)packet;
-                    if (registerResultPacket.result== "success")
+                    if (registerResultPacket.result== "SUCCESS")
                     {
                         MessageBox.Show("Đăng ký thành công");
                         RegisterSuccessful?.Invoke();
@@ -169,13 +184,25 @@ namespace Program
                         MessageBox.Show("Username đã tồn tại!");
                     }
                     break;
+                case PacketType.RESET_PASSWORD_RESULT:
+                    ResetPasswordResultPacket resultPacket = (ResetPasswordResultPacket)packet;
+                    if (resultPacket.Status == "success")
+                    {
+                        MessageBox.Show("Mật khẩu đã được thay đổi thành công.");
+                        ResetPasswordSuccessful?.Invoke();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không thể thay đổi mật khẩu. Vui lòng thử lại.");
+                    }
+                    break;
                 case PacketType.ROOM_INFO:
                     RoomInfoPacket roomInfoPacket = (RoomInfoPacket)packet;
-                    string roomId = roomInfoPacket.RoomId;
-                    string host = roomInfoPacket.Host;
-                    string status = roomInfoPacket.Status;
-                    int playerCount = roomInfoPacket.CurrentPlayers;
-                    int maxPlayer = roomInfoPacket.MaxPlayers;
+                    roomId = roomInfoPacket.RoomId;
+                    host = roomInfoPacket.Host;
+                    status = roomInfoPacket.Status;
+                    playerCount = roomInfoPacket.CurrentPlayers;
+                    maxPlayer = roomInfoPacket.MaxPlayers;
                     ReceiveRoomInfo?.Invoke(roomId, host, maxPlayer);
                     break;
                 case PacketType.JOIN_RESULT:
@@ -198,8 +225,31 @@ namespace Program
                     }
                     break;
                 case PacketType.OTHER_INFO:
+                    OtherInfoPacket otherInfoPacket = (OtherInfoPacket)packet;
+                    roomId = otherInfoPacket.RoomId;
+                    string username = otherInfoPacket.playerName;
+                    score = otherInfoPacket.Score;
+                    status = otherInfoPacket.Status;
+
+                    if (status == "JOINING" || status == "JOINED")
+                    {
+                        ReceiveMessage?.Invoke(roomId, username, "đã tham gia phòng");
+                    }
+                    else if (status == "LEAVE")
+                    {
+                        ReceiveMessage?.Invoke(roomId, username, "đã rời phòng");
+                    }   
+
+                    ReceiveOtherInfo?.Invoke(roomId, username, score, status);
                     break;
                 case PacketType.ROUND_UPDATE:
+                    break;
+                case PacketType.GUESS:
+                    GuessPacket guessPacket = (GuessPacket)packet;
+                    roomId = guessPacket.RoomId;
+                    username = guessPacket.playerName;
+                    string guess = guessPacket.GuessMessage;
+                    ReceiveMessage?.Invoke(roomId, username, guess);
                     break;
                 case PacketType.GUESS_RESULT:
                     break;

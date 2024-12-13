@@ -19,7 +19,7 @@ namespace Program
         {
             Client.RegisterSuccessful += OnRegisterSuccessful;
 
-            this.client = WindowsFormsApp1.Program.client;
+            this.client = Form_Input_ServerIP.client;
             InitializeComponent();
         }
 

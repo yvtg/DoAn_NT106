@@ -6,7 +6,6 @@ namespace WindowsFormsApp1
 {
     internal static class Program
     {
-        public static Client client;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,10 +15,7 @@ namespace WindowsFormsApp1
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            client = new Client();
-            client.Connect();
-
-            Application.Run(new Form_Login());
+            Application.Run(new Form_Input_ServerIP());
         }
     }
 }

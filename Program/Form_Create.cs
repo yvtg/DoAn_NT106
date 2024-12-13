@@ -19,7 +19,7 @@ namespace Program
         public Form_Create(string username)
         {
             InitializeComponent();
-            this.client = WindowsFormsApp1.Program.client;
+            this.client = Form_Input_ServerIP.client;
             this.username = username;
         }
 
@@ -28,7 +28,7 @@ namespace Program
 
             int maxPlayers = (int)numeric.ValueNumber;
             CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers}");
-            WindowsFormsApp1.Program.client.SendPacket(createRoomPacket);
+            client.SendPacket(createRoomPacket);
 
             //đóng form create sau khi tạo phòng
             this.Close();
