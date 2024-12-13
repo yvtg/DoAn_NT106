@@ -15,13 +15,16 @@ namespace Models
         public int Score { get; set; }
         public bool IsDrawing { get; set; }
         public Socket UserSocket;
+        public NetworkStream ns;
 
-        public User(Socket UserSocket)
+        public User(Socket UserSocket, NetworkStream ns)
         {
             this.Name = "";
             this.Score = 0;
+            this.RoomId = "";
             this.IsDrawing = false;
             this.UserSocket = UserSocket;
+            this.ns = ns;
         }
         public void SendPacket(Packet packet)
         {

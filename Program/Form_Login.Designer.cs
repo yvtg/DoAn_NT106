@@ -37,11 +37,8 @@
             this.passTextbox = new ReaLTaiizor.Controls.HopeTextBox();
             this.showPwCheckBox = new ReaLTaiizor.Controls.HopeCheckBox();
             this.lawBtn = new ReaLTaiizor.Controls.HopeButton();
-<<<<<<< HEAD
             this.hopeForm1 = new ReaLTaiizor.Forms.HopeForm();
-=======
             this.forgetLabel = new System.Windows.Forms.Label();
->>>>>>> 85b3318809ebd3629958cf703e48bddbb0e27d24
             this.SuspendLayout();
             // 
             // usernameLabel
@@ -156,8 +153,7 @@
             this.passTextbox.TabStop = false;
             this.passTextbox.UseSystemPasswordChar = true;
             // 
-<<<<<<< HEAD
-=======
+
             // hopeForm1
             // 
             this.hopeForm1.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
@@ -176,7 +172,6 @@
             this.hopeForm1.Text = "Login";
             this.hopeForm1.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             // 
->>>>>>> 85b3318809ebd3629958cf703e48bddbb0e27d24
             // showPwCheckBox
             // 
             this.showPwCheckBox.AutoSize = true;
@@ -221,7 +216,6 @@
             this.lawBtn.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.lawBtn.Click += new System.EventHandler(this.lawBtn_Click);
             // 
-<<<<<<< HEAD
             // hopeForm1
             // 
             this.hopeForm1.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
@@ -238,7 +232,7 @@
             this.hopeForm1.TabIndex = 12;
             this.hopeForm1.Text = "Login";
             this.hopeForm1.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
-=======
+
             // forgetLabel
             // 
             this.forgetLabel.AutoSize = true;
@@ -250,7 +244,7 @@
             this.forgetLabel.TabIndex = 26;
             this.forgetLabel.Text = "Quên mật khẩu?";
             this.forgetLabel.Click += new System.EventHandler(this.forgetLabel_Click);
->>>>>>> 85b3318809ebd3629958cf703e48bddbb0e27d24
+
             // 
             // Form_Login
             // 
@@ -291,10 +285,7 @@
         private ReaLTaiizor.Controls.HopeTextBox passTextbox;
         private ReaLTaiizor.Controls.HopeCheckBox showPwCheckBox;
         private ReaLTaiizor.Controls.HopeButton lawBtn;
-<<<<<<< HEAD
         private ReaLTaiizor.Forms.HopeForm hopeForm1;
-=======
         private System.Windows.Forms.Label forgetLabel;
->>>>>>> 85b3318809ebd3629958cf703e48bddbb0e27d24
     }
 }

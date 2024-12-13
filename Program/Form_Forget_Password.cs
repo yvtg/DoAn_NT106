@@ -16,7 +16,7 @@ namespace Program
         public Form_Forget_Password()
         {
             InitializeComponent();
-            this.client = WindowsFormsApp1.Program.client;
+            this.client = Program.Form_Input_ServerIP.client;
             client.LoginSuccessful += OnResetPasswordSuccessful;
         }
 
@@ -41,8 +41,8 @@ namespace Program
             try
             {
                 // Gửi yêu cầu reset mật khẩu lên server
-                ResetPasswordPacket packet = new ResetPasswordPacket($"{email};{newPassword}");
-                client.SendPacket(packet);
+                //ResetPasswordPacket packet = new ResetPasswordPacket($"{email};{newPassword}");
+                //client.SendPacket(packet);
             }
             catch (Exception ex)
             {

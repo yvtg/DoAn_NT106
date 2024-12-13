@@ -173,9 +173,7 @@ namespace Program
                     case "JOINED":
                     case "JOINING":
                         // thêm user vô danh sách
-                        ListViewItem item = new ListViewItem(username);
-                        ListViewItem.ListViewSubItem score = new ListViewItem.ListViewSubItem(item, Score.ToString());
-                        item.SubItems.Add(score);
+                        ListViewItem item = new ListViewItem(new[] { username, Score.ToString() });
                         userListView.Items.Add(item);
                         break;
 

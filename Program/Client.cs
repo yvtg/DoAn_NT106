@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Net.Http;
 using Models;
 using Azure.Identity;
+using System.IO;
 
 
 namespace Program
@@ -38,26 +39,6 @@ namespace Program
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi kết nối: " + ex.Message);
-            }
-        }
-
-        public void Stop()
-        {
-            if (tcpClient != null && tcpClient.Connected)
-            {
-                try
-                {
-                    tcpClient.Client.Shutdown(SocketShutdown.Both); // Ngắt kết nối
-                    tcpClient.Close(); // Giải phóng tài nguyên
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Lỗi khi đóng kết nối socket: {ex.Message}");
-                }
-                finally
-                {
-                    tcpClient = null;
-                }
             }
         }
 
@@ -102,18 +83,34 @@ namespace Program
                 byte[] byteData = new byte[1024];
                 int byteRec;
 
-                while ((byteRec = ns.Read(byteData, 0, byteData.Length)) != 0)
+                // Đọc dữ liệu trong khi kết nối vẫn còn mở
+                while (tcpClient.Connected && (byteRec = ns.Read(byteData, 0, byteData.Length)) != 0)
                 {
-                    string data = Encoding.UTF8.GetString(byteData, 0, byteRec);
-                    Packet packet = ParsePacket(data);
-                    AnalyzingPacket(packet);
+                    // Kiểm tra nếu kết nối bị ngắt đột ngột
+                    if (byteRec == 0)
+                        break;
+
+                    string receivedData = Encoding.UTF8.GetString(byteData, 0, byteRec);
+                    string[] packets = receivedData.Split('|');
+
+                    foreach (string payload in packets)
+                    {
+                        Console.WriteLine(payload);
+                        Packet packet = ParsePacket(payload);
+                        AnalyzingPacket(packet);
+                    }
                 }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Lỗi khi nhận dữ liệu (IOException): " + ex.Message);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi nhận dữ liệu: " + ex.Message);
             }
         }
+
 
 
 
@@ -234,7 +231,7 @@ namespace Program
                     score = otherInfoPacket.Score;
                     status = otherInfoPacket.Status;
 
-                    if (status == "JOINING")
+                    if (status == "JOINING" || status == "JOINED")
                     {
                         ReceiveMessage?.Invoke(roomId, username, "đã tham gia phòng");
                     }

@@ -102,7 +102,7 @@ namespace Program
         {
             DisconnectPacket disconnectPacket = new DisconnectPacket("");
             client.SendPacket(disconnectPacket);
-            client.Stop();
+            //client.Stop();
         }
 
         private void forgetLabel_Click(object sender, EventArgs e)
