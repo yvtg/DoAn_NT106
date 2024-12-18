@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,10 @@ namespace Program
         private Graphics graphics;
         private Point previousPoint;
         private bool isDrawing = false;
-        private bool isErasing = false; // Thêm biến để kiểm tra trạng thái xóa
+        private bool isErasing = false; 
+
+        private DateTime lastSentTime = DateTime.MinValue;
+        private TimeSpan sendInterval = TimeSpan.FromMilliseconds(100);
 
         public Form_Room(string roomId, string host, int max_player, string username)
         {
@@ -46,8 +50,7 @@ namespace Program
             hostText.Text += host;
             maxText.Text += max_player;
 
-            // Kiểm tra điều kiện và bật/tắt nút startButton
-            startButton.Enabled = max_player >= 2;
+            
 
             // Khởi tạo Bitmap và Graphics
             drawingBitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
@@ -67,6 +70,12 @@ namespace Program
 
             // Cập nhật danh sách người chơi
             client.ReceiveOtherInfo += OnRecivedOtherInfo;
+
+            // Đăng ký event để lắng nghe gói tin ROUND_UPDATE
+            client.RoundUpdateReceived += OnReceivedRoundUpdate;
+
+            
+
 
             // chỉ chủ phòng mới có thể bắt đầu
             if (username != host)
@@ -100,15 +109,15 @@ namespace Program
         {
             if (isDrawing)
             {
+
                 using (Pen pen = new Pen(isErasing ? Color.White : Color.Black, 2))
                 {
                     graphics.DrawLine(pen, previousPoint, e.Location);
                 }
-                previousPoint = e.Location;
                 pictureBox1.Invalidate();
+                previousPoint = e.Location;
             }
         }
-
         // Dừng vẽ khi nhả chuột
         private void PictureBox_MouseUp(object sender, MouseEventArgs e)
         {
@@ -132,8 +141,8 @@ namespace Program
 
         private void startButton_Click(object sender, EventArgs e)
         {
-            room.StartNewRound();
-            wordTextbox.Text = room.currentKeyword;
+            StartPacket startPacket = new StartPacket(roomId); 
+            client.SendPacket(startPacket);
         }
 
         private void OnReceivedMessage(string roomId, string sender, string message)
@@ -204,11 +213,48 @@ namespace Program
                     default:
                         break;
                 }
+                // Kiểm tra điều kiện và bật/tắt nút startButton
+                startButton.Enabled = userListView.Items.Count >= 2;
 
                 userListView.Refresh();
             }
         }
 
+        private void OnReceivedRoundUpdate(RoundUpdatePacket roundUpdatePacket)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => OnReceivedRoundUpdate(roundUpdatePacket)));
+                return;
+            }
+
+            if (roundUpdatePacket.Name == username )
+            {
+                pictureBox1.Enabled = true;
+                wordTextbox.Text += roundUpdatePacket.Word;
+                Form_Message formmessage = new Form_Message($"Bạn là người vẽ! từ khóa là {roundUpdatePacket.Word}");
+                formmessage.StartPosition = FormStartPosition.Manual;
+                int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
+                int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
+                formmessage.Location = new Point(centerX, centerY);
+
+                formmessage.Show();
+
+            }
+            else
+            {
+                pictureBox1.Enabled = false;
+                Form_Message formmessage = new Form_Message($"Người vẽ là {roundUpdatePacket.Name}. Trong 60s hãy đoán từ khóa!");
+                formmessage.StartPosition = FormStartPosition.Manual;
+                int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
+                int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
+                formmessage.Location = new Point(centerX, centerY);
+
+                formmessage.Show();
+
+            }
+            startButton.Enabled = false;
+        }
         private void sendButton_Click(object sender, EventArgs e)
         {
             string msg = sendTextBox.Text;

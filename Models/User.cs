@@ -12,6 +12,7 @@ namespace Models
     {
         public string Name { get; set; }
         public string RoomId { get; set; }
+
         public int Score { get; set; }
         public bool IsDrawing { get; set; }
         public Socket UserSocket;

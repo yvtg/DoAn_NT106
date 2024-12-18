@@ -26,6 +26,8 @@ namespace Program
         public event Action<string, string, int> ReceiveRoomInfo;
         public event Action<string, string, string> ReceiveMessage;
         public event Action<string, string, int, string> ReceiveOtherInfo;
+        public event Action<RoundUpdatePacket> RoundUpdateReceived;
+
 
         public void Connect(string serverIP, int port)
         {
@@ -243,6 +245,8 @@ namespace Program
                     ReceiveOtherInfo?.Invoke(roomId, username, score, status);
                     break;
                 case PacketType.ROUND_UPDATE:
+                     RoundUpdatePacket roundUpdatePacket = (RoundUpdatePacket)packet;
+                     RoundUpdateReceived?.Invoke(roundUpdatePacket);
                     break;
                 case PacketType.GUESS:
                     GuessPacket guessPacket = (GuessPacket)packet;

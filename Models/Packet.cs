@@ -212,14 +212,18 @@ namespace Models
     public class RoundUpdatePacket : Packet
     {
         public string RoomId { get; set; }
+        public string Name { get; set; }
+        public string IsDrawing { get; set; }
         public string Word { get; set; }
         public RoundUpdatePacket(string payload) : base(PacketType.ROUND_UPDATE, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 2)
+            if (parsePayload.Length >= 4)
             {
                 RoomId = parsePayload[0];
-                Word = parsePayload[1];
+                Name = parsePayload[1];
+                IsDrawing = parsePayload[2];
+                Word = parsePayload[3];
             }
             else
             {
@@ -229,7 +233,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"ROUND_UPDATE;{RoomId};{Word}");
+            return Encoding.UTF8.GetBytes($"ROUND_UPDATE;{RoomId};{Name};{IsDrawing};{Word}");
         }
     }
 
@@ -509,4 +513,5 @@ namespace Models
             return Encoding.UTF8.GetBytes($"DISCONNECT");
         }
     }
+   
 }
