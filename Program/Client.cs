@@ -27,6 +27,7 @@ namespace Program
         public event Action<string, string, string> ReceiveMessage;
         public event Action<string, string, int, string> ReceiveOtherInfo;
         public event Action<RoundUpdatePacket> RoundUpdateReceived;
+        public event Action<SyncBitmapPacket> SyncBitmapReceived;
 
 
         public void Connect(string serverIP, int port)
@@ -61,7 +62,7 @@ namespace Program
 
                     // Gửi mảng byte qua NetworkStream
                     ns.Write(byteData, 0, byteData.Length);
-                    ns.Flush(); // Đảm bảo tất cả dữ liệu đã được gửi
+                    ns.Flush();
                 }
                 catch (Exception ex)
                 {
@@ -82,30 +83,41 @@ namespace Program
             try
             {
                 ns = tcpClient.GetStream();
-                byte[] byteData = new byte[1024];
+                byte[] byteData = new byte[293600];
                 int byteRec;
+                
 
                 // Đọc dữ liệu trong khi kết nối vẫn còn mở
-                while (tcpClient.Connected && (byteRec = ns.Read(byteData, 0, byteData.Length)) != 0)
+                while (tcpClient.Connected)
                 {
-                    // Kiểm tra nếu kết nối bị ngắt đột ngột
-                    if (byteRec == 0)
-                        break;
-
-                    string receivedData = Encoding.UTF8.GetString(byteData, 0, byteRec);
-                    string[] packets = receivedData.Split('|');
-
-                    foreach (string payload in packets)
+                    while (tcpClient.Available > 0)
                     {
-                        Console.WriteLine(payload);
-                        Packet packet = ParsePacket(payload);
-                        AnalyzingPacket(packet);
+                        string receivedData = "";
+                        try
+                        {
+                            byteRec = ns.Read(byteData, 0, byteData.Length);
+                            if (byteRec > 0)
+                            {
+                                receivedData = Encoding.UTF8.GetString(byteData, 0, byteRec);
+                            }
+                            if (!string.IsNullOrEmpty(receivedData))
+                            {
+                                string[] packets = receivedData.Split('|');
+
+                                foreach (string payload in packets)
+                                {
+                                    Console.WriteLine(payload);
+                                    Packet packet = ParsePacket(payload);
+                                    AnalyzingPacket(packet);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Lỗi khi nhận dữ liệu: " + ex.Message);
+                        }
                     }
                 }
-            }
-            catch (IOException ex)
-            {
-                MessageBox.Show("Lỗi khi nhận dữ liệu (IOException): " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -150,6 +162,8 @@ namespace Program
                         return new JoinResultPacket(remainingMsg);
                     case PacketType.GUESS:
                         return new GuessPacket(remainingMsg);
+                    case PacketType.SYNC_BITMAP:
+                        return new SyncBitmapPacket(remainingMsg);
                     default:
                         return null; // Không biết loại packet
                 }
@@ -258,6 +272,11 @@ namespace Program
                 case PacketType.GUESS_RESULT:
                     break;
                 case PacketType.LEADER_BOARD_INFO:
+                    break;
+                case PacketType.SYNC_BITMAP:
+                    SyncBitmapPacket syncBitmapPacket = (SyncBitmapPacket)packet;
+                    Console.WriteLine(syncBitmapPacket.Payload);
+                    SyncBitmapReceived?.Invoke(syncBitmapPacket);
                     break;
                 default:
                     break;

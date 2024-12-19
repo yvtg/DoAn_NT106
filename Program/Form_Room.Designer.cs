@@ -34,35 +34,39 @@
             this.gameTimer = new System.Windows.Forms.Timer(this.components);
             this.wordTextbox = new System.Windows.Forms.TextBox();
             this.chatRichtextbox = new System.Windows.Forms.RichTextBox();
-            this.roomForm = new ReaLTaiizor.Forms.HopeForm();
             this.sendButton = new ReaLTaiizor.Controls.HopeButton();
             this.sendTextBox = new ReaLTaiizor.Controls.HopeTextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.startButton = new ReaLTaiizor.Controls.HopeButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.EraserPictureBox = new System.Windows.Forms.PictureBox();
-            this.PencilPictureBox = new System.Windows.Forms.PictureBox();
             this.usernamText = new System.Windows.Forms.Label();
             this.hostText = new System.Windows.Forms.Label();
             this.leaveBtn = new ReaLTaiizor.Controls.HopeButton();
             this.userListView = new System.Windows.Forms.ListView();
             this.maxText = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.EraserPictureBox = new System.Windows.Forms.PictureBox();
+            this.PencilPictureBox = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.roomForm = new ReaLTaiizor.Forms.HopeForm();
+            this.sizeTrackBar = new ReaLTaiizor.Controls.DungeonTrackBar();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.chooseColorBtn = new ReaLTaiizor.Controls.HopeRoundButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EraserPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PencilPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // timeLabel
             // 
             this.timeLabel.AutoSize = true;
             this.timeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.timeLabel.Location = new System.Drawing.Point(264, 57);
+            this.timeLabel.Location = new System.Drawing.Point(198, 46);
+            this.timeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.timeLabel.Name = "timeLabel";
             this.timeLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.timeLabel.Size = new System.Drawing.Size(48, 25);
+            this.timeLabel.Size = new System.Drawing.Size(39, 20);
             this.timeLabel.TabIndex = 4;
             this.timeLabel.Text = "time";
             // 
@@ -74,40 +78,22 @@
             // 
             this.wordTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.wordTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.wordTextbox.Location = new System.Drawing.Point(360, 78);
-            this.wordTextbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.wordTextbox.Location = new System.Drawing.Point(270, 63);
+            this.wordTextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.wordTextbox.Name = "wordTextbox";
-            this.wordTextbox.Size = new System.Drawing.Size(242, 30);
+            this.wordTextbox.Size = new System.Drawing.Size(182, 26);
             this.wordTextbox.TabIndex = 5;
             // 
             // chatRichtextbox
             // 
             this.chatRichtextbox.BackColor = System.Drawing.SystemColors.Window;
             this.chatRichtextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.chatRichtextbox.Location = new System.Drawing.Point(760, 143);
-            this.chatRichtextbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.chatRichtextbox.Location = new System.Drawing.Point(554, 116);
+            this.chatRichtextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chatRichtextbox.Name = "chatRichtextbox";
-            this.chatRichtextbox.Size = new System.Drawing.Size(236, 352);
+            this.chatRichtextbox.Size = new System.Drawing.Size(194, 287);
             this.chatRichtextbox.TabIndex = 6;
             this.chatRichtextbox.Text = "";
-            // 
-            // roomForm
-            // 
-            this.roomForm.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
-            this.roomForm.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
-            this.roomForm.ControlBoxColorN = System.Drawing.Color.White;
-            this.roomForm.Cursor = System.Windows.Forms.Cursors.Default;
-            this.roomForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.roomForm.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.roomForm.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
-            this.roomForm.Image = ((System.Drawing.Image)(resources.GetObject("roomForm.Image")));
-            this.roomForm.Location = new System.Drawing.Point(0, 0);
-            this.roomForm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.roomForm.Name = "roomForm";
-            this.roomForm.Size = new System.Drawing.Size(1020, 40);
-            this.roomForm.TabIndex = 20;
-            this.roomForm.Text = "Room - ";
-            this.roomForm.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             // 
             // sendButton
             // 
@@ -119,11 +105,10 @@
             this.sendButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sendButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             this.sendButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.sendButton.Location = new System.Drawing.Point(760, 505);
-            this.sendButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.sendButton.Location = new System.Drawing.Point(554, 410);
             this.sendButton.Name = "sendButton";
             this.sendButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.sendButton.Size = new System.Drawing.Size(237, 44);
+            this.sendButton.Size = new System.Drawing.Size(194, 36);
             this.sendButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.sendButton.TabIndex = 26;
             this.sendButton.Text = "Gửi";
@@ -140,8 +125,8 @@
             this.sendTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sendTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.sendTextBox.Hint = "";
-            this.sendTextBox.Location = new System.Drawing.Point(185, 508);
-            this.sendTextBox.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
+            this.sendTextBox.Location = new System.Drawing.Point(139, 413);
+            this.sendTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.sendTextBox.MaxLength = 32767;
             this.sendTextBox.Multiline = false;
             this.sendTextBox.Name = "sendTextBox";
@@ -150,30 +135,20 @@
             this.sendTextBox.SelectedText = "";
             this.sendTextBox.SelectionLength = 0;
             this.sendTextBox.SelectionStart = 0;
-            this.sendTextBox.Size = new System.Drawing.Size(533, 38);
+            this.sendTextBox.Size = new System.Drawing.Size(400, 33);
             this.sendTextBox.TabIndex = 27;
             this.sendTextBox.TabStop = false;
             this.sendTextBox.UseSystemPasswordChar = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.White;
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(185, 143);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(533, 300);
-            this.pictureBox1.TabIndex = 28;
-            this.pictureBox1.TabStop = false;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(755, 103);
+            this.label2.Location = new System.Drawing.Point(566, 84);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label2.Size = new System.Drawing.Size(94, 25);
+            this.label2.Size = new System.Drawing.Size(74, 20);
             this.label2.TabIndex = 30;
             this.label2.Text = "ChatBox:";
             // 
@@ -181,10 +156,11 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(243, 81);
+            this.label3.Location = new System.Drawing.Point(182, 66);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label3.Size = new System.Drawing.Size(106, 25);
+            this.label3.Size = new System.Drawing.Size(81, 20);
             this.label3.TabIndex = 31;
             this.label3.Text = "Key Word:";
             // 
@@ -198,11 +174,10 @@
             this.startButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             this.startButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.startButton.Location = new System.Drawing.Point(15, 502);
-            this.startButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.startButton.Location = new System.Drawing.Point(11, 408);
             this.startButton.Name = "startButton";
             this.startButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.startButton.Size = new System.Drawing.Size(139, 44);
+            this.startButton.Size = new System.Drawing.Size(104, 36);
             this.startButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.startButton.TabIndex = 32;
             this.startButton.Text = "Bắt Đầu";
@@ -213,48 +188,23 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.chooseColorBtn);
+            this.panel1.Controls.Add(this.sizeTrackBar);
             this.panel1.Controls.Add(this.EraserPictureBox);
             this.panel1.Controls.Add(this.PencilPictureBox);
-            this.panel1.Location = new System.Drawing.Point(185, 439);
-            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel1.Location = new System.Drawing.Point(139, 357);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(533, 62);
+            this.panel1.Size = new System.Drawing.Size(400, 50);
             this.panel1.TabIndex = 34;
-            // 
-            // EraserPictureBox
-            // 
-            this.EraserPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("EraserPictureBox.Image")));
-            this.EraserPictureBox.Location = new System.Drawing.Point(84, 9);
-            this.EraserPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.EraserPictureBox.Name = "EraserPictureBox";
-            this.EraserPictureBox.Size = new System.Drawing.Size(51, 50);
-            this.EraserPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.EraserPictureBox.TabIndex = 36;
-            this.EraserPictureBox.TabStop = false;
-            this.EraserPictureBox.Tag = "";
-            this.EraserPictureBox.Click += new System.EventHandler(this.EraserPictureBox_Click);
-            // 
-            // PencilPictureBox
-            // 
-            this.PencilPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("PencilPictureBox.Image")));
-            this.PencilPictureBox.Location = new System.Drawing.Point(15, 9);
-            this.PencilPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.PencilPictureBox.Name = "PencilPictureBox";
-            this.PencilPictureBox.Size = new System.Drawing.Size(51, 50);
-            this.PencilPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PencilPictureBox.TabIndex = 35;
-            this.PencilPictureBox.TabStop = false;
-            this.PencilPictureBox.Tag = "";
-            this.PencilPictureBox.Click += new System.EventHandler(this.PencilPictureBox_Click);
             // 
             // usernamText
             // 
             this.usernamText.AutoSize = true;
             this.usernamText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usernamText.Location = new System.Drawing.Point(8, 64);
-            this.usernamText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.usernamText.Location = new System.Drawing.Point(6, 52);
             this.usernamText.Name = "usernamText";
-            this.usernamText.Size = new System.Drawing.Size(100, 18);
+            this.usernamText.Size = new System.Drawing.Size(85, 15);
             this.usernamText.TabIndex = 35;
             this.usernamText.Text = "Username:  ";
             // 
@@ -262,10 +212,9 @@
             // 
             this.hostText.AutoSize = true;
             this.hostText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hostText.Location = new System.Drawing.Point(8, 91);
-            this.hostText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.hostText.Location = new System.Drawing.Point(6, 74);
             this.hostText.Name = "hostText";
-            this.hostText.Size = new System.Drawing.Size(54, 18);
+            this.hostText.Size = new System.Drawing.Size(44, 15);
             this.hostText.TabIndex = 36;
             this.hostText.Text = "Host: ";
             // 
@@ -279,11 +228,10 @@
             this.leaveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.leaveBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
             this.leaveBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.leaveBtn.Location = new System.Drawing.Point(859, 62);
-            this.leaveBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.leaveBtn.Location = new System.Drawing.Point(644, 50);
             this.leaveBtn.Name = "leaveBtn";
             this.leaveBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.leaveBtn.Size = new System.Drawing.Size(139, 44);
+            this.leaveBtn.Size = new System.Drawing.Size(104, 36);
             this.leaveBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.leaveBtn.TabIndex = 37;
             this.leaveBtn.Text = "Rời phòng";
@@ -294,10 +242,9 @@
             // userListView
             // 
             this.userListView.HideSelection = false;
-            this.userListView.Location = new System.Drawing.Point(11, 143);
-            this.userListView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.userListView.Location = new System.Drawing.Point(8, 116);
             this.userListView.Name = "userListView";
-            this.userListView.Size = new System.Drawing.Size(160, 351);
+            this.userListView.Size = new System.Drawing.Size(121, 286);
             this.userListView.TabIndex = 38;
             this.userListView.UseCompatibleStateImageBehavior = false;
             // 
@@ -305,19 +252,117 @@
             // 
             this.maxText.AutoSize = true;
             this.maxText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.maxText.Location = new System.Drawing.Point(8, 121);
-            this.maxText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.maxText.Location = new System.Drawing.Point(6, 98);
             this.maxText.Name = "maxText";
-            this.maxText.Size = new System.Drawing.Size(49, 18);
+            this.maxText.Size = new System.Drawing.Size(42, 15);
             this.maxText.TabIndex = 39;
             this.maxText.Text = "Max: ";
             // 
+            // EraserPictureBox
+            // 
+            this.EraserPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.EraserPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("EraserPictureBox.Image")));
+            this.EraserPictureBox.Location = new System.Drawing.Point(73, 4);
+            this.EraserPictureBox.Margin = new System.Windows.Forms.Padding(2);
+            this.EraserPictureBox.Name = "EraserPictureBox";
+            this.EraserPictureBox.Size = new System.Drawing.Size(38, 41);
+            this.EraserPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.EraserPictureBox.TabIndex = 36;
+            this.EraserPictureBox.TabStop = false;
+            this.EraserPictureBox.Tag = "";
+            this.EraserPictureBox.Click += new System.EventHandler(this.EraserPictureBox_Click);
+            // 
+            // PencilPictureBox
+            // 
+            this.PencilPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.PencilPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("PencilPictureBox.Image")));
+            this.PencilPictureBox.Location = new System.Drawing.Point(12, 4);
+            this.PencilPictureBox.Margin = new System.Windows.Forms.Padding(2);
+            this.PencilPictureBox.Name = "PencilPictureBox";
+            this.PencilPictureBox.Size = new System.Drawing.Size(38, 41);
+            this.PencilPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PencilPictureBox.TabIndex = 35;
+            this.PencilPictureBox.TabStop = false;
+            this.PencilPictureBox.Tag = "";
+            this.PencilPictureBox.Click += new System.EventHandler(this.PencilPictureBox_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.White;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Location = new System.Drawing.Point(139, 116);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(400, 244);
+            this.pictureBox1.TabIndex = 28;
+            this.pictureBox1.TabStop = false;
+            // 
+            // roomForm
+            // 
+            this.roomForm.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
+            this.roomForm.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.roomForm.ControlBoxColorN = System.Drawing.Color.White;
+            this.roomForm.Cursor = System.Windows.Forms.Cursors.Default;
+            this.roomForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.roomForm.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.roomForm.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
+            this.roomForm.Image = ((System.Drawing.Image)(resources.GetObject("roomForm.Image")));
+            this.roomForm.Location = new System.Drawing.Point(0, 0);
+            this.roomForm.Name = "roomForm";
+            this.roomForm.Size = new System.Drawing.Size(765, 40);
+            this.roomForm.TabIndex = 20;
+            this.roomForm.Text = "Room - ";
+            this.roomForm.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            // 
+            // sizeTrackBar
+            // 
+            this.sizeTrackBar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.sizeTrackBar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.sizeTrackBar.DrawValueString = false;
+            this.sizeTrackBar.EmptyBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
+            this.sizeTrackBar.FillBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.sizeTrackBar.JumpToMouse = false;
+            this.sizeTrackBar.Location = new System.Drawing.Point(123, 15);
+            this.sizeTrackBar.Maximum = 10;
+            this.sizeTrackBar.Minimum = 0;
+            this.sizeTrackBar.MinimumSize = new System.Drawing.Size(47, 22);
+            this.sizeTrackBar.Name = "sizeTrackBar";
+            this.sizeTrackBar.Size = new System.Drawing.Size(220, 22);
+            this.sizeTrackBar.TabIndex = 39;
+            this.sizeTrackBar.Text = "dungeonTrackBar1";
+            this.sizeTrackBar.ThumbBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
+            this.sizeTrackBar.ThumbBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.sizeTrackBar.Value = 0;
+            this.sizeTrackBar.ValueDivison = ReaLTaiizor.Controls.DungeonTrackBar.ValueDivisor.By1;
+            this.sizeTrackBar.ValueToSet = 0F;
+            this.sizeTrackBar.ValueChanged += new ReaLTaiizor.Controls.DungeonTrackBar.ValueChangedEventHandler(this.sizeTrackBar_ValueChanged);
+            // 
+            // chooseColorBtn
+            // 
+            this.chooseColorBtn.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(223)))), ((int)(((byte)(230)))));
+            this.chooseColorBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
+            this.chooseColorBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.chooseColorBtn.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.chooseColorBtn.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.chooseColorBtn.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.chooseColorBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
+            this.chooseColorBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
+            this.chooseColorBtn.Location = new System.Drawing.Point(351, 5);
+            this.chooseColorBtn.Name = "chooseColorBtn";
+            this.chooseColorBtn.PrimaryColor = System.Drawing.Color.Black;
+            this.chooseColorBtn.Size = new System.Drawing.Size(41, 41);
+            this.chooseColorBtn.SuccessColor = System.Drawing.Color.White;
+            this.chooseColorBtn.TabIndex = 40;
+            this.chooseColorBtn.TextColor = System.Drawing.Color.White;
+            this.chooseColorBtn.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            this.chooseColorBtn.Click += new System.EventHandler(this.chooseColorBtn_Click);
+            // 
             // Form_Room
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
-            this.ClientSize = new System.Drawing.Size(1020, 575);
+            this.ClientSize = new System.Drawing.Size(765, 467);
             this.Controls.Add(this.maxText);
             this.Controls.Add(this.userListView);
             this.Controls.Add(this.leaveBtn);
@@ -335,16 +380,16 @@
             this.Controls.Add(this.wordTextbox);
             this.Controls.Add(this.timeLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MaximumSize = new System.Drawing.Size(2560, 1270);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Room";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Room";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.EraserPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PencilPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -370,5 +415,8 @@
         private ReaLTaiizor.Controls.HopeButton leaveBtn;
         private System.Windows.Forms.ListView userListView;
         private System.Windows.Forms.Label maxText;
+        private ReaLTaiizor.Controls.DungeonTrackBar sizeTrackBar;
+        private System.Windows.Forms.ColorDialog colorDialog1;
+        private ReaLTaiizor.Controls.HopeRoundButton chooseColorBtn;
     }
 }

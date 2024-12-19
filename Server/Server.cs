@@ -90,7 +90,7 @@ namespace Server
 
         private void HandleClientConnection(Socket clientSocket, NetworkStream ns)
         {
-            var client = new User(clientSocket, ns);
+            User client = new User(clientSocket, ns);
 
             if (client != null)
             {
@@ -180,11 +180,13 @@ namespace Server
         {
             try
             {
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[293600];
                 int receivedBytes = await client.ns.ReadAsync(buffer, 0, buffer.Length);
+                string msg = "";
                 if (receivedBytes > 0)
                 {
-                    return Encoding.UTF8.GetString(buffer, 0, receivedBytes);
+                    msg += Encoding.UTF8.GetString(buffer, 0, receivedBytes);
+                    return msg;
                 }
                 else
                 {
@@ -195,7 +197,6 @@ namespace Server
                     UpdateLog?.Invoke($"Client {client.UserSocket.RemoteEndPoint} đã ngắt kết nối.");
                     return null;
                 }
-
             }
             catch (Exception ex)
             {
@@ -203,6 +204,7 @@ namespace Server
                 return null;
             }
         }
+
 
 
         private void sendPacket(User client, Packet packet)
@@ -270,6 +272,8 @@ namespace Server
                         return new GuessPacket(remainingMsg);
                     case PacketType.DISCONNECT:
                         return new DisconnectPacket(remainingMsg);
+                    case PacketType.SYNC_BITMAP:
+                        return new SyncBitmapPacket(remainingMsg);
                     default:
                         return null; // Không biết loại packet
                 }
@@ -556,6 +560,15 @@ namespace Server
                         Console.WriteLine("Client đã ngắt kết nối khi gửi disconnecr", client.UserSocket.RemoteEndPoint);
                         clients.Remove(client);
                         UpdateClientList?.Invoke();
+                    }
+                    break;
+                case PacketType.SYNC_BITMAP:
+                    SyncBitmapPacket syncBitmapPacket = (SyncBitmapPacket)packet;
+                    roomId = syncBitmapPacket.RoomId;
+                    room = rooms.FirstOrDefault(r => r.RoomId == roomId);
+                    if (room != null)
+                    {
+                        BroadcastPacket(room, syncBitmapPacket);
                     }
                     break;
                 default:

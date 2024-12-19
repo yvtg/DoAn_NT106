@@ -384,6 +384,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mongocrypt.dll" />
+    <None Include="Resources\colors-icon-4.png" />
     <None Include="Resources\Screenshot 2024-12-03 023500.png" />
     <None Include="Resources\Screenshot 2024-12-03 023531.png" />
   </ItemGroup>

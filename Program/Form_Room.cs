@@ -28,7 +28,11 @@ namespace Program
         private Graphics graphics;
         private Point previousPoint;
         private bool isDrawing = false;
-        private bool isErasing = false; 
+        private bool isErasing = false;
+        private int penSize = 3;
+        private Color penColor = Color.Black;
+
+        private bool gameStart = false;
 
         private DateTime lastSentTime = DateTime.MinValue;
         private TimeSpan sendInterval = TimeSpan.FromMilliseconds(100);
@@ -50,7 +54,10 @@ namespace Program
             hostText.Text += host;
             maxText.Text += max_player;
 
-            
+            // khởi tạo track bar kích thước bút
+            sizeTrackBar.Minimum = 1;
+            sizeTrackBar.Maximum = 20;
+            sizeTrackBar.Value = penSize;
 
             // Khởi tạo Bitmap và Graphics
             drawingBitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
@@ -74,13 +81,17 @@ namespace Program
             // Đăng ký event để lắng nghe gói tin ROUND_UPDATE
             client.RoundUpdateReceived += OnReceivedRoundUpdate;
 
-            
+            // sự kiện nhận được nhận gói tin SyncBitmap
+            client.SyncBitmapReceived += OnReceivedSyncBitmap;
+
 
 
             // chỉ chủ phòng mới có thể bắt đầu
             if (username != host)
                 startButton.Hide();
         }
+
+        #region Danh sach user
 
         private void InitializeListView()
         {
@@ -94,10 +105,30 @@ namespace Program
             
         }
 
+        #endregion
+
+        #region ve
+        private void sizeTrackBar_ValueChanged()
+        {
+            penSize = sizeTrackBar.Value;
+        }
+        private void chooseColorBtn_Click(object sender, EventArgs e)
+        {
+            // mở color dialog để chọn màu
+            using (ColorDialog colorDialog = new ColorDialog())
+            {
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    penColor = colorDialog.Color;
+                    chooseColorBtn.PrimaryColor = penColor;
+                }
+            }
+        }
+
         // Bắt đầu vẽ khi nhấn chuột
         private void PictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && gameStart)
             {
                 isDrawing = true;
                 previousPoint = e.Location;
@@ -107,25 +138,98 @@ namespace Program
         // Rê chuột để vẽ hoặc xóa
         private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isDrawing)
+            if (isDrawing && gameStart)
             {
+                Pen pen = new Pen(isErasing ? Color.White : penColor, penSize);
+                graphics.DrawLine(pen, previousPoint, e.Location);
+                pictureBox1.Refresh();
 
-                using (Pen pen = new Pen(isErasing ? Color.White : Color.Black, 2))
-                {
-                    graphics.DrawLine(pen, previousPoint, e.Location);
-                }
-                pictureBox1.Invalidate();
+                // cập nhật điểm trước
                 previousPoint = e.Location;
             }
         }
+
         // Dừng vẽ khi nhả chuột
         private void PictureBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && gameStart)
             {
                 isDrawing = false;
+
+                string bitmapData = BitmapToString(drawingBitmap);
+                if (!string.IsNullOrEmpty(bitmapData))
+                {
+                    SyncBitmapPacket syncPacket = new SyncBitmapPacket($"{roomId};{bitmapData}");
+                    Console.WriteLine(syncPacket.Payload);
+                    client.SendPacket(syncPacket);
+                }
             }
         }
+
+        // chuyển bitmap thành string
+        private string BitmapToString(Bitmap bitmap)
+        {
+            try
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    byte[] bytes = ms.ToArray();
+                    return Convert.ToBase64String(bytes);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error in BitmapToString: {ex.Message}");
+                return null;
+            }
+        }
+
+        // chuyển string thành bitmap
+        private Bitmap StringToBitmap(string bitmapString)
+        {
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(bitmapString);
+                using (MemoryStream ms = new MemoryStream(bytes))
+                {
+                    return new Bitmap(ms);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+
+        private void OnReceivedSyncBitmap(SyncBitmapPacket syncBitmapPacket)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => OnReceivedSyncBitmap(syncBitmapPacket)));
+                return;
+            }
+
+            if (syncBitmapPacket.RoomId == roomId)
+            {
+                Bitmap newBitmap = StringToBitmap(syncBitmapPacket.BitmapData);
+                if (newBitmap != null)
+                {
+                    drawingBitmap.Dispose(); // Giải phóng bitmap cũ
+                    drawingBitmap = newBitmap;
+
+                    //// Tạo lại Graphics từ bitmap mới
+                    graphics.Dispose();
+                    graphics = Graphics.FromImage(newBitmap);
+
+
+                    pictureBox1.Image = newBitmap;
+                    pictureBox1.Refresh();
+                }
+            }
+        }
+
 
         // Sự kiện khi nhấn vào hình cái bút
         private void PencilPictureBox_Click(object sender, EventArgs e)
@@ -138,12 +242,15 @@ namespace Program
         {
             isErasing = true;
         }
+        #endregion
 
         private void startButton_Click(object sender, EventArgs e)
         {
+            gameStart = true;
             StartPacket startPacket = new StartPacket(roomId); 
             client.SendPacket(startPacket);
         }
+        #region chat
 
         private void OnReceivedMessage(string roomId, string sender, string message)
         {
@@ -219,6 +326,7 @@ namespace Program
                 userListView.Refresh();
             }
         }
+        #endregion
 
         private void OnReceivedRoundUpdate(RoundUpdatePacket roundUpdatePacket)
         {
@@ -272,5 +380,6 @@ namespace Program
             client.SendPacket(packet);
             this.Close();
         }
+
     }
 }
