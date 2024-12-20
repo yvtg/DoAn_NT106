@@ -31,7 +31,8 @@ namespace Models
         LEADER_BOARD_INFO,
         DISCONNECT,
         RESET_PASSWORD,
-        RESET_PASSWORD_RESULT
+        RESET_PASSWORD_RESULT,
+        SYNC_BITMAP
     }
     public abstract class Packet
     {
@@ -46,7 +47,88 @@ namespace Models
 
         public abstract byte[] ToBytes();
     }
+    #region login, register, logout
+    public class LoginPacket : Packet
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public LoginPacket(string payload) : base(PacketType.LOGIN, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 2)
+            {
+                Username = parsePayload[0];
+                Password = parsePayload[1];
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
 
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"LOGIN;{Payload}");
+        }
+    }
+
+    public class RegisterPacket : Packet
+    {
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public RegisterPacket(string payload) : base(PacketType.REGISTER, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 3)
+            {
+                Username = parsePayload[0];
+                Email = parsePayload[1];
+                Password = parsePayload[2];
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"REGISTER;{Payload}");
+        }
+    }
+
+    public class ResetPasswordPacket : Packet
+    {
+        public string Email { get; set; }
+        public string NewPassword { get; set; }
+        public ResetPasswordPacket(string email, string newPassword) : base(PacketType.RESET_PASSWORD, $"{email};{newPassword}")
+        {
+            Email = email;
+            NewPassword = newPassword;
+        }
+        public override byte[] ToBytes()
+        {
+            string data = $"RESET_PASSWORD;{Email};{NewPassword}";
+            return Encoding.UTF8.GetBytes(data);
+        }
+    }
+
+    public class LogoutPacket : Packet
+    {
+        public string Username { get; set; }
+        public LogoutPacket(string payload) : base(PacketType.LOGOUT, payload)
+        {
+            Username = payload;
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"LOGOUT;{Username}");
+        }
+    }
+
+    #endregion
+    #region login, register result
     public class LoginResultPacket : Packet
     {
         public string result { get; set; }
@@ -136,7 +218,8 @@ namespace Models
             return Encoding.UTF8.GetBytes($"RESET_PASSWORD_RESULT;{Status}");
         }
     }
-
+    #endregion
+    #region room (server -> client)
     public class RoomInfoPacket : Packet
     {
         public string RoomId { get; set; }
@@ -212,14 +295,18 @@ namespace Models
     public class RoundUpdatePacket : Packet
     {
         public string RoomId { get; set; }
+        public string Name { get; set; }
+        public string IsDrawing { get; set; }
         public string Word { get; set; }
         public RoundUpdatePacket(string payload) : base(PacketType.ROUND_UPDATE, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 2)
+            if (parsePayload.Length >= 4)
             {
                 RoomId = parsePayload[0];
-                Word = parsePayload[1];
+                Name = parsePayload[1];
+                IsDrawing = parsePayload[2];
+                Word = parsePayload[3];
             }
             else
             {
@@ -229,7 +316,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"ROUND_UPDATE;{RoomId};{Word}");
+            return Encoding.UTF8.GetBytes($"ROUND_UPDATE;{RoomId};{Name};{IsDrawing};{Word}");
         }
     }
 
@@ -284,86 +371,8 @@ namespace Models
             return Encoding.UTF8.GetBytes($"LEADER_BOARD_INFO;{playerName1};{playerName2};{playerName3}");
         }
     }
-
-    public class LoginPacket : Packet
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public LoginPacket(string payload) : base(PacketType.LOGIN, payload)
-        {
-            string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 2)
-            {
-                Username = parsePayload[0];
-                Password = parsePayload[1];
-            }
-            else
-            {
-                throw new ArgumentException("Payload không hợp lệ");
-            }
-        }
-
-        public override byte[] ToBytes()
-        {
-            return Encoding.UTF8.GetBytes($"LOGIN;{Payload}");
-        }
-    }
-
-    public class RegisterPacket : Packet
-    {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public RegisterPacket(string payload) : base(PacketType.REGISTER, payload)
-        {
-            string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 3)
-            {
-                Username = parsePayload[0];
-                Email = parsePayload[1];
-                Password = parsePayload[2];
-            }
-            else
-            {
-                throw new ArgumentException("Payload không hợp lệ");
-            }
-        }
-        public override byte[] ToBytes()
-        {
-            return Encoding.UTF8.GetBytes($"REGISTER;{Payload}");
-        }
-    }
-
-    public class ResetPasswordPacket : Packet
-    {
-        public string Email { get; set; }
-        public string NewPassword { get; set; }
-        public ResetPasswordPacket(string email, string newPassword) : base(PacketType.RESET_PASSWORD, $"{email};{newPassword}")
-        {
-            Email = email;
-            NewPassword = newPassword;
-        }
-        public override byte[] ToBytes()
-        {
-            string data = $"RESET_PASSWORD;{Email};{NewPassword}";
-            return Encoding.UTF8.GetBytes(data);
-        }
-    }
-
-    public class LogoutPacket : Packet
-    {
-        public string Username { get; set; }
-        public LogoutPacket(string payload) : base(PacketType.LOGOUT, payload)
-        {
-            Username = payload;
-        }
-
-        public override byte[] ToBytes()
-        {
-            return Encoding.UTF8.GetBytes($"LOGOUT;{Username}");
-        }
-    }
-
+    #endregion
+    #region room (client -> server)
     public class CreateRoomPacket : Packet
     {
         public string username { get; set; }
@@ -496,7 +505,8 @@ namespace Models
             return Encoding.UTF8.GetBytes($"GUESS;{RoomId};{playerName};{GuessMessage}");
         }
     }
-    
+    #endregion
+
     public class DisconnectPacket : Packet
     {
         public DisconnectPacket(string payload) : base(PacketType.DISCONNECT, payload)
@@ -509,4 +519,29 @@ namespace Models
             return Encoding.UTF8.GetBytes($"DISCONNECT");
         }
     }
+    public class SyncBitmapPacket : Packet
+    {
+        public string RoomId { get; set; }
+        public string BitmapData { get; set; }
+
+        public SyncBitmapPacket(string payload) : base(PacketType.SYNC_BITMAP, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 2)
+            {
+                RoomId = parsePayload[0];
+                BitmapData = parsePayload[1];
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"SYNC_BITMAP;{RoomId};{BitmapData}");
+        }
+    }
+
 }

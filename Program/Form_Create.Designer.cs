@@ -28,11 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Create));
             this.createBtn = new ReaLTaiizor.Controls.HopeButton();
             this.label1 = new System.Windows.Forms.Label();
             this.numeric = new ReaLTaiizor.Controls.HopeNumeric();
-            this.hopeForm1 = new ReaLTaiizor.Forms.HopeForm();
+            this.create = new ReaLTaiizor.Forms.HopeForm();
             this.SuspendLayout();
             // 
             // createBtn
@@ -42,16 +41,16 @@
             this.createBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.createBtn.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.createBtn.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.createBtn.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.createBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            this.createBtn.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.createBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.createBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.createBtn.Location = new System.Drawing.Point(82, 161);
+            this.createBtn.Location = new System.Drawing.Point(178, 93);
             this.createBtn.Name = "createBtn";
-            this.createBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.createBtn.Size = new System.Drawing.Size(169, 36);
+            this.createBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.createBtn.Size = new System.Drawing.Size(97, 54);
             this.createBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.createBtn.TabIndex = 18;
-            this.createBtn.Text = "Tạo phòng";
+            this.createBtn.Text = "create";
             this.createBtn.TextColor = System.Drawing.Color.White;
             this.createBtn.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.createBtn.Click += new System.EventHandler(this.createBtn_Click);
@@ -59,28 +58,29 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Roboto Mono", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(19, 67);
+            this.label1.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.label1.Location = new System.Drawing.Point(19, 55);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(315, 20);
+            this.label1.Size = new System.Drawing.Size(256, 26);
             this.label1.TabIndex = 19;
-            this.label1.Text = "Nhập số lượng người chơi (từ 1->5)";
+            this.label1.Text = "player number (1->5)\r\n";
             // 
             // numeric
             // 
             this.numeric.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
-            this.numeric.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.numeric.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.numeric.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
+            this.numeric.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.numeric.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.numeric.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.numeric.BorderHoverColorA = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(158)))), ((int)(((byte)(255)))));
-            this.numeric.ButtonTextColorA = System.Drawing.Color.Black;
-            this.numeric.ButtonTextColorB = System.Drawing.Color.Black;
+            this.numeric.ButtonTextColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.numeric.ButtonTextColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.numeric.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.numeric.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.numeric.ForeColor = System.Drawing.Color.Black;
+            this.numeric.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numeric.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.numeric.HoverButtonTextColorA = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
             this.numeric.HoverButtonTextColorB = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
-            this.numeric.Location = new System.Drawing.Point(107, 107);
+            this.numeric.Location = new System.Drawing.Point(29, 104);
             this.numeric.MaxNum = 10F;
             this.numeric.MinNum = 0F;
             this.numeric.Name = "numeric";
@@ -92,30 +92,31 @@
             this.numeric.Text = "hopeNumeric1";
             this.numeric.ValueNumber = 0F;
             // 
-            // hopeForm1
+            // create
             // 
-            this.hopeForm1.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
-            this.hopeForm1.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
-            this.hopeForm1.ControlBoxColorN = System.Drawing.Color.White;
-            this.hopeForm1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.hopeForm1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.hopeForm1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.hopeForm1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
-            this.hopeForm1.Image = ((System.Drawing.Image)(resources.GetObject("hopeForm1.Image")));
-            this.hopeForm1.Location = new System.Drawing.Point(0, 0);
-            this.hopeForm1.Name = "hopeForm1";
-            this.hopeForm1.Size = new System.Drawing.Size(348, 40);
-            this.hopeForm1.TabIndex = 21;
-            this.hopeForm1.Text = "Create Room";
-            this.hopeForm1.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            this.create.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
+            this.create.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
+            this.create.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.create.ControlBoxColorN = System.Drawing.Color.White;
+            this.create.Cursor = System.Windows.Forms.Cursors.Default;
+            this.create.Dock = System.Windows.Forms.DockStyle.Top;
+            this.create.Font = new System.Drawing.Font("SVN-Retron 2000", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.create.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
+            this.create.Image = null;
+            this.create.Location = new System.Drawing.Point(0, 0);
+            this.create.Name = "create";
+            this.create.Size = new System.Drawing.Size(308, 40);
+            this.create.TabIndex = 28;
+            this.create.Text = "Create room";
+            this.create.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             // 
             // Form_Create
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
-            this.ClientSize = new System.Drawing.Size(348, 228);
-            this.Controls.Add(this.hopeForm1);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
+            this.ClientSize = new System.Drawing.Size(308, 166);
+            this.Controls.Add(this.create);
             this.Controls.Add(this.numeric);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.createBtn);
@@ -135,6 +136,6 @@
         private ReaLTaiizor.Controls.HopeButton createBtn;
         private System.Windows.Forms.Label label1;
         private ReaLTaiizor.Controls.HopeNumeric numeric;
-        private ReaLTaiizor.Forms.HopeForm hopeForm1;
+        private ReaLTaiizor.Forms.HopeForm create;
     }
 }

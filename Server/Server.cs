@@ -12,6 +12,9 @@ using Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using MongoDB.Driver.Core.Authentication;
+using System.Xml.Linq;
+using System.Drawing;
+using System.IO;
 
 namespace Server
 {
@@ -67,7 +70,7 @@ namespace Server
                         // Chờ kết nối từ client
                         Socket clientSocket = await serverSocket.AcceptAsync();
                         NetworkStream ns = new NetworkStream(clientSocket);
-                        HandleClientConnection(clientSocket,ns);
+                        HandleClientConnection(clientSocket, ns);
                     }
                     catch (Exception ex)
                     {
@@ -87,7 +90,7 @@ namespace Server
 
         private void HandleClientConnection(Socket clientSocket, NetworkStream ns)
         {
-            var client = new User(clientSocket,ns);
+            User client = new User(clientSocket, ns);
 
             if (client != null)
             {
@@ -160,8 +163,8 @@ namespace Server
             catch (Exception ex)
             {
                 UpdateLog?.Invoke($"Lỗi khi đóng socket server: {ex.Message}");
-            } 
-            finally 
+            }
+            finally
             {
                 serverSocket = null;
             }
@@ -177,11 +180,13 @@ namespace Server
         {
             try
             {
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[293600];
                 int receivedBytes = await client.ns.ReadAsync(buffer, 0, buffer.Length);
+                string msg = "";
                 if (receivedBytes > 0)
                 {
-                    return Encoding.UTF8.GetString(buffer, 0, receivedBytes);
+                    msg += Encoding.UTF8.GetString(buffer, 0, receivedBytes);
+                    return msg;
                 }
                 else
                 {
@@ -192,7 +197,6 @@ namespace Server
                     UpdateLog?.Invoke($"Client {client.UserSocket.RemoteEndPoint} đã ngắt kết nối.");
                     return null;
                 }
-
             }
             catch (Exception ex)
             {
@@ -200,6 +204,7 @@ namespace Server
                 return null;
             }
         }
+
 
 
         private void sendPacket(User client, Packet packet)
@@ -267,11 +272,13 @@ namespace Server
                         return new GuessPacket(remainingMsg);
                     case PacketType.DISCONNECT:
                         return new DisconnectPacket(remainingMsg);
+                    case PacketType.SYNC_BITMAP:
+                        return new SyncBitmapPacket(remainingMsg);
                     default:
                         return null; // Không biết loại packet
                 }
             }
-            return null; 
+            return null;
         }
 
         // tạo mã phòng random
@@ -441,7 +448,7 @@ namespace Server
                     }
 
 
-                    else if (join_result=="SUCCESS")
+                    else if (join_result == "SUCCESS")
                     {
                         room.players.Add(client);
                         client.RoomId = roomIdToJoin;
@@ -457,7 +464,7 @@ namespace Server
                             if (player != null && player != client)
                             {
                                 OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomIdToJoin};{player.Name};{player.Score};JOINED|");
-                                sendPacket(client, otherInfo );
+                                sendPacket(client, otherInfo);
                             }
                         }
 
@@ -492,6 +499,32 @@ namespace Server
                     break;
 
                 case PacketType.START:
+                    // Phân tích gói tin StartPacket
+                    StartPacket startPacket = (StartPacket)packet;
+                    roomId = startPacket.RoomId;
+                    room = rooms.FirstOrDefault(r => r.RoomId == roomId);
+
+                    // Kiểm tra phòng có tồn tại hay không
+                    if (room != null)
+                    {
+                        // Chọn người vẽ ngẫu nhiên
+                        room.StartNewRound();
+                        string isdraw = room.currentDrawer.IsDrawing.ToString();
+                        string name = room.currentDrawer.Name;
+                        string word = room.currentKeyword;
+                        // Gửi thông báo về người vẽ cho tất cả người chơi trong phòng
+                        foreach (var user in room.players)
+                        {
+                            RoundUpdatePacket RoundUpdate = new RoundUpdatePacket($"{roomId};{name};{isdraw};{word}");
+                            user.SendPacket( RoundUpdate);
+                        }
+
+                        UpdateLog.Invoke($"Phòng {roomId}: Trò chơi bắt đầu. Người vẽ là {room.currentDrawer.Name} và từ khóa là {room.currentKeyword}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Phòng {roomId} không tồn tại.");
+                    }
                     break;
                 case PacketType.DESCRIBE:
                     break;
@@ -527,6 +560,15 @@ namespace Server
                         Console.WriteLine("Client đã ngắt kết nối khi gửi disconnecr", client.UserSocket.RemoteEndPoint);
                         clients.Remove(client);
                         UpdateClientList?.Invoke();
+                    }
+                    break;
+                case PacketType.SYNC_BITMAP:
+                    SyncBitmapPacket syncBitmapPacket = (SyncBitmapPacket)packet;
+                    roomId = syncBitmapPacket.RoomId;
+                    room = rooms.FirstOrDefault(r => r.RoomId == roomId);
+                    if (room != null)
+                    {
+                        BroadcastPacket(room, syncBitmapPacket);
                     }
                     break;
                 default:

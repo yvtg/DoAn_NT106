@@ -250,9 +250,9 @@
     <Compile Include="Form_Input_ServerIP.cs">
       <SubType>Form</SubType>
     </Compile>
-	  <Compile Include="Form_Input_ServerIP.Designer.cs">
-		  <DependentUpon>Form_Input_ServerIP.cs</DependentUpon>
-	  </Compile>
+    <Compile Include="Form_Input_ServerIP.Designer.cs">
+      <DependentUpon>Form_Input_ServerIP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Forget_Password.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -264,6 +264,12 @@
     </Compile>
     <Compile Include="Form_Law.Designer.cs">
       <DependentUpon>Form_Law.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Message.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Message.Designer.cs">
+      <DependentUpon>Form_Message.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_Profile.cs">
       <SubType>Form</SubType>
@@ -334,6 +340,9 @@
     <EmbeddedResource Include="Form_Login.resx">
       <DependentUpon>Form_Login.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_Message.resx">
+      <DependentUpon>Form_Message.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_Profile.resx">
       <DependentUpon>Form_Profile.cs</DependentUpon>
     </EmbeddedResource>
@@ -375,6 +384,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mongocrypt.dll" />
+    <None Include="Resources\leave_icon1.png" />
+    <None Include="Resources\leave_icon.png" />
+    <None Include="Resources\backgroun3.png" />
+    <None Include="Resources\background2.png" />
+    <None Include="Resources\logo.png" />
+    <None Include="Resources\Untitled-21.png" />
+    <None Include="Resources\Untitled-2.png" />
+    <None Include="Resources\colors-icon-4.png" />
     <None Include="Resources\Screenshot 2024-12-03 023500.png" />
     <None Include="Resources\Screenshot 2024-12-03 023531.png" />
   </ItemGroup>

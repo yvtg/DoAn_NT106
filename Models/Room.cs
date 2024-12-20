@@ -1,8 +1,10 @@
 ﻿using Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Timers;
 
 namespace Models
@@ -50,18 +52,14 @@ namespace Models
             // Dừng bộ đếm thời gian hiện tại (nếu có)
             roundTimer.Stop();
 
-            if (players.Count > 2)
-            {
-                currentDrawerIndex = (currentDrawerIndex + 1) % players.Count;
-                currentDrawer = players[currentDrawerIndex];
-                currentDrawer.IsDrawing = true;
+            currentDrawerIndex = (currentDrawerIndex + 1) % players.Count;
+            currentDrawer = players[currentDrawerIndex];
+            currentDrawer.IsDrawing = true;
 
-                currentKeyword = GenerateRandomKeyword();
+            currentKeyword = GenerateRandomKeyword();
 
-                BroadcastNewRoundInfo();
+            roundTimer.Start();
 
-                roundTimer.Start();
-            }
         }
 
         // Sự kiện khi hết thời gian của vòng chơi
@@ -76,22 +74,25 @@ namespace Models
         public string GenerateRandomKeyword()
         {
             List<string> keywords = new List<string>();
-            string filePath = "Server/Keyword.txt";
 
-            if (File.Exists(filePath))
-            {
-                keywords.AddRange(File.ReadAllLines(filePath));
-            }
-            else
-            {
-                Console.WriteLine("File Keyword.txt không tồn tại.");
-                return "default";
-            }
+            // Lấy thư mục gốc của ứng dụng
+            string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            // Lấy đường dẫn tuyệt đối của file Keyword.txt
+            string filePath = Path.Combine(projectDirectory, @"..\..\Models\Keyword.txt");
+
+            // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
+            filePath = Path.GetFullPath(filePath);
+
+            // Loại bỏ phần "Server" trong đường dẫn
+            filePath = filePath.Replace(@"\Server", "");
+
+            keywords.AddRange(File.ReadAllLines(filePath));
 
             if (keywords.Count == 0)
             {
                 Console.WriteLine("File Keyword.txt không có từ khóa nào.");
-                return "default";
+                return "default2";
             }
 
             return keywords[random.Next(keywords.Count)];
@@ -107,9 +108,7 @@ namespace Models
                 if (currentDrawer != null)
                 {
                     currentDrawer.Score += 5;
-                    BroadcastMessage($"{player.Name} đã đoán đúng từ khóa và nhận được 10 điểm! và {currentDrawer.Name} được cộng 5 điểm!");
                 }
-
 
                 roundTimer.Stop();
 
@@ -119,27 +118,6 @@ namespace Models
             return false;
         }
 
-        // Gửi tin nhắn đến tất cả người chơi trong phòng
-        public void BroadcastMessage(string message)
-        {
-            string roundInfo = $"Người vẽ hiện tại: {currentDrawer.Name}, Từ khóa: {currentKeyword}";
-            foreach (var player in players)
-            {
-                Packet newRoundPacket = new DescribePacket($"{RoomId};System;{roundInfo}");
-                player.SendPacket(newRoundPacket);
-            }
-        }
-
-        // Gửi thông tin vòng chơi mới
-        public void BroadcastNewRoundInfo()
-        {
-            string roundInfo = $"Người vẽ hiện tại: {currentDrawer.Name}, Từ khóa: {currentKeyword}";
-            foreach (var player in players)
-            {
-                Packet newRoundPacket = new DescribePacket($"{RoomId};System;{roundInfo}");
-                player.SendPacket(newRoundPacket);
-            }
-        }
 
         // Lấy danh sách điểm của các người chơi dưới dạng chuỗi
         public string GetScores()
