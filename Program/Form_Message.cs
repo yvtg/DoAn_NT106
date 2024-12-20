@@ -20,7 +20,7 @@ namespace Program
             Message.Text = message;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void okBtn_Click(object sender, EventArgs e)
         {
             this.Close();
         }

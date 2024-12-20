@@ -100,8 +100,8 @@ namespace Program
             userListView.GridLines = true;
 
             // Thêm các cột vào ListView
-            userListView.Columns.Add("username", 80);    
-            userListView.Columns.Add("score", 41);   
+            userListView.Columns.Add("user", 85);    
+            userListView.Columns.Add("score", 70);   
             
         }
 

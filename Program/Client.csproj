@@ -384,6 +384,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mongocrypt.dll" />
+    <None Include="Resources\leave_icon1.png" />
+    <None Include="Resources\leave_icon.png" />
+    <None Include="Resources\backgroun3.png" />
+    <None Include="Resources\background2.png" />
+    <None Include="Resources\logo.png" />
+    <None Include="Resources\Untitled-21.png" />
+    <None Include="Resources\Untitled-2.png" />
     <None Include="Resources\colors-icon-4.png" />
     <None Include="Resources\Screenshot 2024-12-03 023500.png" />
     <None Include="Resources\Screenshot 2024-12-03 023531.png" />
