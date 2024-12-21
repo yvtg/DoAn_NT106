@@ -57,6 +57,11 @@ namespace Program
                     // Chuyển đổi packet thành mảng byte
                     byte[] byteData = packet.ToBytes();
 
+                    RSAHelper rsaHelper = new RSAHelper();
+                    string publicKey = rsaHelper.GetPublicKey(); // Thay thế bằng khóa công khai thực tế
+                    string encryptedData = rsaHelper.Encrypt(Convert.ToBase64String(byteData), publicKey);
+                    byteData = Convert.FromBase64String(encryptedData);
+
                     // Gửi mảng byte qua NetworkStream
                     ns.Write(byteData, 0, byteData.Length);
                     ns.Flush(); // Đảm bảo tất cả dữ liệu đã được gửi
@@ -73,7 +78,6 @@ namespace Program
                 MessageBox.Show("Client không kết nối với server."); // Client is not connected to the server
             }
         }
-
 
         public void ReceiveData()
         {
@@ -96,6 +100,11 @@ namespace Program
                     foreach (string payload in packets)
                     {
                         Console.WriteLine(payload);
+
+                        RSAHelper rsaHelper = new RSAHelper();
+                        string privateKey = rsaHelper.GetPrivateKey();
+                        string decryptedPayload = rsaHelper.Decrypt(payload, privateKey);
+
                         Packet packet = ParsePacket(payload);
                         AnalyzingPacket(packet);
                     }
@@ -259,6 +268,5 @@ namespace Program
                     break;
             }
         }
-
     }
 }

@@ -181,7 +181,14 @@ namespace Server
                 int receivedBytes = await client.ns.ReadAsync(buffer, 0, buffer.Length);
                 if (receivedBytes > 0)
                 {
-                    return Encoding.UTF8.GetString(buffer, 0, receivedBytes);
+                    string receivedData = Encoding.UTF8.GetString(buffer, 0, receivedBytes);
+
+                    // Giải mã gói tin
+                    RSAHelper rsaHelper = new RSAHelper();
+                    string privateKey = rsaHelper.GetPrivateKey(); // Thay thế bằng khóa riêng tư thực tế
+                    string decryptedData = rsaHelper.Decrypt(receivedData, privateKey);
+
+                    return decryptedData;
                 }
                 else
                 {
@@ -200,14 +207,21 @@ namespace Server
                 return null;
             }
         }
-
-
         private void sendPacket(User client, Packet packet)
         {
             try
             {
                 // Chuẩn bị dữ liệu để gửi
-                client.SendPacket(packet);
+                byte[] byteData = packet.ToBytes();
+
+                // Mã hóa gói tin
+                RSAHelper rsaHelper = new RSAHelper();
+                string publicKey = rsaHelper.GetPublicKey(); // Thay thế bằng khóa công khai thực tế
+                string encryptedData = rsaHelper.Encrypt(Convert.ToBase64String(byteData), publicKey);
+                byteData = Convert.FromBase64String(encryptedData);
+
+                // Gửi gói tin đã mã hóa
+                client.SendPacket(new Packet(packet.Type, byteData));
 
                 UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.UserSocket.RemoteEndPoint} {packet.Type};{packet.Payload}");
             }

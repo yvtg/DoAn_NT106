@@ -37,3 +37,41 @@ public class RSAHelper
         return Encoding.UTF8.GetString(decryptedData);
     }
 }
+
+//public class RsaEncryption
+//{
+//    private static RSACryptoServiceProvider csp = new RSACryptoServiceProvider(2048);
+//    private RSAParameters _privatekey;
+//    private RSAParameters _publickey;
+
+//    public RsaEncryption()
+//    {
+//        _privatekey = csp.ExportParameters(true);
+//        _publickey = csp.ExportParameters(false);
+//    }
+
+//    public string GetPublickey()
+//    {
+//        var sw = new StringWriter();
+//        var xs = new XmlSerializer(typeof(RSAParameters));
+//        xs.Serialize(sw, _publickey);
+//        return sw.ToString();
+//    }
+
+//    public string Encrypt(string plainText)
+//    {
+//        csp = new RSACryptoServiceProvider();
+//        csp.ImportParameters(_publickey);
+//        var data = Encoding.Unicode.GetBytes(plainText);
+//        var cypher = csp.Encrypt(data, false);
+//        return Convert.ToBase64String(cypher);
+//    }
+
+//    public string Decrypt(string cypherText)
+//    {
+//        var dataBytes = Convert.FromBase64String(cypherText);
+//        csp.ImportParameters(_privatekey);
+//        var plainText = csp.Decrypt(dataBytes, false);
+//        return Encoding.Unicode.GetString(plainText);
+//    }
+//}
