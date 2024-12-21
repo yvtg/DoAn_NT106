@@ -1,22 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
-using System.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Interop;
-using Amazon.Runtime.Internal.Util;
 using Models;
-using ReaLTaiizor.Controls;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static ReaLTaiizor.Drawing.Poison.PoisonPaint;
 
 namespace Program
 {
@@ -258,6 +252,26 @@ namespace Program
         }
         #region chat
 
+        private void OnReceivedMessage(string roomId, string sender, string message)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => OnReceivedMessage(roomId, sender, message)));
+                return;
+            }
+
+            if (roomId == this.roomId)
+            {
+                if (sender == username)
+                {
+                    chatRichtextbox.Text += $"You: {message}\n";
+                }
+                else
+                {
+                    chatRichtextbox.Text += $"{sender}: {message}\n";
+                }
+            }
+        }
 
         private void OnRecivedOtherInfo(string roomId, string username, int Score, string status)
         {
@@ -314,122 +328,6 @@ namespace Program
         }
         #endregion
 
-        #region chat
-        private void AddMessage(string sender, string message)
-        {
-            // Tạo Label chứa tên người gửi
-            Label senderLabel = new Label
-            {
-                AutoSize = true,
-                Text = sender == username ? "You" : sender,
-                ForeColor = sender == username ? Color.White : Color.FromArgb(124, 63, 88),
-                BackColor = sender == username ? Color.FromArgb(249, 168, 117) : Color.White,
-                Font = new Font("FVF Fernando 08", 8, FontStyle.Bold),
-                Padding = new Padding(0, 0, 0, 0),
-                TextAlign = sender == username ? ContentAlignment.MiddleRight : ContentAlignment.MiddleLeft,
-                Margin = new Padding(0, 0, 0, 0),
-                Dock = DockStyle.Top,
-            };
-
-            // Tạo Label chứa nội dung tin nhắn
-            Label messageLabel = new Label
-            {
-                AutoSize = true,
-                Text = message,
-                Padding = new Padding(10), // Khoảng cách trong để không chạm viền
-                BackColor = Color.Transparent,
-                ForeColor = sender == username ? Color.FromArgb(124, 63, 88) : Color.White,
-                Font = new Font("FVF Fernando 08", 8, FontStyle.Regular),
-                MaximumSize = new Size(200, 0), // Giới hạn chiều rộng
-                TextAlign = ContentAlignment.MiddleLeft,
-                Dock = DockStyle.Fill,
-            };
-
-            // Tạo RoundedPanel chứa nội dung tin nhắn
-            RoundedPanel messagePanel = new RoundedPanel
-            {
-                AutoSize = true,
-                Padding = new Padding(5), // Khoảng cách giữa nội dung và viền
-                BackColor = sender == username ? Color.White : Color.FromArgb(249, 168, 117),
-                BorderRadius = 20, // Độ bo góc
-                MaximumSize = new Size(218, 0),
-            };
-            messagePanel.Controls.Add(messageLabel);
-
-            // Tạo Panel cha để chứa cả tên người gửi và tin nhắn
-            System.Windows.Forms.Panel containerPanel = new System.Windows.Forms.Panel
-            {
-                AutoSize = true,
-                MaximumSize = new Size(flowLayoutPanel.Width, 0),
-                Margin = new Padding(3),
-                BackColor = Color.Transparent,
-            };
-
-            // Thêm tên người gửi và nội dung tin nhắn vào Panel cha
-            containerPanel.Controls.Add(senderLabel);
-            containerPanel.Controls.Add(messagePanel);
-
-            // Thêm Panel cha vào FlowLayoutPanel
-            flowLayoutPanel.Controls.Add(containerPanel);
-
-            // Cuộn xuống cuối cùng
-            flowLayoutPanel.ScrollControlIntoView(containerPanel);
-        }
-
-
-
-
-
-        private void OnReceivedMessage(string roomId, string sender, string message)
-        {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() => OnReceivedMessage(roomId, sender, message)));
-                return;
-            }
-
-            if (roomId == this.roomId)
-            {
-                if (!string.IsNullOrEmpty(message))
-                {
-                    if (message== "đã tham gia phòng" || message == "đã rời phòng")
-                    {
-                        Label contentLabel = new Label
-                        {
-                            AutoSize = true,
-                            Text = sender + " " + message,
-                            Font = new Font("FVF Fernando 08", 7, FontStyle.Bold),
-                            ForeColor = Color.FromArgb(235, 107, 111),
-                        };
-
-                        // Thêm Label vào Panel
-                        flowLayoutPanel.Controls.Add(contentLabel);
-
-                        // Cuộn xuống cuối cùng
-                        flowLayoutPanel.ScrollControlIntoView(contentLabel);
-                    }
-                    else
-                    {
-                        AddMessage(sender, message);
-                    }
-                }
-            }
-        }
-
-        private void sendButton_Click(object sender, EventArgs e)
-        {
-
-            string msg = sendTextBox.Text;
-
-            if (!string.IsNullOrEmpty(msg))
-            {
-                GuessPacket packet = new GuessPacket($"{roomId};{username};{msg}");
-                client.SendPacket(packet);
-                sendTextBox.Clear();
-            }
-        }
-        #endregion
-
         private void OnReceivedRoundUpdate(RoundUpdatePacket roundUpdatePacket)
         {
             if (this.InvokeRequired)
@@ -465,6 +363,16 @@ namespace Program
             }
             startButton.Enabled = false;
         }
+        private void sendButton_Click(object sender, EventArgs e)
+        {
+            string msg = sendTextBox.Text;
+            if (!string.IsNullOrWhiteSpace(msg))
+            {
+                GuessPacket packet = new GuessPacket($"{roomId};{username};{msg}");
+                client.SendPacket(packet);
+                sendTextBox.Clear();
+            }
+        }
 
         private void leaveBtn_Click(object sender, EventArgs e)
         {
@@ -473,32 +381,5 @@ namespace Program
             this.Close();
         }
 
-    }
-
-    public class RoundedPanel : System.Windows.Forms.Panel
-    {
-        public int BorderRadius { get; set; } = 15; // Độ bo góc
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            using (GraphicsPath path = new GraphicsPath())
-            {
-                path.AddArc(0, 0, BorderRadius, BorderRadius, 180, 90); // Góc trên trái
-                path.AddArc(Width - BorderRadius, 0, BorderRadius, BorderRadius, 270, 90); // Góc trên phải
-                path.AddArc(Width - BorderRadius, Height - BorderRadius, BorderRadius, BorderRadius, 0, 90); // Góc dưới phải
-                path.AddArc(0, Height - BorderRadius, BorderRadius, BorderRadius, 90, 90); // Góc dưới trái
-                path.CloseFigure();
-
-                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                e.Graphics.FillPath(new SolidBrush(BackColor), path); // Vẽ màu nền
-            }
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            // Không vẽ nền mặc định để tránh chồng lấp
-        }
     }
 }

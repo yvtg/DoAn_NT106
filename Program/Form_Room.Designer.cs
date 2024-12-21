@@ -84,7 +84,6 @@
             this.wordTextbox.Name = "wordTextbox";
             this.wordTextbox.Size = new System.Drawing.Size(215, 35);
             this.wordTextbox.TabIndex = 5;
-            // 
             // sendButton
             // 
             this.sendButton.BorderColor = System.Drawing.Color.Black;
