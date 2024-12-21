@@ -18,4 +18,12 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\Hi\Source\Repos\DoAn_NT106\Models\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\Hi\Source\Repos\DoAn_NT106\Models\.editorconfig" />
+  </ItemGroup>
+
 </Project>

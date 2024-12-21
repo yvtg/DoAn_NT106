@@ -33,7 +33,6 @@
             this.timeLabel = new System.Windows.Forms.Label();
             this.gameTimer = new System.Windows.Forms.Timer(this.components);
             this.wordTextbox = new System.Windows.Forms.TextBox();
-            this.chatRichtextbox = new System.Windows.Forms.RichTextBox();
             this.sendButton = new ReaLTaiizor.Controls.HopeButton();
             this.sendTextBox = new ReaLTaiizor.Controls.HopeTextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -52,6 +51,7 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.leaveBtn = new ReaLTaiizor.Controls.HopeButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EraserPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PencilPictureBox)).BeginInit();
@@ -85,18 +85,6 @@
             this.wordTextbox.Size = new System.Drawing.Size(215, 35);
             this.wordTextbox.TabIndex = 5;
             // 
-            // chatRichtextbox
-            // 
-            this.chatRichtextbox.BackColor = System.Drawing.SystemColors.Window;
-            this.chatRichtextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.chatRichtextbox.Font = new System.Drawing.Font("FVF Fernando 08", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.chatRichtextbox.Location = new System.Drawing.Point(588, 107);
-            this.chatRichtextbox.Margin = new System.Windows.Forms.Padding(2);
-            this.chatRichtextbox.Name = "chatRichtextbox";
-            this.chatRichtextbox.Size = new System.Drawing.Size(211, 336);
-            this.chatRichtextbox.TabIndex = 6;
-            this.chatRichtextbox.Text = "";
-            // 
             // sendButton
             // 
             this.sendButton.BorderColor = System.Drawing.Color.Black;
@@ -107,10 +95,10 @@
             this.sendButton.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sendButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.sendButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.sendButton.Location = new System.Drawing.Point(588, 448);
+            this.sendButton.Location = new System.Drawing.Point(578, 448);
             this.sendButton.Name = "sendButton";
             this.sendButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.sendButton.Size = new System.Drawing.Size(210, 44);
+            this.sendButton.Size = new System.Drawing.Size(220, 44);
             this.sendButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.sendButton.TabIndex = 26;
             this.sendButton.Text = "send";
@@ -147,7 +135,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.label2.Location = new System.Drawing.Point(584, 84);
+            this.label2.Location = new System.Drawing.Point(584, 80);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -367,12 +355,21 @@
             this.pictureBox1.TabIndex = 28;
             this.pictureBox1.TabStop = false;
             // 
+            // flowLayoutPanel
+            // 
+            this.flowLayoutPanel.AutoScroll = true;
+            this.flowLayoutPanel.Location = new System.Drawing.Point(577, 104);
+            this.flowLayoutPanel.Name = "flowLayoutPanel";
+            this.flowLayoutPanel.Size = new System.Drawing.Size(222, 339);
+            this.flowLayoutPanel.TabIndex = 40;
+            // 
             // Form_Room
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(810, 496);
+            this.Controls.Add(this.flowLayoutPanel);
             this.Controls.Add(this.maxText);
             this.Controls.Add(this.userListView);
             this.Controls.Add(this.leaveBtn);
@@ -386,7 +383,6 @@
             this.Controls.Add(this.sendTextBox);
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.roomForm);
-            this.Controls.Add(this.chatRichtextbox);
             this.Controls.Add(this.wordTextbox);
             this.Controls.Add(this.timeLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -409,7 +405,6 @@
         private System.Windows.Forms.Label timeLabel;
         private System.Windows.Forms.Timer gameTimer;
         private System.Windows.Forms.TextBox wordTextbox;
-        private System.Windows.Forms.RichTextBox chatRichtextbox;
         private ReaLTaiizor.Forms.HopeForm roomForm;
         private ReaLTaiizor.Controls.HopeButton sendButton;
         private ReaLTaiizor.Controls.HopeTextBox sendTextBox;
@@ -428,5 +423,6 @@
         private ReaLTaiizor.Controls.DungeonTrackBar sizeTrackBar;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private ReaLTaiizor.Controls.HopeRoundButton chooseColorBtn;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
     }
 }
