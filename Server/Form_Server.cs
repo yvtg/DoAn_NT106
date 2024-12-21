@@ -26,6 +26,7 @@ namespace Server
             server.UpdateLog += UpdateLog;
             server.UpdateClientList += UpdateClientListView;
             server.UpdateRoomList += UpdateRoomListView;
+            
         }
 
         private void UpdateLog(string message)
@@ -94,6 +95,7 @@ namespace Server
             server.StopServer();
 
             base.OnFormClosing(e);
+
         }
 
         #region LIST VIEW
@@ -136,5 +138,6 @@ namespace Server
             }
         }
         #endregion
+
     }
 }
