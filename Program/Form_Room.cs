@@ -1,18 +1,24 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IdentityModel;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using System.Windows.Interop;
+using Amazon.Runtime.Internal.Util;
 using Models;
+using ReaLTaiizor.Controls;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static ReaLTaiizor.Drawing.Poison.PoisonPaint;
 
 namespace Program
 {
@@ -33,6 +39,7 @@ namespace Program
         private bool isErasing = false;
         private int penSize = 3;
         private Color penColor = Color.Black;
+
 
         // Tạo Dictionary để lưu điểm hiện tại và textcore cho từng người chơi
         Dictionary<string, (int score, int textcore)> playerScores = new Dictionary<string, (int, int)>();
@@ -139,8 +146,6 @@ namespace Program
             }
         }
 
-
-
         #region Danh sach user
 
         private void InitializeListView()
@@ -150,9 +155,29 @@ namespace Program
             userListView.GridLines = true;
 
             // Thêm các cột vào ListView
-            userListView.Columns.Add("username", 80);    
-            userListView.Columns.Add("score", 41);   
-            
+            userListView.Columns.Add("user", 85);
+            userListView.Columns.Add("score", 70);
+
+        }
+
+        #endregion
+
+        #region ve
+        private void sizeTrackBar_ValueChanged()
+        {
+            penSize = sizeTrackBar.Value;
+        }
+        private void chooseColorBtn_Click(object sender, EventArgs e)
+        {
+            // mở color dialog để chọn màu
+            using (ColorDialog colorDialog = new ColorDialog())
+            {
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    penColor = colorDialog.Color;
+                    chooseColorBtn.PrimaryColor = penColor;
+                }
+            }
         }
 
         #endregion
@@ -205,6 +230,7 @@ namespace Program
             if (e.Button == MouseButtons.Left && gameStart)
             {
                 isDrawing = false;
+
 
                 string bitmapData = BitmapToString(drawingBitmap);
                 if (!string.IsNullOrEmpty(bitmapData))
@@ -287,10 +313,23 @@ namespace Program
             isErasing = false;
         }
 
-        // Sự kiện khi nhấn vào hình cái cục gôm
-        private void EraserPictureBox_Click(object sender, EventArgs e)
+        // chuyển bitmap thành string
+        private string BitmapToString(Bitmap bitmap)
         {
-            isErasing = true;
+            try
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    byte[] bytes = ms.ToArray();
+                    return Convert.ToBase64String(bytes);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error in BitmapToString: {ex.Message}");
+                return null;
+            }
         }
         private void ClearPictureBox()
         {
@@ -302,37 +341,66 @@ namespace Program
         }
         #endregion
 
-        private void startButton_Click(object sender, EventArgs e)
+        // chuyển string thành bitmap
+        private Bitmap StringToBitmap(string bitmapString)
         {
+
             gameStart = true;
             StartPacket startPacket = new StartPacket(roomId); 
             client.SendPacket(startPacket);
             startButton.Enabled = false;
-            
-
         }
         #region chat
 
-        private void OnReceivedMessage(string roomId, string sender, string message)
+        private void OnReceivedSyncBitmap(SyncBitmapPacket syncBitmapPacket)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action(() => OnReceivedMessage(roomId, sender, message)));
+                this.Invoke(new Action(() => OnReceivedSyncBitmap(syncBitmapPacket)));
                 return;
             }
 
-            if (roomId == this.roomId)
+            if (syncBitmapPacket.RoomId == roomId)
             {
-                if (sender == username)
+                Bitmap newBitmap = StringToBitmap(syncBitmapPacket.BitmapData);
+                if (newBitmap != null)
                 {
-                    chatRichtextbox.Text += $"You: {message}\n";
-                }
-                else
-                {
-                    chatRichtextbox.Text += $"{sender}: {message}\n";
+                    drawingBitmap.Dispose(); // Giải phóng bitmap cũ
+                    drawingBitmap = newBitmap;
+
+                    //// Tạo lại Graphics từ bitmap mới
+                    graphics.Dispose();
+                    graphics = Graphics.FromImage(newBitmap);
+
+
+                    pictureBox1.Image = newBitmap;
+                    pictureBox1.Refresh();
                 }
             }
         }
+
+
+        // Sự kiện khi nhấn vào hình cái bút
+        private void PencilPictureBox_Click(object sender, EventArgs e)
+        {
+            isErasing = false;
+        }
+
+        // Sự kiện khi nhấn vào hình cái cục gôm
+        private void EraserPictureBox_Click(object sender, EventArgs e)
+        {
+            isErasing = true;
+        }
+        #endregion
+
+        private void startButton_Click(object sender, EventArgs e)
+        {
+            gameStart = true;
+            StartPacket startPacket = new StartPacket(roomId);
+            client.SendPacket(startPacket);
+        }
+        #region chat
+
 
         private void OnRecivedOtherInfo(string roomId, string username, int Score, string status)
         {
@@ -459,16 +527,54 @@ namespace Program
                      
         }
 
-
         private void sendButton_Click(object sender, EventArgs e)
         {
+
             string msg = sendTextBox.Text;
-            if (!string.IsNullOrWhiteSpace(msg))
+
+            if (!string.IsNullOrEmpty(msg))
             {
                 GuessPacket packet = new GuessPacket($"{roomId};{username};{msg}");
                 client.SendPacket(packet);
                 sendTextBox.Clear();
             }
+        }
+        #endregion
+
+        private void OnReceivedRoundUpdate(RoundUpdatePacket roundUpdatePacket)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => OnReceivedRoundUpdate(roundUpdatePacket)));
+                return;
+            }
+
+            if (roundUpdatePacket.Name == username)
+            {
+                pictureBox1.Enabled = true;
+                wordTextbox.Text += roundUpdatePacket.Word;
+                Form_Message formmessage = new Form_Message($"Bạn là người vẽ! từ khóa là {roundUpdatePacket.Word}");
+                formmessage.StartPosition = FormStartPosition.Manual;
+                int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
+                int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
+                formmessage.Location = new Point(centerX, centerY);
+
+                formmessage.Show();
+
+            }
+            else
+            {
+                pictureBox1.Enabled = false;
+                Form_Message formmessage = new Form_Message($"Người vẽ là {roundUpdatePacket.Name}. Trong 60s hãy đoán từ khóa!");
+                formmessage.StartPosition = FormStartPosition.Manual;
+                int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
+                int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
+                formmessage.Location = new Point(centerX, centerY);
+
+                formmessage.Show();
+
+            }
+            startButton.Enabled = false;
         }
 
         private void leaveBtn_Click(object sender, EventArgs e)
@@ -487,6 +593,32 @@ namespace Program
             formmessage.Location = new Point(centerX, centerY);
 
             formmessage.ShowDialog();
+    }
+
+    public class RoundedPanel : System.Windows.Forms.Panel
+    {
+        public int BorderRadius { get; set; } = 15; // Độ bo góc
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            using (GraphicsPath path = new GraphicsPath())
+            {
+                path.AddArc(0, 0, BorderRadius, BorderRadius, 180, 90); // Góc trên trái
+                path.AddArc(Width - BorderRadius, 0, BorderRadius, BorderRadius, 270, 90); // Góc trên phải
+                path.AddArc(Width - BorderRadius, Height - BorderRadius, BorderRadius, BorderRadius, 0, 90); // Góc dưới phải
+                path.AddArc(0, Height - BorderRadius, BorderRadius, BorderRadius, 90, 90); // Góc dưới trái
+                path.CloseFigure();
+
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                e.Graphics.FillPath(new SolidBrush(BackColor), path); // Vẽ màu nền
+            }
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            // Không vẽ nền mặc định để tránh chồng lấp
         }
     }
 }

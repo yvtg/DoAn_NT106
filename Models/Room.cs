@@ -51,8 +51,6 @@ namespace Models
             currentDrawer.IsDrawing = true;
 
             currentKeyword = GenerateRandomKeyword();
-
-
         }
 
 

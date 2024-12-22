@@ -22,7 +22,8 @@ namespace Program
             Message.Text = message;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+        private void okBtn_Click(object sender, EventArgs e)
         {
             if(round == 5)
             {
@@ -39,7 +40,6 @@ namespace Program
             {
                 this.Close();
             }
-            
         }
     }
 }
