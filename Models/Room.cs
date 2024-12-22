@@ -15,8 +15,6 @@ namespace Models
         public string RoomId; // ID của phòng gồm 4 ký tự số và chữ in hoa
         public List<User> players;  // Danh sách người chơi trong phòng
         public string currentKeyword; // Từ khóa hiện tại
-        public int roundTime = 60; // Thời gian của mỗi vòng chơi (tính bằng giây)
-        public System.Timers.Timer roundTimer; // Timer đếm ngược cho mỗi vòng chơi
         public string status; // waiting, playing, finished
         public bool IsGameStarted = false; // Trạng thái vòng chơi (đang diễn ra hay không)
         public int maxPlayers; // Số lượng người chơi tối đa trong phòng
@@ -39,10 +37,7 @@ namespace Models
             this.currentKeyword = "";
             currentDrawer = player;
 
-            // Cài đặt bộ đếm thời gian cho vòng chơi (60 giây)
-            roundTimer = new System.Timers.Timer(roundTime * 1000);
-            roundTimer.Elapsed += OnRoundTimeElapsed;
-            roundTimer.AutoReset = false;
+
         }
 
         // Bắt đầu vòng chơi mới
@@ -50,7 +45,6 @@ namespace Models
         {
             IsGameStarted = true;
             // Dừng bộ đếm thời gian hiện tại (nếu có)
-            roundTimer.Stop();
 
             currentDrawerIndex = (currentDrawerIndex + 1) % players.Count;
             currentDrawer = players[currentDrawerIndex];
@@ -58,15 +52,7 @@ namespace Models
 
             currentKeyword = GenerateRandomKeyword();
 
-            roundTimer.Start();
 
-        }
-
-        // Sự kiện khi hết thời gian của vòng chơi
-        public void OnRoundTimeElapsed(object sender, ElapsedEventArgs e)
-        {
-            Console.WriteLine("Time is up! Moving to the next round.");
-            StartNewRound();
         }
 
 
@@ -103,16 +89,7 @@ namespace Models
         {
             if (guess.Equals(currentKeyword, StringComparison.OrdinalIgnoreCase))
             {
-
                 player.Score += 10;
-                if (currentDrawer != null)
-                {
-                    currentDrawer.Score += 5;
-                }
-
-                roundTimer.Stop();
-
-                StartNewRound();
                 return true;
             }
             return false;

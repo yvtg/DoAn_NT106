@@ -17,6 +17,9 @@ using Models;
 using ReaLTaiizor.Controls;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static ReaLTaiizor.Drawing.Poison.PoisonPaint;
+using System.IdentityModel;
+using static ReaLTaiizor.Util.RoundInt;
+using System.Timers;
 
 namespace Program
 {
@@ -39,9 +42,12 @@ namespace Program
         private Color penColor = Color.Black;
 
         private bool gameStart = false;
+        Dictionary<string, (int score, int textcore)> playerScores = new Dictionary<string, (int, int)>();
 
-        private DateTime lastSentTime = DateTime.MinValue;
-        private TimeSpan sendInterval = TimeSpan.FromMilliseconds(100);
+        int Round;
+        private int roundTime; // Thời gian của mỗi vòng chơi (tính bằng giây)
+        private System.Timers.Timer roundTimer; // Timer đếm ngược cho mỗi vòng chơi
+        int progressValue = 0;
 
         public Form_Room(string roomId, string host, int max_player, string username)
         {
@@ -90,12 +96,77 @@ namespace Program
             // sự kiện nhận được nhận gói tin SyncBitmap
             client.SyncBitmapReceived += OnReceivedSyncBitmap;
 
-
+            // Cài đặt bộ đếm thời gian cho vòng chơi
+            roundTimer = new System.Timers.Timer();
 
             // chỉ chủ phòng mới có thể bắt đầu
             if (username != host)
                 startButton.Hide();
+
+            // khởi tạo time progress bar
+            timeProgressBar.Maximum = 90;
+            timeProgressBar.Value = 0;
         }
+
+        #region TIMER
+        public void StartTimer()
+        {
+            roundTimer.Interval = 1000; // Gửi thông báo mỗi giây
+            roundTimer.AutoReset = true; // Lặp lại mỗi giây
+            roundTime = 90; // 90 giây cho mỗi vòng chơi
+            progressValue = 0;
+
+            // Detach the event handler to prevent multiple subscriptions
+            roundTimer.Elapsed -= RoundTimerElapsed;
+
+            // Attach the event handler again
+            roundTimer.Elapsed += RoundTimerElapsed;
+
+            roundTimer.Start(); // Bắt đầu bộ đếm
+        }
+
+        private void RoundTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            roundTime--; // Giảm thời gian
+            timeLabel.Text = $"Time: {roundTime}";
+            progressValue++;
+            timeProgressBar.Value = progressValue;
+            // đổi màu progress bar
+            if (roundTime > 60) // More than 60 seconds
+            {
+                timeProgressBar.ForeColor = Color.FromArgb(249, 168, 117); // Green when more than 60 seconds
+            }
+            else if (roundTime > 30) // Between 30 and 60 seconds
+            {
+                timeProgressBar.ForeColor = Color.FromArgb(235, 107, 111); // Yellow when between 30 and 60 seconds
+            }
+            else // Less than 30 seconds
+            {
+                timeProgressBar.ForeColor = Color.FromArgb(124, 63, 88); // Red when less than 30 seconds
+            }
+
+            // Khi hết giờ
+            if (roundTime <= 0)
+            {
+                roundTimer.Stop();
+                if (Round > 5)
+                {
+                    ShowMessage($"Trò chơi đã kết thúc! Hãy chuyển đến phần tổng kết.");
+                }
+                else
+                {
+                    ShowChatMessage("Vòng chơi kết thúc! Các bạn chưa đoán được từ khóa, hãy bắt đầu một vòng chơi mới.");
+                    timeLabel.Text = $"Time: {roundTime}";
+                    timeProgressBar.Value = 90-roundTime;
+                    wordLabel.Text = "key word: ";
+                    sendButton.Enabled = true;
+                    startButton.Enabled = true;
+                    ClearPictureBox();
+                    pictureBox1.Enabled = true;
+                }
+            }
+        }
+        #endregion
 
         #region Danh sach user
 
@@ -248,6 +319,14 @@ namespace Program
         {
             isErasing = true;
         }
+
+        private void ClearPictureBox()
+        {
+            // Xóa toàn bộ nội dung bằng cách vẽ hình chữ nhật màu trắng
+            graphics.Clear(Color.White);
+            // Làm mới lại PictureBox
+            pictureBox1.Refresh();
+        }
         #endregion
 
         private void startButton_Click(object sender, EventArgs e)
@@ -255,6 +334,7 @@ namespace Program
             gameStart = true;
             StartPacket startPacket = new StartPacket(roomId);
             client.SendPacket(startPacket);
+            startButton.Enabled = false;
         }
         #region chat
 
@@ -280,13 +360,53 @@ namespace Program
                         break;
 
                     case "GUESS":
+
+                        if (!playerScores.ContainsKey(username))
+                        {
+                            // Nếu người chơi chưa có trong danh sách, thêm vào với điểm khởi tạo
+                            playerScores[username] = (score: Score, textcore: 0);
+                        }
+                        // Nếu người chơi đã có trong danh sách, cập nhật điểm
+                        if (playerScores.ContainsKey(username))
+                        {
+                            playerScores[username] = (score: Score, textcore: playerScores[username].textcore);  // Cập nhật lại điểm Score
+                        }
+                        // Lấy thông tin hiện tại của người chơi
+                        var playerData = playerScores[username];
+
+                        if (playerData.textcore < playerData.score)
+                        {
+                            // Cập nhật textcore
+                            playerData.textcore = playerData.score;
+
+                            // Ghi lại cập nhật vào playerScores
+                            playerScores[username] = playerData;
+                            if (Round == 5)
+                            {
+                                ShowMessage("Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết");
+                            }
+                            else
+                            {
+                                ShowChatMessage($"{username} đã đoán đúng từ khóa, được cộng 10 điểm");
+                                roundTimer.Stop();
+                                wordLabel.Text = "key word: ";
+                                sendButton.Enabled = true;
+                                startButton.Enabled = true;
+                                ClearPictureBox();
+                                pictureBox1.Enabled = true;
+                            }
+
+                        }
                         // cập nhật điểm
                         foreach (ListViewItem user in userListView.Items)
                         {
                             if (user.Text == username)
                             {
-                                user.SubItems[1].Text = Score.ToString(); // Update score
+                                timeLabel.Text = $"Time: {roundTime}";
+                                timeProgressBar.Value = 90-roundTime;
+                                user.SubItems[1].Text = Score.ToString(); // Update score    
                                 break;
+
                             }
                         }
                         break;
@@ -394,19 +514,7 @@ namespace Program
                 {
                     if (message == "đã tham gia phòng" || message == "đã rời phòng")
                     {
-                        Label contentLabel = new Label
-                        {
-                            AutoSize = true,
-                            Text = sender + " " + message,
-                            Font = new Font("FVF Fernando 08", 7, FontStyle.Bold),
-                            ForeColor = Color.FromArgb(235, 107, 111),
-                        };
-
-                        // Thêm Label vào Panel
-                        flowLayoutPanel.Controls.Add(contentLabel);
-
-                        // Cuộn xuống cuối cùng
-                        flowLayoutPanel.ScrollControlIntoView(contentLabel);
+                        ShowChatMessage($"{sender} {message}");
                     }
                     else
                     {
@@ -414,6 +522,23 @@ namespace Program
                     }
                 }
             }
+        }
+
+        private void ShowChatMessage(string message)
+        {
+            Label contentLabel = new Label
+            {
+                AutoSize = true,
+                Text = message,
+                Font = new Font("FVF Fernando 08", 7, FontStyle.Bold),
+                ForeColor = Color.FromArgb(235, 107, 111),
+            };
+
+            // Thêm Label vào Panel
+            flowLayoutPanel.Controls.Add(contentLabel);
+
+            // Cuộn xuống cuối cùng
+            flowLayoutPanel.ScrollControlIntoView(contentLabel);
         }
 
         private void sendButton_Click(object sender, EventArgs e)
@@ -437,33 +562,27 @@ namespace Program
                 this.Invoke(new Action(() => OnReceivedRoundUpdate(roundUpdatePacket)));
                 return;
             }
+            gameStart = true;
+            ClearPictureBox();
+            StartTimer();
+            Round = Round + 1;
+            roundLabel.Text = $"round: {Round}";
 
             if (roundUpdatePacket.Name == username)
             {
                 pictureBox1.Enabled = true;
-                wordTextbox.Text += roundUpdatePacket.Word;
-                Form_Message formmessage = new Form_Message($"Bạn là người vẽ! từ khóa là {roundUpdatePacket.Word}");
-                formmessage.StartPosition = FormStartPosition.Manual;
-                int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
-                int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
-                formmessage.Location = new Point(centerX, centerY);
-
-                formmessage.Show();
+                sendButton.Enabled = false;
+                wordLabel.Text = $"key word: {roundUpdatePacket.Word}";
+                ShowMessage($"Bạn là người vẽ! từ khóa là {roundUpdatePacket.Word}");
 
             }
             else
             {
                 pictureBox1.Enabled = false;
-                Form_Message formmessage = new Form_Message($"Người vẽ là {roundUpdatePacket.Name}. Trong 60s hãy đoán từ khóa!");
-                formmessage.StartPosition = FormStartPosition.Manual;
-                int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
-                int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
-                formmessage.Location = new Point(centerX, centerY);
-
-                formmessage.Show();
-
+                ShowChatMessage($"Người vẽ là {roundUpdatePacket.Name}. Trong 60s hãy đoán từ khóa!");
             }
             startButton.Enabled = false;
+
         }
 
         private void leaveBtn_Click(object sender, EventArgs e)
@@ -472,8 +591,19 @@ namespace Program
             client.SendPacket(packet);
             this.Close();
         }
+        private void ShowMessage(string messsage)
+        {
+            Form_Message formmessage = new Form_Message(messsage, Round);
+            formmessage.StartPosition = FormStartPosition.Manual;
+            int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
+            formmessage.Location = new Point(centerX, centerY);
+
+            formmessage.ShowDialog();
+        }
 
     }
+
 
     public class RoundedPanel : System.Windows.Forms.Panel
     {
@@ -494,11 +624,6 @@ namespace Program
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 e.Graphics.FillPath(new SolidBrush(BackColor), path); // Vẽ màu nền
             }
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            // Không vẽ nền mặc định để tránh chồng lấp
         }
     }
 }

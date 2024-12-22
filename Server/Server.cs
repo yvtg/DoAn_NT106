@@ -548,6 +548,8 @@ namespace Server
                     if (room.CheckAnswer(msg, client))
                     {
                         // gui diem cho client de cap nhat
+                        OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};GUESS");
+                        BroadcastPacket(room, otherInfo);
                     }
 
 

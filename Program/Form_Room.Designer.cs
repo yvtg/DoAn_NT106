@@ -28,15 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Room));
             this.timeLabel = new System.Windows.Forms.Label();
-            this.gameTimer = new System.Windows.Forms.Timer(this.components);
-            this.wordTextbox = new System.Windows.Forms.TextBox();
             this.sendButton = new ReaLTaiizor.Controls.HopeButton();
             this.sendTextBox = new ReaLTaiizor.Controls.HopeTextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.wordLabel = new System.Windows.Forms.Label();
             this.startButton = new ReaLTaiizor.Controls.HopeButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.chooseColorBtn = new ReaLTaiizor.Controls.HopeRoundButton();
@@ -52,6 +49,8 @@
             this.leaveBtn = new ReaLTaiizor.Controls.HopeButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.roundLabel = new System.Windows.Forms.Label();
+            this.timeProgressBar = new ReaLTaiizor.Controls.RibbonProgressBarCenter();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EraserPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PencilPictureBox)).BeginInit();
@@ -63,7 +62,7 @@
             this.timeLabel.AutoSize = true;
             this.timeLabel.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.timeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.timeLabel.Location = new System.Drawing.Point(261, 50);
+            this.timeLabel.Location = new System.Drawing.Point(168, 61);
             this.timeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.timeLabel.Name = "timeLabel";
             this.timeLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -71,19 +70,6 @@
             this.timeLabel.TabIndex = 4;
             this.timeLabel.Text = "time";
             // 
-            // gameTimer
-            // 
-            this.gameTimer.Interval = 1000;
-            // 
-            // wordTextbox
-            // 
-            this.wordTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.wordTextbox.Font = new System.Drawing.Font("FVF Fernando 08", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.wordTextbox.Location = new System.Drawing.Point(317, 97);
-            this.wordTextbox.Margin = new System.Windows.Forms.Padding(2);
-            this.wordTextbox.Name = "wordTextbox";
-            this.wordTextbox.Size = new System.Drawing.Size(215, 35);
-            this.wordTextbox.TabIndex = 5;
             // sendButton
             // 
             this.sendButton.BorderColor = System.Drawing.Color.Black;
@@ -134,7 +120,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.label2.Location = new System.Drawing.Point(584, 80);
+            this.label2.Location = new System.Drawing.Point(573, 80);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -142,18 +128,18 @@
             this.label2.TabIndex = 30;
             this.label2.Text = "chatBox:";
             // 
-            // label3
+            // wordLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.label3.Location = new System.Drawing.Point(202, 104);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label3.Size = new System.Drawing.Size(97, 21);
-            this.label3.TabIndex = 31;
-            this.label3.Text = "key word:";
+            this.wordLabel.AutoSize = true;
+            this.wordLabel.Font = new System.Drawing.Font("FVF Fernando 08", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.wordLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.wordLabel.Location = new System.Drawing.Point(214, 106);
+            this.wordLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.wordLabel.Name = "wordLabel";
+            this.wordLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.wordLabel.Size = new System.Drawing.Size(89, 27);
+            this.wordLabel.TabIndex = 31;
+            this.wordLabel.Text = "key word:";
             // 
             // startButton
             // 
@@ -362,12 +348,55 @@
             this.flowLayoutPanel.Size = new System.Drawing.Size(222, 339);
             this.flowLayoutPanel.TabIndex = 40;
             // 
+            // roundLabel
+            // 
+            this.roundLabel.AutoSize = true;
+            this.roundLabel.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.roundLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.roundLabel.Location = new System.Drawing.Point(574, 50);
+            this.roundLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.roundLabel.Name = "roundLabel";
+            this.roundLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.roundLabel.Size = new System.Drawing.Size(73, 21);
+            this.roundLabel.TabIndex = 41;
+            this.roundLabel.Text = "round: ";
+            // 
+            // timeProgressBar
+            // 
+            this.timeProgressBar.BackColor = System.Drawing.Color.Transparent;
+            this.timeProgressBar.BaseColor = System.Drawing.Color.White;
+            this.timeProgressBar.BorderColor = System.Drawing.Color.White;
+            this.timeProgressBar.ColorA = System.Drawing.Color.White;
+            this.timeProgressBar.ColorB = System.Drawing.Color.White;
+            this.timeProgressBar.EdgeColor = System.Drawing.Color.White;
+            this.timeProgressBar.ForeColor = System.Drawing.Color.Black;
+            this.timeProgressBar.HatchType = System.Drawing.Drawing2D.HatchStyle.DarkUpwardDiagonal;
+            this.timeProgressBar.Location = new System.Drawing.Point(278, 56);
+            this.timeProgressBar.Maximum = 100;
+            this.timeProgressBar.Name = "timeProgressBar";
+            this.timeProgressBar.PercentageText = "%";
+            this.timeProgressBar.ProgressBorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.timeProgressBar.ProgressBorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.timeProgressBar.ProgressColorA = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.timeProgressBar.ProgressColorB = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.timeProgressBar.ProgressLineColorA = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.timeProgressBar.ProgressLineColorB = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.timeProgressBar.ShowEdge = false;
+            this.timeProgressBar.ShowPercentage = false;
+            this.timeProgressBar.Size = new System.Drawing.Size(286, 30);
+            this.timeProgressBar.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            this.timeProgressBar.TabIndex = 43;
+            this.timeProgressBar.Text = "ribbonProgressBarCenter1";
+            this.timeProgressBar.Value = 0;
+            // 
             // Form_Room
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(810, 496);
+            this.Controls.Add(this.timeProgressBar);
+            this.Controls.Add(this.roundLabel);
             this.Controls.Add(this.flowLayoutPanel);
             this.Controls.Add(this.maxText);
             this.Controls.Add(this.userListView);
@@ -376,13 +405,12 @@
             this.Controls.Add(this.usernamText);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.startButton);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.wordLabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.sendTextBox);
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.roomForm);
-            this.Controls.Add(this.wordTextbox);
             this.Controls.Add(this.timeLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -402,14 +430,12 @@
 
         #endregion
         private System.Windows.Forms.Label timeLabel;
-        private System.Windows.Forms.Timer gameTimer;
-        private System.Windows.Forms.TextBox wordTextbox;
         private ReaLTaiizor.Forms.HopeForm roomForm;
         private ReaLTaiizor.Controls.HopeButton sendButton;
         private ReaLTaiizor.Controls.HopeTextBox sendTextBox;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label wordLabel;
         private ReaLTaiizor.Controls.HopeButton startButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox PencilPictureBox;
@@ -423,5 +449,7 @@
         private System.Windows.Forms.ColorDialog colorDialog1;
         private ReaLTaiizor.Controls.HopeRoundButton chooseColorBtn;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
+        private System.Windows.Forms.Label roundLabel;
+        private ReaLTaiizor.Controls.RibbonProgressBarCenter timeProgressBar;
     }
 }
