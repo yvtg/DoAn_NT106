@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -39,7 +40,7 @@ namespace Program
         private bool gameStart = true;
         private int Round = 0;
 
-        private int roundTime = 60; // Thời gian của mỗi vòng chơi (tính bằng giây)
+        private int roundTime; // Thời gian của mỗi vòng chơi (tính bằng giây)
         private System.Timers.Timer roundTimer; // Timer đếm ngược cho mỗi vòng chơi
 
         public Form_Room(string roomId, string host, int max_player, string username)
@@ -89,9 +90,8 @@ namespace Program
             // sự kiện nhận được nhận gói tin SyncBitmap
             client.SyncBitmapReceived += OnReceivedSyncBitmap;
 
-            // Cài đặt bộ đếm thời gian cho vòng chơi (60 giây)
-            roundTimer = new System.Timers.Timer(roundTime * 1000);
-            roundTimer.AutoReset = false;
+            // Cài đặt bộ đếm thời gian cho vòng chơi 
+            roundTimer = new System.Timers.Timer();
 
             // chỉ chủ phòng mới có thể bắt đầu
             if (username != host)
@@ -102,50 +102,43 @@ namespace Program
         {
             roundTimer.Interval = 1000; // Gửi thông báo mỗi giây
             roundTimer.AutoReset = true; // Lặp lại mỗi giây
+            roundTime = 90; // 90 giây cho mỗi vòng chơi
 
-            roundTimer.Elapsed += (s, e) =>
+            // Detach the event handler to prevent multiple subscriptions
+            roundTimer.Elapsed -= RoundTimerElapsed;
+
+            // Attach the event handler again
+            roundTimer.Elapsed += RoundTimerElapsed;
+
+            roundTimer.Start(); // Bắt đầu bộ đếm
+        }
+
+        private void RoundTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            roundTime--; // Giảm thời gian
+            timeLabel.Text = $"Time: {roundTime}";
+
+            // Khi hết giờ
+            if (roundTime <= 0)
             {
-                roundTime--; // Giảm thời gian
-                timeLabel.Text = $"Time: {roundTime}";
-
-
-                // Khi hết giờ
-                if (roundTime <= 0)
+                roundTimer.Stop();
+                if (Round > 5)
                 {
-                    roundTimer.Stop();
-                    if (Round == 5)
-                    {
-                        Form_Message Formmessage = new Form_Message($"Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết", Round);
-                        Formmessage.StartPosition = FormStartPosition.Manual;
-                        int CenterX = this.Location.X + (this.Width - Formmessage.Width) / 2;
-                        int CenterY = this.Location.Y + (this.Height - Formmessage.Height) / 2;
-                        Formmessage.Location = new Point(CenterX, CenterY);
-
-                        Formmessage.ShowDialog();
-                    }
-                    else
-                    {
-                        Form_Message formmessage = new Form_Message($"Vòng chơi kết thúc! các bạn chưa đoán được từ khóa, hãy bắt đầu một vòng chơi mới.", Round);
-                        formmessage.StartPosition = FormStartPosition.Manual;
-                        int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
-                        int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
-                        formmessage.Location = new Point(centerX, centerY);
-
-                        formmessage.ShowDialog();
-                    } 
-                        
-                    roundTime = 60;
-                    timeLabel.Text = $"Time: 0";
+                    ShowMessage($"Trò chơi đã kết thúc! Hãy chuyển đến phần tổng kết.");
+                }
+                else
+                {
+                    ShowMessage("Vòng chơi kết thúc! Các bạn chưa đoán được từ khóa, hãy bắt đầu một vòng chơi mới.");
+                    timeLabel.Text = $"Time: {roundTime}";
                     wordTextbox.Text = "";
                     sendButton.Enabled = true;
                     startButton.Enabled = true;
                     ClearPictureBox();
                     pictureBox1.Enabled = true;
                 }
-            };
-
-            roundTimer.Start(); // Bắt đầu bộ đếm
+            }
         }
+
 
 
         #region Danh sach user
@@ -383,33 +376,20 @@ namespace Program
 
                             // Ghi lại cập nhật vào playerScores
                             playerScores[username] = playerData;
-                            if (Round == 5)
+                            if (Round > 5)
                             {
-                                Form_Message Formmessage = new Form_Message($"Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết", Round);
-                                Formmessage.StartPosition = FormStartPosition.Manual;
-                                int CenterX = this.Location.X + (this.Width - Formmessage.Width) / 2;
-                                int CenterY = this.Location.Y + (this.Height - Formmessage.Height) / 2;
-                                Formmessage.Location = new Point(CenterX, CenterY);
-
-                                Formmessage.ShowDialog();
+                                ShowMessage("Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết");
                             }
                             else
                             {
-                                Form_Message formmessage = new Form_Message($"{username} đã đoán đúng từ khóa {wordTextbox.Text} được cộng 10 điểm", Round);
-                                formmessage.StartPosition = FormStartPosition.Manual;
-                                int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
-                                int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
-                                formmessage.Location = new Point(centerX, centerY);
-
-                                formmessage.ShowDialog();
+                                ShowMessage($"{username} đã đoán đúng từ khóa {wordTextbox.Text} được cộng 10 điểm");
+                                roundTimer.Stop();
+                                wordTextbox.Text = "";
+                                sendButton.Enabled = true;
+                                startButton.Enabled = true;
+                                ClearPictureBox();
+                                pictureBox1.Enabled = true;
                             }    
-                            roundTimer.Stop();
-                            roundTime = 60;
-                            wordTextbox.Text = "";
-                            sendButton.Enabled = true;
-                            startButton.Enabled = true;
-                            ClearPictureBox();
-                            pictureBox1.Enabled = true;
                                 
                         }
                         // cập nhật điểm
@@ -417,7 +397,7 @@ namespace Program
                         {
                             if (user.Text == username)
                             {
-                                timeLabel.Text = $"Time: 0";
+                                timeLabel.Text = $"Time: {roundTime}";
                                 user.SubItems[1].Text = Score.ToString(); // Update score    
                                 break;
 
@@ -466,25 +446,13 @@ namespace Program
                 pictureBox1.Enabled = true;
                 sendButton.Enabled = false;
                 wordTextbox.Text += roundUpdatePacket.Word;
-                Form_Message formmessage = new Form_Message($"Bạn là người vẽ! từ khóa là {roundUpdatePacket.Word}", Round);
-                formmessage.StartPosition = FormStartPosition.Manual;
-                int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
-                int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
-                formmessage.Location = new Point(centerX, centerY);
-
-                formmessage.ShowDialog();
+                ShowMessage($"Bạn là người vẽ! từ khóa là {roundUpdatePacket.Word}");
 
             }
             else
             {
                 pictureBox1.Enabled = false;
-                Form_Message formmessage = new Form_Message($"Người vẽ là {roundUpdatePacket.Name}. Trong 60s hãy đoán từ khóa!", Round);
-                formmessage.StartPosition = FormStartPosition.Manual;
-                int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
-                int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
-                formmessage.Location = new Point(centerX, centerY);
-
-                formmessage.ShowDialog();
+                ShowMessage($"Người vẽ là {roundUpdatePacket.Name}. Trong 90s hãy đoán từ khóa!");
 
             }
             startButton.Enabled = false;
@@ -510,5 +478,15 @@ namespace Program
             this.Close();
         }
 
+        private void ShowMessage(string messsage)
+        {
+            Form_Message formmessage = new Form_Message(messsage, Round);
+            formmessage.StartPosition = FormStartPosition.Manual;
+            int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
+            formmessage.Location = new Point(centerX, centerY);
+
+            formmessage.ShowDialog();
+        }
     }
 }
