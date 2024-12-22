@@ -36,6 +36,7 @@
             // Message
             // 
             this.Message.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+
             this.Message.Location = new System.Drawing.Point(11, 60);
             this.Message.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Message.Name = "Message";
@@ -98,6 +99,7 @@
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Message";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+
             this.Text = "Form_Message";
             this.ResumeLayout(false);
 
@@ -108,5 +110,6 @@
         private System.Windows.Forms.Label Message;
         private ReaLTaiizor.Forms.HopeForm login;
         private ReaLTaiizor.Controls.HopeButton okBtn;
+
     }
 }

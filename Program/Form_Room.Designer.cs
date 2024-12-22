@@ -69,7 +69,7 @@
             this.timeLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.timeLabel.Size = new System.Drawing.Size(50, 21);
             this.timeLabel.TabIndex = 4;
-            this.timeLabel.Text = "time";
+            this.timeLabel.Text = "Time: 0";
             // 
             // gameTimer
             // 
@@ -186,7 +186,7 @@
             this.panel1.Location = new System.Drawing.Point(172, 385);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(400, 50);
+            this.panel1.Size = new System.Drawing.Size(533, 62);
             this.panel1.TabIndex = 34;
             // 
             // chooseColorBtn
@@ -239,7 +239,7 @@
             this.EraserPictureBox.Location = new System.Drawing.Point(73, 4);
             this.EraserPictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.EraserPictureBox.Name = "EraserPictureBox";
-            this.EraserPictureBox.Size = new System.Drawing.Size(38, 41);
+            this.EraserPictureBox.Size = new System.Drawing.Size(51, 50);
             this.EraserPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.EraserPictureBox.TabIndex = 36;
             this.EraserPictureBox.TabStop = false;
@@ -253,7 +253,7 @@
             this.PencilPictureBox.Location = new System.Drawing.Point(12, 4);
             this.PencilPictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.PencilPictureBox.Name = "PencilPictureBox";
-            this.PencilPictureBox.Size = new System.Drawing.Size(38, 41);
+            this.PencilPictureBox.Size = new System.Drawing.Size(51, 50);
             this.PencilPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PencilPictureBox.TabIndex = 35;
             this.PencilPictureBox.TabStop = false;
@@ -362,9 +362,49 @@
             this.flowLayoutPanel.Size = new System.Drawing.Size(222, 339);
             this.flowLayoutPanel.TabIndex = 40;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.White;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Location = new System.Drawing.Point(185, 143);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(533, 300);
+            this.pictureBox1.TabIndex = 28;
+            this.pictureBox1.TabStop = false;
+            // 
+            // roomForm
+            // 
+            this.roomForm.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
+            this.roomForm.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.roomForm.ControlBoxColorN = System.Drawing.Color.White;
+            this.roomForm.Cursor = System.Windows.Forms.Cursors.Default;
+            this.roomForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.roomForm.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.roomForm.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
+            this.roomForm.Image = ((System.Drawing.Image)(resources.GetObject("roomForm.Image")));
+            this.roomForm.Location = new System.Drawing.Point(0, 0);
+            this.roomForm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.roomForm.Name = "roomForm";
+            this.roomForm.Size = new System.Drawing.Size(1020, 40);
+            this.roomForm.TabIndex = 20;
+            this.roomForm.Text = "Room - ";
+            this.roomForm.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            // 
+            // RoundLable
+            // 
+            this.RoundLable.AutoSize = true;
+            this.RoundLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RoundLable.Location = new System.Drawing.Point(648, 62);
+            this.RoundLable.Name = "RoundLable";
+            this.RoundLable.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.RoundLable.Size = new System.Drawing.Size(91, 25);
+            this.RoundLable.TabIndex = 40;
+            this.RoundLable.Text = "Round: 0";
+            // 
             // Form_Room
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(810, 496);
@@ -385,8 +425,8 @@
             this.Controls.Add(this.wordTextbox);
             this.Controls.Add(this.timeLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximumSize = new System.Drawing.Size(1920, 1032);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximumSize = new System.Drawing.Size(2560, 1270);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Room";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
