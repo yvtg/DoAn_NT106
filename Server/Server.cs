@@ -15,13 +15,14 @@ using MongoDB.Driver.Core.Authentication;
 using System.Xml.Linq;
 using System.Drawing;
 using System.IO;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace Server
 {
     public class Server
     {
         public static Socket serverSocket;
-        public List<User> clients = new List<User>(); // danh sách client đang kết nối tới
+        public List<Models.User> clients = new List<Models.User>(); // danh sách client đang kết nối tới
         public List<Room> rooms = new List<Room>(); // danh sách phòng chơi đang có
 
         private static string connectionString = "mongodb+srv://admin1:5VGZBpaXfZC15LPN@cluster0.qq9lk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
@@ -69,8 +70,8 @@ namespace Server
 
                         // Chờ kết nối từ client
                         Socket clientSocket = await serverSocket.AcceptAsync();
-                        NetworkStream ns = new NetworkStream(clientSocket);
-                        HandleClientConnection(clientSocket, ns);
+                        TcpClient tcpClient = new TcpClient { Client = clientSocket };
+                        HandleClientConnection(tcpClient);
                     }
                     catch (Exception ex)
                     {
@@ -88,9 +89,9 @@ namespace Server
             }
         }
 
-        private void HandleClientConnection(Socket clientSocket, NetworkStream ns)
+        private void HandleClientConnection(TcpClient tcpClient)
         {
-            User client = new User(clientSocket, ns);
+            Models.User client = new Models.User(tcpClient);
 
             if (client != null)
             {
@@ -102,28 +103,36 @@ namespace Server
                 UpdateLog?.Invoke("Failed to create client object.");
                 return;
             }
-            UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
+            UpdateLog?.Invoke($"Đã kết nối với {tcpClient.Client.RemoteEndPoint}");
 
-            Task.Run(async () =>
+            Task.Run( () =>
             {
                 try
                 {
                     while (client.IsConnected)
                     {
-                        string msg = await ReadDataAsync(client);
+                        string msg = client.sr.ReadLine();
 
                         if (!string.IsNullOrEmpty(msg))
                         {
-                            UpdateLog?.Invoke($"{clientSocket.RemoteEndPoint}: {msg}");
-                            Packet packet = ParsePacket(client, msg);
-                            analyzingPacket(client, packet);
+                            UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
+                            Console.WriteLine($"{tcpClient.Client.RemoteEndPoint}: {msg}");
+                            if (msg.StartsWith("{") && msg.EndsWith("}"))
+                            {
+                                HandleDrawPacket(client, msg);
+                            }
+                            else
+                            {
+                                Packet packet = ParsePacket(client, msg);
+                                analyzingPacket(client, packet);
+                            }
                         }
                         else break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    UpdateLog?.Invoke($"Lỗi khi xử lý client {clientSocket.RemoteEndPoint}: {ex.Message}");
+                    UpdateLog?.Invoke($"Lỗi khi xử lý client {tcpClient.Client.RemoteEndPoint}: {ex.Message}");
                 }
                 finally
                 {
@@ -132,10 +141,10 @@ namespace Server
                     {
                         clients.Remove(client);
                         client.Stop(true);
-                        Console.WriteLine("Client đã ngắt kết nối. ở xử lý client", client.UserSocket.RemoteEndPoint);
+                        Console.WriteLine("Client đã ngắt kết nối. ở xử lý client", client.tcpClient.Client.RemoteEndPoint);
                         UpdateClientList?.Invoke();
                     }
-                    UpdateLog?.Invoke($"Client đã ngắt kết nối: {clientSocket.RemoteEndPoint}");
+                    UpdateLog?.Invoke($"Client đã ngắt kết nối: {client.tcpClient.Client.RemoteEndPoint}");
                 }
             });
         }
@@ -149,7 +158,7 @@ namespace Server
             foreach (var client in clients.ToArray())
             {
                 client.Stop();
-                Console.WriteLine("Client đã ngắt kết nối. ở stop server", client.UserSocket.RemoteEndPoint);
+                Console.WriteLine("Client đã ngắt kết nối. ở stop server", client.tcpClient.Client.RemoteEndPoint);
             }
 
             // Đóng socket server
@@ -176,45 +185,15 @@ namespace Server
         #endregion
 
         #region Data
-        private async Task<string> ReadDataAsync(User client)
-        {
-            try
-            {
-                byte[] buffer = new byte[293600];
-                int receivedBytes = await client.ns.ReadAsync(buffer, 0, buffer.Length);
-                string msg = "";
-                if (receivedBytes > 0)
-                {
-                    msg += Encoding.UTF8.GetString(buffer, 0, receivedBytes);
-                    return msg;
-                }
-                else
-                {
-                    clients.Remove(client);
-                    client.Stop(true);
-                    Console.WriteLine("Client đã ngắt kết nối. ở read data async", client.UserSocket.RemoteEndPoint);
-                    UpdateClientList?.Invoke();
-                    UpdateLog?.Invoke($"Client {client.UserSocket.RemoteEndPoint} đã ngắt kết nối.");
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                UpdateLog?.Invoke($"Lỗi khi nhận dữ liệu từ client: {ex.Message}");
-                return null;
-            }
-        }
 
-
-
-        private void sendPacket(User client, Packet packet)
+        private void sendPacket(Models.User client, Packet packet)
         {
             try
             {
                 // Chuẩn bị dữ liệu để gửi
                 client.SendPacket(packet);
 
-                UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.UserSocket.RemoteEndPoint} {packet.Type};{packet.Payload}");
+                UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.tcpClient.Client.RemoteEndPoint} {packet.Type};{packet.Payload}");
             }
             catch (SocketException ex)
             {
@@ -222,7 +201,27 @@ namespace Server
                 // Xử lý client bị mất kết nối
                 clients.Remove(client);
                 client.Stop();
-                Console.WriteLine("Client đã ngắt kết nối. ở sendPacket", client.UserSocket.RemoteEndPoint);
+                Console.WriteLine("Client đã ngắt kết nối. ở sendPacket", client.tcpClient.Client.RemoteEndPoint);
+                UpdateClientList?.Invoke();
+            }
+        }
+
+        private void sendPacket(Models.User client, DrawPacket drawPacket)
+        {
+            try
+            {
+                // Chuẩn bị dữ liệu để gửi
+                client.SendPacket(drawPacket);
+
+                UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.tcpClient.Client.RemoteEndPoint}");
+            }
+            catch (SocketException ex)
+            {
+                UpdateLog?.Invoke("Socket exception: " + ex.Message);
+                // Xử lý client bị mất kết nối
+                clients.Remove(client);
+                client.Stop();
+                Console.WriteLine("Client đã ngắt kết nối. ở sendPacket", client.tcpClient.Client.RemoteEndPoint);
                 UpdateClientList?.Invoke();
             }
         }
@@ -235,7 +234,15 @@ namespace Server
             }
         }
 
-        private Packet ParsePacket(User client, string msg)
+        private void BroadcastPacket(Room room, DrawPacket drawPacket)
+        {
+            foreach (var client in room.players)
+            {
+                sendPacket(client, drawPacket);
+            }
+        }
+
+        private Packet ParsePacket(Models.User client, string msg)
         {
             string[] payload = msg.Split(';');
             if (payload.Length == 0)
@@ -272,13 +279,11 @@ namespace Server
                         return new GuessPacket(remainingMsg);
                     case PacketType.DISCONNECT:
                         return new DisconnectPacket(remainingMsg);
-                    case PacketType.SYNC_BITMAP:
-                        return new SyncBitmapPacket(remainingMsg);
                     default:
-                        return null; // Không biết loại packet
+                        return null;
                 }
             }
-            return null;
+                return null;
         }
 
         // tạo mã phòng random
@@ -299,9 +304,9 @@ namespace Server
 
 
         // xu ly sau khi nhan du lieu tu client
-        private void analyzingPacket(User client, Packet packet)
+        private void analyzingPacket(Models.User client, Packet packet)
         {
-            string clientIP = client.UserSocket.RemoteEndPoint.ToString();
+            string clientIP = client.tcpClient.Client.RemoteEndPoint.ToString();
             switch (packet.Type)
             {
                 case PacketType.LOGIN:
@@ -439,7 +444,7 @@ namespace Server
                         return;
                     }
                     // Kiểm tra xem client đã trong phòng hay chưa
-                    else if (room.players.Any(p => p.UserSocket.RemoteEndPoint.ToString() == client.UserSocket.RemoteEndPoint.ToString()))
+                    else if (room.players.Any(p => p.tcpClient.Client.RemoteEndPoint.ToString() == client.tcpClient.Client.RemoteEndPoint.ToString()))
                     {
                         join_result = "ALREADY_JOINED";
                         sendPacket(client, new JoinResultPacket(join_result));
@@ -463,7 +468,7 @@ namespace Server
                         {
                             if (player != null && player != client)
                             {
-                                OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomIdToJoin};{player.Name};{player.Score};JOINED|");
+                                OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomIdToJoin};{player.Name};{player.Score};JOINED");
                                 sendPacket(client, otherInfo);
                             }
                         }
@@ -502,6 +507,7 @@ namespace Server
                     // Phân tích gói tin StartPacket
                     StartPacket startPacket = (StartPacket)packet;
                     roomId = startPacket.RoomId;
+                    currentRound = startPacket.Round;
                     room = rooms.FirstOrDefault(r => r.RoomId == roomId);
 
                     // Kiểm tra phòng có tồn tại hay không
@@ -515,7 +521,7 @@ namespace Server
                         // Gửi thông báo về người vẽ cho tất cả người chơi trong phòng
                         foreach (var user in room.players)
                         {
-                            RoundUpdatePacket RoundUpdate = new RoundUpdatePacket($"{roomId};{name};{isdraw};{word}");
+                            RoundUpdatePacket RoundUpdate = new RoundUpdatePacket($"{roomId};{name};{isdraw};{word};{currentRound}");
                             user.SendPacket( RoundUpdate);
                         }
 
@@ -559,22 +565,24 @@ namespace Server
                     if (client.IsConnected)
                     {
                         client.Stop();
-                        Console.WriteLine("Client đã ngắt kết nối khi gửi disconnecr", client.UserSocket.RemoteEndPoint);
+                        Console.WriteLine("Client đã ngắt kết nối khi gửi disconnecr", client.tcpClient.Client.RemoteEndPoint);
                         clients.Remove(client);
                         UpdateClientList?.Invoke();
                     }
                     break;
-                case PacketType.SYNC_BITMAP:
-                    SyncBitmapPacket syncBitmapPacket = (SyncBitmapPacket)packet;
-                    roomId = syncBitmapPacket.RoomId;
-                    room = rooms.FirstOrDefault(r => r.RoomId == roomId);
-                    if (room != null)
-                    {
-                        BroadcastPacket(room, syncBitmapPacket);
-                    }
-                    break;
                 default:
                     break;
+            }
+        }
+
+        private void HandleDrawPacket(Models.User client, string msg)
+        {
+            DrawPacket drawPacket = Newtonsoft.Json.JsonConvert.DeserializeObject<DrawPacket>(msg);
+            string roomId = drawPacket.RoomId;
+            Room room = rooms.FirstOrDefault(r => r.RoomId == roomId);
+            if (room != null)
+            {
+                BroadcastPacket(room, drawPacket);
             }
         }
         #endregion

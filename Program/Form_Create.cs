@@ -37,8 +37,8 @@ namespace Program
 
         private void Form_Create_Load(object sender, EventArgs e)
         {
-            numeric.MinNum = 1;
-            numeric.MaxNum = 5;
+            numeric.MinNum = 2;
+            numeric.MaxNum = 10;
             numeric.ValueNumber = 2;
         }
 

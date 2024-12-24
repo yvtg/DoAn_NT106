@@ -11,6 +11,12 @@ using System.Net.Http;
 using Models;
 using Azure.Identity;
 using System.IO;
+using MongoDB.Bson.IO;
+using SharpCompress.Writers;
+using System.Messaging;
+using Newtonsoft.Json;
+using System.Diagnostics.Eventing.Reader;
+using System.Windows.Interop;
 
 
 namespace Program
@@ -19,6 +25,8 @@ namespace Program
     {
         TcpClient tcpClient = new TcpClient();
         NetworkStream ns;
+        StreamWriter sw;
+        StreamReader sr;
 
         public static event Action RegisterSuccessful;
         public event Action LoginSuccessful;
@@ -28,9 +36,10 @@ namespace Program
         public event Action<string, string, int, string> ReceiveOtherInfo;
         public event Action<RoundUpdatePacket> RoundUpdateReceived;
         public event Action<SyncBitmapPacket> SyncBitmapReceived;
+        public event Action<DrawPacket> DrawPacketReceived;
 
 
-        public void Connect(string serverIP, int port)
+        public bool Connect(string serverIP, int port)
         {
             try
             {
@@ -38,13 +47,47 @@ namespace Program
                 IPEndPoint ipEP = new IPEndPoint(ipServer, port);
                 tcpClient.Connect(ipEP);
                 Task.Run(() => ReceiveData());
+                return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi kết nối: " + ex.Message);
+                ShowMessage("Lỗi khi kết nối: " + ex.Message);
+                return false;
             }
         }
 
+        // send draw packet
+        public void SendDrawPacket(DrawPacket drawPacket)
+        {
+            if (tcpClient != null && tcpClient.Connected)
+            {
+                try
+                {
+                    // Nếu NetworkStream chưa được khởi tạo, hãy khởi tạo
+                    if (ns == null)
+                    {
+                        ns = tcpClient.GetStream();
+                        sw = new StreamWriter(ns);
+                    }
+
+                    string jsonPacket = Newtonsoft.Json.JsonConvert.SerializeObject(drawPacket);
+                    // gửi dữ liệu
+                    sw.WriteLine(jsonPacket);
+                    Console.WriteLine(jsonPacket);
+                    sw.Flush();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi gửi dữ liệu: " + ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Client không kết nối với server.");
+            }
+        }
+
+        // send packet binh thuong
         public void SendPacket(Packet packet)
         {
             if (tcpClient != null && tcpClient.Connected)
@@ -55,14 +98,13 @@ namespace Program
                     if (ns == null)
                     {
                         ns = tcpClient.GetStream();
+                        sw = new StreamWriter(ns);
                     }
 
-                    // Chuyển đổi packet thành mảng byte
-                    byte[] byteData = packet.ToBytes();
-
-                    // Gửi mảng byte qua NetworkStream
-                    ns.Write(byteData, 0, byteData.Length);
-                    ns.Flush();
+                    // Gửi dữ liệu
+                    sw.WriteLine(packet.Type + ";" + packet.Payload);
+                    Console.WriteLine(packet.Type + ";" + packet.Payload);
+                    sw.Flush();
                 }
                 catch (Exception ex)
                 {
@@ -83,9 +125,8 @@ namespace Program
             try
             {
                 ns = tcpClient.GetStream();
-                byte[] byteData = new byte[293600];
-                int byteRec;
-                
+                sw = new StreamWriter(ns);
+                sr = new StreamReader(ns);
 
                 // Đọc dữ liệu trong khi kết nối vẫn còn mở
                 while (tcpClient.Connected)
@@ -95,19 +136,17 @@ namespace Program
                         string receivedData = "";
                         try
                         {
-                            byteRec = ns.Read(byteData, 0, byteData.Length);
-                            if (byteRec > 0)
-                            {
-                                receivedData = Encoding.UTF8.GetString(byteData, 0, byteRec);
-                            }
+                            receivedData = sr.ReadLine();
+                            Console.WriteLine(receivedData);
                             if (!string.IsNullOrEmpty(receivedData))
                             {
-                                string[] packets = receivedData.Split('|');
-
-                                foreach (string payload in packets)
+                                if (receivedData.StartsWith("{") && receivedData.EndsWith("}"))
                                 {
-                                    Console.WriteLine(payload);
-                                    Packet packet = ParsePacket(payload);
+                                    HandleDrawPacket(receivedData);
+                                }
+                                else
+                                {
+                                    Packet packet = ParsePacket(receivedData);
                                     AnalyzingPacket(packet);
                                 }
                             }
@@ -162,13 +201,12 @@ namespace Program
                         return new JoinResultPacket(remainingMsg);
                     case PacketType.GUESS:
                         return new GuessPacket(remainingMsg);
-                    case PacketType.SYNC_BITMAP:
-                        return new SyncBitmapPacket(remainingMsg);
                     default:
-                        return null; // Không biết loại packet
+                        HandleDrawPacket(msg);
+                        break;
                 }
             }
-            return null;
+                return null;
         }
 
         private void AnalyzingPacket(Packet packet)
@@ -273,14 +311,22 @@ namespace Program
                     break;
                 case PacketType.LEADER_BOARD_INFO:
                     break;
-                case PacketType.SYNC_BITMAP:
-                    SyncBitmapPacket syncBitmapPacket = (SyncBitmapPacket)packet;
-                    Console.WriteLine(syncBitmapPacket.Payload);
-                    SyncBitmapReceived?.Invoke(syncBitmapPacket);
-                    break;
                 default:
                     break;
             }
+        }
+
+        private void HandleDrawPacket(string msg)
+        {
+            DrawPacket drawPacket = Newtonsoft.Json.JsonConvert.DeserializeObject<DrawPacket>(msg);
+            DrawPacketReceived?.Invoke(drawPacket);
+        }
+
+        public void ShowMessage(string messsage)
+        {
+            Form_Message formmessage = new Form_Message(messsage);
+            formmessage.StartPosition = FormStartPosition.Manual;
+            formmessage.ShowDialog();
         }
 
     }

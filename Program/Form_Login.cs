@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1;
 using Models;
+using ReaLTaiizor.Forms;
 
 namespace Program
 {
@@ -81,7 +82,7 @@ namespace Program
             this.Hide(); 
             lawForm.StartPosition = FormStartPosition.Manual;
             lawForm.Location = new Point(this.Location.X, this.Location.Y);
-            lawForm.ShowDialog();
+            lawForm.Show();
             this.Show();
             lawForm.FormClosed += (s, args) => this.Close();
         }
@@ -93,7 +94,7 @@ namespace Program
             this.Hide();
             regForm.StartPosition = FormStartPosition.Manual;
             regForm.Location = new Point(this.Location.X, this.Location.Y);
-            regForm.ShowDialog();
+            regForm.Show();
             this.Show();
             regForm.FormClosed += (s, args) => this.Close();
         }
@@ -111,9 +112,37 @@ namespace Program
             this.Hide();
             forgetForm.StartPosition = FormStartPosition.Manual;
             forgetForm.Location = new Point(this.Location.X, this.Location.Y);
-            forgetForm.ShowDialog();
+            forgetForm.Show();
             this.Show();
             forgetForm.FormClosed += (s, args) => this.Close();
         }
+
+        #region dragging
+
+        private bool dragging = false;
+        private Point dragCursor;
+        private Point dragForm;
+
+        private void login_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragging = true;
+            dragCursor = Cursor.Position;
+            dragForm = this.Location;
+        }
+
+        private void login_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                Point delta = new Point(Cursor.Position.X - dragCursor.X, Cursor.Position.Y - dragCursor.Y);
+                this.Location = new Point(dragForm.X + delta.X, dragForm.Y + delta.Y);
+            }
+        }
+
+        private void login_MouseUp(object sender, MouseEventArgs e)
+        {
+            dragging = false;
+        }
+        #endregion
     }
 }

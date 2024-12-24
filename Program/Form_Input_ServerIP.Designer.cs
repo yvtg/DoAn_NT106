@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Input_ServerIP));
             this.sqlCommandBuilder1 = new Microsoft.Data.SqlClient.SqlCommandBuilder();
             this.inputServerIP = new ReaLTaiizor.Forms.HopeForm();
             this.connectBtn = new ReaLTaiizor.Controls.HopeButton();
@@ -55,6 +56,9 @@
             this.inputServerIP.TabIndex = 22;
             this.inputServerIP.Text = "Input Server IP";
             this.inputServerIP.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.inputServerIP.MouseDown += new System.Windows.Forms.MouseEventHandler(this.inputServerIP_MouseDown);
+            this.inputServerIP.MouseMove += new System.Windows.Forms.MouseEventHandler(this.inputServerIP_MouseMove);
+            this.inputServerIP.MouseUp += new System.Windows.Forms.MouseEventHandler(this.inputServerIP_MouseUp);
             // 
             // connectBtn
             // 
@@ -178,6 +182,7 @@
             this.Controls.Add(this.idLabel);
             this.Controls.Add(this.inputServerIP);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Input_ServerIP";

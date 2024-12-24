@@ -23,6 +23,14 @@ namespace Program
             this.round = round;
         }
 
+        public Form_Message(string message)
+        {
+            InitializeComponent();
+            this.message = message;
+            Message.Text = message;
+            this.round = round;
+        }
+
         private void okBtn_Click(object sender, EventArgs e)
         {
             if (round == 5)
@@ -39,6 +47,14 @@ namespace Program
             {
                 this.Close();
             }
+        }
+
+        private void Form_Message_Paint(object sender, PaintEventArgs e)
+        {
+            Pen pen = new Pen(Color.FromArgb(124, 63, 88), 3);
+
+            // Vẽ viền xung quanh form
+            e.Graphics.DrawRectangle(pen, 0, 0, this.ClientSize.Width - 1, this.ClientSize.Height - 1);
         }
     }
 }

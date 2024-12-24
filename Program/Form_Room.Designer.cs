@@ -51,6 +51,7 @@
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.roundLabel = new System.Windows.Forms.Label();
             this.timeProgressBar = new ReaLTaiizor.Controls.RibbonProgressBarCenter();
+            this.roundComboBox = new ReaLTaiizor.Controls.HopeComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EraserPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PencilPictureBox)).BeginInit();
@@ -120,7 +121,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.label2.Location = new System.Drawing.Point(573, 80);
+            this.label2.Location = new System.Drawing.Point(574, 80);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -151,10 +152,10 @@
             this.startButton.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.startButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.startButton.Location = new System.Drawing.Point(12, 448);
+            this.startButton.Location = new System.Drawing.Point(8, 448);
             this.startButton.Name = "startButton";
             this.startButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.startButton.Size = new System.Drawing.Size(155, 36);
+            this.startButton.Size = new System.Drawing.Size(159, 44);
             this.startButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.startButton.TabIndex = 32;
             this.startButton.Text = "start";
@@ -272,9 +273,9 @@
             // 
             this.userListView.Font = new System.Drawing.Font("FVF Fernando 08", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.userListView.HideSelection = false;
-            this.userListView.Location = new System.Drawing.Point(12, 144);
+            this.userListView.Location = new System.Drawing.Point(8, 144);
             this.userListView.Name = "userListView";
-            this.userListView.Size = new System.Drawing.Size(155, 295);
+            this.userListView.Size = new System.Drawing.Size(160, 295);
             this.userListView.TabIndex = 38;
             this.userListView.UseCompatibleStateImageBehavior = false;
             // 
@@ -321,7 +322,7 @@
             this.leaveBtn.Location = new System.Drawing.Point(695, 46);
             this.leaveBtn.Name = "leaveBtn";
             this.leaveBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.leaveBtn.Size = new System.Drawing.Size(104, 36);
+            this.leaveBtn.Size = new System.Drawing.Size(104, 54);
             this.leaveBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.leaveBtn.TabIndex = 37;
             this.leaveBtn.Text = "leave";
@@ -343,9 +344,9 @@
             // flowLayoutPanel
             // 
             this.flowLayoutPanel.AutoScroll = true;
-            this.flowLayoutPanel.Location = new System.Drawing.Point(577, 104);
+            this.flowLayoutPanel.Location = new System.Drawing.Point(577, 106);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(222, 339);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(222, 337);
             this.flowLayoutPanel.TabIndex = 40;
             // 
             // roundLabel
@@ -371,7 +372,7 @@
             this.timeProgressBar.EdgeColor = System.Drawing.Color.White;
             this.timeProgressBar.ForeColor = System.Drawing.Color.Black;
             this.timeProgressBar.HatchType = System.Drawing.Drawing2D.HatchStyle.DarkUpwardDiagonal;
-            this.timeProgressBar.Location = new System.Drawing.Point(278, 56);
+            this.timeProgressBar.Location = new System.Drawing.Point(274, 59);
             this.timeProgressBar.Maximum = 100;
             this.timeProgressBar.Name = "timeProgressBar";
             this.timeProgressBar.PercentageText = "%";
@@ -389,12 +390,26 @@
             this.timeProgressBar.Text = "ribbonProgressBarCenter1";
             this.timeProgressBar.Value = 0;
             // 
+            // roundComboBox
+            // 
+            this.roundComboBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.roundComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.roundComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.roundComboBox.Font = new System.Drawing.Font("Pixel Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.roundComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.roundComboBox.ItemHeight = 30;
+            this.roundComboBox.Location = new System.Drawing.Point(645, 46);
+            this.roundComboBox.Name = "roundComboBox";
+            this.roundComboBox.Size = new System.Drawing.Size(44, 36);
+            this.roundComboBox.TabIndex = 44;
+            // 
             // Form_Room
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(810, 496);
+            this.Controls.Add(this.roundComboBox);
             this.Controls.Add(this.timeProgressBar);
             this.Controls.Add(this.roundLabel);
             this.Controls.Add(this.flowLayoutPanel);
@@ -413,6 +428,7 @@
             this.Controls.Add(this.roomForm);
             this.Controls.Add(this.timeLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
@@ -451,5 +467,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
         private System.Windows.Forms.Label roundLabel;
         private ReaLTaiizor.Controls.RibbonProgressBarCenter timeProgressBar;
+        private ReaLTaiizor.Controls.HopeComboBox roundComboBox;
     }
 }

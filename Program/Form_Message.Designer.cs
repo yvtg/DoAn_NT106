@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Message));
             this.Message = new System.Windows.Forms.Label();
             this.login = new ReaLTaiizor.Forms.HopeForm();
             this.okBtn = new ReaLTaiizor.Controls.HopeButton();
@@ -93,12 +94,14 @@
             this.Controls.Add(this.login);
             this.Controls.Add(this.Message);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Message";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form_Message";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form_Message_Paint);
             this.ResumeLayout(false);
 
         }

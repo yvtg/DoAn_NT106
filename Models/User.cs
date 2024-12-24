@@ -15,27 +15,37 @@ namespace Models
 
         public int Score { get; set; }
         public bool IsDrawing { get; set; }
-        public Socket UserSocket;
-        public NetworkStream ns;
+        public TcpClient tcpClient;
+        public StreamReader sr;
+        public StreamWriter sw;
 
-        public User(Socket UserSocket, NetworkStream ns)
+        public User(TcpClient tcpClient)
         {
             this.Name = "";
             this.Score = 0;
             this.RoomId = "";
             this.IsDrawing = false;
-            this.UserSocket = UserSocket;
-            this.ns = ns;
+            this.tcpClient = tcpClient;
+            NetworkStream stream = tcpClient.GetStream();
+            this.sr = new StreamReader(stream);
+            this.sw = new StreamWriter(stream);
         }
         public void SendPacket(Packet packet)
         {
-            byte[] data = packet.ToBytes();
-            UserSocket.Send(data);
+            this.sw.WriteLine(packet.Type+";"+packet.Payload);
+            this.sw.Flush();
+        }
+
+        public void SendPacket(DrawPacket drawPacket)
+        {
+            var jsonDrawPacket = drawPacket.ToJson();
+            this.sw.WriteLine(jsonDrawPacket);
+            this.sw.Flush();
         }
 
         public void Stop(bool abortThread = false)
         {
-            UserSocket.Close();
+            tcpClient.Close();
         }
 
         public bool IsConnected
@@ -45,7 +55,7 @@ namespace Models
                 try
                 {
                     // Kiểm tra kết nối bằng cách gọi UserSocket.Connected
-                    return UserSocket.Connected;
+                    return tcpClient.Connected;
                 }
                 catch (Exception)
                 {

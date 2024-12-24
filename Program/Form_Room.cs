@@ -20,6 +20,8 @@ using static ReaLTaiizor.Drawing.Poison.PoisonPaint;
 using System.IdentityModel;
 using static ReaLTaiizor.Util.RoundInt;
 using System.Timers;
+using System.Runtime.Remoting.Contexts;
+using System.Threading;
 
 namespace Program
 {
@@ -38,8 +40,19 @@ namespace Program
         private Point previousPoint;
         private bool isDrawing = false;
         private bool isErasing = false;
-        private int penSize = 3;
-        private Color penColor = Color.Black;
+        private int penSize;
+        private Color penColor;
+        private Pen cursorPen = new Pen(Color.Black,2);
+        private int cursorX = -1;
+        private int cursorY = -1;
+        private Point point = new Point();
+        // List của 2 point truyền vào graphics.DrawLine()
+        static List<Point> points_1 = new List<Point>();
+        static List<Point> points_2 = new List<Point>();
+        private SynchronizationContext context = SynchronizationContext.Current ?? new SynchronizationContext();
+
+        private int currentRound = 0;
+        private int SelectRound;
 
         private bool gameStart = false;
         Dictionary<string, (int score, int textcore)> playerScores = new Dictionary<string, (int, int)>();
@@ -76,6 +89,12 @@ namespace Program
             graphics = Graphics.FromImage(drawingBitmap);
             graphics.Clear(Color.White);
 
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            pictureBox1.Image = drawingBitmap;
+            penColor = Color.Black;
+            penSize = 2;
+            cursorPen = new Pen(penColor, penSize);
+
             // Liên kết Bitmap với pictureBox1
             pictureBox1.Image = drawingBitmap;
 
@@ -94,7 +113,10 @@ namespace Program
             client.RoundUpdateReceived += OnReceivedRoundUpdate;
 
             // sự kiện nhận được nhận gói tin SyncBitmap
-            client.SyncBitmapReceived += OnReceivedSyncBitmap;
+            //client.SyncBitmapReceived += OnReceivedSyncBitmap;
+
+            // sự kiện nhận được gói tin DrawPacket
+            client.DrawPacketReceived += OnReceivedDrawPacket;
 
             // Cài đặt bộ đếm thời gian cho vòng chơi
             roundTimer = new System.Timers.Timer();
@@ -102,10 +124,18 @@ namespace Program
             // chỉ chủ phòng mới có thể bắt đầu
             if (username != host)
                 startButton.Hide();
+            if (username != host)
+                roundComboBox.Hide();
 
             // khởi tạo time progress bar
             timeProgressBar.Maximum = 90;
             timeProgressBar.Value = 0;
+
+            // khởi tạo round combo box
+            for (int i = 2; i <= 10; i++)
+            {
+                roundComboBox.Items.Add(i);
+            }
         }
 
         #region TIMER
@@ -131,38 +161,37 @@ namespace Program
             timeLabel.Text = $"Time: {roundTime}";
             progressValue++;
             timeProgressBar.Value = progressValue;
-            // đổi màu progress bar
-            if (roundTime > 60) // More than 60 seconds
-            {
-                timeProgressBar.ForeColor = Color.FromArgb(249, 168, 117); // Green when more than 60 seconds
-            }
-            else if (roundTime > 30) // Between 30 and 60 seconds
-            {
-                timeProgressBar.ForeColor = Color.FromArgb(235, 107, 111); // Yellow when between 30 and 60 seconds
-            }
-            else // Less than 30 seconds
-            {
-                timeProgressBar.ForeColor = Color.FromArgb(124, 63, 88); // Red when less than 30 seconds
-            }
 
             // Khi hết giờ
             if (roundTime <= 0)
             {
                 roundTimer.Stop();
-                if (Round > 5)
-                {
-                    ShowMessage($"Trò chơi đã kết thúc! Hãy chuyển đến phần tổng kết.");
-                }
-                else
-                {
+                if (currentRound<SelectRound)
                     ShowChatMessage("Vòng chơi kết thúc! Các bạn chưa đoán được từ khóa, hãy bắt đầu một vòng chơi mới.");
+                while (currentRound<SelectRound)
+                {
+
+                    if (username == host)
+                    {
+                        currentRound++;
+                        StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
+                        client.SendPacket(startPacket);
+                    }
+
                     timeLabel.Text = $"Time: {roundTime}";
-                    timeProgressBar.Value = 90-roundTime;
+                    timeProgressBar.Value = 90 - roundTime;
                     wordLabel.Text = "key word: ";
+
                     sendButton.Enabled = true;
-                    startButton.Enabled = true;
                     ClearPictureBox();
                     pictureBox1.Enabled = true;
+
+                    if (currentRound>SelectRound && username==host)
+                    {
+                        startButton.Enabled = true;
+                        roundComboBox.Show();
+                        roundLabel.Text = "round: ";
+                    }
                 }
             }
         }
@@ -178,7 +207,7 @@ namespace Program
 
             // Thêm các cột vào ListView
             userListView.Columns.Add("user", 85);
-            userListView.Columns.Add("score", 70);
+            userListView.Columns.Add("score", 75);
 
         }
 
@@ -188,6 +217,7 @@ namespace Program
         private void sizeTrackBar_ValueChanged()
         {
             penSize = sizeTrackBar.Value;
+            cursorPen.Width = penSize;
         }
         private void chooseColorBtn_Click(object sender, EventArgs e)
         {
@@ -198,6 +228,7 @@ namespace Program
                 {
                     penColor = colorDialog.Color;
                     chooseColorBtn.PrimaryColor = penColor;
+                    cursorPen.Color = penColor;
                 }
             }
         }
@@ -208,22 +239,35 @@ namespace Program
             if (e.Button == MouseButtons.Left && gameStart)
             {
                 isDrawing = true;
-                previousPoint = e.Location;
+                cursorX = e.X;
+                cursorY = e.Y;
             }
         }
 
         // Rê chuột để vẽ hoặc xóa
         private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isDrawing && gameStart)
+            if (isErasing==true) // Nếu đang chọn chức năng xóa
             {
-                Pen pen = new Pen(isErasing ? Color.White : penColor, penSize);
-                graphics.DrawLine(pen, previousPoint, e.Location);
-                pictureBox1.Refresh();
-
-                // cập nhật điểm trước
-                previousPoint = e.Location;
+                cursorPen.Color = Color.White;
             }
+
+            if (cursorX != -1 && cursorY != -1 && isDrawing == true && gameStart)
+            {
+                point = e.Location;
+
+                points_1.Add(new Point(cursorX, cursorY));
+                points_2.Add(point);
+
+                graphics.DrawLine(cursorPen, new Point(cursorX, cursorY), point);
+
+                cursorX = e.X;
+                cursorY = e.Y;
+            }
+            context.Send(s =>
+            {
+                pictureBox1.Refresh();
+            }, null);
         }
 
         // Dừng vẽ khi nhả chuột
@@ -231,82 +275,74 @@ namespace Program
         {
             if (e.Button == MouseButtons.Left && gameStart)
             {
+                float w = e.Location.X - cursorX;
+                float h = e.Location.Y - cursorY;
+                graphics.DrawLine(cursorPen, cursorX, cursorY, w + cursorX, h + cursorY);
+                context.Send(s =>
+                {
+                    pictureBox1.Refresh();
+                }, null);
+
+
+                float[] pos = new float[] { cursorX, cursorY, w, h };
+
+                DrawPacket packet = new DrawPacket
+                {
+                    Username = this.username,
+                    RoomId = this.roomId,
+                    PenColor = cursorPen.Color,
+                    PenWidth = cursorPen.Width,
+                    Points_1 = points_1,
+                    Points_2 = points_2,
+                    Position = pos
+                };
+                
+                client.SendDrawPacket(packet);
+
                 isDrawing = false;
-
-                string bitmapData = BitmapToString(drawingBitmap);
-                if (!string.IsNullOrEmpty(bitmapData))
-                {
-                    SyncBitmapPacket syncPacket = new SyncBitmapPacket($"{roomId};{bitmapData}");
-                    Console.WriteLine(syncPacket.Payload);
-                    client.SendPacket(syncPacket);
-                }
+                cursorX = -1;
+                cursorY = -1;
+                points_1.Clear();
+                points_2.Clear();
             }
         }
 
-        // chuyển bitmap thành string
-        private string BitmapToString(Bitmap bitmap)
-        {
-            try
-            {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                    byte[] bytes = ms.ToArray();
-                    return Convert.ToBase64String(bytes);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error in BitmapToString: {ex.Message}");
-                return null;
-            }
-        }
-
-        // chuyển string thành bitmap
-        private Bitmap StringToBitmap(string bitmapString)
-        {
-            try
-            {
-                byte[] bytes = Convert.FromBase64String(bitmapString);
-                using (MemoryStream ms = new MemoryStream(bytes))
-                {
-                    return new Bitmap(ms);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return null;
-            }
-        }
-
-        private void OnReceivedSyncBitmap(SyncBitmapPacket syncBitmapPacket)
+        private void OnReceivedDrawPacket(DrawPacket drawPacket)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action(() => OnReceivedSyncBitmap(syncBitmapPacket)));
+                this.Invoke(new Action(() => OnReceivedDrawPacket(drawPacket)));
                 return;
             }
 
-            if (syncBitmapPacket.RoomId == roomId)
+            if (drawPacket.RoomId == roomId)
             {
-                Bitmap newBitmap = StringToBitmap(syncBitmapPacket.BitmapData);
-                if (newBitmap != null)
+                Pen pen = new Pen(drawPacket.PenColor, drawPacket.PenWidth);
+                int cursorX = 0, cursorY = 0;
+                float w = 0, h = 0;
+                int length = drawPacket.Points_1.Count;
+                for (int i = 0; i < length; i++)
                 {
-                    drawingBitmap.Dispose(); // Giải phóng bitmap cũ
-                    drawingBitmap = newBitmap;
-
-                    //// Tạo lại Graphics từ bitmap mới
-                    graphics.Dispose();
-                    graphics = Graphics.FromImage(newBitmap);
-
-
-                    pictureBox1.Image = newBitmap;
-                    pictureBox1.Refresh();
+                    if (i == 0)
+                    {
+                        cursorX = drawPacket.Points_1[i].X;
+                        cursorY = drawPacket.Points_1[i].Y;
+                    }
+                    else
+                    {
+                        w = drawPacket.Points_2[i].X - cursorX;
+                        h = drawPacket.Points_2[i].Y - cursorY;
+                        graphics.DrawLine(pen, cursorX, cursorY, w + cursorX, h + cursorY);
+                        cursorX = drawPacket.Points_2[i].X;
+                        cursorY = drawPacket.Points_2[i].Y;
+                    }
                 }
+                context.Send(s =>
+                {
+                    pictureBox1.Refresh();
+                }, null);
             }
         }
-
 
         // Sự kiện khi nhấn vào hình cái bút
         private void PencilPictureBox_Click(object sender, EventArgs e)
@@ -331,10 +367,25 @@ namespace Program
 
         private void startButton_Click(object sender, EventArgs e)
         {
-            gameStart = true;
-            StartPacket startPacket = new StartPacket(roomId);
-            client.SendPacket(startPacket);
-            startButton.Enabled = false;
+            if (roundComboBox.SelectedItem != null)
+            {
+                gameStart = true;
+                SelectRound = Int32.Parse(roundComboBox.SelectedItem.ToString());
+
+                if (username==host)
+                {
+                    currentRound++;
+                    StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
+                    client.SendPacket(startPacket);
+                }    
+
+                startButton.Enabled = false;
+                roundComboBox.Hide();
+            }
+            else
+            {
+                ShowMessage("Vui lòng chọn số vòng chơi!");
+            }
         }
         #region chat
 
@@ -381,21 +432,33 @@ namespace Program
 
                             // Ghi lại cập nhật vào playerScores
                             playerScores[username] = playerData;
-                            if (Round == 5)
+                            if (currentRound==SelectRound)
                             {
                                 ShowMessage("Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết");
+                                if (username == host)
+                                {
+                                    startButton.Enabled = true;
+                                    roundComboBox.Show();
+                                    roundLabel.Text = "round: ";
+                                }
                             }
                             else
                             {
                                 ShowChatMessage($"{username} đã đoán đúng từ khóa, được cộng 10 điểm");
+
+                                if (this.username==host)
+                                {
+                                    currentRound++;
+                                    StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
+                                    client.SendPacket(startPacket);
+                                }
+
                                 roundTimer.Stop();
                                 wordLabel.Text = "key word: ";
                                 sendButton.Enabled = true;
-                                startButton.Enabled = true;
                                 ClearPictureBox();
                                 pictureBox1.Enabled = true;
                             }
-
                         }
                         // cập nhật điểm
                         foreach (ListViewItem user in userListView.Items)
@@ -565,8 +628,8 @@ namespace Program
             gameStart = true;
             ClearPictureBox();
             StartTimer();
-            Round = Round + 1;
-            roundLabel.Text = $"round: {Round}";
+            currentRound = roundUpdatePacket.Round; 
+            roundLabel.Text = $"round: {currentRound}";
 
             if (roundUpdatePacket.Name == username)
             {
@@ -579,10 +642,10 @@ namespace Program
             else
             {
                 pictureBox1.Enabled = false;
+                sendButton.Enabled = true;
                 ShowChatMessage($"Người vẽ là {roundUpdatePacket.Name}. Trong 60s hãy đoán từ khóa!");
             }
             startButton.Enabled = false;
-
         }
 
         private void leaveBtn_Click(object sender, EventArgs e)
@@ -591,9 +654,9 @@ namespace Program
             client.SendPacket(packet);
             this.Close();
         }
-        private void ShowMessage(string messsage)
+        public void ShowMessage(string messsage)
         {
-            Form_Message formmessage = new Form_Message(messsage, Round);
+            Form_Message formmessage = new Form_Message(messsage, currentRound);
             formmessage.StartPosition = FormStartPosition.Manual;
             int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
             int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;

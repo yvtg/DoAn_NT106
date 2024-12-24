@@ -246,6 +246,9 @@
             this.login.TabIndex = 27;
             this.login.Text = "Login";
             this.login.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.login.MouseDown += new System.Windows.Forms.MouseEventHandler(this.login_MouseDown);
+            this.login.MouseMove += new System.Windows.Forms.MouseEventHandler(this.login_MouseMove);
+            this.login.MouseUp += new System.Windows.Forms.MouseEventHandler(this.login_MouseUp);
             // 
             // Form_Login
             // 
@@ -265,6 +268,7 @@
             this.Controls.Add(this.passLabel);
             this.Controls.Add(this.usernameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);

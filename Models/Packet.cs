@@ -298,15 +298,17 @@ namespace Models
         public string Name { get; set; }
         public string IsDrawing { get; set; }
         public string Word { get; set; }
+        public int Round { get; set; }
         public RoundUpdatePacket(string payload) : base(PacketType.ROUND_UPDATE, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 4)
+            if (parsePayload.Length >= 5)
             {
                 RoomId = parsePayload[0];
                 Name = parsePayload[1];
                 IsDrawing = parsePayload[2];
                 Word = parsePayload[3];
+                Round = int.Parse(parsePayload[4]);
             }
             else
             {
@@ -446,13 +448,23 @@ namespace Models
     public class StartPacket : Packet
     {
         public string RoomId { get; set; }
+        public int Round { get; set; }
         public StartPacket(string payload) : base(PacketType.START, payload)
         {
-            RoomId = payload;
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 2)
+            {
+                RoomId = parsePayload[0];
+                Round = Int32.Parse(parsePayload[1]);
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
         }
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"START;{RoomId}");
+            return Encoding.UTF8.GetBytes($"START;{RoomId};{Round}");
         }
     }
 
