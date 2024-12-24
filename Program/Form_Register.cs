@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1;
 using Models;
+using System.Text.RegularExpressions;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Program
 {
@@ -30,17 +32,55 @@ namespace Program
             string email = emailTextbox.Text;
             string confirmpw = confirmpassTextbox.Text;
 
-            if (username == "" || password == "" || email == "")
+            // check thông tin
+            if (username.IsNullOrEmpty() || password.IsNullOrEmpty() || email.IsNullOrEmpty() || confirmpw.IsNullOrEmpty())
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin");
+                ShowMessage("Vui lòng nhập đầy đủ thông tin");
                 return;
             }
 
-            if (password != confirmpw)
+            //check email
+            if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             {
-                MessageBox.Show("Mật khẩu không khớp");
+                ShowMessage("Email không hợp lệ");
                 return;
             }
+
+            // check độ mạnh mật khẩu
+            if (password.Length < 8)
+            {
+                ShowMessage("Mật khẩu phải có ít nhất 8 ký tự.");
+                return;
+            }
+
+            // Kiểm tra chữ thường
+            if (!Regex.IsMatch(password, @"[a-z]"))
+            {
+                ShowMessage("Mật khẩu phải chứa ít nhất một chữ cái viết thường.");
+                return;
+            }
+
+            // Kiểm tra chữ hoa
+            if (!Regex.IsMatch(password, @"[A-Z]"))
+            {
+                ShowMessage("Mật khẩu phải chứa ít nhất một chữ cái viết hoa.");
+                return;
+            }
+
+            // Kiểm tra số
+            if (!Regex.IsMatch(password, @"\d"))
+            {
+                ShowMessage("Yếu: Mật khẩu phải chứa ít nhất một chữ số.");
+                return;
+            }
+
+            // check mật khẩu không trùng 
+            if (password != confirmpw)
+            {
+                ShowMessage("Mật khẩu không khớp");
+                return;
+            }
+
 
             // Gửi thông tin đăng ký lên server
             RegisterPacket packet = new RegisterPacket($"{username};{email};{password}");
@@ -63,6 +103,19 @@ namespace Program
                 confirmpassTextbox.UseSystemPasswordChar = true;
             }
         }
+
+        public void ShowMessage(string messsage)
+        {
+            Form_Message formmessage = new Form_Message(messsage);
+            formmessage.StartPosition = FormStartPosition.Manual;
+            int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
+            formmessage.Location = new Point(centerX, centerY);
+
+            formmessage.ShowDialog();
+        }
+
+
         #region điều hướng
         private void OnRegisterSuccessful()
         {

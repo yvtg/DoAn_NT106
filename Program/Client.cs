@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
-using System.Threading;
 using System.Windows.Forms;
-using System.Net.Http;
 using Models;
-using Azure.Identity;
 using System.IO;
-using MongoDB.Bson.IO;
-using SharpCompress.Writers;
-using System.Messaging;
-using Newtonsoft.Json;
-using System.Diagnostics.Eventing.Reader;
-using System.Windows.Interop;
 
 
 namespace Program
@@ -28,23 +17,22 @@ namespace Program
         StreamWriter sw;
         StreamReader sr;
 
-        public static event Action RegisterSuccessful;
-        public event Action LoginSuccessful;
-        public event Action ResetPasswordSuccessful;
-        public event Action<string, string, int> ReceiveRoomInfo;
-        public event Action<string, string, string> ReceiveMessage;
-        public event Action<string, string, int, string> ReceiveOtherInfo;
-        public event Action<RoundUpdatePacket> RoundUpdateReceived;
-        public event Action<SyncBitmapPacket> SyncBitmapReceived;
-        public event Action<DrawPacket> DrawPacketReceived;
+        public static event Action RegisterSuccessful; // đăng kí thành công
+        public event Action LoginSuccessful; // đăng nhập thành công
+        public event Action ResetPasswordSuccessful; // reset password thành công
+        public event Action<string, string, int> ReceiveRoomInfo; // nhận thông tin phòng
+        public event Action<string, string, string> ReceiveMessage; // nhận message trong phòng (guess)
+        public event Action<string, string, int, string> ReceiveOtherInfo; // nhận thông tin của người chơi khác trong phòng
+        public event Action<RoundUpdatePacket> RoundUpdateReceived; // round mới
+        public event Action<DrawPacket> DrawPacketReceived; // nhận draw packet
 
-
+        // kết nối tới server
         public bool Connect(string serverIP, int port)
         {
             try
             {
                 IPAddress ipServer = IPAddress.Parse(serverIP);
-                IPEndPoint ipEP = new IPEndPoint(ipServer, port);
+                IPEndPoint ipEP = new IPEndPoint(ipServer, port); 
                 tcpClient.Connect(ipEP);
                 Task.Run(() => ReceiveData());
                 return true;
@@ -56,7 +44,7 @@ namespace Program
             }
         }
 
-        // send draw packet
+        // gửi draw packet ( dạng json )
         public void SendDrawPacket(DrawPacket drawPacket)
         {
             if (tcpClient != null && tcpClient.Connected)
@@ -71,6 +59,7 @@ namespace Program
                     }
 
                     string jsonPacket = Newtonsoft.Json.JsonConvert.SerializeObject(drawPacket);
+
                     // gửi dữ liệu
                     sw.WriteLine(jsonPacket);
                     Console.WriteLine(jsonPacket);
@@ -78,16 +67,16 @@ namespace Program
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi gửi dữ liệu: " + ex.Message);
+                    ShowMessage("Lỗi khi gửi dữ liệu: " + ex.Message);
                 }
             }
             else
             {
-                MessageBox.Show("Client không kết nối với server.");
+                ShowMessage("Client không kết nối với server.");
             }
         }
 
-        // send packet binh thuong
+        // send packet bình thường
         public void SendPacket(Packet packet)
         {
             if (tcpClient != null && tcpClient.Connected)
@@ -108,14 +97,14 @@ namespace Program
                 }
                 catch (Exception ex)
                 {
-                    // Thông báo lỗi nếu có ngoại lệ xảy ra
-                    MessageBox.Show("Lỗi khi gửi dữ liệu: " + ex.Message); // Error sending data
+                    // Lỗi gửi dữ liệu
+                    ShowMessage("Lỗi khi gửi dữ liệu: " + ex.Message);
                 }
             }
             else
             {
                 // Thông báo lỗi nếu client không kết nối với server
-                MessageBox.Show("Client không kết nối với server."); // Client is not connected to the server
+                ShowMessage("Client không kết nối với server.");
             }
         }
 
@@ -153,14 +142,14 @@ namespace Program
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Lỗi khi nhận dữ liệu: " + ex.Message);
+                            ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi nhận dữ liệu: " + ex.Message);
+                ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
             }
         }
 
@@ -223,31 +212,31 @@ namespace Program
                     }
                     else
                     {
-                        MessageBox.Show("Kiểm tra username hoặc mật khẩu và thử lại!");
+                        ShowMessage("Kiểm tra username hoặc mật khẩu và thử lại!");
                     }
                     break;
                 case PacketType.REGISTER_RESULT:
                     RegisterResultPacket registerResultPacket = (RegisterResultPacket)packet;
                     if (registerResultPacket.result== "SUCCESS")
                     {
-                        MessageBox.Show("Đăng ký thành công");
+                        ShowMessage("Đăng ký thành công");
                         RegisterSuccessful?.Invoke();
                     }
                     else
                     {
-                        MessageBox.Show("Username đã tồn tại!");
+                        ShowMessage("Username đã tồn tại!");
                     }
                     break;
                 case PacketType.RESET_PASSWORD_RESULT:
                     ResetPasswordResultPacket resultPacket = (ResetPasswordResultPacket)packet;
                     if (resultPacket.Status == "success")
                     {
-                        MessageBox.Show("Mật khẩu đã được thay đổi thành công.");
+                        ShowMessage("Mật khẩu đã được thay đổi thành công.");
                         ResetPasswordSuccessful?.Invoke();
                     }
                     else
                     {
-                        MessageBox.Show("Không thể thay đổi mật khẩu. Vui lòng thử lại.");
+                        ShowMessage("Không thể thay đổi mật khẩu. Vui lòng thử lại.");
                     }
                     break;
                 case PacketType.ROOM_INFO:
@@ -265,16 +254,16 @@ namespace Program
                     switch (result)
                     {
                         case "NOT_EXIST":
-                            MessageBox.Show("Phòng không tồn tại!");
+                            ShowMessage("Phòng không tồn tại!");
                             break;
                         case "PLAYING":
-                            MessageBox.Show("Phòng đang chơi!");
+                            ShowMessage("Phòng đang chơi!");
                             break;
                         case "FULL":
-                            MessageBox.Show("Phòng đã đầy!");
+                            ShowMessage("Phòng đã đầy!");
                             break;
                         case "FINISHED":
-                            MessageBox.Show("Phòng đã kết thúc!");
+                            ShowMessage("Phòng đã kết thúc!");
                             break;
                     }
                     break;

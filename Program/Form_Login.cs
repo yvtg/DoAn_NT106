@@ -30,7 +30,7 @@ namespace Program
 
             if (username == "" || password == "")
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin");
+                ShowMessage("Vui lòng nhập đầy đủ thông tin");
                 return;
             }
 
@@ -42,7 +42,7 @@ namespace Program
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi gửi thông tin đăng nhập: {ex.Message}");
+                ShowMessage($"Lỗi khi gửi thông tin đăng nhập: {ex.Message}");
             }
         }
         private void showPwCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -82,7 +82,7 @@ namespace Program
             this.Hide(); 
             lawForm.StartPosition = FormStartPosition.Manual;
             lawForm.Location = new Point(this.Location.X, this.Location.Y);
-            lawForm.Show();
+            lawForm.ShowDialog();
             this.Show();
             lawForm.FormClosed += (s, args) => this.Close();
         }
@@ -94,7 +94,7 @@ namespace Program
             this.Hide();
             regForm.StartPosition = FormStartPosition.Manual;
             regForm.Location = new Point(this.Location.X, this.Location.Y);
-            regForm.Show();
+            regForm.ShowDialog();
             this.Show();
             regForm.FormClosed += (s, args) => this.Close();
         }
@@ -103,7 +103,6 @@ namespace Program
         {
             DisconnectPacket disconnectPacket = new DisconnectPacket("");
             client.SendPacket(disconnectPacket);
-            //client.Stop();
         }
 
         private void forgetLabel_Click(object sender, EventArgs e)
@@ -112,9 +111,20 @@ namespace Program
             this.Hide();
             forgetForm.StartPosition = FormStartPosition.Manual;
             forgetForm.Location = new Point(this.Location.X, this.Location.Y);
-            forgetForm.Show();
+            forgetForm.ShowDialog();
             this.Show();
             forgetForm.FormClosed += (s, args) => this.Close();
+        }
+
+        public void ShowMessage(string messsage)
+        {
+            Form_Message formmessage = new Form_Message(messsage);
+            formmessage.StartPosition = FormStartPosition.Manual;
+            int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
+            formmessage.Location = new Point(centerX, centerY);
+
+            formmessage.ShowDialog();
         }
 
         #region dragging

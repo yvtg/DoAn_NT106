@@ -158,7 +158,18 @@ namespace Program
         private void RoundTimerElapsed(object sender, ElapsedEventArgs e)
         {
             roundTime--; // Giảm thời gian
-            timeLabel.Text = $"Time: {roundTime}";
+            if (timeLabel.InvokeRequired)
+            {
+                timeLabel.Invoke(new Action(() =>
+                {
+                    timeLabel.Text = $"Time: {roundTime}";
+                }));
+            }
+            else
+            {
+                timeLabel.Text = $"Time: {roundTime}";
+            }
+
             progressValue++;
             timeProgressBar.Value = progressValue;
 
@@ -186,7 +197,7 @@ namespace Program
                     ClearPictureBox();
                     pictureBox1.Enabled = true;
 
-                    if (currentRound>SelectRound && username==host)
+                    if (currentRound==SelectRound && username==host)
                     {
                         startButton.Enabled = true;
                         roundComboBox.Show();
