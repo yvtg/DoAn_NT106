@@ -44,8 +44,7 @@ namespace Program
                 BackToPreviousForm();
             }
         }
-
-        private void confirmButton_Click(object sender, EventArgs e)
+        private void confirmButton_Click_1(object sender, EventArgs e)
         {
             string userOtp = otpTextbox.Text.Trim();
 
@@ -89,15 +88,16 @@ namespace Program
             this.Close();
         }
 
-        private void backButton_Click(object sender, EventArgs e)
+        private void backButton_Click_1(object sender, EventArgs e)
         {
             otpTimer.Stop();
             this.Close();
         }
-
         private void Form_OTP_FormClosing(object sender, FormClosingEventArgs e)
         {
             otpTimer.Stop();
         }
+
+       
     }
 }

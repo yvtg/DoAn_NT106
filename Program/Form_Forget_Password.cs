@@ -34,7 +34,7 @@ namespace Program
             }
         }
 
-        private void sendButton_Click(object sender, EventArgs e)
+        private void sendButton_Click_1(object sender, EventArgs e)
         {
             string email = emailTextbox.Text.Trim();
 
@@ -52,7 +52,6 @@ namespace Program
 
             // Gửi yêu cầu OTP tới server
             client.SendResetPasswordRequest(email);
-
         }
 
         private void OnOTPRequestSuccessful( string status)
@@ -76,7 +75,7 @@ namespace Program
                 otpForm.FormClosed += (s, args) => this.Close();
             }
         }
-        private void backButton_Click(object sender, EventArgs e)
+        private void backButton_Click_1(object sender, EventArgs e)
         {
             this.Close();
         }

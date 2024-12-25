@@ -64,9 +64,8 @@ namespace Program
 
         private void backButton_Click(object sender, EventArgs e)
         {
-             this.Close();
+            this.Close();
         }
-
         private void showPwCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (showPwCheckBox.Checked)
