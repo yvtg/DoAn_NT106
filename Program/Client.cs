@@ -19,14 +19,16 @@ namespace Program
 
         public static event Action RegisterSuccessful; // đăng kí thành công
         public event Action LoginSuccessful; // đăng nhập thành công
-        public event Action ResetPasswordSuccessful; // reset password thành công
         public event Action<string, string, int> ReceiveRoomInfo; // nhận thông tin phòng
         public event Action<string, string, string> ReceiveMessage; // nhận message trong phòng (guess)
         public event Action<string, string, int, string> ReceiveOtherInfo; // nhận thông tin của người chơi khác trong phòng
         public event Action<RoundUpdatePacket> RoundUpdateReceived; // round mới
         public event Action<DrawPacket> DrawPacketReceived; // nhận draw packet
+        public event Action<DrawPacket> DrawPacket;
 
-        // kết nối tới server
+        public event Action<string> ResetPasswordResult;
+
+
         public bool Connect(string serverIP, int port)
         {
             try
@@ -83,20 +85,13 @@ namespace Program
             {
                 try
                 {
-                    // Nếu NetworkStream chưa được khởi tạo, hãy khởi tạo
-                    if (ns == null)
-                    {
-                        ns = tcpClient.GetStream();
-                        sw = new StreamWriter(ns);
-                    }
-
-                    // Gửi dữ liệu
+                    string packetLog = $"Gửi Packet: {packet.Type};{packet.Payload}";
+                    Console.WriteLine(packetLog);
                     sw.WriteLine(packet.Type + ";" + packet.Payload);
-                    Console.WriteLine(packet.Type + ";" + packet.Payload);
                     sw.Flush();
                 }
                 catch (Exception ex)
-                {
+                { 
                     // Lỗi gửi dữ liệu
                     ShowMessage("Lỗi khi gửi dữ liệu: " + ex.Message);
                 }
@@ -176,6 +171,8 @@ namespace Program
                         return new LoginResultPacket(remainingMsg);
                     case PacketType.REGISTER_RESULT:
                         return new RegisterResultPacket(remainingMsg);
+                    case PacketType.RESET_PASSWORD_RESULT:
+                        return new ResetPasswordResultPacket(remainingMsg);
                     case PacketType.ROOM_INFO:
                         return new RoomInfoPacket(remainingMsg);
                     case PacketType.OTHER_INFO:
@@ -229,14 +226,31 @@ namespace Program
                     break;
                 case PacketType.RESET_PASSWORD_RESULT:
                     ResetPasswordResultPacket resultPacket = (ResetPasswordResultPacket)packet;
-                    if (resultPacket.Status == "success")
+                    switch (resultPacket.Status)
                     {
-                        ShowMessage("Mật khẩu đã được thay đổi thành công.");
-                        ResetPasswordSuccessful?.Invoke();
-                    }
-                    else
-                    {
-                        ShowMessage("Không thể thay đổi mật khẩu. Vui lòng thử lại.");
+                        case "EMAIL_SENT":
+                            ShowMessage("Mã OTP đã được gửi tới email của bạn!");
+                            ResetPasswordResult.Invoke("EMAIL_SENT");
+                            break;
+                        case "EMAIL_FAIL":
+                            ShowMessage("Lỗi khi gửi email!");
+                            break;
+                        case "NOT_FOUND":
+                            ShowMessage("Email không tồn tại!");
+                            break;
+                        case "OTP_VERIFIED":
+                            ResetPasswordResult?.Invoke("OTP_VERIFIED");
+                            break;
+                        case "OTP_FAIL":
+                            ShowMessage("Mã OTP không chính xác! Vui lòng thử lại");
+                            break;
+                        case "SUCCESS":
+                            ShowMessage("Đặt lại mật khẩu thành công!");
+                            ResetPasswordResult?.Invoke("SUCCESS");
+                            break;
+                        case "FAIL":
+                            ShowMessage("Lỗi khi đặt lại mật khẩu!");
+                            break;
                     }
                     break;
                 case PacketType.ROOM_INFO:
@@ -315,8 +329,29 @@ namespace Program
         {
             Form_Message formmessage = new Form_Message(messsage);
             formmessage.StartPosition = FormStartPosition.Manual;
+            formmessage.BringToFront();
             formmessage.ShowDialog();
         }
 
+        // Gửi yêu cầu mã OTP
+        public void SendResetPasswordRequest(string email)
+        {
+            ResetPasswordRequestPacket requestPacket = new ResetPasswordRequestPacket(email);
+            SendPacket(requestPacket);
+        }
+
+        // Gửi yêu cầu xác thực OTP
+        public void SendVerifyOTPRequest(string email, string otp)
+        {
+            VerifyOTPRequestPacket otpPacket = new VerifyOTPRequestPacket(email, otp);
+            SendPacket(otpPacket);
+        }
+
+        // Gửi yêu cầu đặt lại mật khẩu
+        public void SendResetPassword(string email, string newPassword)
+        {
+            ResetPasswordPacket resetPacket = new ResetPasswordPacket(email, newPassword);
+            SendPacket(resetPacket);
+        }
     }
 }

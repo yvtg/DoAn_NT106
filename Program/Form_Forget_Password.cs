@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,54 +18,67 @@ namespace Program
         {
             InitializeComponent();
             this.client = Program.Form_Input_ServerIP.client;
-            client.LoginSuccessful += OnResetPasswordSuccessful;
+            client.ResetPasswordResult += OnOTPRequestSuccessful;
         }
 
-        private void resetButton_Click(object sender, EventArgs e)
+        private bool IsValidEmail(string email)
         {
-            string email = emailTextbox.Text;
-            string newPassword = passwordTextbox.Text;
-            string confirmPassword = confirmpassTextbox.Text;
-
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword))
-            {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin.");
-                return;
-            }
-
-            if (newPassword != confirmPassword)
-            {
-                MessageBox.Show("Mật khẩu mới và xác nhận mật khẩu không khớp.");
-                return;
-            }
-
             try
             {
-                // Gửi yêu cầu reset mật khẩu lên server
-                //ResetPasswordPacket packet = new ResetPasswordPacket($"{email};{newPassword}");
-                //client.SendPacket(packet);
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show($"Lỗi khi gửi thông tin reset mật khẩu: {ex.Message}");
+                return false;
             }
         }
-        private void OnResetPasswordSuccessful()
+
+        private void sendButton_Click(object sender, EventArgs e)
+        {
+            string email = emailTextbox.Text.Trim();
+
+            if (string.IsNullOrEmpty(email))
+            {
+                MessageBox.Show("Vui lòng nhập email.");
+                return;
+            }
+
+            if (!IsValidEmail(email))
+            {
+                MessageBox.Show("Email không hợp lệ. Vui lòng nhập lại.");
+                return;
+            }
+
+            // Gửi yêu cầu OTP tới server
+            client.SendResetPasswordRequest(email);
+
+        }
+
+        private void OnOTPRequestSuccessful( string status)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action(OnResetPasswordSuccessful));
+                this.Invoke(new Action(() => OnOTPRequestSuccessful(status)));
                 return;
             }
 
-            string username = emailTextbox.Text; 
-            Form_Home homeForm = new Form_Home(username);
+            if (status == "EMAIL_SENT")
+            {
+                string email = emailTextbox.Text.Trim();
 
-            homeForm.StartPosition = FormStartPosition.Manual;
-            homeForm.Location = this.Location;
-            homeForm.Show();
-            this.Hide(); 
-            homeForm.FormClosed += (s, args) => this.Close(); 
+                // Chuyển sang Form OTP
+                Form_OTP otpForm = new Form_OTP(email);
+                otpForm.StartPosition = FormStartPosition.Manual;
+                otpForm.Location = this.Location;
+                otpForm.Show();
+                this.Hide();
+                otpForm.FormClosed += (s, args) => this.Close();
+            }
+        }
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
