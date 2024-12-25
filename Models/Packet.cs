@@ -30,6 +30,8 @@ namespace Models
         GUESS_RESULT,
         LEADER_BOARD_INFO,
         DISCONNECT,
+        RESET_PASSWORD_REQUEST,
+        VERIFY_OTP,
         RESET_PASSWORD,
         RESET_PASSWORD_RESULT,
         SYNC_BITMAP
@@ -94,22 +96,6 @@ namespace Models
         public override byte[] ToBytes()
         {
             return Encoding.UTF8.GetBytes($"REGISTER;{Payload}");
-        }
-    }
-
-    public class ResetPasswordPacket : Packet
-    {
-        public string Email { get; set; }
-        public string NewPassword { get; set; }
-        public ResetPasswordPacket(string email, string newPassword) : base(PacketType.RESET_PASSWORD, $"{email};{newPassword}")
-        {
-            Email = email;
-            NewPassword = newPassword;
-        }
-        public override byte[] ToBytes()
-        {
-            string data = $"RESET_PASSWORD;{Email};{NewPassword}";
-            return Encoding.UTF8.GetBytes(data);
         }
     }
 
@@ -195,29 +181,6 @@ namespace Models
         }
     }
 
-
-    public class ResetPasswordResultPacket : Packet
-    {
-        public string Status { get; set; }
-
-        public ResetPasswordResultPacket(string payload) : base(PacketType.RESET_PASSWORD_RESULT, payload)
-        {
-            string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 1)
-            {
-                Status = parsePayload[0];
-            }
-            else
-            {
-                throw new ArgumentException("Payload không hợp lệ");
-            }
-        }
-
-        public override byte[] ToBytes()
-        {
-            return Encoding.UTF8.GetBytes($"RESET_PASSWORD_RESULT;{Status}");
-        }
-    }
     #endregion
     #region room (server -> client)
     public class RoomInfoPacket : Packet
@@ -555,5 +518,90 @@ namespace Models
             return Encoding.UTF8.GetBytes($"SYNC_BITMAP;{RoomId};{BitmapData}");
         }
     }
+
+    public class ResetPasswordRequestPacket : Packet
+    {
+        public string Email { get; set; }
+
+        public ResetPasswordRequestPacket(string email) : base(PacketType.RESET_PASSWORD_REQUEST, email)
+        {
+            Email = email;
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"RESET_PASSWORD_REQUEST;{Email}");
+        }
+    }
+
+
+
+    public class VerifyOTPRequestPacket : Packet
+    {
+        public string Email { get; set; }
+        public string OTP { get; set; }
+
+        public VerifyOTPRequestPacket(string email, string otp)
+            : base(PacketType.VERIFY_OTP, $"{email};{otp}")
+        {
+            Email = email;
+            OTP = otp;
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"VERIFY_OTP;{Email};{OTP}");
+        }
+    }
+
+
+    public class ResetPasswordPacket : Packet
+    {
+        public string Email { get; set; }
+        public string NewPassword { get; set; }
+
+        public ResetPasswordPacket(string email, string newPassword)
+            : base(PacketType.RESET_PASSWORD, $"{email};{newPassword}")
+        {
+            Email = email;
+            NewPassword = newPassword;
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"RESET_PASSWORD;{Email};{NewPassword}");
+        }
+    }
+
+
+
+    public class ResetPasswordResultPacket : Packet
+    {
+        public string Status { get; set; }
+
+        public ResetPasswordResultPacket(string payload)
+            : base(PacketType.RESET_PASSWORD_RESULT, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 1)
+            {
+                Status = parsePayload[0];
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"RESET_PASSWORD_RESULT;{Status}");
+        }
+    }
+
+
+
+
+
 
 }

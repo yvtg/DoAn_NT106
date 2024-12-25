@@ -30,7 +30,6 @@ namespace Program
 
         public static event Action RegisterSuccessful;
         public event Action LoginSuccessful;
-        public event Action ResetPasswordSuccessful;
         public event Action<string, string, int> ReceiveRoomInfo;
         public event Action<string, string, string> ReceiveMessage;
         public event Action<string, string, int, string> ReceiveOtherInfo;
@@ -38,6 +37,13 @@ namespace Program
         public event Action<SyncBitmapPacket> SyncBitmapReceived;
         public event Action<DrawPacket> DrawPacketReceived;
 
+        ///////////////////////////////
+        public event Action ResetPasswordRequestSent;
+        public event Action OTPVerified;
+        public event Action ResetPasswordSuccessful;
+        public event Action ResetPasswordFailed;
+        public event Action OTPFailed;
+        ///////////////////////////////
 
         public bool Connect(string serverIP, int port)
         {
@@ -94,22 +100,14 @@ namespace Program
             {
                 try
                 {
-                    // Nếu NetworkStream chưa được khởi tạo, hãy khởi tạo
-                    if (ns == null)
-                    {
-                        ns = tcpClient.GetStream();
-                        sw = new StreamWriter(ns);
-                    }
-
-                    // Gửi dữ liệu
+                    string packetLog = $"Gửi Packet: {packet.Type};{packet.Payload}";
+                    Console.WriteLine(packetLog);
                     sw.WriteLine(packet.Type + ";" + packet.Payload);
-                    Console.WriteLine(packet.Type + ";" + packet.Payload);
                     sw.Flush();
                 }
                 catch (Exception ex)
                 {
-                    // Thông báo lỗi nếu có ngoại lệ xảy ra
-                    MessageBox.Show("Lỗi khi gửi dữ liệu: " + ex.Message); // Error sending data
+                    MessageBox.Show($"Lỗi khi gửi dữ liệu: {ex.Message}");
                 }
             }
             else
@@ -187,6 +185,9 @@ namespace Program
                         return new LoginResultPacket(remainingMsg);
                     case PacketType.REGISTER_RESULT:
                         return new RegisterResultPacket(remainingMsg);
+                    case PacketType.RESET_PASSWORD_RESULT:
+                        return new ResetPasswordResultPacket(remainingMsg);
+                   
                     case PacketType.ROOM_INFO:
                         return new RoomInfoPacket(remainingMsg);
                     case PacketType.OTHER_INFO:
@@ -242,12 +243,11 @@ namespace Program
                     ResetPasswordResultPacket resultPacket = (ResetPasswordResultPacket)packet;
                     if (resultPacket.Status == "success")
                     {
-                        MessageBox.Show("Mật khẩu đã được thay đổi thành công.");
-                        ResetPasswordSuccessful?.Invoke();
+                        ResetPasswordSuccessful?.Invoke(); // Gọi sự kiện khi thành công
                     }
                     else
                     {
-                        MessageBox.Show("Không thể thay đổi mật khẩu. Vui lòng thử lại.");
+                        MessageBox.Show("Thao tác thất bại. Vui lòng thử lại.");
                     }
                     break;
                 case PacketType.ROOM_INFO:
@@ -329,5 +329,25 @@ namespace Program
             formmessage.ShowDialog();
         }
 
+        // Gửi yêu cầu mã OTP
+        public void SendResetPasswordRequest(string email)
+        {
+            ResetPasswordRequestPacket requestPacket = new ResetPasswordRequestPacket(email);
+            SendPacket(requestPacket);
+        }
+
+        // Gửi yêu cầu xác thực OTP
+        public void SendVerifyOTPRequest(string email, string otp)
+        {
+            VerifyOTPRequestPacket otpPacket = new VerifyOTPRequestPacket(email, otp);
+            SendPacket(otpPacket);
+        }
+
+        // Gửi yêu cầu đặt lại mật khẩu
+        public void SendResetPassword(string email, string newPassword)
+        {
+            ResetPasswordPacket resetPacket = new ResetPasswordPacket(email, newPassword);
+            SendPacket(resetPacket);
+        }
     }
 }

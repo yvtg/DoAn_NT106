@@ -16,11 +16,14 @@ using System.Xml.Linq;
 using System.Drawing;
 using System.IO;
 using Microsoft.VisualBasic.ApplicationServices;
+using System.Net.Mail;
+using MongoDB.Bson;
 
 namespace Server
 {
     public class Server
     {
+        private Dictionary<string, string> otpStorage = new Dictionary<string, string>(); // Email -> OTP mapping
         public static Socket serverSocket;
         public List<Models.User> clients = new List<Models.User>(); // danh sách client đang kết nối tới
         public List<Room> rooms = new List<Room>(); // danh sách phòng chơi đang có
@@ -32,6 +35,136 @@ namespace Server
         public event Action<string> UpdateLog; // cập nhật log trên UI
         public event Action UpdateRoomList; // cập nhật danh sách phòng trên UI
         public event Action UpdateClientList; // cập nhật danh sách client trên UI
+
+
+        private string GenerateOTP()
+        {
+            Random random = new Random();
+            return random.Next(100000, 999999).ToString(); // Tạo mã OTP 6 chữ số
+        }
+        private void SendEmail(string email, string otp)
+        {
+            try
+            {
+                string fromEmail = "your-email@gmail.com"; // Email gửi
+                string password = "your-app-password"; // Mật khẩu ứng dụng (App Password)
+
+                // Kiểm tra định dạng email hợp lệ
+                try
+                {
+                    var mailAddress = new MailAddress(email); // Sử dụng email
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Địa chỉ email nhận không hợp lệ.");
+                    return;
+                }
+
+                // Tạo email
+                MailMessage mm = new MailMessage
+                {
+                    From = new MailAddress(fromEmail),
+                    Subject = "Mã OTP Reset Password",
+                    Body = $"Mã OTP của bạn là: {otp}",
+                    IsBodyHtml = false
+                };
+
+                mm.To.Add(email); // Sử dụng email
+
+                // Tạo đối tượng SMTP Client
+                SmtpClient sc = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new System.Net.NetworkCredential(fromEmail, password),
+                    EnableSsl = true
+                };
+
+                // Gửi email
+                sc.Send(mm);
+                MessageBox.Show("Mã OTP đã được gửi thành công.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi gửi email: {ex.Message}");
+            }
+        }
+
+
+        private void HandleResetPassword(Models.User client, ResetPasswordPacket packet)
+        {
+            string email = packet.Email;
+            string newPassword = packet.NewPassword;
+
+            if (db.UpdatePassword(email, newPassword))
+            {
+                sendPacket(client, new ResetPasswordResultPacket("success"));
+            }
+            else
+            {
+                sendPacket(client, new ResetPasswordResultPacket("fail"));
+            }
+        }
+
+        private void HandleResetPasswordRequest(Models.User client, ResetPasswordRequestPacket packet)
+        {
+            string email = packet.Email.Trim();
+            if (!IsValidEmail(email))
+            {
+                sendPacket(client, new ResetPasswordResultPacket("invalid_email"));
+                return;
+            }
+
+            var user = db.GetAllDocuments<BsonDocument>("User")
+                         .FirstOrDefault(u => u["Email"].AsString == email);
+
+            if (user != null)
+            {
+                try
+                {
+                    string otp = GenerateOTP();
+                    otpStorage[email] = otp; // Lưu OTP
+                    SendEmail(email, otp); // Gửi email
+                    sendPacket(client, new ResetPasswordResultPacket("success"));
+                }
+                catch (Exception)
+                {
+                    sendPacket(client, new ResetPasswordResultPacket("email_fail"));
+                }
+            }
+            else
+            {
+                sendPacket(client, new ResetPasswordResultPacket("not_found"));
+            }
+        }
+
+        private void HandleVerifyOTP(Models.User client, VerifyOTPRequestPacket packet)
+        {
+            string email = packet.Email;
+            string otp = packet.OTP;
+
+            if (otpStorage.TryGetValue(email, out var storedOtp) && storedOtp == otp)
+            {
+                otpStorage.Remove(email); // Xóa OTP sau khi sử dụng
+                sendPacket(client, new ResetPasswordResultPacket("success"));
+            }
+            else
+            {
+                sendPacket(client, new ResetPasswordResultPacket("fail"));
+            }
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         #region Connect
         public void StartServer()
@@ -265,6 +398,12 @@ namespace Server
                         return new RegisterPacket(remainingMsg);
                     case PacketType.LOGOUT:
                         return new LogoutPacket(remainingMsg);
+                    case PacketType.RESET_PASSWORD_REQUEST:
+                        return new ResetPasswordRequestPacket(remainingMsg);
+                    case PacketType.VERIFY_OTP:
+                        return new VerifyOTPRequestPacket(payload[1], payload[2]);
+                    case PacketType.RESET_PASSWORD:
+                        return new ResetPasswordPacket(payload[1], payload[2]);
                     case PacketType.CREATE_ROOM:
                         return new CreateRoomPacket(remainingMsg);
                     case PacketType.JOIN_ROOM:
@@ -349,34 +488,17 @@ namespace Server
                     UpdateLog.Invoke($"{logoutPacket.Username} đã đăng xuất");
 
                     break;
-                //case PacketType.RESET_PASSWORD:
-                //    ResetPasswordPacket resetPacket = (ResetPasswordPacket)packet;
-                //    string email = resetPacket.Email;
-                //    string newPassword = resetPacket.NewPassword;
+                case PacketType.RESET_PASSWORD_REQUEST:
+                    HandleResetPasswordRequest(client, (ResetPasswordRequestPacket)packet);
+                    break;
 
-                //    if (db.ResetPasswordPacket(email))
-                //    {
-                //        bool resetSuccess = db.ResetPasswordPacket(email, newPassword);
-                //        if (resetSuccess)
-                //        {
-                //            ResetPasswordResultPacket result = new ResetPasswordResultPacket("success");
-                //            sendPacket(client, result);
-                //            UpdateLog.Invoke($"Mật khẩu của {email} đã được thay đổi thành công.");
-                //        }
-                //        else
-                //        {
-                //            ResetPasswordResultPacket result = new ResetPasswordResultPacket("fail");
-                //            sendPacket(client, result);
-                //            UpdateLog.Invoke($"Không thể thay đổi mật khẩu cho {email}. Lỗi hệ thống.");
-                //        }
-                //    }
-                //    else
-                //    {
-                //        ResetPasswordResultPacket result = new ResetPasswordResultPacket("fail");
-                //        sendPacket(client, result);
-                //        UpdateLog.Invoke($"Email {email} không tồn tại.");
-                //    }
-                //    break;
+                case PacketType.VERIFY_OTP:
+                    HandleVerifyOTP(client, (VerifyOTPRequestPacket)packet);
+                    break;
+
+                case PacketType.RESET_PASSWORD:
+                    HandleResetPassword(client, (ResetPasswordPacket)packet);
+                    break;
                 case PacketType.CREATE_ROOM:
                     CreateRoomPacket createRoomPacket = (CreateRoomPacket)packet;
 
