@@ -34,7 +34,9 @@ namespace Models
         VERIFY_OTP,
         RESET_PASSWORD,
         RESET_PASSWORD_RESULT,
-        SYNC_BITMAP
+        SYNC_BITMAP,
+        PROFILE_REQUEST,
+        PROFILE_RESULT
     }
     public abstract class Packet
     {
@@ -481,7 +483,67 @@ namespace Models
         }
     }
     #endregion
+    #region profile
+    public class ProfileData
+    {
+        public string username { get; set; }
+        public int highestscore { get; set; }
+        public int gamesplayed { get; set; }
+    }
 
+    public class ProfileRequest : Packet
+    {
+        public string Username { get; set; }
+        public ProfileRequest(string payLoad) : base(PacketType.PROFILE_REQUEST, payLoad)
+        {
+            string[] parsePayload = payLoad.Split(';');
+            if (parsePayload.Length >= 1)
+            {
+                try
+                {
+                    Username = parsePayload[0];
+                }
+                catch (FormatException ex)
+                {
+                    throw new ArgumentException("Dữ liệu không hợp lệ trong payload", ex);
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ. Thiếu dữ liệu.");
+            }
+        }
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"PROFILE_REQUEST;{Username}");
+        }
+
+    }
+
+    public class ProfileResultPacket : Packet
+    {
+        public ProfileData data1 = new ProfileData();
+        public ProfileResultPacket(string payload) : base(PacketType.PROFILE_RESULT, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 5)
+            {
+                data1.username = parsePayload[0];
+                data1.highestscore = int.Parse(parsePayload[1]);
+                data1.gamesplayed = int.Parse(parsePayload[4]);
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"PROFILE_RESULT;{data1.username};{data1.highestscore};{data1.gamesplayed}");
+        }
+    }
+    #endregion
     public class DisconnectPacket : Packet
     {
         public DisconnectPacket(string payload) : base(PacketType.DISCONNECT, payload)

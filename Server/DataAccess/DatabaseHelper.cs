@@ -6,6 +6,7 @@ using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using Models;
 
 namespace Server.DataAccess
 {
@@ -105,8 +106,6 @@ namespace Server.DataAccess
                 { "Email", email },
                 { "Password", hashedPassword },
                 { "HighestScore", 0 },
-                { "HighestRank", 0 },
-                { "LowestRank", 0 },
                 { "GamesPlayed", 0 }
             };
 
@@ -160,6 +159,12 @@ namespace Server.DataAccess
             return user != null;
         }
 
+        public ProfileData GetProfileData(string username)
+        {
+            var collection = _database.GetCollection<ProfileData>("User");
+            var filter = Builders<ProfileData>.Filter.Eq("Username", username);
+            return collection.Find(filter).FirstOrDefault();
+        }
 
 
 

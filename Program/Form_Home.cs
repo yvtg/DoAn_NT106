@@ -29,10 +29,8 @@ namespace Program
         private void profileButton_Click_1(object sender, EventArgs e)
         {
             this.Hide();
-            Form_Profile profileform = new Form_Profile(username);
-            profileform.StartPosition = FormStartPosition.Manual;
-            profileform.Location = this.Location;
-            profileform.ShowDialog();
+            ProfileRequest profile = new ProfileRequest(username);
+            client.SendPacket(profile);
             this.Show();
             FormClosed += (s, args) => this.Close();
         }

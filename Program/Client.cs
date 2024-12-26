@@ -187,6 +187,8 @@ namespace Program
                         return new JoinResultPacket(remainingMsg);
                     case PacketType.GUESS:
                         return new GuessPacket(remainingMsg);
+                    case PacketType.PROFILE_RESULT:
+                        return new ProfileResultPacket(remainingMsg);
                     default:
                         HandleDrawPacket(msg);
                         break;
@@ -313,6 +315,17 @@ namespace Program
                 case PacketType.GUESS_RESULT:
                     break;
                 case PacketType.LEADER_BOARD_INFO:
+                    break;
+                case PacketType.PROFILE_RESULT:
+                    ProfileData data = new ProfileData();
+                    ProfileResultPacket profileResult = (ProfileResultPacket)packet;
+                    data.username = profileResult.data1.username;
+                    data.highestscore = profileResult.data1.highestscore;
+                    data.gamesplayed = profileResult.data1.gamesplayed;
+                    Form_Profile profileform = new Form_Profile(data);
+                    profileform.StartPosition = FormStartPosition.Manual;
+                    profileform.StartPosition = FormStartPosition.CenterScreen;
+                    profileform.ShowDialog();
                     break;
                 default:
                     break;

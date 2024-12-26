@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,13 +13,15 @@ namespace Program
 {
     public partial class Form_Profile : Form
     {
-        string username;
+        ProfileData data = new ProfileData();
         private Client client;
-        public Form_Profile(string username)
+        public Form_Profile(ProfileData username)
         {
             InitializeComponent();
-            this.username = username;
             this.client = Form_Input_ServerIP.client;
+            usernameTextbox.Text = username.username;
+            maxscoreTextbox.Text = username.highestscore.ToString();
+            countTextbox.Text = username.gamesplayed.ToString();
         }
         #region UI
         private void backButton_Click_1(object sender, EventArgs e)
