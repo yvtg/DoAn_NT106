@@ -42,38 +42,35 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.usernameLabel.Location = new System.Drawing.Point(4, 146);
-            this.usernameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.usernameLabel.Location = new System.Drawing.Point(5, 180);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(100, 21);
+            this.usernameLabel.Size = new System.Drawing.Size(112, 23);
             this.usernameLabel.TabIndex = 0;
-            this.usernameLabel.Text = "username";
+            this.usernameLabel.Text = "Username";
             // 
             // maxscoreLabel
             // 
             this.maxscoreLabel.AutoSize = true;
-            this.maxscoreLabel.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxscoreLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maxscoreLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.maxscoreLabel.Location = new System.Drawing.Point(4, 207);
-            this.maxscoreLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.maxscoreLabel.Location = new System.Drawing.Point(5, 255);
             this.maxscoreLabel.Name = "maxscoreLabel";
-            this.maxscoreLabel.Size = new System.Drawing.Size(139, 21);
+            this.maxscoreLabel.Size = new System.Drawing.Size(152, 23);
             this.maxscoreLabel.TabIndex = 2;
-            this.maxscoreLabel.Text = "highest score";
+            this.maxscoreLabel.Text = "Highest Score";
             // 
             // countLabel
             // 
             this.countLabel.AutoSize = true;
-            this.countLabel.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.countLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.countLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.countLabel.Location = new System.Drawing.Point(4, 260);
-            this.countLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.countLabel.Location = new System.Drawing.Point(5, 320);
             this.countLabel.Name = "countLabel";
-            this.countLabel.Size = new System.Drawing.Size(103, 21);
+            this.countLabel.Size = new System.Drawing.Size(120, 23);
             this.countLabel.TabIndex = 5;
-            this.countLabel.Text = "play times";
+            this.countLabel.Text = "Play Times";
             // 
             // maxscoreTextbox
             // 
@@ -81,10 +78,11 @@
             this.maxscoreTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.maxscoreTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.maxscoreTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.maxscoreTextbox.Font = new System.Drawing.Font("FVF Fernando 08", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxscoreTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maxscoreTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.maxscoreTextbox.Hint = "";
-            this.maxscoreTextbox.Location = new System.Drawing.Point(151, 198);
+            this.maxscoreTextbox.Location = new System.Drawing.Point(189, 244);
+            this.maxscoreTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.maxscoreTextbox.MaxLength = 32767;
             this.maxscoreTextbox.Multiline = false;
             this.maxscoreTextbox.Name = "maxscoreTextbox";
@@ -93,7 +91,7 @@
             this.maxscoreTextbox.SelectedText = "";
             this.maxscoreTextbox.SelectionLength = 0;
             this.maxscoreTextbox.SelectionStart = 0;
-            this.maxscoreTextbox.Size = new System.Drawing.Size(185, 44);
+            this.maxscoreTextbox.Size = new System.Drawing.Size(259, 40);
             this.maxscoreTextbox.TabIndex = 25;
             this.maxscoreTextbox.TabStop = false;
             this.maxscoreTextbox.UseSystemPasswordChar = false;
@@ -104,11 +102,11 @@
             this.usernameTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.usernameTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.usernameTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.usernameTextbox.Font = new System.Drawing.Font("FVF Fernando 08", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.usernameTextbox.Hint = "";
-            this.usernameTextbox.Location = new System.Drawing.Point(151, 134);
-            this.usernameTextbox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.usernameTextbox.Location = new System.Drawing.Point(189, 165);
+            this.usernameTextbox.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
             this.usernameTextbox.MaxLength = 32767;
             this.usernameTextbox.Multiline = false;
             this.usernameTextbox.Name = "usernameTextbox";
@@ -117,7 +115,7 @@
             this.usernameTextbox.SelectedText = "";
             this.usernameTextbox.SelectionLength = 0;
             this.usernameTextbox.SelectionStart = 0;
-            this.usernameTextbox.Size = new System.Drawing.Size(185, 44);
+            this.usernameTextbox.Size = new System.Drawing.Size(259, 40);
             this.usernameTextbox.TabIndex = 24;
             this.usernameTextbox.TabStop = false;
             this.usernameTextbox.UseSystemPasswordChar = false;
@@ -128,10 +126,11 @@
             this.countTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.countTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.countTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.countTextbox.Font = new System.Drawing.Font("FVF Fernando 08", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.countTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.countTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.countTextbox.Hint = "";
-            this.countTextbox.Location = new System.Drawing.Point(151, 260);
+            this.countTextbox.Location = new System.Drawing.Point(189, 320);
+            this.countTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.countTextbox.MaxLength = 32767;
             this.countTextbox.Multiline = false;
             this.countTextbox.Name = "countTextbox";
@@ -140,7 +139,7 @@
             this.countTextbox.SelectedText = "";
             this.countTextbox.SelectionLength = 0;
             this.countTextbox.SelectionStart = 0;
-            this.countTextbox.Size = new System.Drawing.Size(185, 44);
+            this.countTextbox.Size = new System.Drawing.Size(259, 40);
             this.countTextbox.TabIndex = 28;
             this.countTextbox.TabStop = false;
             this.countTextbox.UseSystemPasswordChar = false;
@@ -152,17 +151,18 @@
             this.backButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.backButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.backButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.backButton.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.backButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.backButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.backButton.Location = new System.Drawing.Point(119, 349);
+            this.backButton.Location = new System.Drawing.Point(159, 430);
+            this.backButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.backButton.Name = "backButton";
             this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.backButton.Size = new System.Drawing.Size(104, 36);
+            this.backButton.Size = new System.Drawing.Size(139, 50);
             this.backButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.backButton.TabIndex = 29;
-            this.backButton.Text = "Quay về";
+            this.backButton.Text = "Back";
             this.backButton.TextColor = System.Drawing.Color.White;
             this.backButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.backButton.Click += new System.EventHandler(this.backButton_Click_1);
@@ -175,23 +175,24 @@
             this.profile.ControlBoxColorN = System.Drawing.Color.White;
             this.profile.Cursor = System.Windows.Forms.Cursors.Default;
             this.profile.Dock = System.Windows.Forms.DockStyle.Top;
-            this.profile.Font = new System.Drawing.Font("SVN-Retron 2000", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.profile.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.profile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.profile.Image = null;
             this.profile.Location = new System.Drawing.Point(0, 0);
+            this.profile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.profile.Name = "profile";
-            this.profile.Size = new System.Drawing.Size(348, 40);
+            this.profile.Size = new System.Drawing.Size(464, 40);
             this.profile.TabIndex = 30;
             this.profile.Text = "Profile";
             this.profile.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             // 
             // Form_Profile
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
             this.BackgroundImage = global::Program.Properties.Resources.background2;
-            this.ClientSize = new System.Drawing.Size(348, 453);
+            this.ClientSize = new System.Drawing.Size(464, 558);
             this.Controls.Add(this.profile);
             this.Controls.Add(this.backButton);
             this.Controls.Add(this.countTextbox);
@@ -202,8 +203,8 @@
             this.Controls.Add(this.usernameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximumSize = new System.Drawing.Size(1920, 1032);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximumSize = new System.Drawing.Size(2560, 1270);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Profile";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -112,7 +112,7 @@
       <HintPath>..\packages\Snappier.1.0.0\lib\netstandard2.0\Snappier.dll</HintPath>
     </Reference>
     <Reference Include="System">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -274,6 +274,12 @@
     <Compile Include="Form_Message.Designer.cs">
       <DependentUpon>Form_Message.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_OTP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_OTP.Designer.cs">
+      <DependentUpon>Form_OTP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Profile.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -297,6 +303,12 @@
     </Compile>
     <Compile Include="Form_Join.Designer.cs">
       <DependentUpon>Form_Join.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Reset_Password.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Reset_Password.Designer.cs">
+      <DependentUpon>Form_Reset_Password.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_Room.cs">
       <SubType>Form</SubType>
@@ -346,11 +358,17 @@
     <EmbeddedResource Include="Form_Message.resx">
       <DependentUpon>Form_Message.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_OTP.resx">
+      <DependentUpon>Form_OTP.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_Profile.resx">
       <DependentUpon>Form_Profile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Register.resx">
       <DependentUpon>Form_Register.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Reset_Password.resx">
+      <DependentUpon>Form_Reset_Password.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Room.resx">
       <DependentUpon>Form_Room.cs</DependentUpon>

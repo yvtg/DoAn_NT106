@@ -47,12 +47,13 @@
             this.inputServerIP.ControlBoxColorN = System.Drawing.Color.White;
             this.inputServerIP.Cursor = System.Windows.Forms.Cursors.Default;
             this.inputServerIP.Dock = System.Windows.Forms.DockStyle.Top;
-            this.inputServerIP.Font = new System.Drawing.Font("SVN-Retron 2000", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputServerIP.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputServerIP.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.inputServerIP.Image = null;
             this.inputServerIP.Location = new System.Drawing.Point(0, 0);
+            this.inputServerIP.Margin = new System.Windows.Forms.Padding(4);
             this.inputServerIP.Name = "inputServerIP";
-            this.inputServerIP.Size = new System.Drawing.Size(278, 40);
+            this.inputServerIP.Size = new System.Drawing.Size(371, 40);
             this.inputServerIP.TabIndex = 22;
             this.inputServerIP.Text = "Input Server IP";
             this.inputServerIP.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
@@ -67,13 +68,14 @@
             this.connectBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.connectBtn.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.connectBtn.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.connectBtn.Font = new System.Drawing.Font("Pixel Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.connectBtn.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.connectBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.connectBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.connectBtn.Location = new System.Drawing.Point(95, 216);
+            this.connectBtn.Location = new System.Drawing.Point(113, 251);
+            this.connectBtn.Margin = new System.Windows.Forms.Padding(4);
             this.connectBtn.Name = "connectBtn";
             this.connectBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
-            this.connectBtn.Size = new System.Drawing.Size(115, 36);
+            this.connectBtn.Size = new System.Drawing.Size(153, 44);
             this.connectBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.connectBtn.TabIndex = 25;
             this.connectBtn.Text = "Connect";
@@ -87,11 +89,11 @@
             this.serverIPTextBox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.serverIPTextBox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.serverIPTextBox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.serverIPTextBox.Font = new System.Drawing.Font("Pixel Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverIPTextBox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.serverIPTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.serverIPTextBox.Hint = "";
-            this.serverIPTextBox.Location = new System.Drawing.Point(85, 106);
-            this.serverIPTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.serverIPTextBox.Location = new System.Drawing.Point(113, 113);
+            this.serverIPTextBox.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
             this.serverIPTextBox.MaxLength = 32767;
             this.serverIPTextBox.Multiline = false;
             this.serverIPTextBox.Name = "serverIPTextBox";
@@ -100,7 +102,7 @@
             this.serverIPTextBox.SelectedText = "";
             this.serverIPTextBox.SelectionLength = 0;
             this.serverIPTextBox.SelectionStart = 0;
-            this.serverIPTextBox.Size = new System.Drawing.Size(177, 39);
+            this.serverIPTextBox.Size = new System.Drawing.Size(236, 40);
             this.serverIPTextBox.TabIndex = 24;
             this.serverIPTextBox.TabStop = false;
             this.serverIPTextBox.UseSystemPasswordChar = false;
@@ -108,39 +110,36 @@
             // idLabel
             // 
             this.idLabel.AutoSize = true;
-            this.idLabel.Font = new System.Drawing.Font("Pixel Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.idLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.idLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.idLabel.Location = new System.Drawing.Point(11, 61);
-            this.idLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.idLabel.Location = new System.Drawing.Point(27, 77);
             this.idLabel.Name = "idLabel";
             this.idLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.idLabel.Size = new System.Drawing.Size(255, 24);
+            this.idLabel.Size = new System.Drawing.Size(191, 23);
             this.idLabel.TabIndex = 23;
             this.idLabel.Text = "Connect to server";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Pixel Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.label1.Location = new System.Drawing.Point(11, 106);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(27, 130);
             this.label1.Name = "label1";
             this.label1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label1.Size = new System.Drawing.Size(42, 24);
+            this.label1.Size = new System.Drawing.Size(32, 23);
             this.label1.TabIndex = 26;
             this.label1.Text = "IP";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Pixel Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.label2.Location = new System.Drawing.Point(11, 162);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(27, 199);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label2.Size = new System.Drawing.Size(72, 24);
+            this.label2.Size = new System.Drawing.Size(56, 23);
             this.label2.TabIndex = 27;
             this.label2.Text = "Port";
             // 
@@ -150,11 +149,11 @@
             this.portTextBox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.portTextBox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.portTextBox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.portTextBox.Font = new System.Drawing.Font("Pixel Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.portTextBox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.portTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.portTextBox.Hint = "";
-            this.portTextBox.Location = new System.Drawing.Point(85, 162);
-            this.portTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.portTextBox.Location = new System.Drawing.Point(113, 182);
+            this.portTextBox.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
             this.portTextBox.MaxLength = 32767;
             this.portTextBox.Multiline = false;
             this.portTextBox.Name = "portTextBox";
@@ -163,17 +162,17 @@
             this.portTextBox.SelectedText = "";
             this.portTextBox.SelectionLength = 0;
             this.portTextBox.SelectionStart = 0;
-            this.portTextBox.Size = new System.Drawing.Size(177, 39);
+            this.portTextBox.Size = new System.Drawing.Size(236, 40);
             this.portTextBox.TabIndex = 28;
             this.portTextBox.TabStop = false;
             this.portTextBox.UseSystemPasswordChar = false;
             // 
             // Form_Input_ServerIP
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
-            this.ClientSize = new System.Drawing.Size(278, 264);
+            this.ClientSize = new System.Drawing.Size(371, 325);
             this.Controls.Add(this.portTextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -183,7 +182,8 @@
             this.Controls.Add(this.inputServerIP);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(1920, 1032);
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximumSize = new System.Drawing.Size(2560, 1270);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Input_ServerIP";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -65,22 +65,40 @@ namespace Server.DataAccess
             return BCrypt.Net.BCrypt.Verify(password, storedHash);
         }
 
+        public bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
         // Hàm đăng ký người dùng
         public bool RegisterUser(string username, string email, string password)
         {
-            var collection = GetCollection<BsonDocument>("User");
-
-            // Kiểm tra nếu người dùng đã tồn tại (theo email)
-            var existingUser = collection.Find(Builders<BsonDocument>.Filter.Eq("Username", username)).FirstOrDefault();
-            if (existingUser != null)
+            if (!IsValidEmail(email))
             {
-                return false; // Người dùng đã tồn tại
+                throw new ArgumentException("Email không hợp lệ.");
             }
 
-            // Mã hóa mật khẩu
-            string hashedPassword = HashPassword(password);
+            var collection = GetCollection<BsonDocument>("User");
+            var existingUser = collection.Find(Builders<BsonDocument>.Filter.Eq("Email", email)).FirstOrDefault();
+            if (existingUser != null)
+            {
+                return false; // Email đã tồn tại
+            }
+            if (UserExists(email))
+            {
+                return false; // Email đã tồn tại
+            }
 
-            // Tạo document người dùng mới
+            string hashedPassword = HashPassword(password);
             var newUser = new BsonDocument
             {
                 { "Username", username },
@@ -92,10 +110,10 @@ namespace Server.DataAccess
                 { "GamesPlayed", 0 }
             };
 
-            // Thêm người dùng vào database
             collection.InsertOne(newUser);
             return true; // Đăng ký thành công
         }
+
 
 
         // Hàm đăng nhập người dùng
@@ -115,6 +133,37 @@ namespace Server.DataAccess
 
             return VerifyPassword(storedHashedPassword, password); // So sánh mật khẩu đã mã hóa
         }
+
+        
+        public bool UpdatePassword(string email, string newPassword)
+        {
+            try
+            {
+                var collection = GetCollection<BsonDocument>("User");
+                string hashedPassword = HashPassword(newPassword);
+
+                var filter = Builders<BsonDocument>.Filter.Eq("Email", email);
+                var update = Builders<BsonDocument>.Update.Set("Password", hashedPassword);
+
+                var result = collection.UpdateOne(filter, update);
+                return result.ModifiedCount > 0; // Kiểm tra xem có bản ghi nào được cập nhật
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi cập nhật mật khẩu: {ex.Message}");
+            }
+        }
+        public bool UserExists(string email)
+        {
+            var collection = GetCollection<BsonDocument>("User");
+            var user = collection.Find(Builders<BsonDocument>.Filter.Eq("Email", email)).FirstOrDefault();
+            return user != null;
+        }
+
+
+
+
+
 
 
         ////Cách dùng:

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,54 +19,96 @@ namespace Program
         {
             InitializeComponent();
             this.client = Program.Form_Input_ServerIP.client;
-            client.LoginSuccessful += OnResetPasswordSuccessful;
+            client.ResetPasswordResult += OnOTPRequestSuccessful;
         }
 
-        private void resetButton_Click(object sender, EventArgs e)
+        private bool IsValidEmail(string email)
         {
-            string email = emailTextbox.Text;
-            string newPassword = passwordTextbox.Text;
-            string confirmPassword = confirmpassTextbox.Text;
-
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword))
-            {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin.");
-                return;
-            }
-
-            if (newPassword != confirmPassword)
-            {
-                MessageBox.Show("Mật khẩu mới và xác nhận mật khẩu không khớp.");
-                return;
-            }
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
 
             try
             {
-                // Gửi yêu cầu reset mật khẩu lên server
-                //ResetPasswordPacket packet = new ResetPasswordPacket($"{email};{newPassword}");
-                //client.SendPacket(packet);
+                // Kiểm tra độ dài email
+                if (email.Length > 254)
+                    return false;
+
+                // Regex kiểm tra email
+                string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+                if (!Regex.IsMatch(email, emailPattern, RegexOptions.IgnoreCase))
+                    return false;
+
+                // Tạo đối tượng MailAddress để kiểm tra email hợp lệ
+                var addr = new System.Net.Mail.MailAddress(email);
+
+                return addr.Address == email;
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show($"Lỗi khi gửi thông tin reset mật khẩu: {ex.Message}");
+                return false;
             }
         }
-        private void OnResetPasswordSuccessful()
+
+
+        private void sendButton_Click_1(object sender, EventArgs e)
         {
-            if (this.InvokeRequired)
+            string email = emailTextbox.Text.Trim();
+
+            if (string.IsNullOrEmpty(email))
             {
-                this.Invoke(new Action(OnResetPasswordSuccessful));
+                ShowMessage("Vui lòng nhập email.");
                 return;
             }
 
-            string username = emailTextbox.Text; 
-            Form_Home homeForm = new Form_Home(username);
+            if (!IsValidEmail(emailTextbox.Text.Trim()))
+            {
+                ShowMessage("Email không hợp lệ. Vui lòng nhập lại.");
+                return;
+            }
 
-            homeForm.StartPosition = FormStartPosition.Manual;
-            homeForm.Location = this.Location;
-            homeForm.Show();
-            this.Hide(); 
-            homeForm.FormClosed += (s, args) => this.Close(); 
+            // Gửi yêu cầu OTP tới server
+            client.SendResetPasswordRequest(email);
+        }
+
+        private void OnOTPRequestSuccessful( string status)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => OnOTPRequestSuccessful(status)));
+                return;
+            }
+
+            if (status == "EMAIL_SENT")
+            {
+                string email = emailTextbox.Text.Trim();
+
+                // Chuyển sang Form OTP
+                Form_OTP otpForm = new Form_OTP(email);
+                otpForm.StartPosition = FormStartPosition.Manual;
+                otpForm.Location = this.Location;
+                otpForm.Show();
+                this.Hide();
+                otpForm.FormClosed += (s, args) => this.Close();
+            }
+        }
+        public void ShowMessage(string message)
+        {
+            Form_Message formMessage = new Form_Message(message);
+            formMessage.StartPosition = FormStartPosition.Manual;
+
+            int centerX = this.Location.X + (this.Width - formMessage.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - formMessage.Height) / 2;
+            formMessage.Location = new Point(centerX, centerY);
+
+            formMessage.ShowDialog();
+        }
+        private void backButton_Click_1(object sender, EventArgs e)
+        {
+            this.Hide(); // Ẩn form hiện tại
+            Form_Login loginForm = new Form_Login(); // Mở lại form Login
+            loginForm.StartPosition = FormStartPosition.Manual;
+            loginForm.Location = this.Location;
+            loginForm.Show();
         }
     }
 }

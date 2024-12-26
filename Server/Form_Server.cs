@@ -50,8 +50,8 @@ namespace Server
             clientListView.GridLines = true;
 
             // Thêm các cột vào ListView
-            clientListView.Columns.Add("username", 95);
-            clientListView.Columns.Add("room", 95);
+            clientListView.Columns.Add("Username", 95);
+            clientListView.Columns.Add("Room", 95);
         }
 
         private void InitializeRoomList()
@@ -62,10 +62,10 @@ namespace Server
 
             // Thêm các cột vào ListView
             roomListView.Columns.Add("Room ID", 85);
-            roomListView.Columns.Add("Host", 85);
-            roomListView.Columns.Add("Status", 85);
-            roomListView.Columns.Add("Current Players", 85);
-            roomListView.Columns.Add("Max Players", 85);
+            roomListView.Columns.Add("Host", 80);
+            roomListView.Columns.Add("Status", 75);
+            roomListView.Columns.Add("Current Players", 95);
+            roomListView.Columns.Add("Max Players", 90);
         }
 
 

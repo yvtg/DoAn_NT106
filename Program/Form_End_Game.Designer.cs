@@ -38,11 +38,13 @@
             // rankListbox
             // 
             this.rankListbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
+            this.rankListbox.Font = new System.Drawing.Font("Cambria", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rankListbox.FormattingEnabled = true;
-            this.rankListbox.Location = new System.Drawing.Point(38, 98);
-            this.rankListbox.Margin = new System.Windows.Forms.Padding(2);
+            this.rankListbox.ItemHeight = 20;
+            this.rankListbox.Location = new System.Drawing.Point(44, 125);
+            this.rankListbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rankListbox.Name = "rankListbox";
-            this.rankListbox.Size = new System.Drawing.Size(282, 290);
+            this.rankListbox.Size = new System.Drawing.Size(375, 344);
             this.rankListbox.TabIndex = 0;
             // 
             // profileButton
@@ -52,16 +54,17 @@
             this.profileButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.profileButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.profileButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.profileButton.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.profileButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.profileButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.profileButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.profileButton.Location = new System.Drawing.Point(12, 46);
+            this.profileButton.Location = new System.Drawing.Point(16, 57);
+            this.profileButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.profileButton.Name = "profileButton";
             this.profileButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.profileButton.Size = new System.Drawing.Size(84, 41);
+            this.profileButton.Size = new System.Drawing.Size(112, 50);
             this.profileButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.profileButton.TabIndex = 16;
-            this.profileButton.Text = "profile";
+            this.profileButton.Text = "Profile";
             this.profileButton.TextColor = System.Drawing.Color.White;
             this.profileButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.profileButton.Click += new System.EventHandler(this.profileButton_Click);
@@ -73,16 +76,17 @@
             this.homeButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.homeButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.homeButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.homeButton.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.homeButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.homeButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.homeButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.homeButton.Location = new System.Drawing.Point(109, 408);
+            this.homeButton.Location = new System.Drawing.Point(149, 494);
+            this.homeButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.homeButton.Name = "homeButton";
             this.homeButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.homeButton.Size = new System.Drawing.Size(130, 33);
+            this.homeButton.Size = new System.Drawing.Size(173, 41);
             this.homeButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.homeButton.TabIndex = 17;
-            this.homeButton.Text = "home";
+            this.homeButton.Text = "Home";
             this.homeButton.TextColor = System.Drawing.Color.White;
             this.homeButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.homeButton.Click += new System.EventHandler(this.homeButton_Click_1);
@@ -95,30 +99,31 @@
             this.board.ControlBoxColorN = System.Drawing.Color.White;
             this.board.Cursor = System.Windows.Forms.Cursors.Default;
             this.board.Dock = System.Windows.Forms.DockStyle.Top;
-            this.board.Font = new System.Drawing.Font("SVN-Retron 2000", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.board.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.board.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.board.Image = null;
             this.board.Location = new System.Drawing.Point(0, 0);
+            this.board.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.board.Name = "board";
-            this.board.Size = new System.Drawing.Size(348, 40);
+            this.board.Size = new System.Drawing.Size(464, 40);
             this.board.TabIndex = 28;
-            this.board.Text = "score board";
+            this.board.Text = "Score Board";
             this.board.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             // 
             // Form_End_Game
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
-            this.ClientSize = new System.Drawing.Size(348, 453);
+            this.ClientSize = new System.Drawing.Size(464, 558);
             this.Controls.Add(this.board);
             this.Controls.Add(this.homeButton);
             this.Controls.Add(this.profileButton);
             this.Controls.Add(this.rankListbox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximumSize = new System.Drawing.Size(1920, 1032);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximumSize = new System.Drawing.Size(2560, 1270);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_End_Game";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

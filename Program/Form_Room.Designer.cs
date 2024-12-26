@@ -61,15 +61,14 @@
             // timeLabel
             // 
             this.timeLabel.AutoSize = true;
-            this.timeLabel.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timeLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.timeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.timeLabel.Location = new System.Drawing.Point(168, 61);
-            this.timeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.timeLabel.Location = new System.Drawing.Point(275, 76);
             this.timeLabel.Name = "timeLabel";
             this.timeLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.timeLabel.Size = new System.Drawing.Size(50, 21);
+            this.timeLabel.Size = new System.Drawing.Size(61, 23);
             this.timeLabel.TabIndex = 4;
-            this.timeLabel.Text = "time";
+            this.timeLabel.Text = "Time";
             // 
             // sendButton
             // 
@@ -78,16 +77,17 @@
             this.sendButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.sendButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.sendButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sendButton.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sendButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sendButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.sendButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.sendButton.Location = new System.Drawing.Point(578, 448);
+            this.sendButton.Location = new System.Drawing.Point(771, 551);
+            this.sendButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.sendButton.Name = "sendButton";
             this.sendButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.sendButton.Size = new System.Drawing.Size(220, 44);
+            this.sendButton.Size = new System.Drawing.Size(293, 54);
             this.sendButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.sendButton.TabIndex = 26;
-            this.sendButton.Text = "send";
+            this.sendButton.Text = "Send";
             this.sendButton.TextColor = System.Drawing.Color.White;
             this.sendButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.sendButton.Click += new System.EventHandler(this.sendButton_Click);
@@ -98,11 +98,11 @@
             this.sendTextBox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.sendTextBox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.sendTextBox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.sendTextBox.Font = new System.Drawing.Font("FVF Fernando 08", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.sendTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.sendTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.sendTextBox.Hint = "";
-            this.sendTextBox.Location = new System.Drawing.Point(172, 448);
-            this.sendTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.sendTextBox.Location = new System.Drawing.Point(229, 551);
+            this.sendTextBox.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
             this.sendTextBox.MaxLength = 32767;
             this.sendTextBox.Multiline = false;
             this.sendTextBox.Name = "sendTextBox";
@@ -111,7 +111,7 @@
             this.sendTextBox.SelectedText = "";
             this.sendTextBox.SelectionLength = 0;
             this.sendTextBox.SelectionStart = 0;
-            this.sendTextBox.Size = new System.Drawing.Size(400, 44);
+            this.sendTextBox.Size = new System.Drawing.Size(533, 35);
             this.sendTextBox.TabIndex = 27;
             this.sendTextBox.TabStop = false;
             this.sendTextBox.UseSystemPasswordChar = false;
@@ -119,28 +119,26 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Cooper Black", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.label2.Location = new System.Drawing.Point(574, 80);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(765, 98);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label2.Size = new System.Drawing.Size(92, 21);
+            this.label2.Size = new System.Drawing.Size(88, 20);
             this.label2.TabIndex = 30;
-            this.label2.Text = "chatBox:";
+            this.label2.Text = "ChatBox:";
             // 
             // wordLabel
             // 
             this.wordLabel.AutoSize = true;
-            this.wordLabel.Font = new System.Drawing.Font("FVF Fernando 08", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.wordLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.wordLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.wordLabel.Location = new System.Drawing.Point(214, 106);
-            this.wordLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.wordLabel.Location = new System.Drawing.Point(275, 130);
             this.wordLabel.Name = "wordLabel";
             this.wordLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.wordLabel.Size = new System.Drawing.Size(89, 27);
+            this.wordLabel.Size = new System.Drawing.Size(118, 23);
             this.wordLabel.TabIndex = 31;
-            this.wordLabel.Text = "key word:";
+            this.wordLabel.Text = "Key Word:";
             // 
             // startButton
             // 
@@ -149,16 +147,17 @@
             this.startButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.startButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.startButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.startButton.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.startButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.startButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.startButton.Location = new System.Drawing.Point(8, 448);
+            this.startButton.Location = new System.Drawing.Point(11, 551);
+            this.startButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.startButton.Name = "startButton";
             this.startButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.startButton.Size = new System.Drawing.Size(159, 44);
+            this.startButton.Size = new System.Drawing.Size(212, 54);
             this.startButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.startButton.TabIndex = 32;
-            this.startButton.Text = "start";
+            this.startButton.Text = "Start";
             this.startButton.TextColor = System.Drawing.Color.White;
             this.startButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
@@ -170,10 +169,10 @@
             this.panel1.Controls.Add(this.sizeTrackBar);
             this.panel1.Controls.Add(this.EraserPictureBox);
             this.panel1.Controls.Add(this.PencilPictureBox);
-            this.panel1.Location = new System.Drawing.Point(172, 385);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2);
+            this.panel1.Location = new System.Drawing.Point(229, 474);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(400, 50);
+            this.panel1.Size = new System.Drawing.Size(533, 62);
             this.panel1.TabIndex = 34;
             // 
             // chooseColorBtn
@@ -186,10 +185,11 @@
             this.chooseColorBtn.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.chooseColorBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.chooseColorBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.chooseColorBtn.Location = new System.Drawing.Point(351, 5);
+            this.chooseColorBtn.Location = new System.Drawing.Point(468, 6);
+            this.chooseColorBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chooseColorBtn.Name = "chooseColorBtn";
             this.chooseColorBtn.PrimaryColor = System.Drawing.Color.Black;
-            this.chooseColorBtn.Size = new System.Drawing.Size(41, 41);
+            this.chooseColorBtn.Size = new System.Drawing.Size(55, 50);
             this.chooseColorBtn.SuccessColor = System.Drawing.Color.White;
             this.chooseColorBtn.TabIndex = 40;
             this.chooseColorBtn.TextColor = System.Drawing.Color.White;
@@ -204,12 +204,13 @@
             this.sizeTrackBar.EmptyBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.sizeTrackBar.FillBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.sizeTrackBar.JumpToMouse = false;
-            this.sizeTrackBar.Location = new System.Drawing.Point(123, 15);
+            this.sizeTrackBar.Location = new System.Drawing.Point(164, 18);
+            this.sizeTrackBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.sizeTrackBar.Maximum = 10;
             this.sizeTrackBar.Minimum = 0;
-            this.sizeTrackBar.MinimumSize = new System.Drawing.Size(47, 22);
+            this.sizeTrackBar.MinimumSize = new System.Drawing.Size(63, 27);
             this.sizeTrackBar.Name = "sizeTrackBar";
-            this.sizeTrackBar.Size = new System.Drawing.Size(220, 22);
+            this.sizeTrackBar.Size = new System.Drawing.Size(293, 27);
             this.sizeTrackBar.TabIndex = 39;
             this.sizeTrackBar.Text = "dungeonTrackBar1";
             this.sizeTrackBar.ThumbBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
@@ -223,10 +224,10 @@
             // 
             this.EraserPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.EraserPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("EraserPictureBox.Image")));
-            this.EraserPictureBox.Location = new System.Drawing.Point(73, 4);
-            this.EraserPictureBox.Margin = new System.Windows.Forms.Padding(2);
+            this.EraserPictureBox.Location = new System.Drawing.Point(97, 5);
+            this.EraserPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.EraserPictureBox.Name = "EraserPictureBox";
-            this.EraserPictureBox.Size = new System.Drawing.Size(38, 41);
+            this.EraserPictureBox.Size = new System.Drawing.Size(51, 50);
             this.EraserPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.EraserPictureBox.TabIndex = 36;
             this.EraserPictureBox.TabStop = false;
@@ -237,10 +238,10 @@
             // 
             this.PencilPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PencilPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("PencilPictureBox.Image")));
-            this.PencilPictureBox.Location = new System.Drawing.Point(12, 4);
-            this.PencilPictureBox.Margin = new System.Windows.Forms.Padding(2);
+            this.PencilPictureBox.Location = new System.Drawing.Point(16, 5);
+            this.PencilPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PencilPictureBox.Name = "PencilPictureBox";
-            this.PencilPictureBox.Size = new System.Drawing.Size(38, 41);
+            this.PencilPictureBox.Size = new System.Drawing.Size(51, 50);
             this.PencilPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PencilPictureBox.TabIndex = 35;
             this.PencilPictureBox.TabStop = false;
@@ -250,45 +251,49 @@
             // usernamText
             // 
             this.usernamText.AutoSize = true;
-            this.usernamText.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernamText.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernamText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.usernamText.Location = new System.Drawing.Point(4, 50);
+            this.usernamText.Location = new System.Drawing.Point(7, 62);
+            this.usernamText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.usernamText.Name = "usernamText";
-            this.usernamText.Size = new System.Drawing.Size(111, 21);
+            this.usernamText.Size = new System.Drawing.Size(128, 23);
             this.usernamText.TabIndex = 35;
-            this.usernamText.Text = "username:  ";
+            this.usernamText.Text = "Username:  ";
             // 
             // hostText
             // 
             this.hostText.AutoSize = true;
-            this.hostText.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hostText.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hostText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.hostText.Location = new System.Drawing.Point(4, 80);
+            this.hostText.Location = new System.Drawing.Point(8, 98);
+            this.hostText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.hostText.Name = "hostText";
-            this.hostText.Size = new System.Drawing.Size(62, 21);
+            this.hostText.Size = new System.Drawing.Size(68, 23);
             this.hostText.TabIndex = 36;
-            this.hostText.Text = "host: ";
+            this.hostText.Text = "Host: ";
             // 
             // userListView
             // 
-            this.userListView.Font = new System.Drawing.Font("FVF Fernando 08", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.userListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.userListView.HideSelection = false;
-            this.userListView.Location = new System.Drawing.Point(8, 144);
+            this.userListView.Location = new System.Drawing.Point(11, 177);
+            this.userListView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.userListView.Name = "userListView";
-            this.userListView.Size = new System.Drawing.Size(160, 295);
+            this.userListView.Size = new System.Drawing.Size(212, 362);
             this.userListView.TabIndex = 38;
             this.userListView.UseCompatibleStateImageBehavior = false;
             // 
             // maxText
             // 
             this.maxText.AutoSize = true;
-            this.maxText.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxText.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maxText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.maxText.Location = new System.Drawing.Point(6, 111);
+            this.maxText.Location = new System.Drawing.Point(8, 137);
+            this.maxText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.maxText.Name = "maxText";
-            this.maxText.Size = new System.Drawing.Size(53, 21);
+            this.maxText.Size = new System.Drawing.Size(62, 23);
             this.maxText.TabIndex = 39;
-            this.maxText.Text = "max: ";
+            this.maxText.Text = "Max: ";
             // 
             // roomForm
             // 
@@ -297,12 +302,13 @@
             this.roomForm.ControlBoxColorN = System.Drawing.Color.White;
             this.roomForm.Cursor = System.Windows.Forms.Cursors.Default;
             this.roomForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.roomForm.Font = new System.Drawing.Font("SVN-Retron 2000", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.roomForm.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.roomForm.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.roomForm.Image = null;
             this.roomForm.Location = new System.Drawing.Point(0, 0);
+            this.roomForm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.roomForm.Name = "roomForm";
-            this.roomForm.Size = new System.Drawing.Size(810, 40);
+            this.roomForm.Size = new System.Drawing.Size(1080, 40);
             this.roomForm.TabIndex = 20;
             this.roomForm.Text = "Room - ";
             this.roomForm.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
@@ -316,16 +322,17 @@
             this.leaveBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.leaveBtn.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.leaveBtn.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.leaveBtn.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.leaveBtn.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.leaveBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.leaveBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.leaveBtn.Location = new System.Drawing.Point(695, 46);
+            this.leaveBtn.Location = new System.Drawing.Point(927, 57);
+            this.leaveBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.leaveBtn.Name = "leaveBtn";
             this.leaveBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.leaveBtn.Size = new System.Drawing.Size(104, 54);
+            this.leaveBtn.Size = new System.Drawing.Size(139, 66);
             this.leaveBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.leaveBtn.TabIndex = 37;
-            this.leaveBtn.Text = "leave";
+            this.leaveBtn.Text = "Leave";
             this.leaveBtn.TextColor = System.Drawing.Color.White;
             this.leaveBtn.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.leaveBtn.Click += new System.EventHandler(this.leaveBtn_Click);
@@ -334,33 +341,34 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(172, 144);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Location = new System.Drawing.Point(229, 177);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(400, 244);
+            this.pictureBox1.Size = new System.Drawing.Size(533, 300);
             this.pictureBox1.TabIndex = 28;
             this.pictureBox1.TabStop = false;
             // 
             // flowLayoutPanel
             // 
             this.flowLayoutPanel.AutoScroll = true;
-            this.flowLayoutPanel.Location = new System.Drawing.Point(577, 106);
+            this.flowLayoutPanel.Font = new System.Drawing.Font("Cambria", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.flowLayoutPanel.Location = new System.Drawing.Point(769, 130);
+            this.flowLayoutPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(222, 337);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(296, 415);
             this.flowLayoutPanel.TabIndex = 40;
             // 
             // roundLabel
             // 
             this.roundLabel.AutoSize = true;
-            this.roundLabel.Font = new System.Drawing.Font("Pixel Sans Serif Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.roundLabel.Font = new System.Drawing.Font("Cooper Black", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.roundLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.roundLabel.Location = new System.Drawing.Point(574, 50);
-            this.roundLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.roundLabel.Location = new System.Drawing.Point(765, 62);
             this.roundLabel.Name = "roundLabel";
             this.roundLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.roundLabel.Size = new System.Drawing.Size(73, 21);
+            this.roundLabel.Size = new System.Drawing.Size(75, 20);
             this.roundLabel.TabIndex = 41;
-            this.roundLabel.Text = "round: ";
+            this.roundLabel.Text = "Round: ";
             // 
             // timeProgressBar
             // 
@@ -372,7 +380,8 @@
             this.timeProgressBar.EdgeColor = System.Drawing.Color.White;
             this.timeProgressBar.ForeColor = System.Drawing.Color.Black;
             this.timeProgressBar.HatchType = System.Drawing.Drawing2D.HatchStyle.DarkUpwardDiagonal;
-            this.timeProgressBar.Location = new System.Drawing.Point(274, 59);
+            this.timeProgressBar.Location = new System.Drawing.Point(361, 62);
+            this.timeProgressBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.timeProgressBar.Maximum = 100;
             this.timeProgressBar.Name = "timeProgressBar";
             this.timeProgressBar.PercentageText = "%";
@@ -384,7 +393,7 @@
             this.timeProgressBar.ProgressLineColorB = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
             this.timeProgressBar.ShowEdge = false;
             this.timeProgressBar.ShowPercentage = false;
-            this.timeProgressBar.Size = new System.Drawing.Size(286, 30);
+            this.timeProgressBar.Size = new System.Drawing.Size(381, 37);
             this.timeProgressBar.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.timeProgressBar.TabIndex = 43;
             this.timeProgressBar.Text = "ribbonProgressBarCenter1";
@@ -395,20 +404,21 @@
             this.roundComboBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.roundComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.roundComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.roundComboBox.Font = new System.Drawing.Font("Pixel Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.roundComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.roundComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.roundComboBox.ItemHeight = 30;
-            this.roundComboBox.Location = new System.Drawing.Point(645, 46);
+            this.roundComboBox.Location = new System.Drawing.Point(860, 57);
+            this.roundComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.roundComboBox.Name = "roundComboBox";
-            this.roundComboBox.Size = new System.Drawing.Size(44, 36);
+            this.roundComboBox.Size = new System.Drawing.Size(57, 36);
             this.roundComboBox.TabIndex = 44;
             // 
             // Form_Room
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
-            this.ClientSize = new System.Drawing.Size(810, 496);
+            this.ClientSize = new System.Drawing.Size(1080, 610);
             this.Controls.Add(this.roundComboBox);
             this.Controls.Add(this.timeProgressBar);
             this.Controls.Add(this.roundLabel);
@@ -429,8 +439,8 @@
             this.Controls.Add(this.timeLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximumSize = new System.Drawing.Size(1920, 1032);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximumSize = new System.Drawing.Size(2560, 1270);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Room";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

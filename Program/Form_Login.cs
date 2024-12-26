@@ -110,10 +110,9 @@ namespace Program
             Form_Forget_Password forgetForm = new Form_Forget_Password();
             this.Hide();
             forgetForm.StartPosition = FormStartPosition.Manual;
-            forgetForm.Location = new Point(this.Location.X, this.Location.Y);
-            forgetForm.ShowDialog();
-            this.Show();
-            forgetForm.FormClosed += (s, args) => this.Close();
+            forgetForm.Location = this.Location;
+            //forgetForm.FormClosed += (s, args) => this.Show(); // Hiển thị lại Form_Login khi ForgetForm đóng
+            forgetForm.Show();
         }
 
         public void ShowMessage(string messsage)

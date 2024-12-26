@@ -35,6 +35,12 @@ namespace Program
             bool isServerIPValid = System.Net.IPAddress.TryParse(serverIP, out _);
             if (isServerIPValid && isPortValid)
             {
+                if (!Connect(serverIP, port))
+                {
+                    MessageBox.Show("Không thể kết nối đến server. Vui lòng kiểm tra địa chỉ IP và cổng.");
+                    return;
+                }
+
                 if (Connect(serverIP, port))
                 {
                     this.Hide();
@@ -45,7 +51,7 @@ namespace Program
             }
             else
             {
-                ShowMessage("server không hợp lệ.");
+                ShowMessage("Server không hợp lệ.");
             }
         }
 
