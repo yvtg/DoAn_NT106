@@ -95,11 +95,11 @@
             this.emailTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.emailTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.emailTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.emailTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.emailTextbox.Font = new System.Drawing.Font("Cambria", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emailTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.emailTextbox.Hint = "";
-            this.emailTextbox.Location = new System.Drawing.Point(168, 262);
-            this.emailTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.emailTextbox.Location = new System.Drawing.Point(145, 262);
+            this.emailTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.emailTextbox.MaxLength = 32767;
             this.emailTextbox.Multiline = false;
             this.emailTextbox.Name = "emailTextbox";
@@ -108,7 +108,7 @@
             this.emailTextbox.SelectedText = "";
             this.emailTextbox.SelectionLength = 0;
             this.emailTextbox.SelectionStart = 0;
-            this.emailTextbox.Size = new System.Drawing.Size(280, 40);
+            this.emailTextbox.Size = new System.Drawing.Size(303, 38);
             this.emailTextbox.TabIndex = 21;
             this.emailTextbox.TabStop = false;
             this.emailTextbox.UseSystemPasswordChar = false;
@@ -119,10 +119,10 @@
             this.usernameTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.usernameTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.usernameTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.usernameTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameTextbox.Font = new System.Drawing.Font("Cambria", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.usernameTextbox.Hint = "";
-            this.usernameTextbox.Location = new System.Drawing.Point(168, 201);
+            this.usernameTextbox.Location = new System.Drawing.Point(145, 201);
             this.usernameTextbox.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
             this.usernameTextbox.MaxLength = 32767;
             this.usernameTextbox.Multiline = false;
@@ -132,7 +132,7 @@
             this.usernameTextbox.SelectedText = "";
             this.usernameTextbox.SelectionLength = 0;
             this.usernameTextbox.SelectionStart = 0;
-            this.usernameTextbox.Size = new System.Drawing.Size(280, 40);
+            this.usernameTextbox.Size = new System.Drawing.Size(303, 38);
             this.usernameTextbox.TabIndex = 20;
             this.usernameTextbox.TabStop = false;
             this.usernameTextbox.UseSystemPasswordChar = false;
@@ -143,11 +143,11 @@
             this.confirmpassTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.confirmpassTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.confirmpassTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.confirmpassTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.confirmpassTextbox.Font = new System.Drawing.Font("Cambria", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.confirmpassTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.confirmpassTextbox.Hint = "";
-            this.confirmpassTextbox.Location = new System.Drawing.Point(168, 385);
-            this.confirmpassTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.confirmpassTextbox.Location = new System.Drawing.Point(145, 385);
+            this.confirmpassTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.confirmpassTextbox.MaxLength = 32767;
             this.confirmpassTextbox.Multiline = false;
             this.confirmpassTextbox.Name = "confirmpassTextbox";
@@ -156,7 +156,7 @@
             this.confirmpassTextbox.SelectedText = "";
             this.confirmpassTextbox.SelectionLength = 0;
             this.confirmpassTextbox.SelectionStart = 0;
-            this.confirmpassTextbox.Size = new System.Drawing.Size(280, 40);
+            this.confirmpassTextbox.Size = new System.Drawing.Size(303, 38);
             this.confirmpassTextbox.TabIndex = 23;
             this.confirmpassTextbox.TabStop = false;
             this.confirmpassTextbox.UseSystemPasswordChar = true;
@@ -167,10 +167,10 @@
             this.passwordTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.passwordTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.passwordTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.passwordTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.passwordTextbox.Font = new System.Drawing.Font("Cambria", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passwordTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.passwordTextbox.Hint = "";
-            this.passwordTextbox.Location = new System.Drawing.Point(168, 324);
+            this.passwordTextbox.Location = new System.Drawing.Point(145, 324);
             this.passwordTextbox.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
             this.passwordTextbox.MaxLength = 32767;
             this.passwordTextbox.Multiline = false;
@@ -180,7 +180,7 @@
             this.passwordTextbox.SelectedText = "";
             this.passwordTextbox.SelectionLength = 0;
             this.passwordTextbox.SelectionStart = 0;
-            this.passwordTextbox.Size = new System.Drawing.Size(280, 40);
+            this.passwordTextbox.Size = new System.Drawing.Size(303, 38);
             this.passwordTextbox.TabIndex = 22;
             this.passwordTextbox.TabStop = false;
             this.passwordTextbox.UseSystemPasswordChar = true;
@@ -197,7 +197,7 @@
             this.registerButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.registerButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
             this.registerButton.Location = new System.Drawing.Point(263, 498);
-            this.registerButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.registerButton.Margin = new System.Windows.Forms.Padding(4);
             this.registerButton.Name = "registerButton";
             this.registerButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.registerButton.Size = new System.Drawing.Size(139, 44);
@@ -220,7 +220,7 @@
             this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
             this.backButton.Location = new System.Drawing.Point(64, 498);
-            this.backButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.backButton.Margin = new System.Windows.Forms.Padding(4);
             this.backButton.Name = "backButton";
             this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.backButton.Size = new System.Drawing.Size(139, 44);
@@ -245,7 +245,7 @@
             this.showPwCheckBox.Font = new System.Drawing.Font("Cooper Black", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showPwCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.showPwCheckBox.Location = new System.Drawing.Point(168, 447);
-            this.showPwCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.showPwCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.showPwCheckBox.Name = "showPwCheckBox";
             this.showPwCheckBox.Size = new System.Drawing.Size(173, 20);
             this.showPwCheckBox.TabIndex = 26;
@@ -265,7 +265,7 @@
             this.register.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.register.Image = null;
             this.register.Location = new System.Drawing.Point(0, 0);
-            this.register.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.register.Margin = new System.Windows.Forms.Padding(4);
             this.register.Name = "register";
             this.register.Size = new System.Drawing.Size(464, 40);
             this.register.TabIndex = 28;
@@ -278,7 +278,7 @@
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
             this.pictureBox1.Location = new System.Drawing.Point(40, 57);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(385, 119);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;

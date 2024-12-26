@@ -51,7 +51,7 @@ namespace Program
             }
             else
             {
-                ShowMessage("server không hợp lệ.");
+                ShowMessage("Server không hợp lệ.");
             }
         }
 

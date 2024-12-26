@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -23,9 +24,23 @@ namespace Program
 
         private bool IsValidEmail(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
             try
             {
+                // Kiểm tra độ dài email
+                if (email.Length > 254)
+                    return false;
+
+                // Regex kiểm tra email
+                string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+                if (!Regex.IsMatch(email, emailPattern, RegexOptions.IgnoreCase))
+                    return false;
+
+                // Tạo đối tượng MailAddress để kiểm tra email hợp lệ
                 var addr = new System.Net.Mail.MailAddress(email);
+
                 return addr.Address == email;
             }
             catch
@@ -34,19 +49,20 @@ namespace Program
             }
         }
 
+
         private void sendButton_Click_1(object sender, EventArgs e)
         {
             string email = emailTextbox.Text.Trim();
 
             if (string.IsNullOrEmpty(email))
             {
-                MessageBox.Show("Vui lòng nhập email.");
+                ShowMessage("Vui lòng nhập email.");
                 return;
             }
 
-            if (!IsValidEmail(email))
+            if (!IsValidEmail(emailTextbox.Text.Trim()))
             {
-                MessageBox.Show("Email không hợp lệ. Vui lòng nhập lại.");
+                ShowMessage("Email không hợp lệ. Vui lòng nhập lại.");
                 return;
             }
 
@@ -75,9 +91,24 @@ namespace Program
                 otpForm.FormClosed += (s, args) => this.Close();
             }
         }
+        public void ShowMessage(string message)
+        {
+            Form_Message formMessage = new Form_Message(message);
+            formMessage.StartPosition = FormStartPosition.Manual;
+
+            int centerX = this.Location.X + (this.Width - formMessage.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - formMessage.Height) / 2;
+            formMessage.Location = new Point(centerX, centerY);
+
+            formMessage.ShowDialog();
+        }
         private void backButton_Click_1(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide(); // Ẩn form hiện tại
+            Form_Login loginForm = new Form_Login(); // Mở lại form Login
+            loginForm.StartPosition = FormStartPosition.Manual;
+            loginForm.Location = this.Location;
+            loginForm.Show();
         }
     }
 }

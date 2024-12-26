@@ -61,10 +61,10 @@
             this.emailTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.emailTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.emailTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.emailTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.emailTextbox.Font = new System.Drawing.Font("Cambria", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emailTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.emailTextbox.Hint = "";
-            this.emailTextbox.Location = new System.Drawing.Point(152, 245);
+            this.emailTextbox.Location = new System.Drawing.Point(87, 230);
             this.emailTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.emailTextbox.MaxLength = 32767;
             this.emailTextbox.Multiline = false;
@@ -74,7 +74,7 @@
             this.emailTextbox.SelectedText = "";
             this.emailTextbox.SelectionLength = 0;
             this.emailTextbox.SelectionStart = 0;
-            this.emailTextbox.Size = new System.Drawing.Size(292, 40);
+            this.emailTextbox.Size = new System.Drawing.Size(356, 38);
             this.emailTextbox.TabIndex = 60;
             this.emailTextbox.TabStop = false;
             this.emailTextbox.UseSystemPasswordChar = false;
@@ -84,7 +84,7 @@
             this.emailLabel.AutoSize = true;
             this.emailLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emailLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.emailLabel.Location = new System.Drawing.Point(27, 245);
+            this.emailLabel.Location = new System.Drawing.Point(12, 245);
             this.emailLabel.Name = "emailLabel";
             this.emailLabel.Size = new System.Drawing.Size(68, 23);
             this.emailLabel.TabIndex = 59;

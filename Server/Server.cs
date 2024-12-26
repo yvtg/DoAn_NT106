@@ -242,7 +242,11 @@ namespace Server
             }
             finally
             {
-                serverSocket = null;
+                if (serverSocket != null)
+                {
+                    serverSocket.Close();
+                    serverSocket = null;
+                }
             }
 
 

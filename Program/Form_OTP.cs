@@ -17,6 +17,7 @@ namespace Program
         private Client client;
         private string email;
         private int timeLeft = 60;
+     
         public Form_OTP(string email)
         {
             InitializeComponent();
@@ -40,7 +41,7 @@ namespace Program
             else
             {
                 otpTimer.Stop();
-                MessageBox.Show("Mã OTP đã hết hạn. Vui lòng yêu cầu lại.");
+                ShowMessage("Vui lòng nhập mã OTP.");
                 BackToPreviousForm();
             }
         }
@@ -68,19 +69,31 @@ namespace Program
             if (status == "OTP_VERIFIED")
             {
                 otpTimer.Stop();
-                MessageBox.Show("Mã OTP hợp lệ! Chuyển đến form đặt lại mật khẩu.");
+                ShowMessage("Mã OTP hợp lệ! Chuyển đến form đặt lại mật khẩu.");
                 Form_Reset_Password resetPasswordForm = new Form_Reset_Password(email);
                 resetPasswordForm.StartPosition = FormStartPosition.Manual;
                 resetPasswordForm.Location = this.Location;
                 resetPasswordForm.Show();
-                this.Hide();
-                resetPasswordForm.FormClosed += (s, args) => BackToPreviousForm();
+                this.Close(); 
             }
         }
 
+        public void ShowMessage(string message)
+        {
+            Form_Message formMessage = new Form_Message(message);
+            formMessage.StartPosition = FormStartPosition.Manual;
+
+            int centerX = this.Location.X + (this.Width - formMessage.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - formMessage.Height) / 2;
+            formMessage.Location = new Point(centerX, centerY);
+
+            formMessage.ShowDialog();
+        }
         private void BackToPreviousForm()
         {
             otpTimer.Stop();
+
+            // Quay lại Form Forget Password
             Form_Forget_Password forgetPasswordForm = new Form_Forget_Password();
             forgetPasswordForm.StartPosition = FormStartPosition.Manual;
             forgetPasswordForm.Location = this.Location;
@@ -90,6 +103,10 @@ namespace Program
 
         private void backButton_Click_1(object sender, EventArgs e)
         {
+            Form_Forget_Password forgetpasswordForm = new Form_Forget_Password();
+            forgetpasswordForm.StartPosition = FormStartPosition.Manual;
+            forgetpasswordForm.Location = this.Location;
+            forgetpasswordForm.Show();
             otpTimer.Stop();
             this.Close();
         }
