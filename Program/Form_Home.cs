@@ -22,6 +22,7 @@ namespace Program
             InitializeComponent();
             this.username = username;
             this.client = Form_Input_ServerIP.client;
+            client.ReceiveRoomInfo -= OnReceiveRoomInfo;
             client.ReceiveRoomInfo += OnReceiveRoomInfo;
         }
         #region ĐIỀU HƯỚNG
@@ -60,16 +61,29 @@ namespace Program
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action(()=>OnReceiveRoomInfo(roomId,host,maxPlayers)));
+                this.Invoke(new Action(() => OnReceiveRoomInfo(roomId, host, maxPlayers)));
                 return;
             }
-            Form_Room roomForm = new Form_Room(roomId, host, maxPlayers,username);
+
+            // Kiểm tra nếu đã có form Room đang mở
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form is Form_Room)
+                {
+                    form.Focus();
+                    return; 
+                }
+            }
+
+            Form_Room roomForm = new Form_Room(roomId, host, maxPlayers, username);
             roomForm.StartPosition = FormStartPosition.Manual;
             roomForm.Location = this.Location;
             roomForm.Show();
+
             this.Hide();
             roomForm.FormClosed += (s, args) => this.Show();
         }
+
         #endregion
 
     }
