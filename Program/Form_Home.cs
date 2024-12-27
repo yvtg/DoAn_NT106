@@ -41,8 +41,8 @@ namespace Program
         {
             LogoutPacket logoutPacket = new LogoutPacket(username);
             client.SendPacket(logoutPacket);
-
             this.Close();
+        
         }
         private void createButton_Click(object sender, EventArgs e)
         {
@@ -60,16 +60,33 @@ namespace Program
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action(()=>OnReceiveRoomInfo(roomId,host,maxPlayers)));
+                this.Invoke(new Action(() => OnReceiveRoomInfo(roomId, host, maxPlayers)));
                 return;
             }
-            Form_Room roomForm = new Form_Room(roomId, host, maxPlayers,username);
-            roomForm.StartPosition = FormStartPosition.Manual;
-            roomForm.Location = this.Location;
-            roomForm.Show();
-            this.Hide();
-            roomForm.FormClosed += (s, args) => this.Show();
+
+            // Kiểm tra nếu Form_Room đã tồn tại
+            if (Form_Manager.RoomForm != null && !Form_Manager.RoomForm.IsDisposed)
+            {
+                Form_Manager.RoomForm.Focus(); 
+                return;
+            }
+
+            Form_Manager.HomeForm?.Hide();
+
+            Form_Manager.RoomForm = new Form_Room(roomId, host, maxPlayers, username);
+            Form_Manager.RoomForm.StartPosition = FormStartPosition.Manual;
+            Form_Manager.RoomForm.Location = Form_Manager.HomeForm?.Location ?? new Point(100, 100);
+            Form_Manager.RoomForm.Show();
+
+            // Khi Form_Room đóng
+            Form_Manager.RoomForm.FormClosed += (s, args) =>
+            {
+                Form_Manager.RoomForm = null; 
+                Form_Manager.HomeForm?.Show(); 
+            };
         }
+
+
         #endregion
 
     }

@@ -93,7 +93,6 @@ namespace Program
         {
             otpTimer.Stop();
 
-            // Quay lại Form Forget Password
             Form_Forget_Password forgetPasswordForm = new Form_Forget_Password();
             forgetPasswordForm.StartPosition = FormStartPosition.Manual;
             forgetPasswordForm.Location = this.Location;

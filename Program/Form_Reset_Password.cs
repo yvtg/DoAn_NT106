@@ -92,9 +92,15 @@ namespace Program
 
             if (status == "SUCCESS")
             {
-                //MessageBox.Show("Đặt lại mật khẩu thành công.");
+                foreach (Form form in Application.OpenForms)
+                {
+                    if (form is Form_Home)
+                    {
+                        form.Hide(); 
+                        break;
+                    }
+                }
 
-                // Quay về Form Login
                 Form_Login loginForm = new Form_Login();
                 loginForm.StartPosition = FormStartPosition.Manual;
                 loginForm.Location = this.Location;

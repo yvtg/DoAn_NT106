@@ -61,12 +61,12 @@
             // timeLabel
             // 
             this.timeLabel.AutoSize = true;
-            this.timeLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timeLabel.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.timeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.timeLabel.Location = new System.Drawing.Point(275, 76);
             this.timeLabel.Name = "timeLabel";
             this.timeLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.timeLabel.Size = new System.Drawing.Size(61, 23);
+            this.timeLabel.Size = new System.Drawing.Size(58, 23);
             this.timeLabel.TabIndex = 4;
             this.timeLabel.Text = "Time";
             // 
@@ -81,7 +81,7 @@
             this.sendButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.sendButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
             this.sendButton.Location = new System.Drawing.Point(771, 551);
-            this.sendButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.sendButton.Margin = new System.Windows.Forms.Padding(4);
             this.sendButton.Name = "sendButton";
             this.sendButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.sendButton.Size = new System.Drawing.Size(293, 54);
@@ -131,14 +131,14 @@
             // wordLabel
             // 
             this.wordLabel.AutoSize = true;
-            this.wordLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.wordLabel.Font = new System.Drawing.Font("Cambria", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.wordLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.wordLabel.Location = new System.Drawing.Point(275, 130);
             this.wordLabel.Name = "wordLabel";
             this.wordLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.wordLabel.Size = new System.Drawing.Size(118, 23);
+            this.wordLabel.Size = new System.Drawing.Size(115, 23);
             this.wordLabel.TabIndex = 31;
-            this.wordLabel.Text = "Key Word:";
+            this.wordLabel.Text = "KEY WORD:";
             // 
             // startButton
             // 
@@ -151,7 +151,7 @@
             this.startButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.startButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
             this.startButton.Location = new System.Drawing.Point(11, 551);
-            this.startButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.startButton.Margin = new System.Windows.Forms.Padding(4);
             this.startButton.Name = "startButton";
             this.startButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.startButton.Size = new System.Drawing.Size(212, 54);
@@ -186,7 +186,7 @@
             this.chooseColorBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.chooseColorBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
             this.chooseColorBtn.Location = new System.Drawing.Point(468, 6);
-            this.chooseColorBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chooseColorBtn.Margin = new System.Windows.Forms.Padding(4);
             this.chooseColorBtn.Name = "chooseColorBtn";
             this.chooseColorBtn.PrimaryColor = System.Drawing.Color.Black;
             this.chooseColorBtn.Size = new System.Drawing.Size(55, 50);
@@ -205,7 +205,7 @@
             this.sizeTrackBar.FillBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.sizeTrackBar.JumpToMouse = false;
             this.sizeTrackBar.Location = new System.Drawing.Point(164, 18);
-            this.sizeTrackBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.sizeTrackBar.Margin = new System.Windows.Forms.Padding(4);
             this.sizeTrackBar.Maximum = 10;
             this.sizeTrackBar.Minimum = 0;
             this.sizeTrackBar.MinimumSize = new System.Drawing.Size(63, 27);
@@ -277,7 +277,7 @@
             this.userListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.userListView.HideSelection = false;
             this.userListView.Location = new System.Drawing.Point(11, 177);
-            this.userListView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.userListView.Margin = new System.Windows.Forms.Padding(4);
             this.userListView.Name = "userListView";
             this.userListView.Size = new System.Drawing.Size(212, 362);
             this.userListView.TabIndex = 38;
@@ -306,7 +306,7 @@
             this.roomForm.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.roomForm.Image = null;
             this.roomForm.Location = new System.Drawing.Point(0, 0);
-            this.roomForm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.roomForm.Margin = new System.Windows.Forms.Padding(4);
             this.roomForm.Name = "roomForm";
             this.roomForm.Size = new System.Drawing.Size(1080, 40);
             this.roomForm.TabIndex = 20;
@@ -326,7 +326,7 @@
             this.leaveBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.leaveBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
             this.leaveBtn.Location = new System.Drawing.Point(927, 57);
-            this.leaveBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.leaveBtn.Margin = new System.Windows.Forms.Padding(4);
             this.leaveBtn.Name = "leaveBtn";
             this.leaveBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.leaveBtn.Size = new System.Drawing.Size(139, 66);
@@ -353,7 +353,7 @@
             this.flowLayoutPanel.AutoScroll = true;
             this.flowLayoutPanel.Font = new System.Drawing.Font("Cambria", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.flowLayoutPanel.Location = new System.Drawing.Point(769, 130);
-            this.flowLayoutPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flowLayoutPanel.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
             this.flowLayoutPanel.Size = new System.Drawing.Size(296, 415);
             this.flowLayoutPanel.TabIndex = 40;
@@ -380,8 +380,8 @@
             this.timeProgressBar.EdgeColor = System.Drawing.Color.White;
             this.timeProgressBar.ForeColor = System.Drawing.Color.Black;
             this.timeProgressBar.HatchType = System.Drawing.Drawing2D.HatchStyle.DarkUpwardDiagonal;
-            this.timeProgressBar.Location = new System.Drawing.Point(361, 62);
-            this.timeProgressBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.timeProgressBar.Location = new System.Drawing.Point(379, 62);
+            this.timeProgressBar.Margin = new System.Windows.Forms.Padding(4);
             this.timeProgressBar.Maximum = 100;
             this.timeProgressBar.Name = "timeProgressBar";
             this.timeProgressBar.PercentageText = "%";
@@ -393,7 +393,7 @@
             this.timeProgressBar.ProgressLineColorB = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
             this.timeProgressBar.ShowEdge = false;
             this.timeProgressBar.ShowPercentage = false;
-            this.timeProgressBar.Size = new System.Drawing.Size(381, 37);
+            this.timeProgressBar.Size = new System.Drawing.Size(363, 37);
             this.timeProgressBar.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.timeProgressBar.TabIndex = 43;
             this.timeProgressBar.Text = "ribbonProgressBarCenter1";
@@ -408,7 +408,7 @@
             this.roundComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.roundComboBox.ItemHeight = 30;
             this.roundComboBox.Location = new System.Drawing.Point(860, 57);
-            this.roundComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.roundComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.roundComboBox.Name = "roundComboBox";
             this.roundComboBox.Size = new System.Drawing.Size(57, 36);
             this.roundComboBox.TabIndex = 44;

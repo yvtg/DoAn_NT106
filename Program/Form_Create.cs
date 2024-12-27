@@ -30,7 +30,6 @@ namespace Program
             CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers}");
             client.SendPacket(createRoomPacket);
 
-            //đóng form create sau khi tạo phòng
             this.Close();
 
         }
