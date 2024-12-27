@@ -54,7 +54,7 @@ namespace Program
         private int SelectRound;
 
         private bool gameStart = false;
-        Dictionary<string, (int score, int textcore)> playerScores = new Dictionary<string, (int, int)>();
+        Dictionary<string, (string name, int score, int textcore)> playerScores = new Dictionary<string, (string, int, int)>();
         private int userScore = 0;
 
         private int roundTime; // Thời gian của mỗi vòng chơi (tính bằng giây)
@@ -190,9 +190,19 @@ namespace Program
             if (roundTime <= 0)
             {
                 roundTimer.Stop();
-                if (currentRound<SelectRound)
+                // Hiển thị thông báo kết thúc vòng
+                if (timeLabel.InvokeRequired)
+                {
+                    timeLabel.Invoke(new Action(() =>
+                    {
+                        ShowChatMessage("Vòng chơi kết thúc! Các bạn chưa đoán được từ khóa, hãy bắt đầu một vòng chơi mới.");
+                    }));
+                }
+                else
+                {
                     ShowChatMessage("Vòng chơi kết thúc! Các bạn chưa đoán được từ khóa, hãy bắt đầu một vòng chơi mới.");
-                while (currentRound<SelectRound)
+                }
+                if (currentRound<SelectRound)
                 {
 
                     if (username == host)
@@ -200,23 +210,25 @@ namespace Program
                         currentRound++;
                         StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
                         client.SendPacket(startPacket);
-                    }
-
-                    timeLabel.Text = $"Time: {roundTime}";
-                    timeProgressBar.Value = 90 - roundTime;
-                    wordLabel.Text = "key word: ";
-
-                    sendButton.Enabled = true;
-                    ClearPictureBox();
-                    pictureBox1.Enabled = true;
-
-                    if (currentRound==SelectRound && username==host)
+                    }   
+                }
+                else
+                {
+                    if ( username == host)
                     {
                         startButton.Enabled = true;
                         roundComboBox.Show();
                         roundLabel.Text = "round: ";
                     }
+                    ShowMessage("Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết");
                 }
+                timeLabel.Text = $"Time: {roundTime}";
+                timeProgressBar.Value = 90 - roundTime;
+                wordLabel.Text = "key word: ";
+
+                sendButton.Enabled = true;
+                ClearPictureBox();
+                pictureBox1.Enabled = true;
             }
         }
         #endregion
@@ -445,12 +457,12 @@ namespace Program
                         if (!playerScores.ContainsKey(username))
                         {
                             // Nếu người chơi chưa có trong danh sách, thêm vào với điểm khởi tạo
-                            playerScores[username] = (score: Score, textcore: 0);
+                            playerScores[username] = (name: username, score: Score, textcore: 0);
                         }
                         // Nếu người chơi đã có trong danh sách, cập nhật điểm
                         if (playerScores.ContainsKey(username))
                         {
-                            playerScores[username] = (score: Score, textcore: playerScores[username].textcore);  // Cập nhật lại điểm Score
+                            playerScores[username] = (name: username, score: Score, textcore: playerScores[username].textcore);  // Cập nhật lại điểm Score
                         }
                         // Lấy thông tin hiện tại của người chơi
                         var playerData = playerScores[username];
@@ -686,7 +698,7 @@ namespace Program
         }
         public void ShowMessage(string messsage)
         {
-            Form_Message formmessage = new Form_Message(username, messsage, currentRound, userScore);
+            Form_Message formmessage = new Form_Message(username, messsage, currentRound, userScore, playerScores);
             formmessage.StartPosition = FormStartPosition.Manual;
             int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
             int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;

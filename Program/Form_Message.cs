@@ -17,7 +17,8 @@ namespace Program
         public int round;
         string username;
         int score;
-        public Form_Message(string username, string message, int round, int score)
+        Dictionary<string, (string name, int score, int textcore)> playerScores = new Dictionary<string, (string, int, int)>();
+        public Form_Message(string username, string message, int round, int score, Dictionary<string, (string name, int score, int textcore)> playerScores)
         {
             InitializeComponent();
             this.message = message;
@@ -25,6 +26,7 @@ namespace Program
             this.round = round;
             this.username = username;
             this.score = score;
+            this.playerScores = playerScores;
         }
 
         public Form_Message(string message)
@@ -36,9 +38,9 @@ namespace Program
 
         private void okBtn_Click(object sender, EventArgs e)
         {
-            if (round == 5)
+            if (message == "Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết")
             {
-                Form_End_Game formendgame = new Form_End_Game(username, score);
+                Form_End_Game formendgame = new Form_End_Game(username, score, playerScores);
                 formendgame.StartPosition = FormStartPosition.Manual;
                 int centerX = this.Location.X + (this.Width - formendgame.Width) / 2;
                 int centerY = this.Location.Y + (this.Height - formendgame.Height) / 2;
