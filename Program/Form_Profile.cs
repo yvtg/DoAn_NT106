@@ -19,6 +19,20 @@ namespace Program
         {
             InitializeComponent();
             this.client = Form_Input_ServerIP.client;
+            client.ServerDisconnected += () =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Close(); // Đóng form trên luồng UI
+                    }));
+                }
+                else
+                {
+                    this.Close();
+                }
+            };
             usernameTextbox.Text = username.username;
             maxscoreTextbox.Text = username.highestscore.ToString();
             countTextbox.Text = username.gamesplayed.ToString();

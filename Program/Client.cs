@@ -6,6 +6,7 @@ using System.Net;
 using System.Windows.Forms;
 using Models;
 using System.IO;
+using System.Threading;
 
 
 namespace Program
@@ -25,9 +26,9 @@ namespace Program
         public event Action<RoundUpdatePacket> RoundUpdateReceived; // round mới
         public event Action<DrawPacket> DrawPacketReceived; // nhận draw packet
         public event Action<ProfileResultPacket> ProfileReceived; // nhận thông tin profile
-
+        public event Action ServerDisconnected; // server ngắt kết nối
         public event Action<string> ResetPasswordResult;
-
+        CancellationTokenSource cancellationTokenSource;
 
         public bool Connect(string serverIP, int port)
         {
@@ -36,7 +37,15 @@ namespace Program
                 IPAddress ipServer = IPAddress.Parse(serverIP);
                 IPEndPoint ipEP = new IPEndPoint(ipServer, port); 
                 tcpClient.Connect(ipEP);
-                Task.Run(() => ReceiveData());
+                cancellationTokenSource = new CancellationTokenSource();
+                var token = cancellationTokenSource.Token;
+                Task.Run(() =>
+                {
+                    while (!token.IsCancellationRequested)
+                    {
+                        ReceiveData();
+                    }
+                }, token);
                 return true;
             }
             catch (Exception ex)
@@ -44,6 +53,14 @@ namespace Program
                 ShowMessage("Lỗi khi kết nối: " + ex.Message);
                 return false;
             }
+        }
+
+        public void Close()
+        {
+            cancellationTokenSource?.Cancel();
+            cancellationTokenSource?.Dispose();
+            cancellationTokenSource = null;
+
         }
 
         // gửi draw packet ( dạng json )
@@ -85,6 +102,11 @@ namespace Program
             {
                 try
                 {
+                    if (sw==null)
+                    {
+                        ns = tcpClient.GetStream();
+                        sw = new StreamWriter(ns);
+                    }
                     string packetLog = $"Gửi Packet: {packet.Type};{packet.Payload}";
                     Console.WriteLine(packetLog);
                     sw.WriteLine(packet.Type + ";" + packet.Payload);
@@ -115,30 +137,27 @@ namespace Program
                 // Đọc dữ liệu trong khi kết nối vẫn còn mở
                 while (tcpClient.Connected)
                 {
-                    while (tcpClient.Available > 0)
+                    string receivedData = "";
+                    try
                     {
-                        string receivedData = "";
-                        try
+                        receivedData =  sr.ReadLine();
+                        Console.WriteLine(receivedData);
+                        if (!string.IsNullOrEmpty(receivedData))
                         {
-                            receivedData = sr.ReadLine();
-                            Console.WriteLine(receivedData);
-                            if (!string.IsNullOrEmpty(receivedData))
+                            if (receivedData.StartsWith("{") && receivedData.EndsWith("}"))
                             {
-                                if (receivedData.StartsWith("{") && receivedData.EndsWith("}"))
-                                {
-                                    HandleDrawPacket(receivedData);
-                                }
-                                else
-                                {
-                                    Packet packet = ParsePacket(receivedData);
-                                    AnalyzingPacket(packet);
-                                }
+                                HandleDrawPacket(receivedData);
+                            }
+                            else
+                            {
+                                Packet packet = ParsePacket(receivedData);
+                                AnalyzingPacket(packet);
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
                     }
                 }
             }
@@ -147,9 +166,6 @@ namespace Program
                 ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
             }
         }
-
-
-
 
         private Packet ParsePacket(string msg)
         {
@@ -189,6 +205,8 @@ namespace Program
                         return new GuessPacket(remainingMsg);
                     case PacketType.PROFILE_RESULT:
                         return new ProfileResultPacket(remainingMsg);
+                    case PacketType.DISCONNECT:
+                        return new DisconnectPacket(remainingMsg);
                     default:
                         HandleDrawPacket(msg);
                         break;
@@ -312,13 +330,15 @@ namespace Program
                     string guess = guessPacket.GuessMessage;
                     ReceiveMessage?.Invoke(roomId, username, guess);
                     break;
-                case PacketType.GUESS_RESULT:
-                    break;
-                case PacketType.LEADER_BOARD_INFO:
-                    break;
                 case PacketType.PROFILE_RESULT:
                     ProfileResultPacket profileResult = (ProfileResultPacket)packet;
                     ProfileReceived?.Invoke(profileResult);
+                    break;
+                case PacketType.DISCONNECT:
+                    ShowMessage("Server đã đóng kết nối!");
+                    ServerDisconnected?.Invoke();
+                    tcpClient.Close();
+                    Application.Exit();
                     break;
                 default:
                     break;

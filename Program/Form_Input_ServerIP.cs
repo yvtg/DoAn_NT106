@@ -37,11 +37,9 @@ namespace Program
             {
                 if (!Connect(serverIP, port))
                 {
-                    MessageBox.Show("Không thể kết nối đến server. Vui lòng kiểm tra địa chỉ IP và cổng.");
                     return;
                 }
-
-                if (Connect(serverIP, port))
+                else
                 {
                     this.Hide();
                     Form_Login form_Login = new Form_Login();

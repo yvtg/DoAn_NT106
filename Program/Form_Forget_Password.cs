@@ -19,6 +19,20 @@ namespace Program
         {
             InitializeComponent();
             this.client = Program.Form_Input_ServerIP.client;
+            client.ServerDisconnected += () =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Close(); // Đóng form trên luồng UI
+                    }));
+                }
+                else
+                {
+                    this.Close();
+                }
+            };
             client.ResetPasswordResult += OnOTPRequestSuccessful;
         }
 

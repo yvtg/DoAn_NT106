@@ -20,7 +20,20 @@ namespace Program
             InitializeComponent();
             this.username = username;
             this.client = Form_Input_ServerIP.client;
-            client.ProfileReceived += OnProfileReceived;
+            client.ServerDisconnected += () =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Close(); // Đóng form trên luồng UI
+                    }));
+                }
+                else
+                {
+                    this.Close();
+                }
+            };
 
             // cập nhật điểm cao nhất, số lượt chơi của người chơi này
             ProfileUpdatePacket profileUpdatePacket = new ProfileUpdatePacket($"{username};{score}");

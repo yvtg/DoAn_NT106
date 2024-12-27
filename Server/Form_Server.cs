@@ -78,6 +78,8 @@ namespace Server
         private void stopBtn_Click(object sender, EventArgs e)
         {
             server.StopServer();
+            clientListView.Items.Clear();
+            roomListView.Items.Clear();
         }
 
         private void Form_Server_FormClosing(object sender, FormClosingEventArgs e)

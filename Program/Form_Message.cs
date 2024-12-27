@@ -24,6 +24,7 @@ namespace Program
             Message.Text = message;
             this.round = round;
             this.username = username;
+            this.score = score;
         }
 
         public Form_Message(string message)

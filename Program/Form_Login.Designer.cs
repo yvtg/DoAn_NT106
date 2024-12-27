@@ -78,7 +78,7 @@
             this.regBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.regBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
             this.regBtn.Location = new System.Drawing.Point(42, 351);
-            this.regBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.regBtn.Margin = new System.Windows.Forms.Padding(2);
             this.regBtn.Name = "regBtn";
             this.regBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.regBtn.Size = new System.Drawing.Size(114, 36);
@@ -100,7 +100,7 @@
             this.loginButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.loginButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
             this.loginButton.Location = new System.Drawing.Point(183, 351);
-            this.loginButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loginButton.Margin = new System.Windows.Forms.Padding(2);
             this.loginButton.Name = "loginButton";
             this.loginButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.loginButton.Size = new System.Drawing.Size(114, 36);
@@ -145,7 +145,7 @@
             this.passTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.passTextbox.Hint = "";
             this.passTextbox.Location = new System.Drawing.Point(116, 261);
-            this.passTextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.passTextbox.Margin = new System.Windows.Forms.Padding(2);
             this.passTextbox.MaxLength = 32767;
             this.passTextbox.Multiline = false;
             this.passTextbox.Name = "passTextbox";
@@ -173,7 +173,7 @@
             this.showPwCheckBox.Font = new System.Drawing.Font("Cooper Black", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showPwCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.showPwCheckBox.Location = new System.Drawing.Point(116, 310);
-            this.showPwCheckBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.showPwCheckBox.Margin = new System.Windows.Forms.Padding(2);
             this.showPwCheckBox.Name = "showPwCheckBox";
             this.showPwCheckBox.Size = new System.Drawing.Size(147, 20);
             this.showPwCheckBox.TabIndex = 13;
@@ -192,7 +192,7 @@
             this.lawBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.lawBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
             this.lawBtn.Location = new System.Drawing.Point(288, 59);
-            this.lawBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lawBtn.Margin = new System.Windows.Forms.Padding(2);
             this.lawBtn.Name = "lawBtn";
             this.lawBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
             this.lawBtn.Size = new System.Drawing.Size(43, 36);
@@ -269,7 +269,7 @@
             this.Controls.Add(this.usernameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Login";

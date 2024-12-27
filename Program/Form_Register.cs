@@ -22,6 +22,20 @@ namespace Program
             Client.RegisterSuccessful += OnRegisterSuccessful;
 
             this.client = Form_Input_ServerIP.client;
+            client.ServerDisconnected += () =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Close(); // Đóng form trên luồng UI
+                    }));
+                }
+                else
+                {
+                    this.Close();
+                }
+            };
             InitializeComponent();
         }
 

@@ -20,6 +20,20 @@ namespace Program
         {
             InitializeComponent();
             this.client = Form_Input_ServerIP.client;
+            client.ServerDisconnected += () =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Close(); // Đóng form trên luồng UI
+                    }));
+                }
+                else
+                {
+                    this.Close();
+                }
+            };
             client.LoginSuccessful += OnLoginSuccessful;
         }
 
@@ -114,6 +128,7 @@ namespace Program
         {
             DisconnectPacket disconnectPacket = new DisconnectPacket("");
             client.SendPacket(disconnectPacket);
+            client.Close();
         }
 
         private void forgetLabel_Click(object sender, EventArgs e)

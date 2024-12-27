@@ -23,6 +23,20 @@ namespace Program
             InitializeComponent();
             this.email = email;
             client = Form_Input_ServerIP.client;
+            client.ServerDisconnected += () =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Close(); // Đóng form trên luồng UI
+                    }));
+                }
+                else
+                {
+                    this.Close();
+                }
+            };
 
             // Đăng ký sự kiện khi nhận kết quả đặt lại mật khẩu
             client.ResetPasswordResult += OnPasswordResetSuccessful;

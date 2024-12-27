@@ -36,69 +36,7 @@ namespace Server
         public event Action UpdateRoomList; // cập nhật danh sách phòng trên UI
         public event Action UpdateClientList; // cập nhật danh sách client trên UI
 
-        #region fotgot password
-        private void HandleResetPassword(Models.User client, ResetPasswordPacket packet)
-        {
-            string email = packet.Email;
-            string newPassword = packet.NewPassword;
-
-            if (db.UpdatePassword(email, newPassword))
-            {
-                sendPacket(client, new ResetPasswordResultPacket("SUCCESS"));
-            }
-            else
-            {
-                sendPacket(client, new ResetPasswordResultPacket("FAIL"));
-            }
-        }
-
-        private void HandleResetPasswordRequest(Models.User client, ResetPasswordRequestPacket packet)
-        {
-            string email = packet.Email.Trim();
-
-            // tìm kiếm email trong database
-            var user = db.GetAllDocuments<BsonDocument>("User")
-                         .FirstOrDefault(u => u["Email"].AsString == email);
-
-            if (user != null)
-            {
-                try
-                {
-                    // tạo mã OTP
-                    string otp = ForgetPassword.GenerateOTP();
-                    otpStorage[email] = otp; // Lưu OTP
-
-                    // gửi email
-                    ForgetPassword.SendEmail(email, otp);
-                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_SENT")); // Gửi OTP thành công
-                }
-                catch (Exception)
-                {
-                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_FAIL")); // Lỗi khi gửi email
-                }
-            }
-            else
-            {
-                sendPacket(client, new ResetPasswordResultPacket("NOT_FOUND")); // Không tìm thấy email
-            }
-        }
-
-        private void HandleVerifyOTP(Models.User client, VerifyOTPRequestPacket packet)
-        {
-            string email = packet.Email;
-            string otp = packet.OTP;
-
-            if (otpStorage.TryGetValue(email, out var storedOtp) && storedOtp == otp)
-            {
-                otpStorage.Remove(email); // Xóa OTP sau khi sử dụng
-                sendPacket(client, new ResetPasswordResultPacket("OTP_VERIFIED"));
-            }
-            else
-            {
-                sendPacket(client, new ResetPasswordResultPacket("OTP_FAIL"));
-            }
-        }
-        #endregion
+        
 
         #region Connect
         public void StartServer()
@@ -112,47 +50,29 @@ namespace Server
 
         private async Task InitializeServer()
         {
-            try
+            EndPoint ipEP = new IPEndPoint(IPAddress.Any, 8080);
+
+            // Khởi tạo server
+            serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            serverSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+            serverSocket.Bind(ipEP);
+            serverSocket.Listen(10);
+
+            UpdateLog?.Invoke($"Server đã khởi động trên {ipEP}. Đang chờ kết nối...");
+
+            while (isRunning)
             {
-                EndPoint ipEP = new IPEndPoint(IPAddress.Any, 8080);
-
-                // Khởi tạo server
-                serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                serverSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                serverSocket.Bind(ipEP);
-                serverSocket.Listen(10);
-
-                UpdateLog?.Invoke($"Server đã khởi động trên {ipEP}. Đang chờ kết nối...");
-
-                while (isRunning)
+                // Kiểm tra trạng thái của serverSocket
+                if (serverSocket == null || !serverSocket.IsBound)
                 {
-                    try
-                    {
-                        // Kiểm tra trạng thái của serverSocket
-                        if (serverSocket == null || !serverSocket.IsBound)
-                        {
-                            UpdateLog?.Invoke("Socket server đã bị đóng.");
-                            break;
-                        }
-
-                        // Chờ kết nối từ client
-                        Socket clientSocket = await serverSocket.AcceptAsync();
-                        TcpClient tcpClient = new TcpClient { Client = clientSocket };
-                        HandleClientConnection(tcpClient);
-                    }
-                    catch (Exception ex)
-                    {
-                        UpdateLog?.Invoke($"Lỗi khi chấp nhận kết nối: {ex.Message}");
-                    }
+                    UpdateLog?.Invoke("Socket server đã bị đóng.");
+                    break;
                 }
-            }
-            catch (Exception ex)
-            {
-                UpdateLog?.Invoke("Lỗi khi khởi tạo server: " + ex.Message);
-            }
-            finally
-            {
-                StopServer();
+
+                // Chờ kết nối từ client
+                Socket clientSocket = await serverSocket.AcceptAsync();
+                TcpClient tcpClient = new TcpClient { Client = clientSocket };
+                HandleClientConnection(tcpClient);
             }
         }
 
@@ -165,11 +85,6 @@ namespace Server
                 clients.Add(client);
                 UpdateClientList?.Invoke();
             }
-            else
-            {
-                UpdateLog?.Invoke("Failed to create client object.");
-                return;
-            }
             UpdateLog?.Invoke($"Đã kết nối với {tcpClient.Client.RemoteEndPoint}");
 
             Task.Run( () =>
@@ -178,28 +93,34 @@ namespace Server
                 {
                     while (client.IsConnected)
                     {
-                        string msg = client.sr.ReadLine();
+                        if (serverSocket == null || !serverSocket.IsBound)
+                        {
+                            UpdateLog?.Invoke("Socket server đã bị đóng.");
+                            break;
+                        }
+
+                        string msg = client.sr.ReadLine(); // Đọc dữ liệu từ client
 
                         if (!string.IsNullOrEmpty(msg))
                         {
                             UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
-                            Console.WriteLine($"{tcpClient.Client.RemoteEndPoint}: {msg}");
+
                             if (msg.StartsWith("{") && msg.EndsWith("}"))
                             {
-                                HandleDrawPacket(client, msg);
+                                HandleDrawPacket(client, msg); // Xử lý gói tin vẽ
                             }
                             else
                             {
-                                Packet packet = ParsePacket(client, msg);
-                                analyzingPacket(client, packet);
+                                Packet packet = ParsePacket(client, msg); // Phân tích gói tin
+                                analyzingPacket(client, packet);          // Xử lý gói tin
                             }
                         }
                         else break;
                     }
                 }
-                catch (Exception ex)
+                catch (OperationCanceledException)
                 {
-                    UpdateLog?.Invoke($"Lỗi khi xử lý client {tcpClient.Client.RemoteEndPoint}: {ex.Message}");
+                    // Task bị hủy - không cần làm gì thêm
                 }
                 finally
                 {
@@ -208,7 +129,6 @@ namespace Server
                     {
                         clients.Remove(client);
                         client.Stop(true);
-                        Console.WriteLine("Client đã ngắt kết nối. ở xử lý client", client.tcpClient.Client.RemoteEndPoint);
                         UpdateClientList?.Invoke();
                     }
                     UpdateLog?.Invoke($"Client đã ngắt kết nối: {client.tcpClient.Client.RemoteEndPoint}");
@@ -224,8 +144,11 @@ namespace Server
             // Đóng tất cả kết nối client
             foreach (var client in clients.ToArray())
             {
+                // gửi thông báo đóng kết nối đến client
+                sendPacket(client, new DisconnectPacket(""));
                 client.Stop();
-                Console.WriteLine("Client đã ngắt kết nối. ở stop server", client.tcpClient.Client.RemoteEndPoint);
+                client.sr.Close();
+                client.sw.Close();
             }
 
             // Đóng socket server
@@ -272,7 +195,8 @@ namespace Server
                 // Xử lý client bị mất kết nối
                 clients.Remove(client);
                 client.Stop();
-                Console.WriteLine("Client đã ngắt kết nối. ở sendPacket", client.tcpClient.Client.RemoteEndPoint);
+                client.sr.Close();
+                client.sw.Close();
                 UpdateClientList?.Invoke();
             }
         }
@@ -292,7 +216,8 @@ namespace Server
                 // Xử lý client bị mất kết nối
                 clients.Remove(client);
                 client.Stop();
-                Console.WriteLine("Client đã ngắt kết nối. ở sendPacket", client.tcpClient.Client.RemoteEndPoint);
+                client.sr.Close();
+                client.sw.Close();
                 UpdateClientList?.Invoke();
             }
         }
@@ -596,8 +521,6 @@ namespace Server
                         Console.WriteLine($"Phòng {roomId} không tồn tại.");
                     }
                     break;
-                case PacketType.DESCRIBE:
-                    break;
                 case PacketType.GUESS:
                     GuessPacket guessPacket = (GuessPacket)packet;
                     roomId = guessPacket.RoomId;
@@ -621,16 +544,31 @@ namespace Server
                         OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};GUESS");
                         BroadcastPacket(room, otherInfo);
                     }
-
-
                     break;
                 case PacketType.DISCONNECT:
                     UpdateLog?.Invoke($"Client {clientIP} đã ngắt kết nối.");
+
                     if (client.IsConnected)
                     {
-                        client.Stop();
-                        clients.Remove(client);
-                        UpdateClientList?.Invoke();
+                        try
+                        {
+                            // Dừng client và giải phóng tài nguyên
+                            client.Stop();
+                        }
+                        catch (Exception ex)
+                        {
+                            UpdateLog?.Invoke($"Lỗi khi ngắt kết nối client {clientIP}: {ex.Message}");
+                        }
+                        finally
+                        {
+                            // Loại bỏ client khỏi danh sách
+                            clients.Remove(client);
+                            UpdateClientList?.Invoke(); // Cập nhật danh sách client
+                        }
+                    }
+                    else
+                    {
+                        UpdateLog?.Invoke($"Client {clientIP} đã ngắt kết nối trước đó.");
                     }
                     break;
                 case PacketType.PROFILE_REQUEST:
@@ -676,5 +614,68 @@ namespace Server
         }
         #endregion
 
+        #region fotgot password
+        private void HandleResetPassword(Models.User client, ResetPasswordPacket packet)
+        {
+            string email = packet.Email;
+            string newPassword = packet.NewPassword;
+
+            if (db.UpdatePassword(email, newPassword))
+            {
+                sendPacket(client, new ResetPasswordResultPacket("SUCCESS"));
+            }
+            else
+            {
+                sendPacket(client, new ResetPasswordResultPacket("FAIL"));
+            }
+        }
+
+        private void HandleResetPasswordRequest(Models.User client, ResetPasswordRequestPacket packet)
+        {
+            string email = packet.Email.Trim();
+
+            // tìm kiếm email trong database
+            var user = db.GetAllDocuments<BsonDocument>("User")
+                         .FirstOrDefault(u => u["Email"].AsString == email);
+
+            if (user != null)
+            {
+                try
+                {
+                    // tạo mã OTP
+                    string otp = ForgetPassword.GenerateOTP();
+                    otpStorage[email] = otp; // Lưu OTP
+
+                    // gửi email
+                    ForgetPassword.SendEmail(email, otp);
+                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_SENT")); // Gửi OTP thành công
+                }
+                catch (Exception)
+                {
+                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_FAIL")); // Lỗi khi gửi email
+                }
+            }
+            else
+            {
+                sendPacket(client, new ResetPasswordResultPacket("NOT_FOUND")); // Không tìm thấy email
+            }
+        }
+
+        private void HandleVerifyOTP(Models.User client, VerifyOTPRequestPacket packet)
+        {
+            string email = packet.Email;
+            string otp = packet.OTP;
+
+            if (otpStorage.TryGetValue(email, out var storedOtp) && storedOtp == otp)
+            {
+                otpStorage.Remove(email); // Xóa OTP sau khi sử dụng
+                sendPacket(client, new ResetPasswordResultPacket("OTP_VERIFIED"));
+            }
+            else
+            {
+                sendPacket(client, new ResetPasswordResultPacket("OTP_FAIL"));
+            }
+        }
+        #endregion
     }
 }

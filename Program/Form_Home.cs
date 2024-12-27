@@ -22,6 +22,21 @@ namespace Program
             InitializeComponent();
             this.username = username;
             this.client = Form_Input_ServerIP.client;
+            client.ServerDisconnected += () =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Close(); // Đóng form trên luồng UI
+                    }));
+                }
+                else
+                {
+                    this.Close();
+                }
+            };
+
             client.ReceiveRoomInfo += OnReceiveRoomInfo;
             client.ProfileReceived += OnProfileReceived;
         }
@@ -39,7 +54,7 @@ namespace Program
             LogoutPacket logoutPacket = new LogoutPacket(username);
             client.SendPacket(logoutPacket);
             this.Close();
-        
+            Application.Exit();
         }
         private void createButton_Click(object sender, EventArgs e)
         {
@@ -61,13 +76,13 @@ namespace Program
                 return;
             }
 
+            this.Hide();
             // Kiểm tra nếu Form_Room đã tồn tại
             if (Form_Manager.RoomForm != null && !Form_Manager.RoomForm.IsDisposed)
             {
                 Form_Manager.RoomForm.Focus(); 
                 return;
             }
-
             Form_Manager.HomeForm?.Hide();
 
             Form_Manager.RoomForm = new Form_Room(roomId, host, maxPlayers, username);
@@ -80,6 +95,12 @@ namespace Program
             {
                 Form_Manager.RoomForm = null; 
                 Form_Manager.HomeForm?.Show(); 
+            };
+
+            Form_Manager.RoomForm.FormClosing += (s, args) =>
+            {
+                if (this != null && !this.IsDisposed)
+                    this.Show();
             };
         }
         private void OnProfileReceived(ProfileResultPacket packet)

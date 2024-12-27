@@ -28,7 +28,7 @@ namespace Models
             this.tcpClient = tcpClient;
             NetworkStream stream = tcpClient.GetStream();
             this.sr = new StreamReader(stream);
-            this.sw = new StreamWriter(stream);
+            this.sw = new StreamWriter(stream) { AutoFlush = true };
         }
         public void SendPacket(Packet packet)
         {
