@@ -663,7 +663,7 @@ namespace Program
         {
             LeaveRoomPacket packet = new LeaveRoomPacket($"{roomId};{username}");
             client.SendPacket(packet);
-            this.Hide();
+            this.Close();
         }
         public void ShowMessage(string messsage)
         {

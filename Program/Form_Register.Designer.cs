@@ -244,7 +244,7 @@
             this.showPwCheckBox.EnabledUncheckedColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.showPwCheckBox.Font = new System.Drawing.Font("Cooper Black", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showPwCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.showPwCheckBox.Location = new System.Drawing.Point(168, 447);
+            this.showPwCheckBox.Location = new System.Drawing.Point(145, 443);
             this.showPwCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.showPwCheckBox.Name = "showPwCheckBox";
             this.showPwCheckBox.Size = new System.Drawing.Size(173, 20);

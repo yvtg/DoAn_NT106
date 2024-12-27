@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Reset_Password));
             this.resetpassword = new ReaLTaiizor.Forms.HopeForm();
             this.showPwCheckBox = new ReaLTaiizor.Controls.HopeCheckBox();
             this.resetButton = new ReaLTaiizor.Controls.HopeButton();
@@ -36,6 +37,8 @@
             this.passwordTextbox = new ReaLTaiizor.Controls.HopeTextBox();
             this.confirmpassLabel = new System.Windows.Forms.Label();
             this.passwordLabel = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // resetpassword
@@ -70,7 +73,7 @@
             this.showPwCheckBox.EnabledUncheckedColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(158)))), ((int)(((byte)(161)))));
             this.showPwCheckBox.Font = new System.Drawing.Font("Cooper Black", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showPwCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.showPwCheckBox.Location = new System.Drawing.Point(138, 340);
+            this.showPwCheckBox.Location = new System.Drawing.Point(138, 382);
             this.showPwCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.showPwCheckBox.Name = "showPwCheckBox";
             this.showPwCheckBox.Size = new System.Drawing.Size(173, 20);
@@ -134,7 +137,7 @@
             this.confirmpassTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.confirmpassTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.confirmpassTextbox.Hint = "";
-            this.confirmpassTextbox.Location = new System.Drawing.Point(138, 269);
+            this.confirmpassTextbox.Location = new System.Drawing.Point(138, 317);
             this.confirmpassTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.confirmpassTextbox.MaxLength = 32767;
             this.confirmpassTextbox.Multiline = false;
@@ -158,7 +161,7 @@
             this.passwordTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passwordTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.passwordTextbox.Hint = "";
-            this.passwordTextbox.Location = new System.Drawing.Point(138, 184);
+            this.passwordTextbox.Location = new System.Drawing.Point(138, 239);
             this.passwordTextbox.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
             this.passwordTextbox.MaxLength = 32767;
             this.passwordTextbox.Multiline = false;
@@ -178,7 +181,7 @@
             this.confirmpassLabel.AutoSize = true;
             this.confirmpassLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.confirmpassLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.confirmpassLabel.Location = new System.Drawing.Point(22, 268);
+            this.confirmpassLabel.Location = new System.Drawing.Point(20, 311);
             this.confirmpassLabel.Name = "confirmpassLabel";
             this.confirmpassLabel.Size = new System.Drawing.Size(111, 46);
             this.confirmpassLabel.TabIndex = 75;
@@ -189,11 +192,24 @@
             this.passwordLabel.AutoSize = true;
             this.passwordLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passwordLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.passwordLabel.Location = new System.Drawing.Point(22, 193);
+            this.passwordLabel.Location = new System.Drawing.Point(24, 256);
             this.passwordLabel.Name = "passwordLabel";
             this.passwordLabel.Size = new System.Drawing.Size(111, 23);
             this.passwordLabel.TabIndex = 74;
             this.passwordLabel.Text = "Password";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox1.Image = global::Program.Properties.Resources.logo;
+            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(14, 64);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(425, 151);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 82;
+            this.pictureBox1.TabStop = false;
             // 
             // Form_Reset_Password
             // 
@@ -201,6 +217,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(464, 558);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.resetpassword);
             this.Controls.Add(this.showPwCheckBox);
             this.Controls.Add(this.resetButton);
@@ -216,6 +233,7 @@
             this.Name = "Form_Reset_Password";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form_Reset_Password";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -231,5 +249,6 @@
         private ReaLTaiizor.Controls.HopeTextBox passwordTextbox;
         private System.Windows.Forms.Label confirmpassLabel;
         private System.Windows.Forms.Label passwordLabel;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
