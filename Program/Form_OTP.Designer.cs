@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_OTP));
             this.timerLabel = new System.Windows.Forms.Label();
             this.otpTextbox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -36,6 +37,8 @@
             this.confirmButton = new ReaLTaiizor.Controls.HopeButton();
             this.backButton = new ReaLTaiizor.Controls.HopeButton();
             this.otp = new ReaLTaiizor.Forms.HopeForm();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // timerLabel
@@ -43,7 +46,7 @@
             this.timerLabel.AutoSize = true;
             this.timerLabel.Font = new System.Drawing.Font("Times New Roman", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.timerLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.timerLabel.Location = new System.Drawing.Point(264, 135);
+            this.timerLabel.Location = new System.Drawing.Point(264, 242);
             this.timerLabel.Name = "timerLabel";
             this.timerLabel.Size = new System.Drawing.Size(49, 19);
             this.timerLabel.TabIndex = 75;
@@ -52,10 +55,10 @@
             // otpTextbox
             // 
             this.otpTextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.otpTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.otpTextbox.Location = new System.Drawing.Point(59, 257);
+            this.otpTextbox.Font = new System.Drawing.Font("Cambria", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.otpTextbox.Location = new System.Drawing.Point(235, 282);
             this.otpTextbox.Name = "otpTextbox";
-            this.otpTextbox.Size = new System.Drawing.Size(365, 31);
+            this.otpTextbox.Size = new System.Drawing.Size(171, 34);
             this.otpTextbox.TabIndex = 74;
             // 
             // label1
@@ -63,7 +66,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.label1.Location = new System.Drawing.Point(55, 206);
+            this.label1.Location = new System.Drawing.Point(39, 293);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(175, 23);
             this.label1.TabIndex = 73;
@@ -84,7 +87,7 @@
             this.confirmButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.confirmButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.confirmButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.confirmButton.Location = new System.Drawing.Point(149, 367);
+            this.confirmButton.Location = new System.Drawing.Point(151, 373);
             this.confirmButton.Margin = new System.Windows.Forms.Padding(4);
             this.confirmButton.Name = "confirmButton";
             this.confirmButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
@@ -107,7 +110,7 @@
             this.backButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.backButton.Location = new System.Drawing.Point(149, 447);
+            this.backButton.Location = new System.Drawing.Point(151, 447);
             this.backButton.Margin = new System.Windows.Forms.Padding(4);
             this.backButton.Name = "backButton";
             this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
@@ -138,12 +141,26 @@
             this.otp.Text = "OTP";
             this.otp.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox1.Image = global::Program.Properties.Resources.logo;
+            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(13, 76);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(425, 151);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 79;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form_OTP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(464, 558);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.timerLabel);
             this.Controls.Add(this.otpTextbox);
             this.Controls.Add(this.label1);
@@ -157,6 +174,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form_OTP";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_OTP_FormClosing);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,5 +189,6 @@
         private ReaLTaiizor.Controls.HopeButton confirmButton;
         private ReaLTaiizor.Controls.HopeButton backButton;
         private ReaLTaiizor.Forms.HopeForm otp;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

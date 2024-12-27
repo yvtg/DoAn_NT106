@@ -56,7 +56,7 @@ namespace Program
                 passTextbox.UseSystemPasswordChar = true; // Ẩn mật khẩu
             }
         }
-        
+
         private void OnLoginSuccessful()
         {
             if (this.InvokeRequired)
@@ -66,11 +66,22 @@ namespace Program
             }
 
             string username = usernameTextbox.Text;
-            Form_Home homeForm = new Form_Home(username);
-            homeForm.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            homeForm.Location = this.Location; // Đặt vị trí của Form_Home giống với Form_Background
-            homeForm.Show();
+
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form is Form_Home)
+                {
+                    form.Hide(); 
+                    break;
+                }
+            }
             this.Hide();
+
+            Form_Home homeForm = new Form_Home(username);
+            homeForm.StartPosition = FormStartPosition.Manual;
+            homeForm.Location = this.Location;
+            homeForm.Show();
+
             homeForm.FormClosed += (s, args) => this.Close();
         }
 
