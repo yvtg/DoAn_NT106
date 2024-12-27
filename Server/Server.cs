@@ -356,6 +356,10 @@ namespace Server
                         return new GuessPacket(remainingMsg);
                     case PacketType.DISCONNECT:
                         return new DisconnectPacket(remainingMsg);
+                    case PacketType.PROFILE_REQUEST:
+                        return new ProfileRequest(remainingMsg);
+                    case PacketType.PROFILE_UPDATE:
+                        return new ProfileUpdatePacket(remainingMsg);
                     default:
                         return null;
                 }
@@ -625,9 +629,34 @@ namespace Server
                     if (client.IsConnected)
                     {
                         client.Stop();
-                        Console.WriteLine("Client đã ngắt kết nối khi gửi disconnecr", client.tcpClient.Client.RemoteEndPoint);
                         clients.Remove(client);
                         UpdateClientList?.Invoke();
+                    }
+                    break;
+                case PacketType.PROFILE_REQUEST:
+                    ProfileRequest profileRequest = (ProfileRequest)packet;
+                    var profileData = db.GetProfileData(profileRequest.Username);
+
+                    // Gán dữ liệu vào các biến hoặc controls
+                    if (profileData != null)
+                    {
+                        ProfileResultPacket profileResultPacket = new ProfileResultPacket($"{profileData.username};{profileData.highestscore};{profileData.gamesplayed}");
+                        sendPacket(client, profileResultPacket);
+                    }
+                    break;
+                case PacketType.PROFILE_UPDATE:
+                    ProfileUpdatePacket profileUpdatePacket = (ProfileUpdatePacket)packet;
+                    username = profileUpdatePacket.username;
+                    int score = profileUpdatePacket.score;
+
+                    // Cập nhật dữ liệu vào database
+                    if (db.UpdateProfileData(username, score))
+                    {
+                        UpdateLog?.Invoke($"Cập nhật thông tin người dùng {username} thành công.");
+                    }
+                    else
+                    {
+                        UpdateLog?.Invoke($"Cập nhật thông tin người dùng {username} thất bại.");
                     }
                     break;
                 default:

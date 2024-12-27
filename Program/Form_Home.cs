@@ -23,18 +23,15 @@ namespace Program
             this.username = username;
             this.client = Form_Input_ServerIP.client;
             client.ReceiveRoomInfo += OnReceiveRoomInfo;
+            client.ProfileReceived += OnProfileReceived;
         }
+
         #region ĐIỀU HƯỚNG
 
         private void profileButton_Click_1(object sender, EventArgs e)
         {
-            this.Hide();
-            Form_Profile profileform = new Form_Profile(username);
-            profileform.StartPosition = FormStartPosition.Manual;
-            profileform.Location = this.Location;
-            profileform.ShowDialog();
-            this.Show();
-            FormClosed += (s, args) => this.Close();
+            ProfileRequest profile = new ProfileRequest(username);
+            client.SendPacket(profile);
         }
 
         private void logoutBtn_Click_1(object sender, EventArgs e)
@@ -85,8 +82,25 @@ namespace Program
                 Form_Manager.HomeForm?.Show(); 
             };
         }
+        private void OnProfileReceived(ProfileResultPacket packet)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => OnProfileReceived(packet)));
+                return;
+            }
+            ProfileData data = new ProfileData();
+            data.username = packet.data1.username;
+            data.highestscore = packet.data1.highestscore;
+            data.gamesplayed = packet.data1.gamesplayed;
 
-
+            Form_Profile profileform = new Form_Profile(data);
+            profileform.StartPosition = FormStartPosition.Manual;
+            profileform.Location = this.Location;
+            this.Hide();
+            profileform.ShowDialog();
+            this.Show();
+        }
         #endregion
 
     }

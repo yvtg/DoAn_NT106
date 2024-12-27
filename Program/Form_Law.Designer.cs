@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Law));
             this.lawRichtextbox = new System.Windows.Forms.RichTextBox();
             this.backButton = new ReaLTaiizor.Controls.HopeButton();
             this.law = new ReaLTaiizor.Forms.HopeForm();
@@ -38,13 +39,13 @@
             this.lawRichtextbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.lawRichtextbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lawRichtextbox.Font = new System.Drawing.Font("Cambria", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lawRichtextbox.Location = new System.Drawing.Point(3, 78);
-            this.lawRichtextbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.lawRichtextbox.Location = new System.Drawing.Point(2, 63);
+            this.lawRichtextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lawRichtextbox.Name = "lawRichtextbox";
             this.lawRichtextbox.ReadOnly = true;
-            this.lawRichtextbox.Size = new System.Drawing.Size(463, 418);
+            this.lawRichtextbox.Size = new System.Drawing.Size(347, 340);
             this.lawRichtextbox.TabIndex = 0;
-            this.lawRichtextbox.Text = "";
+            this.lawRichtextbox.Text = resources.GetString("lawRichtextbox.Text");
             // 
             // backButton
             // 
@@ -56,11 +57,10 @@
             this.backButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.backButton.Location = new System.Drawing.Point(159, 486);
-            this.backButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.backButton.Location = new System.Drawing.Point(119, 395);
             this.backButton.Name = "backButton";
             this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.backButton.Size = new System.Drawing.Size(139, 44);
+            this.backButton.Size = new System.Drawing.Size(104, 36);
             this.backButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.backButton.TabIndex = 25;
             this.backButton.Text = "Back";
@@ -80,25 +80,24 @@
             this.law.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.law.Image = null;
             this.law.Location = new System.Drawing.Point(0, 0);
-            this.law.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.law.Name = "law";
-            this.law.Size = new System.Drawing.Size(464, 40);
+            this.law.Size = new System.Drawing.Size(348, 40);
             this.law.TabIndex = 28;
             this.law.Text = "Law";
             this.law.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             // 
             // Form_Law
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
-            this.ClientSize = new System.Drawing.Size(464, 558);
+            this.ClientSize = new System.Drawing.Size(348, 453);
             this.Controls.Add(this.law);
             this.Controls.Add(this.backButton);
             this.Controls.Add(this.lawRichtextbox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MaximumSize = new System.Drawing.Size(2560, 1270);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Law";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

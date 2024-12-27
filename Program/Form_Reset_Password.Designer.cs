@@ -53,9 +53,8 @@
             this.resetpassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.resetpassword.Image = null;
             this.resetpassword.Location = new System.Drawing.Point(0, 0);
-            this.resetpassword.Margin = new System.Windows.Forms.Padding(4);
             this.resetpassword.Name = "resetpassword";
-            this.resetpassword.Size = new System.Drawing.Size(464, 40);
+            this.resetpassword.Size = new System.Drawing.Size(348, 40);
             this.resetpassword.TabIndex = 81;
             this.resetpassword.Text = "Reset Password";
             this.resetpassword.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
@@ -73,10 +72,11 @@
             this.showPwCheckBox.EnabledUncheckedColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(158)))), ((int)(((byte)(161)))));
             this.showPwCheckBox.Font = new System.Drawing.Font("Cooper Black", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showPwCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.showPwCheckBox.Location = new System.Drawing.Point(104, 276);
             this.showPwCheckBox.Location = new System.Drawing.Point(138, 382);
             this.showPwCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.showPwCheckBox.Name = "showPwCheckBox";
-            this.showPwCheckBox.Size = new System.Drawing.Size(173, 20);
+            this.showPwCheckBox.Size = new System.Drawing.Size(147, 20);
             this.showPwCheckBox.TabIndex = 80;
             this.showPwCheckBox.Text = "Show Password";
             this.showPwCheckBox.UseVisualStyleBackColor = true;
@@ -93,11 +93,10 @@
             this.resetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.resetButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.resetButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.resetButton.Location = new System.Drawing.Point(266, 447);
-            this.resetButton.Margin = new System.Windows.Forms.Padding(4);
+            this.resetButton.Location = new System.Drawing.Point(200, 363);
             this.resetButton.Name = "resetButton";
             this.resetButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.resetButton.Size = new System.Drawing.Size(139, 44);
+            this.resetButton.Size = new System.Drawing.Size(104, 36);
             this.resetButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.resetButton.TabIndex = 79;
             this.resetButton.Text = "Update";
@@ -116,11 +115,10 @@
             this.backButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.backButton.Location = new System.Drawing.Point(55, 447);
-            this.backButton.Margin = new System.Windows.Forms.Padding(4);
+            this.backButton.Location = new System.Drawing.Point(41, 363);
             this.backButton.Name = "backButton";
             this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.backButton.Size = new System.Drawing.Size(139, 44);
+            this.backButton.Size = new System.Drawing.Size(104, 36);
             this.backButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.backButton.TabIndex = 78;
             this.backButton.Text = "Back";
@@ -147,7 +145,7 @@
             this.confirmpassTextbox.SelectedText = "";
             this.confirmpassTextbox.SelectionLength = 0;
             this.confirmpassTextbox.SelectionStart = 0;
-            this.confirmpassTextbox.Size = new System.Drawing.Size(301, 40);
+            this.confirmpassTextbox.Size = new System.Drawing.Size(226, 35);
             this.confirmpassTextbox.TabIndex = 77;
             this.confirmpassTextbox.TabStop = false;
             this.confirmpassTextbox.UseSystemPasswordChar = true;
@@ -171,7 +169,7 @@
             this.passwordTextbox.SelectedText = "";
             this.passwordTextbox.SelectionLength = 0;
             this.passwordTextbox.SelectionStart = 0;
-            this.passwordTextbox.Size = new System.Drawing.Size(301, 40);
+            this.passwordTextbox.Size = new System.Drawing.Size(226, 35);
             this.passwordTextbox.TabIndex = 76;
             this.passwordTextbox.TabStop = false;
             this.passwordTextbox.UseSystemPasswordChar = true;
@@ -183,7 +181,7 @@
             this.confirmpassLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.confirmpassLabel.Location = new System.Drawing.Point(20, 311);
             this.confirmpassLabel.Name = "confirmpassLabel";
-            this.confirmpassLabel.Size = new System.Drawing.Size(111, 46);
+            this.confirmpassLabel.Size = new System.Drawing.Size(90, 38);
             this.confirmpassLabel.TabIndex = 75;
             this.confirmpassLabel.Text = "Confirm\r\nPassword";
             // 
@@ -194,7 +192,7 @@
             this.passwordLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.passwordLabel.Location = new System.Drawing.Point(24, 256);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(111, 23);
+            this.passwordLabel.Size = new System.Drawing.Size(90, 19);
             this.passwordLabel.TabIndex = 74;
             this.passwordLabel.Text = "Password";
             // 
@@ -213,7 +211,7 @@
             // 
             // Form_Reset_Password
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(464, 558);
@@ -227,8 +225,8 @@
             this.Controls.Add(this.confirmpassLabel);
             this.Controls.Add(this.passwordLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MaximumSize = new System.Drawing.Size(1920, 1020);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaximumSize = new System.Drawing.Size(1440, 829);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Reset_Password";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

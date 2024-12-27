@@ -48,9 +48,10 @@
             this.usernameLabel.AutoSize = true;
             this.usernameLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.usernameLabel.Location = new System.Drawing.Point(9, 250);
+            this.usernameLabel.Location = new System.Drawing.Point(7, 203);
+            this.usernameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(112, 23);
+            this.usernameLabel.Size = new System.Drawing.Size(90, 19);
             this.usernameLabel.TabIndex = 0;
             this.usernameLabel.Text = "Username";
             // 
@@ -59,9 +60,10 @@
             this.passLabel.AutoSize = true;
             this.passLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.passLabel.Location = new System.Drawing.Point(9, 327);
+            this.passLabel.Location = new System.Drawing.Point(7, 266);
+            this.passLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.passLabel.Name = "passLabel";
-            this.passLabel.Size = new System.Drawing.Size(111, 23);
+            this.passLabel.Size = new System.Drawing.Size(90, 19);
             this.passLabel.TabIndex = 1;
             this.passLabel.Text = "Password";
             // 
@@ -75,11 +77,11 @@
             this.regBtn.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.regBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.regBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.regBtn.Location = new System.Drawing.Point(56, 432);
-            this.regBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.regBtn.Location = new System.Drawing.Point(42, 351);
+            this.regBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.regBtn.Name = "regBtn";
             this.regBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.regBtn.Size = new System.Drawing.Size(152, 44);
+            this.regBtn.Size = new System.Drawing.Size(114, 36);
             this.regBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.regBtn.TabIndex = 8;
             this.regBtn.Text = "Register";
@@ -97,11 +99,11 @@
             this.loginButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loginButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.loginButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.loginButton.Location = new System.Drawing.Point(244, 432);
-            this.loginButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.loginButton.Location = new System.Drawing.Point(183, 351);
+            this.loginButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.loginButton.Name = "loginButton";
             this.loginButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.loginButton.Size = new System.Drawing.Size(152, 44);
+            this.loginButton.Size = new System.Drawing.Size(114, 36);
             this.loginButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.loginButton.TabIndex = 9;
             this.loginButton.Text = "Login";
@@ -118,8 +120,8 @@
             this.usernameTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.usernameTextbox.Hint = "";
-            this.usernameTextbox.Location = new System.Drawing.Point(154, 246);
-            this.usernameTextbox.Margin = new System.Windows.Forms.Padding(0, 2, 3, 2);
+            this.usernameTextbox.Location = new System.Drawing.Point(116, 200);
+            this.usernameTextbox.Margin = new System.Windows.Forms.Padding(0, 2, 2, 2);
             this.usernameTextbox.MaxLength = 32767;
             this.usernameTextbox.Multiline = false;
             this.usernameTextbox.Name = "usernameTextbox";
@@ -128,7 +130,7 @@
             this.usernameTextbox.SelectedText = "";
             this.usernameTextbox.SelectionLength = 0;
             this.usernameTextbox.SelectionStart = 0;
-            this.usernameTextbox.Size = new System.Drawing.Size(287, 40);
+            this.usernameTextbox.Size = new System.Drawing.Size(215, 35);
             this.usernameTextbox.TabIndex = 10;
             this.usernameTextbox.TabStop = false;
             this.usernameTextbox.UseSystemPasswordChar = false;
@@ -142,8 +144,8 @@
             this.passTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.passTextbox.Hint = "";
-            this.passTextbox.Location = new System.Drawing.Point(154, 321);
-            this.passTextbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.passTextbox.Location = new System.Drawing.Point(116, 261);
+            this.passTextbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.passTextbox.MaxLength = 32767;
             this.passTextbox.Multiline = false;
             this.passTextbox.Name = "passTextbox";
@@ -152,7 +154,7 @@
             this.passTextbox.SelectedText = "";
             this.passTextbox.SelectionLength = 0;
             this.passTextbox.SelectionStart = 0;
-            this.passTextbox.Size = new System.Drawing.Size(287, 40);
+            this.passTextbox.Size = new System.Drawing.Size(215, 35);
             this.passTextbox.TabIndex = 11;
             this.passTextbox.TabStop = false;
             this.passTextbox.UseSystemPasswordChar = true;
@@ -170,10 +172,10 @@
             this.showPwCheckBox.EnabledUncheckedColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.showPwCheckBox.Font = new System.Drawing.Font("Cooper Black", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showPwCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.showPwCheckBox.Location = new System.Drawing.Point(154, 382);
-            this.showPwCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.showPwCheckBox.Location = new System.Drawing.Point(116, 310);
+            this.showPwCheckBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.showPwCheckBox.Name = "showPwCheckBox";
-            this.showPwCheckBox.Size = new System.Drawing.Size(173, 20);
+            this.showPwCheckBox.Size = new System.Drawing.Size(147, 20);
             this.showPwCheckBox.TabIndex = 13;
             this.showPwCheckBox.Text = "Show Password";
             this.showPwCheckBox.UseVisualStyleBackColor = true;
@@ -189,11 +191,11 @@
             this.lawBtn.Font = new System.Drawing.Font("Cooper Black", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lawBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.lawBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.lawBtn.Location = new System.Drawing.Point(384, 73);
-            this.lawBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.lawBtn.Location = new System.Drawing.Point(288, 59);
+            this.lawBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lawBtn.Name = "lawBtn";
             this.lawBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
-            this.lawBtn.Size = new System.Drawing.Size(57, 44);
+            this.lawBtn.Size = new System.Drawing.Size(43, 36);
             this.lawBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.lawBtn.TabIndex = 14;
             this.lawBtn.Text = "?";
@@ -207,9 +209,10 @@
             this.forgetLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.forgetLabel.Font = new System.Drawing.Font("Cooper Black", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.forgetLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.forgetLabel.Location = new System.Drawing.Point(237, 512);
+            this.forgetLabel.Location = new System.Drawing.Point(178, 416);
+            this.forgetLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.forgetLabel.Name = "forgetLabel";
-            this.forgetLabel.Size = new System.Drawing.Size(164, 20);
+            this.forgetLabel.Size = new System.Drawing.Size(134, 16);
             this.forgetLabel.TabIndex = 26;
             this.forgetLabel.Text = "Forgot Password?";
             this.forgetLabel.Click += new System.EventHandler(this.forgetLabel_Click);
@@ -219,10 +222,9 @@
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox1.Image = global::Program.Properties.Resources.logo;
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(16, 73);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 59);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(425, 151);
+            this.pictureBox1.Size = new System.Drawing.Size(319, 123);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 29;
             this.pictureBox1.TabStop = false;
@@ -239,9 +241,8 @@
             this.login.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.login.Image = null;
             this.login.Location = new System.Drawing.Point(0, 0);
-            this.login.Margin = new System.Windows.Forms.Padding(4);
             this.login.Name = "login";
-            this.login.Size = new System.Drawing.Size(464, 40);
+            this.login.Size = new System.Drawing.Size(348, 40);
             this.login.TabIndex = 27;
             this.login.Text = "Login";
             this.login.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
@@ -251,10 +252,10 @@
             // 
             // Form_Login
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
-            this.ClientSize = new System.Drawing.Size(464, 558);
+            this.ClientSize = new System.Drawing.Size(348, 453);
             this.Controls.Add(this.lawBtn);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.login);
@@ -268,8 +269,8 @@
             this.Controls.Add(this.usernameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MaximumSize = new System.Drawing.Size(2560, 1270);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

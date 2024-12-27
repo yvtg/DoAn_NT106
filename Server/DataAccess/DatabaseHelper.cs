@@ -6,6 +6,7 @@ using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using Models;
 
 namespace Server.DataAccess
 {
@@ -105,8 +106,6 @@ namespace Server.DataAccess
                 { "Email", email },
                 { "Password", hashedPassword },
                 { "HighestScore", 0 },
-                { "HighestRank", 0 },
-                { "LowestRank", 0 },
                 { "GamesPlayed", 0 }
             };
 
@@ -160,71 +159,50 @@ namespace Server.DataAccess
             return user != null;
         }
 
-
-
-
-
-
-
-        ////Cách dùng:
-        //string connectionString = "mongodb://localhost:27017";//gắn link mongodb vào
-        //string databaseName = "MyDatabase";
-
-        //// Khởi tạo DatabaseHelper
-        //DatabaseHelper dbHelper = new DatabaseHelper(connectionString, databaseName);
-
-        //// Tên collection
-        //string collectionName = "Users";
-
-        //// Thêm một tài liệu (document) mới
-        //var newUser = new BsonDocument
-        //{
-        //    { "Name", "Alice" },
-        //    { "Age", 25 },
-        //    { "Email", "alice@example.com" }
-        //};
-        //dbHelper.InsertDocument(collectionName, newUser);
-        //Console.WriteLine("Thêm người dùng mới thành công.");
-
-        /*
-        private readonly string _connectionString;
-
-        // Khởi tạo DatabaseHelper với chuỗi kết nối
-        public DatabaseHelper(string connectionString)
+        public ProfileData GetProfileData(string username)
         {
-            _connectionString = connectionString;
+            var collection = _database.GetCollection<ProfileData>("User");
+            var filter = Builders<ProfileData>.Filter.Eq("Username", username);
+            return collection.Find(filter).FirstOrDefault();
         }
 
-        // Phương thức kết nối cơ sở dữ liệu và thực hiện truy vấn
-        public DataTable ExecuteQuery(string query)
+        public bool UpdateProfileData(string username, int score)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            try
             {
-                conn.Open();
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                var collection = GetCollection<BsonDocument>("User");
+
+                // Tìm tài liệu dựa trên tên người dùng
+                var filter = Builders<BsonDocument>.Filter.Eq("Username", username);
+
+                // Lấy tài liệu hiện tại từ cơ sở dữ liệu
+                var user = collection.Find(filter).FirstOrDefault();
+                if (user == null)
                 {
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
-                    {
-                        DataTable table = new DataTable();
-                        adapter.Fill(table);
-                        return table;
-                    }
+                    throw new Exception("Người dùng không tồn tại.");
                 }
+
+                // Lấy điểm cao nhất hiện tại và số lần chơi game
+                int currentHighestScore = user.GetValue("HighestScore").AsInt32;
+                int gamesPlayed = user.GetValue("GamesPlayed").AsInt32;
+
+                // Xác định điểm cao nhất mới
+                int newHighestScore = Math.Max(currentHighestScore, score);
+                int newGamesPlayed = gamesPlayed + 1;
+
+                // Tạo lệnh cập nhật
+                var update = Builders<BsonDocument>.Update
+                    .Set("HighestScore", newHighestScore)
+                    .Set("GamesPlayed", newGamesPlayed);
+
+                // Thực hiện cập nhật
+                var result = collection.UpdateOne(filter, update);
+                return result.ModifiedCount > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi cập nhật thông tin cá nhân: {ex.Message}");
             }
         }
-
-        // Phương thức thực hiện các truy vấn không trả về dữ liệu (INSERT, UPDATE, DELETE)
-        public int ExecuteNonQuery(string query)
-        {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
-            {
-                conn.Open();
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    return cmd.ExecuteNonQuery();
-                }
-            }
-        }
-        */
     }
 }

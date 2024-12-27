@@ -24,7 +24,7 @@ namespace Program
         public event Action<string, string, int, string> ReceiveOtherInfo; // nhận thông tin của người chơi khác trong phòng
         public event Action<RoundUpdatePacket> RoundUpdateReceived; // round mới
         public event Action<DrawPacket> DrawPacketReceived; // nhận draw packet
-        public event Action<DrawPacket> DrawPacket;
+        public event Action<ProfileResultPacket> ProfileReceived; // nhận thông tin profile
 
         public event Action<string> ResetPasswordResult;
 
@@ -187,6 +187,8 @@ namespace Program
                         return new JoinResultPacket(remainingMsg);
                     case PacketType.GUESS:
                         return new GuessPacket(remainingMsg);
+                    case PacketType.PROFILE_RESULT:
+                        return new ProfileResultPacket(remainingMsg);
                     default:
                         HandleDrawPacket(msg);
                         break;
@@ -313,6 +315,10 @@ namespace Program
                 case PacketType.GUESS_RESULT:
                     break;
                 case PacketType.LEADER_BOARD_INFO:
+                    break;
+                case PacketType.PROFILE_RESULT:
+                    ProfileResultPacket profileResult = (ProfileResultPacket)packet;
+                    ProfileReceived?.Invoke(profileResult);
                     break;
                 default:
                     break;
