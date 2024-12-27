@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_End_Game));
             this.rankListbox = new System.Windows.Forms.ListBox();
             this.profileButton = new ReaLTaiizor.Controls.HopeButton();
-            this.homeButton = new ReaLTaiizor.Controls.HopeButton();
+            this.ReturnButton = new ReaLTaiizor.Controls.HopeButton();
             this.board = new ReaLTaiizor.Forms.HopeForm();
             this.SuspendLayout();
             // 
@@ -58,7 +58,7 @@
             this.profileButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.profileButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
             this.profileButton.Location = new System.Drawing.Point(16, 57);
-            this.profileButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.profileButton.Margin = new System.Windows.Forms.Padding(4);
             this.profileButton.Name = "profileButton";
             this.profileButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.profileButton.Size = new System.Drawing.Size(112, 50);
@@ -69,27 +69,27 @@
             this.profileButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.profileButton.Click += new System.EventHandler(this.profileButton_Click);
             // 
-            // homeButton
+            // ReturnButton
             // 
-            this.homeButton.BorderColor = System.Drawing.Color.Black;
-            this.homeButton.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
-            this.homeButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.homeButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
-            this.homeButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.homeButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.homeButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.homeButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.homeButton.Location = new System.Drawing.Point(149, 494);
-            this.homeButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.homeButton.Name = "homeButton";
-            this.homeButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.homeButton.Size = new System.Drawing.Size(173, 41);
-            this.homeButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
-            this.homeButton.TabIndex = 17;
-            this.homeButton.Text = "Home";
-            this.homeButton.TextColor = System.Drawing.Color.White;
-            this.homeButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
-            this.homeButton.Click += new System.EventHandler(this.homeButton_Click_1);
+            this.ReturnButton.BorderColor = System.Drawing.Color.Black;
+            this.ReturnButton.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
+            this.ReturnButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ReturnButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.ReturnButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ReturnButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReturnButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.ReturnButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
+            this.ReturnButton.Location = new System.Drawing.Point(149, 494);
+            this.ReturnButton.Margin = new System.Windows.Forms.Padding(4);
+            this.ReturnButton.Name = "ReturnButton";
+            this.ReturnButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.ReturnButton.Size = new System.Drawing.Size(173, 41);
+            this.ReturnButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.ReturnButton.TabIndex = 17;
+            this.ReturnButton.Text = "Return";
+            this.ReturnButton.TextColor = System.Drawing.Color.White;
+            this.ReturnButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            this.ReturnButton.Click += new System.EventHandler(this.Returnbutton_Click_1);
             // 
             // board
             // 
@@ -103,7 +103,7 @@
             this.board.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.board.Image = null;
             this.board.Location = new System.Drawing.Point(0, 0);
-            this.board.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.board.Margin = new System.Windows.Forms.Padding(4);
             this.board.Name = "board";
             this.board.Size = new System.Drawing.Size(464, 40);
             this.board.TabIndex = 28;
@@ -117,7 +117,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(464, 558);
             this.Controls.Add(this.board);
-            this.Controls.Add(this.homeButton);
+            this.Controls.Add(this.ReturnButton);
             this.Controls.Add(this.profileButton);
             this.Controls.Add(this.rankListbox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -128,7 +128,6 @@
             this.Name = "Form_End_Game";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Leader board";
-            this.Load += new System.EventHandler(this.Form_End_Game_Load);
             this.ResumeLayout(false);
 
         }
@@ -137,7 +136,7 @@
 
         private System.Windows.Forms.ListBox rankListbox;
         private ReaLTaiizor.Controls.HopeButton profileButton;
-        private ReaLTaiizor.Controls.HopeButton homeButton;
+        private ReaLTaiizor.Controls.HopeButton ReturnButton;
         private ReaLTaiizor.Forms.HopeForm board;
     }
 }
