@@ -15,12 +15,15 @@ namespace Program
     {
         public string message;
         public int round;
-        public Form_Message(string message, int round)
+        string username;
+        int score;
+        public Form_Message(string username, string message, int round, int score)
         {
             InitializeComponent();
             this.message = message;
             Message.Text = message;
             this.round = round;
+            this.username = username;
         }
 
         public Form_Message(string message)
@@ -28,14 +31,13 @@ namespace Program
             InitializeComponent();
             this.message = message;
             Message.Text = message;
-            this.round = round;
         }
 
         private void okBtn_Click(object sender, EventArgs e)
         {
             if (round == 5)
             {
-                Form_End_Game formendgame = new Form_End_Game();
+                Form_End_Game formendgame = new Form_End_Game(username, score);
                 formendgame.StartPosition = FormStartPosition.Manual;
                 int centerX = this.Location.X + (this.Width - formendgame.Width) / 2;
                 int centerY = this.Location.Y + (this.Height - formendgame.Height) / 2;

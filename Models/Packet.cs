@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Runtime.InteropServices;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Models
 {
@@ -36,7 +38,8 @@ namespace Models
         RESET_PASSWORD_RESULT,
         SYNC_BITMAP,
         PROFILE_REQUEST,
-        PROFILE_RESULT
+        PROFILE_RESULT,
+        PROFILE_UPDATE
     }
     public abstract class Packet
     {
@@ -484,10 +487,20 @@ namespace Models
     }
     #endregion
     #region profile
+
     public class ProfileData
     {
-        public string username { get; set; }
+        [BsonId]
+        public ObjectId _id;
+        [BsonElement("Username")]
+        public string username = "";
+        [BsonElement("Email")]
+        public string email = "";
+        [BsonElement("Password")]
+        public string password = "";
+        [BsonElement("HighestScore")]
         public int highestscore { get; set; }
+        [BsonElement("GamesPlayed")]
         public int gamesplayed { get; set; }
     }
 
@@ -517,7 +530,6 @@ namespace Models
         {
             return Encoding.UTF8.GetBytes($"PROFILE_REQUEST;{Username}");
         }
-
     }
 
     public class ProfileResultPacket : Packet
@@ -526,11 +538,11 @@ namespace Models
         public ProfileResultPacket(string payload) : base(PacketType.PROFILE_RESULT, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 5)
+            if (parsePayload.Length >= 3)
             {
                 data1.username = parsePayload[0];
                 data1.highestscore = int.Parse(parsePayload[1]);
-                data1.gamesplayed = int.Parse(parsePayload[4]);
+                data1.gamesplayed = int.Parse(parsePayload[2]);
             }
             else
             {
@@ -541,6 +553,30 @@ namespace Models
         public override byte[] ToBytes()
         {
             return Encoding.UTF8.GetBytes($"PROFILE_RESULT;{data1.username};{data1.highestscore};{data1.gamesplayed}");
+        }
+    }
+
+    public class ProfileUpdatePacket : Packet
+    {
+        public string username { get; set; }
+        public int score { get; set; }
+        public ProfileUpdatePacket(string payload) : base(PacketType.PROFILE_RESULT, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 2)
+            {
+                username = parsePayload[0];
+                score = int.Parse(parsePayload[1]);
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"PROFILE_UPDATE;{username};{score}");
         }
     }
     #endregion
@@ -556,30 +592,7 @@ namespace Models
             return Encoding.UTF8.GetBytes($"DISCONNECT");
         }
     }
-    public class SyncBitmapPacket : Packet
-    {
-        public string RoomId { get; set; }
-        public string BitmapData { get; set; }
-
-        public SyncBitmapPacket(string payload) : base(PacketType.SYNC_BITMAP, payload)
-        {
-            string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 2)
-            {
-                RoomId = parsePayload[0];
-                BitmapData = parsePayload[1];
-            }
-            else
-            {
-                throw new ArgumentException("Payload không hợp lệ");
-            }
-        }
-
-        public override byte[] ToBytes()
-        {
-            return Encoding.UTF8.GetBytes($"SYNC_BITMAP;{RoomId};{BitmapData}");
-        }
-    }
+    #region Reset Password
 
     public class ResetPasswordRequestPacket : Packet
     {
@@ -661,9 +674,5 @@ namespace Models
         }
     }
 
-
-
-
-
-
+    #endregion
 }

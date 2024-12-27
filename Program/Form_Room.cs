@@ -37,7 +37,6 @@ namespace Program
         // Các thành phần liên quan đến tính năng vẽ
         private Bitmap drawingBitmap;
         private Graphics graphics;
-        private Point previousPoint;
         private bool isDrawing = false;
         private bool isErasing = false;
         private int penSize;
@@ -56,8 +55,8 @@ namespace Program
 
         private bool gameStart = false;
         Dictionary<string, (int score, int textcore)> playerScores = new Dictionary<string, (int, int)>();
+        private int userScore = 0;
 
-        int Round;
         private int roundTime; // Thời gian của mỗi vòng chơi (tính bằng giây)
         private System.Timers.Timer roundTimer; // Timer đếm ngược cho mỗi vòng chơi
         int progressValue = 0;
@@ -398,7 +397,7 @@ namespace Program
                 ShowMessage("Vui lòng chọn số vòng chơi!");
             }
         }
-        #region chat
+        #region thong tin danh sach user
 
 
         private void OnRecivedOtherInfo(string roomId, string username, int Score, string status)
@@ -407,6 +406,12 @@ namespace Program
             {
                 this.Invoke(new Action(() => OnRecivedOtherInfo(roomId, username, Score, status)));
                 return;
+            }
+
+            // lay diem hien tai cua nguoi choi
+            if (username == this.username)
+            {
+                userScore = Score;
             }
 
             if (roomId == this.roomId)
@@ -667,7 +672,7 @@ namespace Program
         }
         public void ShowMessage(string messsage)
         {
-            Form_Message formmessage = new Form_Message(messsage, currentRound);
+            Form_Message formmessage = new Form_Message(username, messsage, currentRound, userScore);
             formmessage.StartPosition = FormStartPosition.Manual;
             int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
             int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;

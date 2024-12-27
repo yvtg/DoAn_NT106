@@ -81,7 +81,7 @@ namespace Program
             Form_Law lawForm = new Form_Law();
             this.Hide(); 
             lawForm.StartPosition = FormStartPosition.Manual;
-            lawForm.Location = new Point(this.Location.X, this.Location.Y);
+            lawForm.Location = this.Location; // Đặt vị trí của Form_Home giống với Form_Background
             lawForm.ShowDialog();
             this.Show();
             lawForm.FormClosed += (s, args) => this.Close();
@@ -93,7 +93,7 @@ namespace Program
             Form_Register regForm = new Form_Register();
             this.Hide();
             regForm.StartPosition = FormStartPosition.Manual;
-            regForm.Location = new Point(this.Location.X, this.Location.Y);
+            regForm.Location = this.Location; // Đặt vị trí của Form_Home giống với Form_Background
             regForm.ShowDialog();
             this.Show();
             regForm.FormClosed += (s, args) => this.Close();

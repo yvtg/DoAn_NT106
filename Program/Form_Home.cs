@@ -23,16 +23,15 @@ namespace Program
             this.username = username;
             this.client = Form_Input_ServerIP.client;
             client.ReceiveRoomInfo += OnReceiveRoomInfo;
+            client.ProfileReceived += OnProfileReceived;
         }
+
         #region ĐIỀU HƯỚNG
 
         private void profileButton_Click_1(object sender, EventArgs e)
         {
-            this.Hide();
             ProfileRequest profile = new ProfileRequest(username);
             client.SendPacket(profile);
-            this.Show();
-            FormClosed += (s, args) => this.Close();
         }
 
         private void logoutBtn_Click_1(object sender, EventArgs e)
@@ -67,6 +66,26 @@ namespace Program
             roomForm.Show();
             this.Hide();
             roomForm.FormClosed += (s, args) => this.Show();
+        }
+
+        private void OnProfileReceived(ProfileResultPacket packet)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => OnProfileReceived(packet)));
+                return;
+            }
+            ProfileData data = new ProfileData();
+            data.username = packet.data1.username;
+            data.highestscore = packet.data1.highestscore;
+            data.gamesplayed = packet.data1.gamesplayed;
+
+            Form_Profile profileform = new Form_Profile(data);
+            profileform.StartPosition = FormStartPosition.Manual;
+            profileform.Location = this.Location;
+            this.Hide();
+            profileform.ShowDialog();
+            this.Show();
         }
         #endregion
 

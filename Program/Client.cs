@@ -24,7 +24,7 @@ namespace Program
         public event Action<string, string, int, string> ReceiveOtherInfo; // nhận thông tin của người chơi khác trong phòng
         public event Action<RoundUpdatePacket> RoundUpdateReceived; // round mới
         public event Action<DrawPacket> DrawPacketReceived; // nhận draw packet
-        public event Action<DrawPacket> DrawPacket;
+        public event Action<ProfileResultPacket> ProfileReceived; // nhận thông tin profile
 
         public event Action<string> ResetPasswordResult;
 
@@ -317,15 +317,8 @@ namespace Program
                 case PacketType.LEADER_BOARD_INFO:
                     break;
                 case PacketType.PROFILE_RESULT:
-                    ProfileData data = new ProfileData();
                     ProfileResultPacket profileResult = (ProfileResultPacket)packet;
-                    data.username = profileResult.data1.username;
-                    data.highestscore = profileResult.data1.highestscore;
-                    data.gamesplayed = profileResult.data1.gamesplayed;
-                    Form_Profile profileform = new Form_Profile(data);
-                    profileform.StartPosition = FormStartPosition.Manual;
-                    profileform.StartPosition = FormStartPosition.CenterScreen;
-                    profileform.ShowDialog();
+                    ProfileReceived?.Invoke(profileResult);
                     break;
                 default:
                     break;
