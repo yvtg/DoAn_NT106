@@ -285,6 +285,8 @@ namespace Server
                         return new ProfileRequest(remainingMsg);
                     case PacketType.PROFILE_UPDATE:
                         return new ProfileUpdatePacket(remainingMsg);
+                    case PacketType.END_GAME:
+                        return new EndGamePacket(remainingMsg);
                     default:
                         return null;
                 }
@@ -412,16 +414,9 @@ namespace Server
                         return;
                     }
                     // kiểm tra phòng đang chơi
-                    else if (room.status == "playing")
+                    else if (room.status == "PLAYING")
                     {
                         join_result = "PLAYING";
-                        sendPacket(client, new JoinResultPacket(join_result));
-                        return;
-                    }
-                    // kiểm tra phòng đã kết thúc
-                    else if (room.status == "finished")
-                    {
-                        join_result = "FINISHED";
                         sendPacket(client, new JoinResultPacket(join_result));
                         return;
                     }
@@ -445,6 +440,11 @@ namespace Server
                     else if (join_result == "SUCCESS")
                     {
                         room.players.Add(client);
+                        if (room.maxPlayers == room.players.Count)
+                        {
+                            room.status = "FULL";
+                        }
+
                         client.RoomId = roomIdToJoin;
                         UpdateClientList?.Invoke();
 
@@ -504,6 +504,7 @@ namespace Server
                     {
                         // Chọn người vẽ ngẫu nhiên
                         room.StartNewRound();
+                        room.status = "PLAYING";
                         string isdraw = room.currentDrawer.IsDrawing.ToString();
                         string name = room.currentDrawer.Name;
                         string word = room.currentKeyword;
@@ -543,6 +544,17 @@ namespace Server
                         // gui diem cho client de cap nhat
                         OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};GUESS");
                         BroadcastPacket(room, otherInfo);
+                    }
+                    break;
+                case PacketType.END_GAME:
+                    EndGamePacket endGamePacket = (EndGamePacket)packet;
+                    roomId = endGamePacket.RoomId;
+                    room = rooms.FirstOrDefault(r => r.RoomId == roomId);
+                    if (room != null)
+                    {
+                        room.status = "WAITING";
+                        UpdateRoomList?.Invoke();
+                        BroadcastPacket(room, endGamePacket);
                     }
                     break;
                 case PacketType.DISCONNECT:

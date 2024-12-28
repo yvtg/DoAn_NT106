@@ -25,6 +25,7 @@ namespace Program
         public event Action<string, string, int, string> ReceiveOtherInfo; // nhận thông tin của người chơi khác trong phòng
         public event Action<RoundUpdatePacket> RoundUpdateReceived; // round mới
         public event Action<DrawPacket> DrawPacketReceived; // nhận draw packet
+        public event Action<string> EndGameReceived;
         public event Action<ProfileResultPacket> ProfileReceived; // nhận thông tin profile
         public event Action ServerDisconnected; // server ngắt kết nối
         public event Action<string> ResetPasswordResult;
@@ -55,13 +56,6 @@ namespace Program
             }
         }
 
-        public void Close()
-        {
-            cancellationTokenSource?.Cancel();
-            cancellationTokenSource?.Dispose();
-            cancellationTokenSource = null;
-
-        }
 
         // gửi draw packet ( dạng json )
         public void SendDrawPacket(DrawPacket drawPacket)
@@ -207,6 +201,8 @@ namespace Program
                         return new ProfileResultPacket(remainingMsg);
                     case PacketType.DISCONNECT:
                         return new DisconnectPacket(remainingMsg);
+                    case PacketType.END_GAME:
+                        return new EndGamePacket(remainingMsg);
                     default:
                         HandleDrawPacket(msg);
                         break;
@@ -329,6 +325,11 @@ namespace Program
                     username = guessPacket.playerName;
                     string guess = guessPacket.GuessMessage;
                     ReceiveMessage?.Invoke(roomId, username, guess);
+                    break;
+                case PacketType.END_GAME:
+                    EndGamePacket endGamePacket = (EndGamePacket)packet;
+                    roomId = endGamePacket.RoomId;
+                    EndGameReceived?.Invoke(roomId);
                     break;
                 case PacketType.PROFILE_RESULT:
                     ProfileResultPacket profileResult = (ProfileResultPacket)packet;

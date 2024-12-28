@@ -131,6 +131,9 @@ namespace Program
             // sự kiện nhận được gói tin DrawPacket
             client.DrawPacketReceived += OnReceivedDrawPacket;
 
+            // nhận tín hiệu kết thúc game
+            client.EndGameReceived += EndGame;
+
             // Cài đặt bộ đếm thời gian cho vòng chơi
             roundTimer = new System.Timers.Timer();
 
@@ -214,13 +217,8 @@ namespace Program
                 }
                 else
                 {
-                    if ( username == host)
-                    {
-                        startButton.Enabled = true;
-                        roundComboBox.Show();
-                        roundLabel.Text = "round: ";
-                    }
-                    ShowMessage("Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết");
+                    EndGamePacket endgamePacket = new EndGamePacket($"{roomId}");
+                    client.SendPacket(endgamePacket);
                 }
                 timeLabel.Text = $"Time: {roundTime}";
                 timeProgressBar.Value = 90 - roundTime;
@@ -476,13 +474,8 @@ namespace Program
                             playerScores[username] = playerData;
                             if (currentRound==SelectRound)
                             {
-                                ShowMessage("Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết");
-                                if (username == host)
-                                {
-                                    startButton.Enabled = true;
-                                    roundComboBox.Show();
-                                    roundLabel.Text = "round: ";
-                                }
+                                EndGamePacket endgamePacket = new EndGamePacket($"{roomId}");
+                                client.SendPacket(endgamePacket);
                             }
                             else
                             {
@@ -690,6 +683,25 @@ namespace Program
             startButton.Enabled = false;
         }
 
+        private void EndGame(string roomID)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => EndGame(roomID)));
+                return;
+            }
+            if (roomID == this.roomId)
+            {
+                ShowMessage("Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết");
+                if (username == host)
+                {
+                    startButton.Enabled = true;
+                    roundComboBox.Show();
+                    roundLabel.Text = "round: ";
+                }
+            }
+        }
+
         private void leaveBtn_Click(object sender, EventArgs e)
         {
             LeaveRoomPacket packet = new LeaveRoomPacket($"{roomId};{username}");
@@ -704,8 +716,39 @@ namespace Program
             int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
             formmessage.Location = new Point(centerX, centerY);
 
-            formmessage.ShowDialog();
+            formmessage.Show();
         }
+        #region dragging
+
+        private bool dragging = false;
+        private Point dragCursor;
+        private Point dragForm;
+
+        private void roomForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                dragging = true;
+                dragCursor = System.Windows.Forms.Cursor.Position;
+                dragForm = this.Location;
+            }
+        }
+
+        private void roomForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                Point delta = new Point(System.Windows.Forms.Cursor.Position.X - dragCursor.X, System.Windows.Forms.Cursor.Position.Y - dragCursor.Y);
+                this.Location = new Point(dragForm.X + delta.X, dragForm.Y + delta.Y);
+            }
+        }
+
+        private void roomForm_MouseUp(object sender, MouseEventArgs e)
+        {
+            dragging = false;
+        }
+
+        #endregion
 
     }
 

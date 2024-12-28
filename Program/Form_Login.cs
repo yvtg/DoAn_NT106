@@ -128,7 +128,7 @@ namespace Program
         {
             DisconnectPacket disconnectPacket = new DisconnectPacket("");
             client.SendPacket(disconnectPacket);
-            client.Close();
+            Application.Exit();
         }
 
         private void forgetLabel_Click(object sender, EventArgs e)
@@ -147,9 +147,9 @@ namespace Program
             formmessage.StartPosition = FormStartPosition.Manual;
             int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
             int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
-            formmessage.Location = new Point(centerX, centerY);
+            formmessage.Location = new Point(centerY, centerY);
 
-            formmessage.ShowDialog();
+            formmessage.Show();
         }
 
         #region dragging
@@ -160,9 +160,12 @@ namespace Program
 
         private void login_MouseDown(object sender, MouseEventArgs e)
         {
-            dragging = true;
-            dragCursor = Cursor.Position;
-            dragForm = this.Location;
+            if (e.Button == MouseButtons.Left)
+            {
+                dragging = true;
+                dragCursor = Cursor.Position;
+                dragForm = this.Location;
+            }
         }
 
         private void login_MouseMove(object sender, MouseEventArgs e)

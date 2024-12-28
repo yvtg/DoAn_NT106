@@ -39,7 +39,8 @@ namespace Models
         SYNC_BITMAP,
         PROFILE_REQUEST,
         PROFILE_RESULT,
-        PROFILE_UPDATE
+        PROFILE_UPDATE,
+        END_GAME
     }
     public abstract class Packet
     {
@@ -483,6 +484,19 @@ namespace Models
         public override byte[] ToBytes()
         {
             return Encoding.UTF8.GetBytes($"GUESS;{RoomId};{playerName};{GuessMessage}");
+        }
+    }
+
+    public class EndGamePacket : Packet
+    {
+        public string RoomId { get; set; }
+        public EndGamePacket(string payload) : base(PacketType.END_GAME, payload)
+        {
+            RoomId = payload;
+        }
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"END_GAME;{RoomId}");
         }
     }
     #endregion

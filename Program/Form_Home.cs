@@ -59,13 +59,21 @@ namespace Program
         private void createButton_Click(object sender, EventArgs e)
         {
             Form_Create createform = new Form_Create(username);
-            createform.ShowDialog();
+            createform.StartPosition = FormStartPosition.Manual;
+            int centerX = this.Location.X + (this.Width - createform.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - createform.Height) / 2;
+            createform.Location = new Point(centerY, centerY);
+            createform.Show();
         }
 
         private void joinButton_Click_1(object sender, EventArgs e)
         {
             Form_Join joinform = new Form_Join(username);
-            joinform.ShowDialog();
+            joinform.StartPosition = FormStartPosition.Manual;
+            int centerX = this.Location.X + (this.Width - joinform.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - joinform.Height) / 2;
+            joinform.Location = new Point(centerY, centerY);
+            joinform.Show();
         }
 
         private void OnReceiveRoomInfo(string roomId, string host, int maxPlayers)
@@ -124,5 +132,33 @@ namespace Program
         }
         #endregion
 
+        #region dragging
+        private bool dragging = false;
+        private Point dragCursor;
+        private Point dragForm;
+        private void Home_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                dragging = true;
+                dragCursor = Cursor.Position;
+                dragForm = this.Location;
+            }
+        }
+
+        private void Home_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                Point delta = new Point(Cursor.Position.X - dragCursor.X, Cursor.Position.Y - dragCursor.Y);
+                this.Location = new Point(dragForm.X + delta.X, dragForm.Y + delta.Y);
+            }
+        }
+
+        private void Home_MouseUp(object sender, MouseEventArgs e)
+        {
+            dragging = false;
+        }
+        #endregion
     }
 }
