@@ -210,20 +210,21 @@ namespace Program
                         currentRound++;
                         StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
                         client.SendPacket(startPacket);
-                    }   
+                    }
+                    timeLabel.Text = $"Time: {roundTime}";
+                    timeProgressBar.Value = 90 - roundTime;
+                    wordLabel.Text = "key word: ";
+
+                    sendButton.Enabled = true;
+                    ClearPictureBox();
+                    pictureBox1.Enabled = true;
                 }
                 else
                 {
                     EndGamePacket endgamePacket = new EndGamePacket($"{roomId}");
                     client.SendPacket(endgamePacket);
                 }
-                timeLabel.Text = $"Time: {roundTime}";
-                timeProgressBar.Value = 90 - roundTime;
-                wordLabel.Text = "key word: ";
-
-                sendButton.Enabled = true;
-                ClearPictureBox();
-                pictureBox1.Enabled = true;
+                
             }
         }
         #endregion
@@ -706,7 +707,28 @@ namespace Program
                 {
                     startButton.Enabled = true;
                     roundComboBox.Show();
+                    roundComboBox.SelectedIndex = -1;
                     roundLabel.Text = "Round: ";
+                }
+                timeLabel.Text = $"Time: ";
+                timeProgressBar.Value = 0;
+                wordLabel.Text = "key word: ";
+
+                sendButton.Enabled = true;
+                ClearPictureBox();
+                pictureBox1.Enabled = true;
+
+                // Đặt lại điểm của tất cả người chơi về 0
+                foreach (var key in playerScores.Keys.ToList())
+                {
+                    var playerData = playerScores[key];
+                    playerScores[key] = (name: playerData.name, score: 0, textcore: 0); // Reset điểm
+                }
+
+                // Cập nhật lại danh sách điểm trên userListView
+                foreach (ListViewItem user in userListView.Items)
+                {
+                    user.SubItems[1].Text = "0"; // Reset điểm hiển thị
                 }
             }
         }

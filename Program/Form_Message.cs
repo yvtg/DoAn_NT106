@@ -16,8 +16,6 @@ namespace Program
         public string message;
         public int round;
         string username;
-        int score;
-        Dictionary<string, (string name, int score, int textcore)> playerScores = new Dictionary<string, (string, int, int)>();
         public Form_Message(string username, string message)
         {
             InitializeComponent();
