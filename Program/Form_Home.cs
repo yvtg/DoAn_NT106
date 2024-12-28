@@ -53,7 +53,6 @@ namespace Program
         {
             LogoutPacket logoutPacket = new LogoutPacket(username);
             client.SendPacket(logoutPacket);
-            this.Close();
             Application.Exit();
         }
         private void createButton_Click(object sender, EventArgs e)
