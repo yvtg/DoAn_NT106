@@ -45,7 +45,7 @@ namespace Program
                 int centerX = this.Location.X + (this.Width - formendgame.Width) / 2;
                 int centerY = this.Location.Y + (this.Height - formendgame.Height) / 2;
                 formendgame.Location = new Point(centerX, centerY);
-                formendgame.ShowDialog();
+                formendgame.Show();
                 this.Close();
             }
             else

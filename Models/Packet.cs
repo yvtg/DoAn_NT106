@@ -574,7 +574,7 @@ namespace Models
     {
         public string username { get; set; }
         public int score { get; set; }
-        public ProfileUpdatePacket(string payload) : base(PacketType.PROFILE_RESULT, payload)
+        public ProfileUpdatePacket(string payload) : base(PacketType.PROFILE_UPDATE, payload)
         {
             string[] parsePayload = payload.Split(';');
             if (parsePayload.Length >= 2)

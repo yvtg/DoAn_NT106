@@ -197,7 +197,7 @@ namespace Server.DataAccess
 
                 // Thực hiện cập nhật
                 var result = collection.UpdateOne(filter, update);
-                return result.ModifiedCount > 0;
+                return true;
             }
             catch (Exception ex)
             {

@@ -25,24 +25,20 @@ namespace Program
             this.score = score;
             this.playerScores = playerScores;
             this.client = Form_Input_ServerIP.client;
-            client.ServerDisconnected += () =>
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new Action(() =>
-                    {
-                        this.Close(); // Đóng form trên luồng UI
-                    }));
-                }
-                else
-                {
-                    this.Close();
-                }
-            };
-
-            // cập nhật điểm cao nhất, số lượt chơi của người chơi này
-            ProfileUpdatePacket profileUpdatePacket = new ProfileUpdatePacket($"{username};{score}");
-            client.SendPacket(profileUpdatePacket);
+            //client.ServerDisconnected += () =>
+            //{
+            //    if (this.InvokeRequired)
+            //    {
+            //        this.Invoke(new Action(() =>
+            //        {
+            //            this.Close(); // Đóng form trên luồng UI
+            //        }));
+            //    }
+            //    else
+            //    {
+            //        this.Close();
+            //    }
+            //};
 
             // xếp hạng người chơi
             DisplayPlayerRanks();
@@ -69,6 +65,10 @@ namespace Program
                     rankListbox.Items.Add($"Top {rank}: {player.Value.name} {player.Value.score}");
                 }
             }
+
+            // cập nhật điểm cao nhất, số lượt chơi của người chơi này
+            ProfileUpdatePacket profileUpdatePacket = new ProfileUpdatePacket($"{username};{score}");
+            client.SendPacket(profileUpdatePacket);
         }
 
         private void Returnbutton_Click_1(object sender, EventArgs e)
