@@ -36,10 +36,12 @@ namespace Models
             this.sw.Flush();
         }
 
-        public void SendPacket(DrawPacket drawPacket)
+        public void SendPacket(DrawPacket drawPacket,RSAHelper rsaHelper, string clientPubKey)
         {
             var jsonDrawPacket = drawPacket.ToJson();
-            this.sw.WriteLine(jsonDrawPacket);
+            string encryptedPacket = rsaHelper.Encrypt(jsonDrawPacket, clientPubKey);
+
+            this.sw.WriteLine(encryptedPacket);
             this.sw.Flush();
         }
 

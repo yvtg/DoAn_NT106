@@ -6,12 +6,26 @@ using System.Net;
 using System.Windows.Forms;
 using Models;
 using System.IO;
+using System.Text;
+using System.Security.Cryptography.X509Certificates;
 
 
 namespace Program
 {
     public class Client
     {
+        private static RSAHelper rsaHelper;
+        private static string publicKey;
+        private static string privateKey;
+        private static string serverPublicKey;
+
+        public Client()
+        {
+            rsaHelper = new RSAHelper();
+            publicKey = rsaHelper.GetPublicKey();
+            privateKey = rsaHelper.GetPrivateKey();
+        }
+
         TcpClient tcpClient = new TcpClient();
         NetworkStream ns;
         StreamWriter sw;
@@ -36,7 +50,15 @@ namespace Program
                 IPAddress ipServer = IPAddress.Parse(serverIP);
                 IPEndPoint ipEP = new IPEndPoint(ipServer, port); 
                 tcpClient.Connect(ipEP);
-                Task.Run(() => ReceiveData());
+                ns = tcpClient.GetStream();
+
+                //nhan khoa cong khai
+                string serverPublicKey = ReceiveServerPublicKey(ns);
+                // gui khoa cong khai
+                SendPublicKey(ns);
+
+                Task.Run(() => ReceiveData(ns));
+
                 return true;
             }
             catch (Exception ex)
@@ -45,6 +67,23 @@ namespace Program
                 return false;
             }
         }
+        #region rsahelp
+        // Gửi khóa công khai của client tới server
+        private void SendPublicKey(NetworkStream stream)
+        {
+            byte[] publicKeyBytes = Encoding.UTF8.GetBytes(publicKey);
+            stream.Write(publicKeyBytes, 0, publicKeyBytes.Length);
+        }
+
+        // Nhận khóa công khai từ server
+        private string ReceiveServerPublicKey(NetworkStream stream)
+        {
+            byte[] buffer = new byte[1024];
+            int bytesRead = stream.Read(buffer, 0, buffer.Length);
+            string serverPublicKey = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            return serverPublicKey;
+        }
+        #endregion
 
         // gửi draw packet ( dạng json )
         public void SendDrawPacket(DrawPacket drawPacket)
@@ -62,9 +101,12 @@ namespace Program
 
                     string jsonPacket = Newtonsoft.Json.JsonConvert.SerializeObject(drawPacket);
 
+                    // Mã hóa thông điệp JSON bằng khóa công khai của server
+                    string encryptedPacket = rsaHelper.Encrypt(jsonPacket, serverPublicKey);
+
                     // gửi dữ liệu
-                    sw.WriteLine(jsonPacket);
-                    Console.WriteLine(jsonPacket);
+                    sw.WriteLine(encryptedPacket);
+                    Console.WriteLine(encryptedPacket);
                     sw.Flush();
                 }
                 catch (Exception ex)
@@ -87,7 +129,13 @@ namespace Program
                 {
                     string packetLog = $"Gửi Packet: {packet.Type};{packet.Payload}";
                     Console.WriteLine(packetLog);
-                    sw.WriteLine(packet.Type + ";" + packet.Payload);
+
+                    //ma hoa payload
+                    string encryptedPayload = rsaHelper.Encrypt(packet.Payload, serverPublicKey);
+                    // Tạo gói tin mã hóa
+                    string encryptedPacket = $"{packet.Type};{encryptedPayload}";
+
+                    sw.WriteLine(encryptedPacket);
                     sw.Flush();
                 }
                 catch (Exception ex)
@@ -104,11 +152,11 @@ namespace Program
         }
 
 
-        public void ReceiveData()
+        public void ReceiveData(NetworkStream netstream)
         {
             try
             {
-                ns = tcpClient.GetStream();
+                ns = netstream;
                 sw = new StreamWriter(ns);
                 sr = new StreamReader(ns);
 
@@ -121,16 +169,19 @@ namespace Program
                         try
                         {
                             receivedData = sr.ReadLine();
-                            Console.WriteLine(receivedData);
-                            if (!string.IsNullOrEmpty(receivedData))
+                            // Giải mã thông điệp nhận được
+                            string decryptedData = rsaHelper.Decrypt(receivedData, privateKey);
+                            Console.WriteLine(decryptedData);
+                            if (!string.IsNullOrEmpty(decryptedData))
                             {
-                                if (receivedData.StartsWith("{") && receivedData.EndsWith("}"))
+                                if (decryptedData.StartsWith("{") && decryptedData.EndsWith("}"))
                                 {
-                                    HandleDrawPacket(receivedData);
+                                    HandleDrawPacket(decryptedData);
                                 }
                                 else
                                 {
-                                    Packet packet = ParsePacket(receivedData);
+                                    // Tạo gói tin từ thông điệp đã giải mã
+                                    Packet packet = ParsePacket(decryptedData);
                                     AnalyzingPacket(packet);
                                 }
                             }
@@ -147,9 +198,6 @@ namespace Program
                 ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
             }
         }
-
-
-
 
         private Packet ParsePacket(string msg)
         {
