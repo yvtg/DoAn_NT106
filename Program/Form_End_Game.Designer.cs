@@ -36,10 +36,7 @@
             this.hopeRoundButton1 = new ReaLTaiizor.Controls.HopeRoundButton();
             this.hopeRoundButton2 = new ReaLTaiizor.Controls.HopeRoundButton();
             this.hopeRoundButton3 = new ReaLTaiizor.Controls.HopeRoundButton();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.EndGameForm = new ReaLTaiizor.Forms.HopeForm();
             this.SuspendLayout();
             // 
             // ReturnButton
@@ -52,7 +49,7 @@
             this.ReturnButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ReturnButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.ReturnButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.ReturnButton.Location = new System.Drawing.Point(112, 401);
+            this.ReturnButton.Location = new System.Drawing.Point(114, 444);
             this.ReturnButton.Name = "ReturnButton";
             this.ReturnButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.ReturnButton.Size = new System.Drawing.Size(130, 33);
@@ -76,7 +73,7 @@
             this.top1Button.Image = null;
             this.top1Button.ImageSize = new System.Drawing.Size(64, 64);
             this.top1Button.IsDerivedStyle = true;
-            this.top1Button.Location = new System.Drawing.Point(100, 112);
+            this.top1Button.Location = new System.Drawing.Point(102, 155);
             this.top1Button.Name = "top1Button";
             this.top1Button.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
             this.top1Button.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
@@ -105,7 +102,7 @@
             this.top2Button.Image = null;
             this.top2Button.ImageSize = new System.Drawing.Size(64, 64);
             this.top2Button.IsDerivedStyle = true;
-            this.top2Button.Location = new System.Drawing.Point(37, 260);
+            this.top2Button.Location = new System.Drawing.Point(39, 303);
             this.top2Button.Name = "top2Button";
             this.top2Button.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
             this.top2Button.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
@@ -134,7 +131,7 @@
             this.top3Button.Image = null;
             this.top3Button.ImageSize = new System.Drawing.Size(64, 64);
             this.top3Button.IsDerivedStyle = true;
-            this.top3Button.Location = new System.Drawing.Point(203, 260);
+            this.top3Button.Location = new System.Drawing.Point(205, 303);
             this.top3Button.Name = "top3Button";
             this.top3Button.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
             this.top3Button.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
@@ -161,7 +158,7 @@
             this.hopeRoundButton1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.hopeRoundButton1.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.hopeRoundButton1.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.hopeRoundButton1.Location = new System.Drawing.Point(105, 231);
+            this.hopeRoundButton1.Location = new System.Drawing.Point(107, 274);
             this.hopeRoundButton1.Name = "hopeRoundButton1";
             this.hopeRoundButton1.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(158)))), ((int)(((byte)(255)))));
             this.hopeRoundButton1.Size = new System.Drawing.Size(129, 34);
@@ -182,7 +179,7 @@
             this.hopeRoundButton2.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.hopeRoundButton2.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.hopeRoundButton2.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.hopeRoundButton2.Location = new System.Drawing.Point(44, 353);
+            this.hopeRoundButton2.Location = new System.Drawing.Point(46, 396);
             this.hopeRoundButton2.Name = "hopeRoundButton2";
             this.hopeRoundButton2.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(158)))), ((int)(((byte)(255)))));
             this.hopeRoundButton2.Size = new System.Drawing.Size(101, 31);
@@ -203,7 +200,7 @@
             this.hopeRoundButton3.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.hopeRoundButton3.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.hopeRoundButton3.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.hopeRoundButton3.Location = new System.Drawing.Point(212, 353);
+            this.hopeRoundButton3.Location = new System.Drawing.Point(214, 396);
             this.hopeRoundButton3.Name = "hopeRoundButton3";
             this.hopeRoundButton3.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(158)))), ((int)(((byte)(255)))));
             this.hopeRoundButton3.Size = new System.Drawing.Size(101, 31);
@@ -213,35 +210,31 @@
             this.hopeRoundButton3.TextColor = System.Drawing.Color.White;
             this.hopeRoundButton3.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             // 
-            // pictureBox1
+            // EndGameForm
             // 
-            this.pictureBox1.Image = global::Program.Properties.Resources.coconut;
-            this.pictureBox1.Location = new System.Drawing.Point(250, 152);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(86, 113);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 29;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::Program.Properties.Resources.coconut;
-            this.pictureBox2.Location = new System.Drawing.Point(13, 152);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(86, 113);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox2.TabIndex = 30;
-            this.pictureBox2.TabStop = false;
+            this.EndGameForm.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
+            this.EndGameForm.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.EndGameForm.ControlBoxColorN = System.Drawing.Color.White;
+            this.EndGameForm.Cursor = System.Windows.Forms.Cursors.Default;
+            this.EndGameForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.EndGameForm.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.EndGameForm.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
+            this.EndGameForm.Image = null;
+            this.EndGameForm.Location = new System.Drawing.Point(0, 0);
+            this.EndGameForm.Name = "EndGameForm";
+            this.EndGameForm.Size = new System.Drawing.Size(348, 40);
+            this.EndGameForm.TabIndex = 31;
+            this.EndGameForm.Text = "Score Board";
+            this.EndGameForm.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             // 
             // Form_End_Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
-            this.BackgroundImage = global::Program.Properties.Resources.endgame_background;
-            this.ClientSize = new System.Drawing.Size(348, 453);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.pictureBox1);
+            this.BackgroundImage = global::Program.Properties.Resources.background_score;
+            this.ClientSize = new System.Drawing.Size(348, 502);
+            this.Controls.Add(this.EndGameForm);
             this.Controls.Add(this.hopeRoundButton3);
             this.Controls.Add(this.hopeRoundButton2);
             this.Controls.Add(this.hopeRoundButton1);
@@ -257,8 +250,6 @@
             this.Name = "Form_End_Game";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Leader board";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -271,7 +262,6 @@
         private ReaLTaiizor.Controls.HopeRoundButton hopeRoundButton1;
         private ReaLTaiizor.Controls.HopeRoundButton hopeRoundButton2;
         private ReaLTaiizor.Controls.HopeRoundButton hopeRoundButton3;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private ReaLTaiizor.Forms.HopeForm EndGameForm;
     }
 }

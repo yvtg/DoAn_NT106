@@ -76,10 +76,6 @@ namespace Program
                         this.Close(); // Đóng form trên luồng UI
                     }));
                 }
-                else
-                {
-                    this.Close();
-                }
             };
 
             this.roomId = roomId;
@@ -693,7 +689,18 @@ namespace Program
             if (roomID == this.roomId)
             {
                 roundTimer.Stop();
-                ShowMessage("Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết");
+                Form_End_Game formendgame = new Form_End_Game(username, userScore, playerScores);
+                formendgame.StartPosition = FormStartPosition.Manual;
+                int centerX = this.Location.X + (this.Width - formendgame.Width) / 2;
+                int centerY = this.Location.Y + (this.Height - formendgame.Height) / 2;
+                formendgame.Location = new Point(centerX, centerY);
+                formendgame.Show();
+                this.Hide();
+                formendgame.FormClosed += (s, e) =>
+                {
+                    this.Show();
+                };
+
                 if (username == host)
                 {
                     startButton.Enabled = true;
@@ -709,9 +716,10 @@ namespace Program
             client.SendPacket(packet);
             this.Close();
         }
+
         public void ShowMessage(string messsage)
         {
-            Form_Message formmessage = new Form_Message(username, messsage, currentRound, userScore, playerScores);
+            Form_Message formmessage = new Form_Message(username, messsage);
             formmessage.StartPosition = FormStartPosition.Manual;
             int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
             int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;

@@ -17,6 +17,7 @@ namespace Program
     {
         private string username;
         private Client client;
+
         public Form_Home(string username)
         {
             InitializeComponent();
@@ -84,31 +85,45 @@ namespace Program
             }
 
             this.Hide();
-            // Kiểm tra nếu Form_Room đã tồn tại
-            if (Form_Manager.RoomForm != null && !Form_Manager.RoomForm.IsDisposed)
+            Form_Room formRoom = new Form_Room(roomId, host, maxPlayers, username);
+            formRoom.StartPosition = FormStartPosition.Manual;
+            formRoom.Location = this.Location;
+            formRoom.Show();
+            formRoom.FormClosed += (s, args) =>
             {
-                Form_Manager.RoomForm.Focus(); 
-                return;
-            }
-            Form_Manager.HomeForm?.Hide();
-
-            Form_Manager.RoomForm = new Form_Room(roomId, host, maxPlayers, username);
-            Form_Manager.RoomForm.StartPosition = FormStartPosition.Manual;
-            Form_Manager.RoomForm.Location = Form_Manager.HomeForm?.Location ?? new Point(100, 100);
-            Form_Manager.RoomForm.Show();
-
-            // Khi Form_Room đóng
-            Form_Manager.RoomForm.FormClosed += (s, args) =>
-            {
-                Form_Manager.RoomForm = null; 
-                Form_Manager.HomeForm?.Show(); 
+                this.Show();
             };
 
-            Form_Manager.RoomForm.FormClosing += (s, args) =>
-            {
-                if (this != null && !this.IsDisposed)
-                    this.Show();
-            };
+            //// Kiểm tra nếu Form_Room đã tồn tại
+            //if (Form_Manager.RoomForm != null && !Form_Manager.RoomForm.IsDisposed)
+            //{
+            //    Form_Manager.RoomForm.Focus(); 
+            //    return;
+            //}
+            //Form_Manager.HomeForm?.Hide();
+
+            //Form_Manager.RoomForm = new Form_Room(roomId, host, maxPlayers, username);
+            //Form_Manager.RoomForm.StartPosition = FormStartPosition.Manual;
+            //Form_Manager.RoomForm.Location = Form_Manager.HomeForm?.Location ?? this.Location;
+            //Form_Manager.RoomForm.Show();
+
+            //Form_Manager.RoomForm.LeaveRoom += () =>
+            //{
+            //    this.Show();
+            //};
+
+            //// Khi Form_Room đóng
+            //Form_Manager.RoomForm.FormClosed += (s, args) =>
+            //{
+            //    Form_Manager.RoomForm = null; 
+            //    Form_Manager.HomeForm?.Show(); 
+            //};
+
+            //Form_Manager.RoomForm.FormClosing += (s, args) =>
+            //{
+            //    if (this != null && !this.IsDisposed)
+            //        this.Show();
+            //};
         }
         private void OnProfileReceived(ProfileResultPacket packet)
         {

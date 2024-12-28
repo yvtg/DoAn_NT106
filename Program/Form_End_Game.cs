@@ -25,20 +25,16 @@ namespace Program
             this.score = score;
             this.playerScores = playerScores;
             this.client = Form_Input_ServerIP.client;
-            //client.ServerDisconnected += () =>
-            //{
-            //    if (this.InvokeRequired)
-            //    {
-            //        this.Invoke(new Action(() =>
-            //        {
-            //            this.Close(); // Đóng form trên luồng UI
-            //        }));
-            //    }
-            //    else
-            //    {
-            //        this.Close();
-            //    }
-            //};
+            client.ServerDisconnected += () =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Close(); // Đóng form trên luồng UI
+                    }));
+                }
+            };
 
             // xếp hạng người chơi
             DisplayPlayerRanks();
@@ -89,6 +85,5 @@ namespace Program
         {
             this.Close();
         }
-
     }
 }

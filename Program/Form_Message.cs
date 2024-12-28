@@ -18,15 +18,12 @@ namespace Program
         string username;
         int score;
         Dictionary<string, (string name, int score, int textcore)> playerScores = new Dictionary<string, (string, int, int)>();
-        public Form_Message(string username, string message, int round, int score, Dictionary<string, (string name, int score, int textcore)> playerScores)
+        public Form_Message(string username, string message)
         {
             InitializeComponent();
             this.message = message;
             Message.Text = message;
-            this.round = round;
             this.username = username;
-            this.score = score;
-            this.playerScores = playerScores;
         }
 
         public Form_Message(string message)
@@ -38,20 +35,7 @@ namespace Program
 
         private void okBtn_Click(object sender, EventArgs e)
         {
-            if (message == "Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết")
-            {
-                Form_End_Game formendgame = new Form_End_Game(username, score, playerScores);
-                formendgame.StartPosition = FormStartPosition.Manual;
-                int centerX = this.Location.X + (this.Width - formendgame.Width) / 2;
-                int centerY = this.Location.Y + (this.Height - formendgame.Height) / 2;
-                formendgame.Location = new Point(centerX, centerY);
-                formendgame.Show();
-                this.Close();
-            }
-            else
-            {
-                this.Close();
-            }
+            this.Close();
         }
 
         private void Form_Message_Paint(object sender, PaintEventArgs e)
