@@ -271,7 +271,7 @@
     <Compile Include="Form_Law.Designer.cs">
       <DependentUpon>Form_Law.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form_Manager.cs" />
+    <Compile Include="Manager.cs" />
     <Compile Include="Form_Message.cs">
       <SubType>Form</SubType>
     </Compile>

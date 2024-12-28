@@ -60,6 +60,7 @@ namespace Program
         private int roundTime; // Thời gian của mỗi vòng chơi (tính bằng giây)
         private System.Timers.Timer roundTimer; // Timer đếm ngược cho mỗi vòng chơi
         int progressValue = 0;
+        private Form_Message activeMessageForm = null;
 
         public Form_Room(string roomId, string host, int max_player, string username)
         {
@@ -485,7 +486,7 @@ namespace Program
                                 }
 
                                 roundTimer.Stop();
-                                wordLabel.Text = "key word: ";
+                                wordLabel.Text = "KEY WORD: ";
                                 sendButton.Enabled = true;
                                 ClearPictureBox();
                                 pictureBox1.Enabled = true;
@@ -660,13 +661,13 @@ namespace Program
             ClearPictureBox();
             StartTimer();
             currentRound = roundUpdatePacket.Round; 
-            roundLabel.Text = $"round: {currentRound}";
+            roundLabel.Text = $"Round: {currentRound}";
 
             if (roundUpdatePacket.Name == username)
             {
                 pictureBox1.Enabled = true;
                 sendButton.Enabled = false;
-                wordLabel.Text = $"key word: {roundUpdatePacket.Word}";
+                wordLabel.Text = $"KEY WORD: {roundUpdatePacket.Word}";
                 ShowMessage($"Bạn là người vẽ! từ khóa là {roundUpdatePacket.Word}");
 
             }
@@ -705,7 +706,7 @@ namespace Program
                 {
                     startButton.Enabled = true;
                     roundComboBox.Show();
-                    roundLabel.Text = "round: ";
+                    roundLabel.Text = "Round: ";
                 }
             }
         }
@@ -714,18 +715,32 @@ namespace Program
         {
             LeaveRoomPacket packet = new LeaveRoomPacket($"{roomId};{username}");
             client.SendPacket(packet);
+
+            // Hủy đăng ký sự kiện
+            client.RoundUpdateReceived -= OnReceivedRoundUpdate;
+            client.EndGameReceived -= EndGame;
+
             this.Close();
         }
 
-        public void ShowMessage(string messsage)
+        public void ShowMessage(string message)
         {
-            Form_Message formmessage = new Form_Message(username, messsage);
-            formmessage.StartPosition = FormStartPosition.Manual;
-            int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
-            int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
-            formmessage.Location = new Point(centerX, centerY);
+            // Kiểm tra nếu đã có form thông báo đang hiển thị
+            if (activeMessageForm != null && !activeMessageForm.IsDisposed)
+            {
+                return; 
+            }
 
-            formmessage.Show();
+            activeMessageForm = new Form_Message(username, message);
+            activeMessageForm.StartPosition = FormStartPosition.Manual;
+
+            int centerX = this.Location.X + (this.Width - activeMessageForm.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - activeMessageForm.Height) / 2;
+            activeMessageForm.Location = new Point(centerX, centerY);
+
+            activeMessageForm.FormClosed += (s, e) => { activeMessageForm = null; };
+
+            activeMessageForm.Show();
         }
         #region dragging
 
@@ -758,7 +773,6 @@ namespace Program
         }
 
         #endregion
-
     }
 
 
