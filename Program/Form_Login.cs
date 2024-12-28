@@ -107,9 +107,8 @@ namespace Program
             this.Hide(); 
             lawForm.StartPosition = FormStartPosition.Manual;
             lawForm.Location = this.Location; // Đặt vị trí của Form_Home giống với Form_Background
-            lawForm.ShowDialog();
-            this.Show();
-            lawForm.FormClosed += (s, args) => this.Close();
+            lawForm.Show();
+            lawForm.FormClosed += (s, args) => this.Show();
         }
 
 
@@ -119,9 +118,8 @@ namespace Program
             this.Hide();
             regForm.StartPosition = FormStartPosition.Manual;
             regForm.Location = this.Location; // Đặt vị trí của Form_Home giống với Form_Background
-            regForm.ShowDialog();
-            this.Show();
-            regForm.FormClosed += (s, args) => this.Close();
+            regForm.Show();
+            regForm.FormClosed += (s, args) => this.Show();
         }
 
         private void Form_Login_FormClosing(object sender, FormClosingEventArgs e)

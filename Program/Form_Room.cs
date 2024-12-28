@@ -692,6 +692,7 @@ namespace Program
             }
             if (roomID == this.roomId)
             {
+                roundTimer.Stop();
                 ShowMessage("Trò chơi đã kết thúc! hãy chuyển đến phần tổng kết");
                 if (username == host)
                 {

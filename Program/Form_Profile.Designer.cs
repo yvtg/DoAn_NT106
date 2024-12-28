@@ -32,11 +32,13 @@
             this.usernameLabel = new System.Windows.Forms.Label();
             this.maxscoreLabel = new System.Windows.Forms.Label();
             this.countLabel = new System.Windows.Forms.Label();
-            this.maxscoreTextbox = new ReaLTaiizor.Controls.HopeTextBox();
-            this.usernameTextbox = new ReaLTaiizor.Controls.HopeTextBox();
-            this.countTextbox = new ReaLTaiizor.Controls.HopeTextBox();
             this.backButton = new ReaLTaiizor.Controls.HopeButton();
             this.profile = new ReaLTaiizor.Forms.HopeForm();
+            this.label1 = new System.Windows.Forms.Label();
+            this.usernameTextbox = new System.Windows.Forms.TextBox();
+            this.emailTextBox = new System.Windows.Forms.TextBox();
+            this.maxscoreTextbox = new System.Windows.Forms.TextBox();
+            this.countTextbox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // usernameLabel
@@ -44,9 +46,10 @@
             this.usernameLabel.AutoSize = true;
             this.usernameLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.usernameLabel.Location = new System.Drawing.Point(5, 180);
+            this.usernameLabel.Location = new System.Drawing.Point(4, 146);
+            this.usernameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(112, 23);
+            this.usernameLabel.Size = new System.Drawing.Size(90, 19);
             this.usernameLabel.TabIndex = 0;
             this.usernameLabel.Text = "Username";
             // 
@@ -55,9 +58,10 @@
             this.maxscoreLabel.AutoSize = true;
             this.maxscoreLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maxscoreLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.maxscoreLabel.Location = new System.Drawing.Point(5, 255);
+            this.maxscoreLabel.Location = new System.Drawing.Point(4, 252);
+            this.maxscoreLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.maxscoreLabel.Name = "maxscoreLabel";
-            this.maxscoreLabel.Size = new System.Drawing.Size(152, 23);
+            this.maxscoreLabel.Size = new System.Drawing.Size(120, 19);
             this.maxscoreLabel.TabIndex = 2;
             this.maxscoreLabel.Text = "Highest Score";
             // 
@@ -66,83 +70,12 @@
             this.countLabel.AutoSize = true;
             this.countLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.countLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.countLabel.Location = new System.Drawing.Point(5, 320);
+            this.countLabel.Location = new System.Drawing.Point(4, 305);
+            this.countLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.countLabel.Name = "countLabel";
-            this.countLabel.Size = new System.Drawing.Size(120, 23);
+            this.countLabel.Size = new System.Drawing.Size(97, 19);
             this.countLabel.TabIndex = 5;
             this.countLabel.Text = "Play Times";
-            // 
-            // maxscoreTextbox
-            // 
-            this.maxscoreTextbox.BackColor = System.Drawing.Color.White;
-            this.maxscoreTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.maxscoreTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.maxscoreTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.maxscoreTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.maxscoreTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
-            this.maxscoreTextbox.Hint = "";
-            this.maxscoreTextbox.Location = new System.Drawing.Point(189, 244);
-            this.maxscoreTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.maxscoreTextbox.MaxLength = 32767;
-            this.maxscoreTextbox.Multiline = false;
-            this.maxscoreTextbox.Name = "maxscoreTextbox";
-            this.maxscoreTextbox.PasswordChar = '\0';
-            this.maxscoreTextbox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.maxscoreTextbox.SelectedText = "";
-            this.maxscoreTextbox.SelectionLength = 0;
-            this.maxscoreTextbox.SelectionStart = 0;
-            this.maxscoreTextbox.Size = new System.Drawing.Size(259, 40);
-            this.maxscoreTextbox.TabIndex = 25;
-            this.maxscoreTextbox.TabStop = false;
-            this.maxscoreTextbox.UseSystemPasswordChar = false;
-            // 
-            // usernameTextbox
-            // 
-            this.usernameTextbox.BackColor = System.Drawing.Color.White;
-            this.usernameTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.usernameTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.usernameTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.usernameTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usernameTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
-            this.usernameTextbox.Hint = "";
-            this.usernameTextbox.Location = new System.Drawing.Point(189, 165);
-            this.usernameTextbox.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
-            this.usernameTextbox.MaxLength = 32767;
-            this.usernameTextbox.Multiline = false;
-            this.usernameTextbox.Name = "usernameTextbox";
-            this.usernameTextbox.PasswordChar = '\0';
-            this.usernameTextbox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.usernameTextbox.SelectedText = "";
-            this.usernameTextbox.SelectionLength = 0;
-            this.usernameTextbox.SelectionStart = 0;
-            this.usernameTextbox.Size = new System.Drawing.Size(259, 40);
-            this.usernameTextbox.TabIndex = 24;
-            this.usernameTextbox.TabStop = false;
-            this.usernameTextbox.UseSystemPasswordChar = false;
-            // 
-            // countTextbox
-            // 
-            this.countTextbox.BackColor = System.Drawing.Color.White;
-            this.countTextbox.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.countTextbox.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.countTextbox.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.countTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.countTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
-            this.countTextbox.Hint = "";
-            this.countTextbox.Location = new System.Drawing.Point(189, 320);
-            this.countTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.countTextbox.MaxLength = 32767;
-            this.countTextbox.Multiline = false;
-            this.countTextbox.Name = "countTextbox";
-            this.countTextbox.PasswordChar = '\0';
-            this.countTextbox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.countTextbox.SelectedText = "";
-            this.countTextbox.SelectionLength = 0;
-            this.countTextbox.SelectionStart = 0;
-            this.countTextbox.Size = new System.Drawing.Size(259, 40);
-            this.countTextbox.TabIndex = 28;
-            this.countTextbox.TabStop = false;
-            this.countTextbox.UseSystemPasswordChar = false;
             // 
             // backButton
             // 
@@ -155,11 +88,10 @@
             this.backButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.backButton.Location = new System.Drawing.Point(159, 430);
-            this.backButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.backButton.Location = new System.Drawing.Point(123, 400);
             this.backButton.Name = "backButton";
             this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.backButton.Size = new System.Drawing.Size(139, 50);
+            this.backButton.Size = new System.Drawing.Size(104, 41);
             this.backButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.backButton.TabIndex = 29;
             this.backButton.Text = "Back";
@@ -179,32 +111,85 @@
             this.profile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.profile.Image = null;
             this.profile.Location = new System.Drawing.Point(0, 0);
-            this.profile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.profile.Name = "profile";
-            this.profile.Size = new System.Drawing.Size(464, 40);
+            this.profile.Size = new System.Drawing.Size(348, 40);
             this.profile.TabIndex = 30;
             this.profile.Text = "Profile";
             this.profile.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.label1.Location = new System.Drawing.Point(4, 199);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 19);
+            this.label1.TabIndex = 31;
+            this.label1.Text = "Email";
+            // 
+            // usernameTextbox
+            // 
+            this.usernameTextbox.Enabled = false;
+            this.usernameTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameTextbox.Location = new System.Drawing.Point(142, 145);
+            this.usernameTextbox.Name = "usernameTextbox";
+            this.usernameTextbox.ReadOnly = true;
+            this.usernameTextbox.Size = new System.Drawing.Size(189, 26);
+            this.usernameTextbox.TabIndex = 33;
+            // 
+            // emailTextBox
+            // 
+            this.emailTextBox.Enabled = false;
+            this.emailTextBox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.emailTextBox.Location = new System.Drawing.Point(142, 198);
+            this.emailTextBox.Name = "emailTextBox";
+            this.emailTextBox.ReadOnly = true;
+            this.emailTextBox.Size = new System.Drawing.Size(189, 26);
+            this.emailTextBox.TabIndex = 34;
+            // 
+            // maxscoreTextbox
+            // 
+            this.maxscoreTextbox.Enabled = false;
+            this.maxscoreTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxscoreTextbox.Location = new System.Drawing.Point(142, 249);
+            this.maxscoreTextbox.Name = "maxscoreTextbox";
+            this.maxscoreTextbox.ReadOnly = true;
+            this.maxscoreTextbox.Size = new System.Drawing.Size(189, 26);
+            this.maxscoreTextbox.TabIndex = 35;
+            // 
+            // countTextbox
+            // 
+            this.countTextbox.Enabled = false;
+            this.countTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.countTextbox.Location = new System.Drawing.Point(142, 302);
+            this.countTextbox.Name = "countTextbox";
+            this.countTextbox.ReadOnly = true;
+            this.countTextbox.Size = new System.Drawing.Size(189, 26);
+            this.countTextbox.TabIndex = 36;
+            // 
             // Form_Profile
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
             this.BackgroundImage = global::Program.Properties.Resources.background2;
-            this.ClientSize = new System.Drawing.Size(464, 558);
-            this.Controls.Add(this.profile);
-            this.Controls.Add(this.backButton);
+            this.ClientSize = new System.Drawing.Size(348, 453);
             this.Controls.Add(this.countTextbox);
             this.Controls.Add(this.maxscoreTextbox);
+            this.Controls.Add(this.emailTextBox);
             this.Controls.Add(this.usernameTextbox);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.profile);
+            this.Controls.Add(this.backButton);
             this.Controls.Add(this.countLabel);
             this.Controls.Add(this.maxscoreLabel);
             this.Controls.Add(this.usernameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MaximumSize = new System.Drawing.Size(2560, 1270);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Profile";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -219,10 +204,12 @@
         private System.Windows.Forms.Label usernameLabel;
         private System.Windows.Forms.Label maxscoreLabel;
         private System.Windows.Forms.Label countLabel;
-        private ReaLTaiizor.Controls.HopeTextBox maxscoreTextbox;
-        private ReaLTaiizor.Controls.HopeTextBox usernameTextbox;
-        private ReaLTaiizor.Controls.HopeTextBox countTextbox;
         private ReaLTaiizor.Controls.HopeButton backButton;
         private ReaLTaiizor.Forms.HopeForm profile;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox usernameTextbox;
+        private System.Windows.Forms.TextBox emailTextBox;
+        private System.Windows.Forms.TextBox maxscoreTextbox;
+        private System.Windows.Forms.TextBox countTextbox;
     }
 }

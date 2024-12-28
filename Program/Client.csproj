@@ -409,6 +409,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mongocrypt.dll" />
+    <None Include="Resources\coconut.png" />
+    <None Include="Resources\crown-collection-in-pixel-art-style-vector.png" />
+    <None Include="Resources\endgame_background.png" />
     <None Include="Resources\leave_icon1.png" />
     <None Include="Resources\leave_icon.png" />
     <None Include="Resources\backgroun3.png" />

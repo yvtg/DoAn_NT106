@@ -590,7 +590,7 @@ namespace Server
                     // Gán dữ liệu vào các biến hoặc controls
                     if (profileData != null)
                     {
-                        ProfileResultPacket profileResultPacket = new ProfileResultPacket($"{profileData.username};{profileData.highestscore};{profileData.gamesplayed}");
+                        ProfileResultPacket profileResultPacket = new ProfileResultPacket($"{profileData.username};{profileData.email};{profileData.highestscore};{profileData.gamesplayed}");
                         sendPacket(client, profileResultPacket);
                     }
                     break;

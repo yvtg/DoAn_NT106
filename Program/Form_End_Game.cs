@@ -47,33 +47,48 @@ namespace Program
         private void DisplayPlayerRanks()
         {
             var sortedPlayers = playerScores.OrderByDescending(p => p.Value.score); // Sắp xếp theo điểm số giảm dần
-            int rank = 1; // Thứ hạng bắt đầu
             int previousScore = -1; // Giá trị điểm số trước đó (khởi tạo bằng giá trị không hợp lệ)
-            rankListbox.Items.Add($"BẢNG XẾP HẠNG");
+            int buttonIndex = 1; // Chỉ số để gán vào các nút
+            top3Button.Visible = false;
+            hopeRoundButton3.Visible = false;
 
             foreach (var player in sortedPlayers)
             {
-                // Nếu điểm của người chơi hiện tại khác điểm trước đó, cập nhật thứ hạng
+                // Kiểm tra nếu điểm số của người chơi hiện tại khác với điểm số trước đó
                 if (player.Value.score != previousScore)
                 {
-                    rankListbox.Items.Add($"Top {rank}: {player.Value.name} {player.Value.score}");
                     previousScore = player.Value.score; // Cập nhật điểm số trước đó
                 }
-                else
+
+                // Gán tên người chơi vào button tương ứng
+                if (buttonIndex == 1)
+                    top1Button.Text = player.Value.name;
+                else if (buttonIndex == 2)
+                    top2Button.Text = player.Value.name;
+                else if (buttonIndex == 3)
                 {
-                    // Nếu điểm số bằng nhau, giữ nguyên thứ hạng
-                    rankListbox.Items.Add($"Top {rank}: {player.Value.name} {player.Value.score}");
+                    top3Button.Text = player.Value.name;
+                    // Hiển thị nếu có hơn 3 người chơi
+                    top3Button.Visible = true;
+                    hopeRoundButton3.Visible = true;
                 }
+
+                buttonIndex++; // Tăng chỉ số cho button
+
+                // Ngừng gán nếu đã đủ 3 người chơi
+                if (buttonIndex > 3) break;
             }
 
-            // cập nhật điểm cao nhất, số lượt chơi của người chơi này
+            // Cập nhật điểm cao nhất và số lượt chơi của người chơi hiện tại
             ProfileUpdatePacket profileUpdatePacket = new ProfileUpdatePacket($"{username};{score}");
             client.SendPacket(profileUpdatePacket);
         }
+
 
         private void Returnbutton_Click_1(object sender, EventArgs e)
         {
             this.Close();
         }
+
     }
 }

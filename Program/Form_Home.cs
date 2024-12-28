@@ -120,6 +120,7 @@ namespace Program
             }
             ProfileData data = new ProfileData();
             data.username = packet.data1.username;
+            data.email = packet.data1.email;
             data.highestscore = packet.data1.highestscore;
             data.gamesplayed = packet.data1.gamesplayed;
 
@@ -127,8 +128,11 @@ namespace Program
             profileform.StartPosition = FormStartPosition.Manual;
             profileform.Location = this.Location;
             this.Hide();
-            profileform.ShowDialog();
-            this.Show();
+            profileform.Show();
+            profileform.FormClosed += (s, args) =>
+            {
+                this.Show();
+            };
         }
         #endregion
 

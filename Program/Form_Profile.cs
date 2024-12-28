@@ -34,6 +34,7 @@ namespace Program
                 }
             };
             usernameTextbox.Text = username.username;
+            emailTextBox.Text = username.email;
             maxscoreTextbox.Text = username.highestscore.ToString();
             countTextbox.Text = username.gamesplayed.ToString();
         }

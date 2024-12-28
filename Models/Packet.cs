@@ -552,11 +552,12 @@ namespace Models
         public ProfileResultPacket(string payload) : base(PacketType.PROFILE_RESULT, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 3)
+            if (parsePayload.Length >= 4)
             {
                 data1.username = parsePayload[0];
-                data1.highestscore = int.Parse(parsePayload[1]);
-                data1.gamesplayed = int.Parse(parsePayload[2]);
+                data1.email = parsePayload[1];
+                data1.highestscore = int.Parse(parsePayload[2]);
+                data1.gamesplayed = int.Parse(parsePayload[3]);
             }
             else
             {
@@ -566,7 +567,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"PROFILE_RESULT;{data1.username};{data1.highestscore};{data1.gamesplayed}");
+            return Encoding.UTF8.GetBytes($"PROFILE_RESULT;{data1.username};{data1.email};{data1.highestscore};{data1.gamesplayed}");
         }
     }
 
