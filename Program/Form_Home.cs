@@ -17,6 +17,8 @@ namespace Program
     {
         private string username;
         private Client client;
+        private Form_Create createForm;
+        private Form_Join joinForm;
 
         public Form_Home(string username)
         {
@@ -58,22 +60,41 @@ namespace Program
         }
         private void createButton_Click(object sender, EventArgs e)
         {
-            Form_Create createform = new Form_Create(username);
-            createform.StartPosition = FormStartPosition.Manual;
-            int centerX = this.Location.X + (this.Width - createform.Width) / 2;
-            int centerY = this.Location.Y + (this.Height - createform.Height) / 2;
-            createform.Location = new Point(centerY, centerY);
-            createform.Show();
+            if (createForm != null && !createForm.IsDisposed)
+            {
+                createForm.BringToFront(); 
+                return;
+            }
+
+            createForm = new Form_Create(username);
+            createForm.StartPosition = FormStartPosition.Manual;
+
+            CenterChildForm(createForm);
+            createForm.FormClosed += (s, args) => { createForm = null; };
+
+            createForm.Show();
         }
 
         private void joinButton_Click_1(object sender, EventArgs e)
         {
-            Form_Join joinform = new Form_Join(username);
-            joinform.StartPosition = FormStartPosition.Manual;
-            int centerX = this.Location.X + (this.Width - joinform.Width) / 2;
-            int centerY = this.Location.Y + (this.Height - joinform.Height) / 2;
-            joinform.Location = new Point(centerY, centerY);
-            joinform.Show();
+            if (joinForm != null && !joinForm.IsDisposed)
+            {
+                joinForm.BringToFront(); // Nếu form đã mở, đưa lên trước
+                return;
+            }
+            joinForm = new Form_Join(username);
+            joinForm.StartPosition = FormStartPosition.Manual;
+
+            CenterChildForm(joinForm);
+            joinForm.FormClosed += (s, args) => { joinForm = null; }; // Xóa tham chiếu khi form đóng
+            joinForm.Show();
+        }
+
+        private void CenterChildForm(Form childForm)
+        {
+            int centerX = this.Left + (this.Width - childForm.Width) / 2;
+            int centerY = this.Top + (this.Height - childForm.Height) / 2;
+            childForm.Location = new Point(centerX, centerY);
         }
 
         private void OnReceiveRoomInfo(string roomId, string host, int maxPlayers)
@@ -178,5 +199,20 @@ namespace Program
             dragging = false;
         }
         #endregion
+
+        private void Form_Home_Load(object sender, EventArgs e)
+        {
+            this.LocationChanged += (s, args) =>
+            {
+                if (createForm != null && !createForm.IsDisposed)
+                {
+                    CenterChildForm(createForm);
+                }
+                if (joinForm != null && !joinForm.IsDisposed)
+                {
+                    CenterChildForm(joinForm);
+                }
+            };
+        }
     }
 }
