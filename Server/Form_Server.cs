@@ -73,6 +73,8 @@ namespace Server
         {
             isServerStopping = false;
             server.StartServer();
+            //startBtn.Enabled = false;
+            //stopBtn.Enabled = true;
         }
 
         private void stopBtn_Click(object sender, EventArgs e)
@@ -80,6 +82,8 @@ namespace Server
             server.StopServer();
             clientListView.Items.Clear();
             roomListView.Items.Clear();
+            //startBtn.Enabled = true;
+            //stopBtn.Enabled = false;
         }
 
         private void Form_Server_FormClosing(object sender, FormClosingEventArgs e)
