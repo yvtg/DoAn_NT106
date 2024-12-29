@@ -532,6 +532,7 @@ namespace Server
                     room = rooms.FirstOrDefault(r => r.RoomId == roomId);
                     if (room != null)
                     {
+                        room.status = "PLAYING";
                         BroadcastPacket(room, guessPacket);
                         OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};GUESS");
                         BroadcastPacket(room, otherInfo);

@@ -693,33 +693,6 @@ namespace Program
             }
             if (roomID == this.roomId)
             {
-                roundTimer.Stop();
-                Form_End_Game formendgame = new Form_End_Game(username, userScore, playerScores);
-                formendgame.StartPosition = FormStartPosition.Manual;
-                int centerX = this.Location.X + (this.Width - formendgame.Width) / 2;
-                int centerY = this.Location.Y + (this.Height - formendgame.Height) / 2;
-                formendgame.Location = new Point(centerX, centerY);
-                formendgame.Show();
-                this.Hide();
-                formendgame.FormClosed += (s, e) =>
-                {
-                    this.Show();
-                };
-
-                if (username == host)
-                {
-                    startButton.Enabled = true;
-                    roundComboBox.Show();
-                    roundComboBox.SelectedIndex = -1;
-                    roundLabel.Text = "Round: ";
-                }
-                timeLabel.Text = $"Time: ";
-                timeProgressBar.Value = 0;
-                wordLabel.Text = "key word: ";
-
-                sendButton.Enabled = true;
-                ClearPictureBox();
-                pictureBox1.Enabled = true;
 
                 // Đặt lại điểm của tất cả người chơi về 0
                 foreach (var key in playerScores.Keys.ToList())
@@ -733,6 +706,37 @@ namespace Program
                 {
                     user.SubItems[1].Text = "0"; // Reset điểm hiển thị
                 }
+                if (username == host)
+                {
+                    startButton.Enabled = true;
+                    roundComboBox.Show();
+                    roundComboBox.SelectedIndex = -1;
+                    roundLabel.Text = "Round: ";
+                }
+                timeLabel.Text = $"Time: ";
+                timeProgressBar.Value = 0;
+                wordLabel.Text = "key word: ";
+                roundLabel.Text = "Round: ";
+
+                sendButton.Enabled = true;
+                ClearPictureBox();
+                pictureBox1.Enabled = true;
+                currentRound = 0;
+                gameStart = false;
+                roundTimer.Stop();
+
+                Form_End_Game formendgame = new Form_End_Game(username, userScore, playerScores);
+                formendgame.StartPosition = FormStartPosition.Manual;
+                int centerX = this.Location.X + (this.Width - formendgame.Width) / 2;
+                int centerY = this.Location.Y + (this.Height - formendgame.Height) / 2;
+                formendgame.Location = new Point(centerX, centerY);
+                formendgame.Show();
+                this.Hide();
+
+                formendgame.FormClosed += (s, e) =>
+                {
+                    this.Show();
+                };
             }
         }
 
