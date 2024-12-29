@@ -451,7 +451,7 @@ namespace Program
                         userListView.Items.Add(item);
                         break;
 
-                    case "GUESS":
+                    case "GUESS_RIGHT":
 
                         if (!playerScores.ContainsKey(username))
                         {
@@ -505,7 +505,6 @@ namespace Program
                                 timeProgressBar.Value = 90-roundTime;
                                 user.SubItems[1].Text = Score.ToString(); // Update score    
                                 break;
-
                             }
                         }
                         break;
@@ -717,7 +716,7 @@ namespace Program
                 timeProgressBar.Value = 0;
                 wordLabel.Text = "key word: ";
                 roundLabel.Text = "Round: ";
-
+                SelectRound = -1;
                 sendButton.Enabled = true;
                 ClearPictureBox();
                 pictureBox1.Enabled = true;

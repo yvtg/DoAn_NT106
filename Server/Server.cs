@@ -544,7 +544,7 @@ namespace Server
                     if (room.CheckAnswer(msg, client))
                     {
                         // gui diem cho client de cap nhat
-                        OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};GUESS");
+                        OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};GUESS_RIGHT");
                         BroadcastPacket(room, otherInfo);
                     }
                     break;
@@ -554,7 +554,8 @@ namespace Server
                     room = rooms.FirstOrDefault(r => r.RoomId == roomId);
                     if (room != null)
                     {
-                        room.status = "WAITING";
+                        client.Score = 0;
+                        room.Clear();
                         UpdateRoomList?.Invoke();
                         BroadcastPacket(room, endGamePacket);
                     }
