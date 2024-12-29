@@ -99,16 +99,14 @@ namespace Server
                             break;
                         }
 
-                        string encryptedMsg = client.sr.ReadLine(); // Đọc dữ liệu mã hóa từ client
+                        string msg = client.sr.ReadLine(); // Đọc dữ liệu mã hóa từ client
 
-                        if (!string.IsNullOrEmpty(encryptedMsg))
+                        if (!string.IsNullOrEmpty(msg))
                         {
-                            UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {encryptedMsg}");
+                            UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
 
                             try
                             {
-                                // Giải mã dữ liệu
-                                string msg = AES.DecryptAES(Convert.FromBase64String(encryptedMsg));
                                 UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
 
                                 if (msg.StartsWith("{") && msg.EndsWith("}"))
