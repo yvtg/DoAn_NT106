@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Models;
 using System.IO;
 using System.Threading;
+using System.Text;
 
 
 namespace Program
@@ -17,6 +18,18 @@ namespace Program
         NetworkStream ns;
         StreamWriter sw;
         StreamReader sr;
+        private static RSAHelper rsaHelper;
+        private static string publicKey;
+        private static string privateKey;
+        private static string serverPublicKey;
+
+        public Client()
+        {
+            rsaHelper = new RSAHelper();
+            publicKey = rsaHelper.GetPublicKey();
+            privateKey = rsaHelper.GetPrivateKey();
+        }
+
 
         public static event Action RegisterSuccessful; // đăng kí thành công
         public event Action LoginSuccessful; // đăng nhập thành công
@@ -42,6 +55,15 @@ namespace Program
                 var token = cancellationTokenSource.Token;
                 Task.Run(() =>
                 {
+                    ns = tcpClient.GetStream();
+                    while (serverPublicKey == null)
+                    {
+                        // Nhận khóa công khai từ server
+                        serverPublicKey = ReceiveServerPublicKey(ns);   
+                    }
+                    // Gửi khóa công khai của client tới server
+                    SendPublicKey(ns);
+
                     while (!token.IsCancellationRequested)
                     {
                         ReceiveData();
@@ -54,6 +76,21 @@ namespace Program
                 ShowMessage("Lỗi khi kết nối: " + ex.Message);
                 return false;
             }
+        }
+        // Gửi khóa công khai của client tới server
+        private void SendPublicKey(NetworkStream stream)
+        {
+            byte[] publicKeyBytes = Encoding.UTF8.GetBytes(publicKey);
+            stream.Write(publicKeyBytes, 0, publicKeyBytes.Length);
+        }
+
+        // Nhận khóa công khai từ server
+        private string ReceiveServerPublicKey(NetworkStream stream)
+        {
+            byte[] buffer = new byte[1024];
+            int bytesRead = stream.Read(buffer, 0, buffer.Length);
+            string serverPublicKey = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            return serverPublicKey;
         }
 
 
@@ -73,9 +110,12 @@ namespace Program
 
                     string jsonPacket = Newtonsoft.Json.JsonConvert.SerializeObject(drawPacket);
 
+                    // Mã hóa thông điệp JSON bằng khóa công khai của server
+                    string encryptedPacket = rsaHelper.Encrypt(jsonPacket, serverPublicKey);
+
                     // gửi dữ liệu
-                    sw.WriteLine(jsonPacket);
-                    Console.WriteLine(jsonPacket);
+                    sw.WriteLine(encryptedPacket);
+                    Console.WriteLine(encryptedPacket);
                     sw.Flush();
                 }
                 catch (Exception ex)
@@ -103,7 +143,14 @@ namespace Program
                     }
                     string packetLog = $"Gửi Packet: {packet.Type};{packet.Payload}";
                     Console.WriteLine(packetLog);
-                    sw.WriteLine(packet.Type + ";" + packet.Payload);
+
+                    // Mã hóa Payload bằng khóa công khai của server
+                    string encryptedPayload = rsaHelper.Encrypt(packet.Payload, serverPublicKey);
+
+                    // Tạo gói tin mã hóa
+                    string encryptedPacket = $"{packet.Type};{encryptedPayload}";
+
+                    sw.WriteLine(encryptedPacket);
                     sw.Flush();
                 }
                 catch (Exception ex)
@@ -135,16 +182,20 @@ namespace Program
                     try
                     {
                         receivedData =  sr.ReadLine();
-                        Console.WriteLine(receivedData);
-                        if (!string.IsNullOrEmpty(receivedData))
+
+                        // Giải mã thông điệp nhận được
+                        string decryptedData = rsaHelper.Decrypt(receivedData, privateKey);
+
+                        Console.WriteLine(decryptedData);
+                        if (!string.IsNullOrEmpty(decryptedData))
                         {
-                            if (receivedData.StartsWith("{") && receivedData.EndsWith("}"))
+                            if (decryptedData.StartsWith("{") && decryptedData.EndsWith("}"))
                             {
-                                HandleDrawPacket(receivedData);
+                                HandleDrawPacket(decryptedData);
                             }
                             else
                             {
-                                Packet packet = ParsePacket(receivedData);
+                                Packet packet = ParsePacket(decryptedData);
                                 AnalyzingPacket(packet);
                             }
                         }

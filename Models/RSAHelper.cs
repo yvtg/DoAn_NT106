@@ -8,70 +8,36 @@ public class RSAHelper
 
     public RSAHelper()
     {
-        rsa = new RSACryptoServiceProvider(2048);
+        rsa = new RSACryptoServiceProvider();
     }
 
+    // Tạo khóa công khai
     public string GetPublicKey()
     {
-        return rsa.ToXmlString(false); // Chỉ chứa khóa công khai
+        return rsa.ToXmlString(false);
     }
 
+    // Tạo khóa riêng tư
     public string GetPrivateKey()
     {
-        return rsa.ToXmlString(true); // Chứa cả khóa công khai và khóa riêng tư
+        return rsa.ToXmlString(true);
     }
 
+    // Mã hóa văn bản bằng khóa công khai
     public string Encrypt(string plainText, string publicKey)
     {
         rsa.FromXmlString(publicKey);
-        byte[] dataToEncrypt = Encoding.UTF8.GetBytes(plainText);
-        byte[] encryptedData = rsa.Encrypt(dataToEncrypt, false);
-        return Convert.ToBase64String(encryptedData);
+        byte[] plainBytes = Encoding.UTF8.GetBytes(plainText);
+        byte[] encryptedBytes = rsa.Encrypt(plainBytes, false);
+        return Convert.ToBase64String(encryptedBytes);
     }
 
+    // Giải mã văn bản bằng khóa riêng tư
     public string Decrypt(string encryptedText, string privateKey)
     {
         rsa.FromXmlString(privateKey);
-        byte[] dataToDecrypt = Convert.FromBase64String(encryptedText);
-        byte[] decryptedData = rsa.Decrypt(dataToDecrypt, false);
-        return Encoding.UTF8.GetString(decryptedData);
+        byte[] encryptedBytes = Convert.FromBase64String(encryptedText);
+        byte[] decryptedBytes = rsa.Decrypt(encryptedBytes, false);
+        return Encoding.UTF8.GetString(decryptedBytes);
     }
 }
-
-//public class RsaEncryption
-//{
-//    private static RSACryptoServiceProvider csp = new RSACryptoServiceProvider(2048);
-//    private RSAParameters _privatekey;
-//    private RSAParameters _publickey;
-
-//    public RsaEncryption()
-//    {
-//        _privatekey = csp.ExportParameters(true);
-//        _publickey = csp.ExportParameters(false);
-//    }
-
-//    public string GetPublickey()
-//    {
-//        var sw = new StringWriter();
-//        var xs = new XmlSerializer(typeof(RSAParameters));
-//        xs.Serialize(sw, _publickey);
-//        return sw.ToString();
-//    }
-
-//    public string Encrypt(string plainText)
-//    {
-//        csp = new RSACryptoServiceProvider();
-//        csp.ImportParameters(_publickey);
-//        var data = Encoding.Unicode.GetBytes(plainText);
-//        var cypher = csp.Encrypt(data, false);
-//        return Convert.ToBase64String(cypher);
-//    }
-
-//    public string Decrypt(string cypherText)
-//    {
-//        var dataBytes = Convert.FromBase64String(cypherText);
-//        csp.ImportParameters(_privatekey);
-//        var plainText = csp.Decrypt(dataBytes, false);
-//        return Encoding.Unicode.GetString(plainText);
-//    }
-//}

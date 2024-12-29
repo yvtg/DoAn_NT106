@@ -23,6 +23,18 @@ namespace Server
 {
     public class Server
     {
+        private static RSAHelper rsaHelper;
+        private static string publicKey;
+        private static string privateKey;
+        private Dictionary<string, string> clientPublicKeys = new Dictionary<string, string>();
+
+        public Server()
+        {
+            rsaHelper = new RSAHelper();
+            publicKey = rsaHelper.GetPublicKey();
+            privateKey = rsaHelper.GetPrivateKey();
+        }
+
         private Dictionary<string, string> otpStorage = new Dictionary<string, string>(); // Email -> OTP mapping
         public static Socket serverSocket;
         public List<Models.User> clients = new List<Models.User>(); // danh sách client đang kết nối tới
@@ -74,8 +86,17 @@ namespace Server
                 Socket clientSocket = await serverSocket.AcceptAsync();
                 UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
                 TcpClient tcpClient = new TcpClient { Client = clientSocket };
+
+                // Gửi khóa công khai cho client ngay sau khi kết nối
+                SendPublicKey(tcpClient.GetStream());
                 HandleClientConnection(tcpClient);
             }
+        }
+        // Gửi khóa công khai cho client
+        private void SendPublicKey(NetworkStream stream)
+        {
+            byte[] publicKeyBytes = Encoding.UTF8.GetBytes(publicKey);
+            stream.Write(publicKeyBytes, 0, publicKeyBytes.Length);
         }
 
         private void HandleClientConnection(TcpClient tcpClient)
@@ -92,6 +113,16 @@ namespace Server
             {
                 try
                 {
+                    // Nhận khóa công khai của client
+                    string clientPublicKey = ReceiveClientPublicKey(tcpClient.GetStream());
+                    string clientId = tcpClient.Client.RemoteEndPoint.ToString(); // Sử dụng địa chỉ IP làm ID client
+                    while (clientPublicKey == null || clientId == null)
+                    {
+                        clientPublicKey = ReceiveClientPublicKey(tcpClient.GetStream());
+                        clientId = tcpClient.Client.RemoteEndPoint.ToString(); // Sử dụng địa chỉ IP làm ID client
+                    }
+                    clientPublicKeys[clientId] = clientPublicKey;
+
                     while (client.IsConnected)
                     {
                         if (serverSocket == null || !serverSocket.IsBound)
@@ -101,18 +132,20 @@ namespace Server
                         }
 
                         string msg = client.sr.ReadLine(); // Đọc dữ liệu từ client
+                        // Giải mã thông điệp nhận được
+                        string decryptedData = rsaHelper.Decrypt(msg, privateKey);
 
-                        if (!string.IsNullOrEmpty(msg))
+                        if (!string.IsNullOrEmpty(decryptedData))
                         {
-                            UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
+                            UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {decryptedData}");
 
-                            if (msg.StartsWith("{") && msg.EndsWith("}"))
+                            if (decryptedData.StartsWith("{") && decryptedData.EndsWith("}"))
                             {
-                                HandleDrawPacket(client, msg); // Xử lý gói tin vẽ
+                                HandleDrawPacket(client, decryptedData); // Xử lý gói tin vẽ
                             }
                             else
                             {
-                                Packet packet = ParsePacket(client, msg); // Phân tích gói tin
+                                Packet packet = ParsePacket(client, decryptedData); // Phân tích gói tin
                                 analyzingPacket(client, packet);          // Xử lý gói tin
                             }
                         }
@@ -135,6 +168,14 @@ namespace Server
                     UpdateLog?.Invoke($"{client.tcpClient.Client.RemoteEndPoint} đã ngắt kết nối");
                 }
             });
+        }
+        // Nhận khóa công khai từ client
+        private string ReceiveClientPublicKey(NetworkStream stream)
+        {
+            byte[] buffer = new byte[1024];
+            int bytesRead = stream.Read(buffer, 0, buffer.Length);
+            string clientPublicKey = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            return clientPublicKey;
         }
 
         public void StopServer()
@@ -185,10 +226,20 @@ namespace Server
         {
             try
             {
-                // Chuẩn bị dữ liệu để gửi
-                client.SendPacket(packet);
+                string clientId = client.tcpClient.Client.RemoteEndPoint.ToString();
 
-                UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.tcpClient.Client.RemoteEndPoint} {packet.Type};{packet.Payload}");
+                if (clientPublicKeys.TryGetValue(clientId, out string clientPublicKey))
+                {
+                    string payload = packet.Payload;
+                    // Mã hóa Payload của gói tin
+                    string encryptedPayload = rsaHelper.Encrypt(packet.Payload, clientPublicKey);
+                    packet.Payload = encryptedPayload;
+
+                    // Chuẩn bị dữ liệu để gửi
+                    client.SendPacket(packet);
+
+                    UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.tcpClient.Client.RemoteEndPoint} {packet.Type};{payload}");
+                }
             }
             catch (SocketException ex)
             {
@@ -206,10 +257,25 @@ namespace Server
         {
             try
             {
-                // Chuẩn bị dữ liệu để gửi
-                client.SendPacket(drawPacket);
+                string clientId = client.tcpClient.Client.RemoteEndPoint.ToString();
 
-                UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.tcpClient.Client.RemoteEndPoint}");
+                if (clientPublicKeys.TryGetValue(clientId, out string clientPublicKey))
+                {
+                    // Chuyển đổi đối tượng DrawPacket thành JSON
+                    string jsonPacket = drawPacket.ToJson();
+
+                    // Mã hóa thông điệp JSON bằng khóa công khai của client
+                    string encryptedPacket = rsaHelper.Encrypt(jsonPacket, clientPublicKey);
+
+                    // Chuẩn bị dữ liệu để gửi
+                    client.SendPacket(encryptedPacket);
+
+                    UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.tcpClient.Client.RemoteEndPoint}");
+                }
+                else
+                {
+                    UpdateLog?.Invoke($"Không tìm thấy khóa công khai của client {clientId}");
+                }
             }
             catch (SocketException ex)
             {

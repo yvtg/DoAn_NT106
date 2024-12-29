@@ -36,12 +36,13 @@ namespace Models
             this.sw.Flush();
         }
 
-        public void SendPacket(DrawPacket drawPacket)
+        public void SendPacket(string json)
         {
-            var jsonDrawPacket = drawPacket.ToJson();
+            var jsonDrawPacket = json;
             this.sw.WriteLine(jsonDrawPacket);
             this.sw.Flush();
         }
+
 
         public void Stop(bool abortThread = false)
         {
