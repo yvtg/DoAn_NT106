@@ -706,7 +706,10 @@ namespace Server
             string email = packet.Email;
             string newPassword = packet.NewPassword;
 
-            if (db.UpdatePassword(email, newPassword))
+            // Mã hóa mật khẩu mới
+            string encryptedPassword = Convert.ToBase64String(AES.EncryptAES(newPassword));
+
+            if (db.UpdatePassword(email, encryptedPassword))
             {
                 sendPacket(client, new ResetPasswordResultPacket("SUCCESS"));
             }
@@ -716,11 +719,11 @@ namespace Server
             }
         }
 
+
         private void HandleResetPasswordRequest(Models.User client, ResetPasswordRequestPacket packet)
         {
             string email = packet.Email.Trim();
 
-            // tìm kiếm email trong database
             var user = db.GetAllDocuments<BsonDocument>("User")
                          .FirstOrDefault(u => u["Email"].AsString == email);
 
@@ -728,34 +731,31 @@ namespace Server
             {
                 try
                 {
-                    // tạo mã OTP
                     string otp = ForgetPassword.GenerateOTP();
                     otpStorage[email] = otp; // Lưu OTP
 
-                    // gửi email
                     ForgetPassword.SendEmail(email, otp);
-                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_SENT")); // Gửi OTP thành công
+                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_SENT"));
                 }
                 catch (Exception)
                 {
-                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_FAIL")); // Lỗi khi gửi email
+                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_FAIL"));
                 }
             }
             else
             {
-                sendPacket(client, new ResetPasswordResultPacket("NOT_FOUND")); // Không tìm thấy email
+                sendPacket(client, new ResetPasswordResultPacket("NOT_FOUND"));
             }
         }
+
 
         private void HandleVerifyOTP(Models.User client, VerifyOTPRequestPacket packet)
         {
             try
             {
-                // Lấy thông tin từ gói tin
                 string email = packet.Email;
                 string otp = packet.OTP;
 
-                // Kiểm tra OTP
                 if (otpStorage.TryGetValue(email, out var storedOtp) && storedOtp == otp)
                 {
                     otpStorage.Remove(email); // Xóa OTP sau khi sử dụng
@@ -766,7 +766,6 @@ namespace Server
                 }
                 else
                 {
-                    // Gửi phản hồi đã mã hóa
                     string responsePayload = Convert.ToBase64String(AES.EncryptAES("OTP_FAIL"));
                     sendPacket(client, new ResetPasswordResultPacket(responsePayload));
                 }

@@ -76,10 +76,11 @@ namespace Program
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action(()=> OnReceiveOTP(status)));
+                this.Invoke(new Action(() => OnReceiveOTP(status)));
                 return;
             }
 
+            Console.WriteLine($"Nhận được trạng thái OTP: {status}"); // Debugging
             if (status == "OTP_VERIFIED")
             {
                 otpTimer.Stop();
@@ -88,9 +89,14 @@ namespace Program
                 resetPasswordForm.StartPosition = FormStartPosition.Manual;
                 resetPasswordForm.Location = this.Location;
                 resetPasswordForm.Show();
-                this.Close(); 
+                this.Close();
+            }
+            else
+            {
+                ShowMessage("Mã OTP không hợp lệ.");
             }
         }
+
 
         public void ShowMessage(string message)
         {
