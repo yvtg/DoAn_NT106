@@ -50,6 +50,7 @@ namespace Server
 
         private async Task InitializeServer()
         {
+            int port = 8080;
             EndPoint ipEP = new IPEndPoint(IPAddress.Any, 8080);
 
             // Khởi tạo server
@@ -58,7 +59,7 @@ namespace Server
             serverSocket.Bind(ipEP);
             serverSocket.Listen(10);
 
-            UpdateLog?.Invoke($"Server đã khởi động trên {ipEP}. Đang chờ kết nối...");
+            UpdateLog?.Invoke($"Server đã khởi động trên port {port}. Đang chờ kết nối...");
 
             while (isRunning)
             {
@@ -71,6 +72,7 @@ namespace Server
 
                 // Chờ kết nối từ client
                 Socket clientSocket = await serverSocket.AcceptAsync();
+                UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
                 TcpClient tcpClient = new TcpClient { Client = clientSocket };
                 HandleClientConnection(tcpClient);
             }
@@ -85,7 +87,6 @@ namespace Server
                 clients.Add(client);
                 UpdateClientList?.Invoke();
             }
-            UpdateLog?.Invoke($"Đã kết nối với {tcpClient.Client.RemoteEndPoint}");
 
             Task.Run( () =>
             {
@@ -131,7 +132,7 @@ namespace Server
                         client.Stop(true);
                         UpdateClientList?.Invoke();
                     }
-                    UpdateLog?.Invoke($"Client đã ngắt kết nối: {client.tcpClient.Client.RemoteEndPoint}");
+                    UpdateLog?.Invoke($"{client.tcpClient.Client.RemoteEndPoint} đã ngắt kết nối");
                 }
             });
         }
@@ -516,6 +517,7 @@ namespace Server
                         }
 
                         UpdateLog.Invoke($"Phòng {roomId}: Trò chơi bắt đầu. Người vẽ là {room.currentDrawer.Name} và từ khóa là {room.currentKeyword}");
+                        UpdateRoomList?.Invoke();
                     }
                     else
                     {
@@ -532,7 +534,6 @@ namespace Server
                     room = rooms.FirstOrDefault(r => r.RoomId == roomId);
                     if (room != null)
                     {
-                        room.status = "PLAYING";
                         BroadcastPacket(room, guessPacket);
                         OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};GUESS");
                         BroadcastPacket(room, otherInfo);
