@@ -96,86 +96,128 @@ namespace Program
             {
                 try
                 {
-                    if (sw==null)
+                    if (sw == null)
                     {
                         ns = tcpClient.GetStream();
                         sw = new StreamWriter(ns);
                     }
-                    string packetLog = $"Gửi Packet: {packet.Type};{packet.Payload}";
-                    Console.WriteLine(packetLog);
-                    sw.WriteLine(packet.Type + ";" + packet.Payload);
+
+                    // Mã hóa payload
+                    byte[] encryptedBytes = AES.EncryptAES(packet.Payload);
+                    string encryptedPayload = Convert.ToBase64String(encryptedBytes);
+                    encryptedPayload = EnsureValidBase64Padding(encryptedPayload);
+
+                    string encryptedPacket = packet.Type + ";" + encryptedPayload;
+
+                    Console.WriteLine($"Gửi Packet (mã hóa): {encryptedPacket}");
+
+                    // Gửi dữ liệu đã mã hóa
+                    sw.WriteLine(encryptedPacket);
                     sw.Flush();
                 }
                 catch (Exception ex)
-                { 
-                    // Lỗi gửi dữ liệu
+                {
                     ShowMessage("Lỗi khi gửi dữ liệu: " + ex.Message);
                 }
             }
             else
             {
-                // Thông báo lỗi nếu client không kết nối với server
                 ShowMessage("Client không kết nối với server.");
             }
         }
-
+        private string EnsureValidBase64Padding(string str)
+        {
+            int padding = str.Length % 4;
+            if (padding == 2)
+            {
+                str += "==";
+            }
+            else if (padding == 3)
+            {
+                str += "=";
+            }
+            return str;
+        }
 
         public void ReceiveData()
         {
             try
             {
                 ns = tcpClient.GetStream();
-                sw = new StreamWriter(ns);
                 sr = new StreamReader(ns);
 
-                // Đọc dữ liệu trong khi kết nối vẫn còn mở
                 while (tcpClient.Connected)
                 {
-                    string receivedData = "";
-                    try
+                    string receivedData = sr.ReadLine();
+                    Console.WriteLine($"Nhận Packet (mã hóa): {receivedData}");
+
+                    if (!string.IsNullOrEmpty(receivedData))
                     {
-                        receivedData =  sr.ReadLine();
-                        Console.WriteLine(receivedData);
-                        if (!string.IsNullOrEmpty(receivedData))
+                        string[] parts = receivedData.Split(new[] { ';' }, 2, StringSplitOptions.None);
+                        if (parts.Length < 2) continue;
+
+                        string packetType = parts[0];
+                        string encryptedPayload = parts[1];
+
+                        // Kiểm tra Base64 trước khi giải mã
+                        if (IsBase64String(encryptedPayload))
                         {
-                            if (receivedData.StartsWith("{") && receivedData.EndsWith("}"))
+                            encryptedPayload = EnsureValidBase64Padding(encryptedPayload);
+
+                            try
                             {
-                                HandleDrawPacket(receivedData);
+                                string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(encryptedPayload));
+                                Console.WriteLine($"Giải mã Payload: {decryptedPayload}");
+
+                                Packet packet = ParsePacket(packetType + ";" + decryptedPayload);
+                                if (packet != null)
+                                {
+                                    AnalyzingPacket(packet);
+                                }
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                Packet packet = ParsePacket(receivedData);
-                                AnalyzingPacket(packet);
+                                Console.WriteLine($"Lỗi khi giải mã payload: {ex.Message}");
                             }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
+                        else
+                        {
+                            Console.WriteLine("Payload không phải Base64 hợp lệ.");
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
+                Console.WriteLine($"Lỗi khi khởi tạo luồng: {ex.Message}");
+            }
+        }
+
+        private bool IsBase64String(string str)
+        {
+            try
+            {
+                str = str.Replace("\n", "").Replace("\r", "").Trim();
+                Convert.FromBase64String(str);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
         private Packet ParsePacket(string msg)
         {
-            string[] payload = msg.Split(';');
-            if (payload.Length == 0)
-            {
-                return null; // Không có dữ liệu
-            }
-            // Lấy phần còn lại của msg, bỏ payload[0] (command)
-            string remainingMsg = string.Join(";", payload.Skip(1));
+            string[] payload = msg.Split(new[] { ';' }, 2, StringSplitOptions.None);
+            if (payload.Length < 2) return null;
 
-            // Xác định loại packet dựa trên phần tử đầu tiên
-            PacketType packetType;
-            if (Enum.TryParse(payload[0], out packetType))
+            string packetType = payload[0];
+            string remainingMsg = payload[1];
+
+            if (Enum.TryParse(packetType, out PacketType type))
             {
-                switch (packetType)
+                switch (type)
                 {
                     case PacketType.LOGIN_RESULT:
                         return new LoginResultPacket(remainingMsg);
@@ -208,8 +250,10 @@ namespace Program
                         break;
                 }
             }
-                return null;
+
+            return null;
         }
+
 
         private void AnalyzingPacket(Packet packet)
         {
@@ -380,5 +424,28 @@ namespace Program
             ResetPasswordPacket resetPacket = new ResetPasswordPacket(email, newPassword);
             SendPacket(resetPacket);
         }
+        public void HandleOTPResponse(string encryptedPayload)
+        {
+            try
+            {
+                // Giải mã payload từ server
+                string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(encryptedPayload));
+                Console.WriteLine($"Kết quả từ server: {decryptedPayload}");
+
+                if (decryptedPayload == "OTP_VERIFIED")
+                {
+                    Console.WriteLine("OTP đã được xác thực thành công.");
+                }
+                else if (decryptedPayload == "OTP_FAIL")
+                {
+                    Console.WriteLine("OTP không hợp lệ.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi xử lý phản hồi OTP: {ex.Message}");
+            }
+        }
+
     }
 }

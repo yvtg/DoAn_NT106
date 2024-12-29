@@ -87,7 +87,7 @@ namespace Server
             }
             UpdateLog?.Invoke($"Đã kết nối với {tcpClient.Client.RemoteEndPoint}");
 
-            Task.Run( () =>
+            Task.Run(() =>
             {
                 try
                 {
@@ -99,20 +99,31 @@ namespace Server
                             break;
                         }
 
-                        string msg = client.sr.ReadLine(); // Đọc dữ liệu từ client
+                        string encryptedMsg = client.sr.ReadLine(); // Đọc dữ liệu mã hóa từ client
 
-                        if (!string.IsNullOrEmpty(msg))
+                        if (!string.IsNullOrEmpty(encryptedMsg))
                         {
-                            UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
+                            UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {encryptedMsg}");
 
-                            if (msg.StartsWith("{") && msg.EndsWith("}"))
+                            try
                             {
-                                HandleDrawPacket(client, msg); // Xử lý gói tin vẽ
+                                // Giải mã dữ liệu
+                                string msg = AES.DecryptAES(Convert.FromBase64String(encryptedMsg));
+                                UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
+
+                                if (msg.StartsWith("{") && msg.EndsWith("}"))
+                                {
+                                    HandleDrawPacket(client, msg); // Xử lý gói tin vẽ
+                                }
+                                else
+                                {
+                                    Packet packet = ParsePacket(client, msg); // Phân tích gói tin
+                                    analyzingPacket(client, packet);          // Xử lý gói tin
+                                }
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                Packet packet = ParsePacket(client, msg); // Phân tích gói tin
-                                analyzingPacket(client, packet);          // Xử lý gói tin
+                                UpdateLog?.Invoke($"Lỗi giải mã từ client: {ex.Message}");
                             }
                         }
                         else break;
@@ -124,7 +135,7 @@ namespace Server
                 }
                 finally
                 {
-                    // đóng kết nối client
+                    // Đóng kết nối client
                     if (client != null)
                     {
                         clients.Remove(client);
@@ -135,6 +146,7 @@ namespace Server
                 }
             });
         }
+
 
         public void StopServer()
         {
@@ -184,22 +196,57 @@ namespace Server
         {
             try
             {
-                // Chuẩn bị dữ liệu để gửi
-                client.SendPacket(packet);
+                // Kiểm tra loại gói tin và tạo gói tin thích hợp
+                if (packet is VerifyOTPRequestPacket verifyPacket)
+                {
+                    // Gửi gói tin VerifyOTPRequestPacket
+                    client.SendPacket(verifyPacket);
+                }
+                else if (packet is LoginPacket loginPacket)
+                {
+                    // Gửi gói tin LoginPacket
+                    client.SendPacket(loginPacket);
+                }
+                // Bạn có thể thêm các loại packet khác ở đây nếu cần
+                else
+                {
+                    // Kiểm tra loại packet và gửi gói tin thích hợp
+                    string encryptedPayload = Convert.ToBase64String(AES.EncryptAES(packet.Payload));
 
-                UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.tcpClient.Client.RemoteEndPoint} {packet.Type};{packet.Payload}");
+                    switch (packet.Type)
+                    {
+                        case PacketType.CREATE_ROOM:
+                            client.SendPacket(new CreateRoomPacket(encryptedPayload)); // Tạo gói tin CreateRoomPacket
+                            break;
+                        case PacketType.JOIN_ROOM:
+                            client.SendPacket(new JoinRoomPacket(encryptedPayload)); // Tạo gói tin JoinRoomPacket
+                            break;
+                        case PacketType.START:
+                            client.SendPacket(new StartPacket(encryptedPayload)); // Tạo gói tin StartPacket
+                            break;
+                        // Thêm các loại packet khác nếu cần
+                        default:
+                            // Nếu không phải các loại đã kiểm tra, gửi gói tin mặc định
+                            client.SendPacket(new GenericPacket(packet.Type, encryptedPayload)); // Gửi gói tin mặc định
+                            break;
+                    }
+                }
+
+                UpdateLog?.Invoke($"Đã gửi Packet cho {client.tcpClient.Client.RemoteEndPoint}");
             }
             catch (SocketException ex)
             {
                 UpdateLog?.Invoke("Socket exception: " + ex.Message);
+
                 // Xử lý client bị mất kết nối
                 clients.Remove(client);
                 client.Stop();
-                client.sr.Close();
-                client.sw.Close();
+                client.sr?.Close();
+                client.sw?.Close();
                 UpdateClientList?.Invoke();
             }
         }
+
 
         private void sendPacket(Models.User client, DrawPacket drawPacket)
         {
@@ -234,59 +281,79 @@ namespace Server
         {
             foreach (var client in room.players)
             {
-                sendPacket(client, drawPacket);
+                try
+                {
+                    string encryptedPayload = Convert.ToBase64String(AES.EncryptAES(Newtonsoft.Json.JsonConvert.SerializeObject(drawPacket)));
+                    sendPacket(client, new DescribePacket(encryptedPayload));
+                }
+                catch (Exception ex)
+                {
+                    UpdateLog?.Invoke($"Lỗi khi broadcast DrawPacket: {ex.Message}");
+                }
             }
         }
 
+
         private Packet ParsePacket(Models.User client, string msg)
         {
-            string[] payload = msg.Split(';');
-            if (payload.Length == 0)
-            {
-                return null; // Không có dữ liệu
-            }
+            string[] parts = msg.Split(new[] { ';' }, 2, StringSplitOptions.None);
+            if (parts.Length < 2) return null;
 
-            // Lấy phần còn lại của msg, bỏ payload[0] (command)
-            string remainingMsg = string.Join(";", payload.Skip(1));
+            string packetType = parts[0];
+            string encryptedPayload = parts[1];
 
-            // Xác định loại packet dựa trên phần tử đầu tiên
-            PacketType packetType;
-            if (Enum.TryParse(payload[0], out packetType))
+            // Giải mã payload
+            string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(encryptedPayload));
+            UpdateLog?.Invoke($"Payload sau khi giải mã: {decryptedPayload}");
+
+            // Tạo packet từ dữ liệu đã giải mã
+            if (Enum.TryParse(packetType, out PacketType type))
             {
-                switch (packetType)
+                switch (type)
                 {
                     case PacketType.LOGIN:
-                        return new LoginPacket(remainingMsg);
+                        return new LoginPacket(decryptedPayload);
                     case PacketType.REGISTER:
-                        return new RegisterPacket(remainingMsg);
+                        return new RegisterPacket(decryptedPayload);
                     case PacketType.LOGOUT:
-                        return new LogoutPacket(remainingMsg);
+                        return new LogoutPacket(decryptedPayload);
                     case PacketType.RESET_PASSWORD_REQUEST:
-                        return new ResetPasswordRequestPacket(remainingMsg);
+                        return new ResetPasswordRequestPacket(decryptedPayload);
                     case PacketType.VERIFY_OTP:
-                        return new VerifyOTPRequestPacket(payload[1], payload[2]);
+                        // Tách decryptedPayload thành email và otp
+                        var payloadParts = decryptedPayload.Split(';');
+                        if (payloadParts.Length == 2)
+                        {
+                            return new VerifyOTPRequestPacket(payloadParts[0], payloadParts[1]); // Chuyển đổi thành hai tham số
+                        }
+                        return null;
                     case PacketType.RESET_PASSWORD:
-                        return new ResetPasswordPacket(payload[1], payload[2]);
+                        var resetPasswordParts = decryptedPayload.Split(';');
+                        if (resetPasswordParts.Length == 2)
+                        {
+                            return new ResetPasswordPacket(resetPasswordParts[0], resetPasswordParts[1]);
+                        }
+                        return null;
                     case PacketType.CREATE_ROOM:
-                        return new CreateRoomPacket(remainingMsg);
+                        return new CreateRoomPacket(decryptedPayload);
                     case PacketType.JOIN_ROOM:
-                        return new JoinRoomPacket(remainingMsg);
+                        return new JoinRoomPacket(decryptedPayload);
                     case PacketType.LEAVE_ROOM:
-                        return new LeaveRoomPacket(remainingMsg);
+                        return new LeaveRoomPacket(decryptedPayload);
                     case PacketType.START:
-                        return new StartPacket(remainingMsg);
+                        return new StartPacket(decryptedPayload);
                     case PacketType.DESCRIBE:
-                        return new DescribePacket(remainingMsg);
+                        return new DescribePacket(decryptedPayload);
                     case PacketType.GUESS:
-                        return new GuessPacket(remainingMsg);
+                        return new GuessPacket(decryptedPayload);
                     case PacketType.DISCONNECT:
-                        return new DisconnectPacket(remainingMsg);
+                        return new DisconnectPacket(decryptedPayload);
                     case PacketType.PROFILE_REQUEST:
-                        return new ProfileRequest(remainingMsg);
+                        return new ProfileRequest(decryptedPayload);
                     case PacketType.PROFILE_UPDATE:
-                        return new ProfileUpdatePacket(remainingMsg);
+                        return new ProfileUpdatePacket(decryptedPayload);
                     case PacketType.END_GAME:
-                        return new EndGamePacket(remainingMsg);
+                        return new EndGamePacket(decryptedPayload);
                     default:
                         return null;
                 }
@@ -323,14 +390,14 @@ namespace Server
                     {
                         LoginResultPacket result = new LoginResultPacket("SUCCESS");
                         sendPacket(client, result);
-                        UpdateLog.Invoke($"{loginPacket.Username} đăng nhập thành công");
+                        UpdateLog?.Invoke($"{loginPacket.Username} đăng nhập thành công");
                         client.Name = loginPacket.Username;
                     }
                     else
                     {
                         LoginResultPacket result = new LoginResultPacket("FAIL");
                         sendPacket(client, result);
-                        UpdateLog.Invoke($"{loginPacket.Username} đăng nhập thất bại");
+                        UpdateLog?.Invoke($"{loginPacket.Username} đăng nhập thất bại");
                     }
                     UpdateClientList?.Invoke();
                     break;
@@ -616,12 +683,21 @@ namespace Server
 
         private void HandleDrawPacket(Models.User client, string msg)
         {
-            DrawPacket drawPacket = Newtonsoft.Json.JsonConvert.DeserializeObject<DrawPacket>(msg);
-            string roomId = drawPacket.RoomId;
-            Room room = rooms.FirstOrDefault(r => r.RoomId == roomId);
-            if (room != null)
+            try
             {
-                BroadcastPacket(room, drawPacket);
+                string decryptedMsg = AES.DecryptAES(Convert.FromBase64String(msg));
+                DrawPacket drawPacket = Newtonsoft.Json.JsonConvert.DeserializeObject<DrawPacket>(decryptedMsg);
+
+                string roomId = drawPacket.RoomId;
+                Room room = rooms.FirstOrDefault(r => r.RoomId == roomId);
+                if (room != null)
+                {
+                    BroadcastPacket(room, drawPacket);
+                }
+            }
+            catch (Exception ex)
+            {
+                UpdateLog?.Invoke($"Lỗi khi xử lý DrawPacket: {ex.Message}");
             }
         }
         #endregion
@@ -675,19 +751,34 @@ namespace Server
 
         private void HandleVerifyOTP(Models.User client, VerifyOTPRequestPacket packet)
         {
-            string email = packet.Email;
-            string otp = packet.OTP;
+            try
+            {
+                // Lấy thông tin từ gói tin
+                string email = packet.Email;
+                string otp = packet.OTP;
 
-            if (otpStorage.TryGetValue(email, out var storedOtp) && storedOtp == otp)
-            {
-                otpStorage.Remove(email); // Xóa OTP sau khi sử dụng
-                sendPacket(client, new ResetPasswordResultPacket("OTP_VERIFIED"));
+                // Kiểm tra OTP
+                if (otpStorage.TryGetValue(email, out var storedOtp) && storedOtp == otp)
+                {
+                    otpStorage.Remove(email); // Xóa OTP sau khi sử dụng
+
+                    // Gửi phản hồi đã mã hóa
+                    string responsePayload = Convert.ToBase64String(AES.EncryptAES("OTP_VERIFIED"));
+                    sendPacket(client, new ResetPasswordResultPacket(responsePayload));
+                }
+                else
+                {
+                    // Gửi phản hồi đã mã hóa
+                    string responsePayload = Convert.ToBase64String(AES.EncryptAES("OTP_FAIL"));
+                    sendPacket(client, new ResetPasswordResultPacket(responsePayload));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                sendPacket(client, new ResetPasswordResultPacket("OTP_FAIL"));
+                UpdateLog?.Invoke($"Lỗi trong HandleVerifyOTP: {ex.Message}");
             }
         }
+
         #endregion
     }
 }

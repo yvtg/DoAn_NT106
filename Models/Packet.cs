@@ -631,6 +631,7 @@ namespace Models
         public string Email { get; set; }
         public string OTP { get; set; }
 
+        // Constructor
         public VerifyOTPRequestPacket(string email, string otp)
             : base(PacketType.VERIFY_OTP, $"{email};{otp}")
         {
@@ -638,11 +639,13 @@ namespace Models
             OTP = otp;
         }
 
+        // Override ToBytes method để chuyển packet thành byte[]
         public override byte[] ToBytes()
         {
             return Encoding.UTF8.GetBytes($"VERIFY_OTP;{Email};{OTP}");
         }
     }
+
 
 
     public class ResetPasswordPacket : Packet
@@ -686,6 +689,19 @@ namespace Models
         public override byte[] ToBytes()
         {
             return Encoding.UTF8.GetBytes($"RESET_PASSWORD_RESULT;{Status}");
+        }
+    }
+
+    public class GenericPacket : Packet
+    {
+        public GenericPacket(PacketType type, string payload)
+            : base(type, payload)
+        {
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"GENERIC_PACKET;{Payload}");
         }
     }
 
