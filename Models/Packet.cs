@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Runtime.InteropServices;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Models
 {
@@ -30,8 +32,15 @@ namespace Models
         GUESS_RESULT,
         LEADER_BOARD_INFO,
         DISCONNECT,
+        RESET_PASSWORD_REQUEST,
+        VERIFY_OTP,
         RESET_PASSWORD,
-        RESET_PASSWORD_RESULT
+        RESET_PASSWORD_RESULT,
+        SYNC_BITMAP,
+        PROFILE_REQUEST,
+        PROFILE_RESULT,
+        PROFILE_UPDATE,
+        END_GAME
     }
     public abstract class Packet
     {
@@ -46,7 +55,72 @@ namespace Models
 
         public abstract byte[] ToBytes();
     }
+    #region login, register, logout
+    public class LoginPacket : Packet
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public LoginPacket(string payload) : base(PacketType.LOGIN, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 2)
+            {
+                Username = parsePayload[0];
+                Password = parsePayload[1];
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
 
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"LOGIN;{Payload}");
+        }
+    }
+
+    public class RegisterPacket : Packet
+    {
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public RegisterPacket(string payload) : base(PacketType.REGISTER, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 3)
+            {
+                Username = parsePayload[0];
+                Email = parsePayload[1];
+                Password = parsePayload[2];
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"REGISTER;{Payload}");
+        }
+    }
+
+    public class LogoutPacket : Packet
+    {
+        public string Username { get; set; }
+        public LogoutPacket(string payload) : base(PacketType.LOGOUT, payload)
+        {
+            Username = payload;
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"LOGOUT;{Username}");
+        }
+    }
+
+    #endregion
+    #region login, register result
     public class LoginResultPacket : Packet
     {
         public string result { get; set; }
@@ -113,30 +187,8 @@ namespace Models
         }
     }
 
-
-    public class ResetPasswordResultPacket : Packet
-    {
-        public string Status { get; set; }
-
-        public ResetPasswordResultPacket(string payload) : base(PacketType.RESET_PASSWORD_RESULT, payload)
-        {
-            string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 1)
-            {
-                Status = parsePayload[0];
-            }
-            else
-            {
-                throw new ArgumentException("Payload không hợp lệ");
-            }
-        }
-
-        public override byte[] ToBytes()
-        {
-            return Encoding.UTF8.GetBytes($"RESET_PASSWORD_RESULT;{Status}");
-        }
-    }
-
+    #endregion
+    #region room (server -> client)
     public class RoomInfoPacket : Packet
     {
         public string RoomId { get; set; }
@@ -212,14 +264,20 @@ namespace Models
     public class RoundUpdatePacket : Packet
     {
         public string RoomId { get; set; }
+        public string Name { get; set; }
+        public string IsDrawing { get; set; }
         public string Word { get; set; }
+        public int Round { get; set; }
         public RoundUpdatePacket(string payload) : base(PacketType.ROUND_UPDATE, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 2)
+            if (parsePayload.Length >= 5)
             {
                 RoomId = parsePayload[0];
-                Word = parsePayload[1];
+                Name = parsePayload[1];
+                IsDrawing = parsePayload[2];
+                Word = parsePayload[3];
+                Round = int.Parse(parsePayload[4]);
             }
             else
             {
@@ -229,7 +287,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"ROUND_UPDATE;{RoomId};{Word}");
+            return Encoding.UTF8.GetBytes($"ROUND_UPDATE;{RoomId};{Name};{IsDrawing};{Word}");
         }
     }
 
@@ -284,86 +342,8 @@ namespace Models
             return Encoding.UTF8.GetBytes($"LEADER_BOARD_INFO;{playerName1};{playerName2};{playerName3}");
         }
     }
-
-    public class LoginPacket : Packet
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public LoginPacket(string payload) : base(PacketType.LOGIN, payload)
-        {
-            string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 2)
-            {
-                Username = parsePayload[0];
-                Password = parsePayload[1];
-            }
-            else
-            {
-                throw new ArgumentException("Payload không hợp lệ");
-            }
-        }
-
-        public override byte[] ToBytes()
-        {
-            return Encoding.UTF8.GetBytes($"LOGIN;{Payload}");
-        }
-    }
-
-    public class RegisterPacket : Packet
-    {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public RegisterPacket(string payload) : base(PacketType.REGISTER, payload)
-        {
-            string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 3)
-            {
-                Username = parsePayload[0];
-                Email = parsePayload[1];
-                Password = parsePayload[2];
-            }
-            else
-            {
-                throw new ArgumentException("Payload không hợp lệ");
-            }
-        }
-        public override byte[] ToBytes()
-        {
-            return Encoding.UTF8.GetBytes($"REGISTER;{Payload}");
-        }
-    }
-
-    public class ResetPasswordPacket : Packet
-    {
-        public string Email { get; set; }
-        public string NewPassword { get; set; }
-        public ResetPasswordPacket(string email, string newPassword) : base(PacketType.RESET_PASSWORD, $"{email};{newPassword}")
-        {
-            Email = email;
-            NewPassword = newPassword;
-        }
-        public override byte[] ToBytes()
-        {
-            string data = $"RESET_PASSWORD;{Email};{NewPassword}";
-            return Encoding.UTF8.GetBytes(data);
-        }
-    }
-
-    public class LogoutPacket : Packet
-    {
-        public string Username { get; set; }
-        public LogoutPacket(string payload) : base(PacketType.LOGOUT, payload)
-        {
-            Username = payload;
-        }
-
-        public override byte[] ToBytes()
-        {
-            return Encoding.UTF8.GetBytes($"LOGOUT;{Username}");
-        }
-    }
-
+    #endregion
+    #region room (client -> server)
     public class CreateRoomPacket : Packet
     {
         public string username { get; set; }
@@ -437,13 +417,23 @@ namespace Models
     public class StartPacket : Packet
     {
         public string RoomId { get; set; }
+        public int Round { get; set; }
         public StartPacket(string payload) : base(PacketType.START, payload)
         {
-            RoomId = payload;
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 2)
+            {
+                RoomId = parsePayload[0];
+                Round = Int32.Parse(parsePayload[1]);
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
         }
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"START;{RoomId}");
+            return Encoding.UTF8.GetBytes($"START;{RoomId};{Round}");
         }
     }
 
@@ -496,7 +486,115 @@ namespace Models
             return Encoding.UTF8.GetBytes($"GUESS;{RoomId};{playerName};{GuessMessage}");
         }
     }
-    
+
+    public class EndGamePacket : Packet
+    {
+        public string RoomId { get; set; }
+        public EndGamePacket(string payload) : base(PacketType.END_GAME, payload)
+        {
+            RoomId = payload;
+        }
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"END_GAME;{RoomId}");
+        }
+    }
+    #endregion
+    #region profile
+
+    public class ProfileData
+    {
+        [BsonId]
+        public ObjectId _id;
+        [BsonElement("Username")]
+        public string username = "";
+        [BsonElement("Email")]
+        public string email = "";
+        [BsonElement("Password")]
+        public string password = "";
+        [BsonElement("HighestScore")]
+        public int highestscore { get; set; }
+        [BsonElement("GamesPlayed")]
+        public int gamesplayed { get; set; }
+    }
+
+    public class ProfileRequest : Packet
+    {
+        public string Username { get; set; }
+        public ProfileRequest(string payLoad) : base(PacketType.PROFILE_REQUEST, payLoad)
+        {
+            string[] parsePayload = payLoad.Split(';');
+            if (parsePayload.Length >= 1)
+            {
+                try
+                {
+                    Username = parsePayload[0];
+                }
+                catch (FormatException ex)
+                {
+                    throw new ArgumentException("Dữ liệu không hợp lệ trong payload", ex);
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ. Thiếu dữ liệu.");
+            }
+        }
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"PROFILE_REQUEST;{Username}");
+        }
+    }
+
+    public class ProfileResultPacket : Packet
+    {
+        public ProfileData data1 = new ProfileData();
+        public ProfileResultPacket(string payload) : base(PacketType.PROFILE_RESULT, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 4)
+            {
+                data1.username = parsePayload[0];
+                data1.email = parsePayload[1];
+                data1.highestscore = int.Parse(parsePayload[2]);
+                data1.gamesplayed = int.Parse(parsePayload[3]);
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"PROFILE_RESULT;{data1.username};{data1.email};{data1.highestscore};{data1.gamesplayed}");
+        }
+    }
+
+    public class ProfileUpdatePacket : Packet
+    {
+        public string username { get; set; }
+        public int score { get; set; }
+        public ProfileUpdatePacket(string payload) : base(PacketType.PROFILE_UPDATE, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 2)
+            {
+                username = parsePayload[0];
+                score = int.Parse(parsePayload[1]);
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"PROFILE_UPDATE;{username};{score}");
+        }
+    }
+    #endregion
     public class DisconnectPacket : Packet
     {
         public DisconnectPacket(string payload) : base(PacketType.DISCONNECT, payload)
@@ -509,4 +607,87 @@ namespace Models
             return Encoding.UTF8.GetBytes($"DISCONNECT");
         }
     }
+    #region Reset Password
+
+    public class ResetPasswordRequestPacket : Packet
+    {
+        public string Email { get; set; }
+
+        public ResetPasswordRequestPacket(string email) : base(PacketType.RESET_PASSWORD_REQUEST, email)
+        {
+            Email = email;
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"RESET_PASSWORD_REQUEST;{Email}");
+        }
+    }
+
+
+
+    public class VerifyOTPRequestPacket : Packet
+    {
+        public string Email { get; set; }
+        public string OTP { get; set; }
+
+        public VerifyOTPRequestPacket(string email, string otp)
+            : base(PacketType.VERIFY_OTP, $"{email};{otp}")
+        {
+            Email = email;
+            OTP = otp;
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"VERIFY_OTP;{Email};{OTP}");
+        }
+    }
+
+
+    public class ResetPasswordPacket : Packet
+    {
+        public string Email { get; set; }
+        public string NewPassword { get; set; }
+
+        public ResetPasswordPacket(string email, string newPassword)
+            : base(PacketType.RESET_PASSWORD, $"{email};{newPassword}")
+        {
+            Email = email;
+            NewPassword = newPassword;
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"RESET_PASSWORD;{Email};{NewPassword}");
+        }
+    }
+
+
+
+    public class ResetPasswordResultPacket : Packet
+    {
+        public string Status { get; set; }
+
+        public ResetPasswordResultPacket(string payload)
+            : base(PacketType.RESET_PASSWORD_RESULT, payload)
+        {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 1)
+            {
+                Status = parsePayload[0];
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
+        }
+
+        public override byte[] ToBytes()
+        {
+            return Encoding.UTF8.GetBytes($"RESET_PASSWORD_RESULT;{Status}");
+        }
+    }
+
+    #endregion
 }

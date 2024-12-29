@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
-using System.Threading;
 using System.Windows.Forms;
-using System.Net.Http;
 using Models;
-using Azure.Identity;
 using System.IO;
+using System.Threading;
 
 
 namespace Program
@@ -19,30 +15,50 @@ namespace Program
     {
         TcpClient tcpClient = new TcpClient();
         NetworkStream ns;
+        StreamWriter sw;
+        StreamReader sr;
 
-        public static event Action RegisterSuccessful;
-        public event Action LoginSuccessful;
-        public event Action ResetPasswordSuccessful;
-        public event Action<string, string, int> ReceiveRoomInfo;
-        public event Action<string, string, string> ReceiveMessage;
-        public event Action<string, string, int, string> ReceiveOtherInfo;
+        public static event Action RegisterSuccessful; // đăng kí thành công
+        public event Action LoginSuccessful; // đăng nhập thành công
+        public event Action<string, string, int> ReceiveRoomInfo; // nhận thông tin phòng
+        public event Action<string, string, string> ReceiveMessage; // nhận message trong phòng (guess)
+        public event Action<string, string, int, string> ReceiveOtherInfo; // nhận thông tin của người chơi khác trong phòng
+        public event Action<RoundUpdatePacket> RoundUpdateReceived; // round mới
+        public event Action<DrawPacket> DrawPacketReceived; // nhận draw packet
+        public event Action<string> EndGameReceived;
+        public event Action<ProfileResultPacket> ProfileReceived; // nhận thông tin profile
+        public event Action ServerDisconnected; // server ngắt kết nối
+        public event Action<string> ResetPasswordResult;
+        CancellationTokenSource cancellationTokenSource;
 
-        public void Connect(string serverIP, int port)
+        public bool Connect(string serverIP, int port)
         {
             try
             {
                 IPAddress ipServer = IPAddress.Parse(serverIP);
-                IPEndPoint ipEP = new IPEndPoint(ipServer, port);
+                IPEndPoint ipEP = new IPEndPoint(ipServer, port); 
                 tcpClient.Connect(ipEP);
-                Task.Run(() => ReceiveData());
+                cancellationTokenSource = new CancellationTokenSource();
+                var token = cancellationTokenSource.Token;
+                Task.Run(() =>
+                {
+                    while (!token.IsCancellationRequested)
+                    {
+                        ReceiveData();
+                    }
+                }, token);
+                return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi kết nối: " + ex.Message);
+                ShowMessage("Lỗi khi kết nối: " + ex.Message);
+                return false;
             }
         }
 
-        public void SendPacket(Packet packet)
+
+        // gửi draw packet ( dạng json )
+        public void SendDrawPacket(DrawPacket drawPacket)
         {
             if (tcpClient != null && tcpClient.Connected)
             {
@@ -52,76 +68,98 @@ namespace Program
                     if (ns == null)
                     {
                         ns = tcpClient.GetStream();
+                        sw = new StreamWriter(ns);
                     }
 
-                    // Chuyển đổi packet thành mảng byte
-                    byte[] byteData = packet.ToBytes();
+                    string jsonPacket = Newtonsoft.Json.JsonConvert.SerializeObject(drawPacket);
 
-                    RSAHelper rsaHelper = new RSAHelper();
-                    string publicKey = rsaHelper.GetPublicKey(); // Thay thế bằng khóa công khai thực tế
-                    string encryptedData = rsaHelper.Encrypt(Convert.ToBase64String(byteData), publicKey);
-                    byteData = Convert.FromBase64String(encryptedData);
-
-                    // Gửi mảng byte qua NetworkStream
-                    ns.Write(byteData, 0, byteData.Length);
-                    ns.Flush(); // Đảm bảo tất cả dữ liệu đã được gửi
+                    // gửi dữ liệu
+                    sw.WriteLine(jsonPacket);
+                    Console.WriteLine(jsonPacket);
+                    sw.Flush();
                 }
                 catch (Exception ex)
                 {
-                    // Thông báo lỗi nếu có ngoại lệ xảy ra
-                    MessageBox.Show("Lỗi khi gửi dữ liệu: " + ex.Message); // Error sending data
+                    ShowMessage("Lỗi khi gửi dữ liệu: " + ex.Message);
+                }
+            }
+            else
+            {
+                ShowMessage("Client không kết nối với server.");
+            }
+        }
+
+        // send packet bình thường
+        public void SendPacket(Packet packet)
+        {
+            if (tcpClient != null && tcpClient.Connected)
+            {
+                try
+                {
+                    if (sw==null)
+                    {
+                        ns = tcpClient.GetStream();
+                        sw = new StreamWriter(ns);
+                    }
+                    string packetLog = $"Gửi Packet: {packet.Type};{packet.Payload}";
+                    Console.WriteLine(packetLog);
+                    sw.WriteLine(packet.Type + ";" + packet.Payload);
+                    sw.Flush();
+                }
+                catch (Exception ex)
+                { 
+                    // Lỗi gửi dữ liệu
+                    ShowMessage("Lỗi khi gửi dữ liệu: " + ex.Message);
                 }
             }
             else
             {
                 // Thông báo lỗi nếu client không kết nối với server
-                MessageBox.Show("Client không kết nối với server."); // Client is not connected to the server
+                ShowMessage("Client không kết nối với server.");
             }
         }
+
 
         public void ReceiveData()
         {
             try
             {
                 ns = tcpClient.GetStream();
-                byte[] byteData = new byte[1024];
-                int byteRec;
+                sw = new StreamWriter(ns);
+                sr = new StreamReader(ns);
 
                 // Đọc dữ liệu trong khi kết nối vẫn còn mở
-                while (tcpClient.Connected && (byteRec = ns.Read(byteData, 0, byteData.Length)) != 0)
+                while (tcpClient.Connected)
                 {
-                    // Kiểm tra nếu kết nối bị ngắt đột ngột
-                    if (byteRec == 0)
-                        break;
-
-                    string receivedData = Encoding.UTF8.GetString(byteData, 0, byteRec);
-                    string[] packets = receivedData.Split('|');
-
-                    foreach (string payload in packets)
+                    string receivedData = "";
+                    try
                     {
-                        Console.WriteLine(payload);
-
-                        RSAHelper rsaHelper = new RSAHelper();
-                        string privateKey = rsaHelper.GetPrivateKey();
-                        string decryptedPayload = rsaHelper.Decrypt(payload, privateKey);
-
-                        Packet packet = ParsePacket(payload);
-                        AnalyzingPacket(packet);
+                        receivedData =  sr.ReadLine();
+                        Console.WriteLine(receivedData);
+                        if (!string.IsNullOrEmpty(receivedData))
+                        {
+                            if (receivedData.StartsWith("{") && receivedData.EndsWith("}"))
+                            {
+                                HandleDrawPacket(receivedData);
+                            }
+                            else
+                            {
+                                Packet packet = ParsePacket(receivedData);
+                                AnalyzingPacket(packet);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
                     }
                 }
             }
-            catch (IOException ex)
-            {
-                MessageBox.Show("Lỗi khi nhận dữ liệu (IOException): " + ex.Message);
-            }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi nhận dữ liệu: " + ex.Message);
+                ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
             }
         }
-
-
-
 
         private Packet ParsePacket(string msg)
         {
@@ -143,6 +181,8 @@ namespace Program
                         return new LoginResultPacket(remainingMsg);
                     case PacketType.REGISTER_RESULT:
                         return new RegisterResultPacket(remainingMsg);
+                    case PacketType.RESET_PASSWORD_RESULT:
+                        return new ResetPasswordResultPacket(remainingMsg);
                     case PacketType.ROOM_INFO:
                         return new RoomInfoPacket(remainingMsg);
                     case PacketType.OTHER_INFO:
@@ -157,11 +197,18 @@ namespace Program
                         return new JoinResultPacket(remainingMsg);
                     case PacketType.GUESS:
                         return new GuessPacket(remainingMsg);
+                    case PacketType.PROFILE_RESULT:
+                        return new ProfileResultPacket(remainingMsg);
+                    case PacketType.DISCONNECT:
+                        return new DisconnectPacket(remainingMsg);
+                    case PacketType.END_GAME:
+                        return new EndGamePacket(remainingMsg);
                     default:
-                        return null; // Không biết loại packet
+                        HandleDrawPacket(msg);
+                        break;
                 }
             }
-            return null;
+                return null;
         }
 
         private void AnalyzingPacket(Packet packet)
@@ -178,31 +225,48 @@ namespace Program
                     }
                     else
                     {
-                        MessageBox.Show("Kiểm tra username hoặc mật khẩu và thử lại!");
+                        ShowMessage("Kiểm tra username hoặc mật khẩu và thử lại!");
                     }
                     break;
                 case PacketType.REGISTER_RESULT:
                     RegisterResultPacket registerResultPacket = (RegisterResultPacket)packet;
                     if (registerResultPacket.result== "SUCCESS")
                     {
-                        MessageBox.Show("Đăng ký thành công");
+                        ShowMessage("Đăng ký thành công");
                         RegisterSuccessful?.Invoke();
                     }
                     else
                     {
-                        MessageBox.Show("Username đã tồn tại!");
+                        ShowMessage("Username đã tồn tại!");
                     }
                     break;
                 case PacketType.RESET_PASSWORD_RESULT:
                     ResetPasswordResultPacket resultPacket = (ResetPasswordResultPacket)packet;
-                    if (resultPacket.Status == "success")
+                    switch (resultPacket.Status)
                     {
-                        MessageBox.Show("Mật khẩu đã được thay đổi thành công.");
-                        ResetPasswordSuccessful?.Invoke();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Không thể thay đổi mật khẩu. Vui lòng thử lại.");
+                        case "EMAIL_SENT":
+                            ShowMessage("Mã OTP đã được gửi tới email của bạn!");
+                            ResetPasswordResult.Invoke("EMAIL_SENT");
+                            break;
+                        case "EMAIL_FAIL":
+                            ShowMessage("Lỗi khi gửi email!");
+                            break;
+                        case "NOT_FOUND":
+                            ShowMessage("Email không tồn tại!");
+                            break;
+                        case "OTP_VERIFIED":
+                            ResetPasswordResult?.Invoke("OTP_VERIFIED");
+                            break;
+                        case "OTP_FAIL":
+                            ShowMessage("Mã OTP không chính xác! Vui lòng thử lại");
+                            break;
+                        case "SUCCESS":
+                            ShowMessage("Đặt lại mật khẩu thành công!");
+                            ResetPasswordResult?.Invoke("SUCCESS");
+                            break;
+                        case "FAIL":
+                            ShowMessage("Lỗi khi đặt lại mật khẩu!");
+                            break;
                     }
                     break;
                 case PacketType.ROOM_INFO:
@@ -220,16 +284,16 @@ namespace Program
                     switch (result)
                     {
                         case "NOT_EXIST":
-                            MessageBox.Show("Phòng không tồn tại!");
+                            ShowMessage("Phòng không tồn tại!");
                             break;
                         case "PLAYING":
-                            MessageBox.Show("Phòng đang chơi!");
+                            ShowMessage("Phòng đang chơi!");
                             break;
                         case "FULL":
-                            MessageBox.Show("Phòng đã đầy!");
+                            ShowMessage("Phòng đã đầy!");
                             break;
                         case "FINISHED":
-                            MessageBox.Show("Phòng đã kết thúc!");
+                            ShowMessage("Phòng đã kết thúc!");
                             break;
                     }
                     break;
@@ -252,6 +316,8 @@ namespace Program
                     ReceiveOtherInfo?.Invoke(roomId, username, score, status);
                     break;
                 case PacketType.ROUND_UPDATE:
+                     RoundUpdatePacket roundUpdatePacket = (RoundUpdatePacket)packet;
+                     RoundUpdateReceived?.Invoke(roundUpdatePacket);
                     break;
                 case PacketType.GUESS:
                     GuessPacket guessPacket = (GuessPacket)packet;
@@ -260,13 +326,59 @@ namespace Program
                     string guess = guessPacket.GuessMessage;
                     ReceiveMessage?.Invoke(roomId, username, guess);
                     break;
-                case PacketType.GUESS_RESULT:
+                case PacketType.END_GAME:
+                    EndGamePacket endGamePacket = (EndGamePacket)packet;
+                    roomId = endGamePacket.RoomId;
+                    EndGameReceived?.Invoke(roomId);
                     break;
-                case PacketType.LEADER_BOARD_INFO:
+                case PacketType.PROFILE_RESULT:
+                    ProfileResultPacket profileResult = (ProfileResultPacket)packet;
+                    ProfileReceived?.Invoke(profileResult);
+                    break;
+                case PacketType.DISCONNECT:
+                    ShowMessage("Server đã đóng kết nối!");
+                    ServerDisconnected?.Invoke();
+                    tcpClient.Close();
+                    Application.Exit();
                     break;
                 default:
                     break;
             }
+        }
+
+        private void HandleDrawPacket(string msg)
+        {
+            DrawPacket drawPacket = Newtonsoft.Json.JsonConvert.DeserializeObject<DrawPacket>(msg);
+            DrawPacketReceived?.Invoke(drawPacket);
+        }
+
+        public void ShowMessage(string messsage)
+        {
+            Form_Message formmessage = new Form_Message(messsage);
+            formmessage.StartPosition = FormStartPosition.Manual;
+            formmessage.BringToFront();
+            formmessage.ShowDialog();
+        }
+
+        // Gửi yêu cầu mã OTP
+        public void SendResetPasswordRequest(string email)
+        {
+            ResetPasswordRequestPacket requestPacket = new ResetPasswordRequestPacket(email);
+            SendPacket(requestPacket);
+        }
+
+        // Gửi yêu cầu xác thực OTP
+        public void SendVerifyOTPRequest(string email, string otp)
+        {
+            VerifyOTPRequestPacket otpPacket = new VerifyOTPRequestPacket(email, otp);
+            SendPacket(otpPacket);
+        }
+
+        // Gửi yêu cầu đặt lại mật khẩu
+        public void SendResetPassword(string email, string newPassword)
+        {
+            ResetPasswordPacket resetPacket = new ResetPasswordPacket(email, newPassword);
+            SendPacket(resetPacket);
         }
     }
 }

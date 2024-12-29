@@ -29,108 +29,239 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_End_Game));
-            this.rankListbox = new System.Windows.Forms.ListBox();
-            this.hopeForm1 = new ReaLTaiizor.Forms.HopeForm();
-            this.profileButton = new ReaLTaiizor.Controls.HopeButton();
-            this.homeButton = new ReaLTaiizor.Controls.HopeButton();
+            this.ReturnButton = new ReaLTaiizor.Controls.HopeButton();
+            this.top1Button = new ReaLTaiizor.Controls.MetroEllipse();
+            this.top2Button = new ReaLTaiizor.Controls.MetroEllipse();
+            this.top3Button = new ReaLTaiizor.Controls.MetroEllipse();
+            this.hopeRoundButton1 = new ReaLTaiizor.Controls.HopeRoundButton();
+            this.hopeRoundButton2 = new ReaLTaiizor.Controls.HopeRoundButton();
+            this.hopeRoundButton3 = new ReaLTaiizor.Controls.HopeRoundButton();
+            this.EndGameForm = new ReaLTaiizor.Forms.HopeForm();
             this.SuspendLayout();
             // 
-            // rankListbox
+            // ReturnButton
             // 
-            this.rankListbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
-            this.rankListbox.FormattingEnabled = true;
-            this.rankListbox.Location = new System.Drawing.Point(38, 98);
-            this.rankListbox.Margin = new System.Windows.Forms.Padding(2);
-            this.rankListbox.Name = "rankListbox";
-            this.rankListbox.Size = new System.Drawing.Size(282, 290);
-            this.rankListbox.TabIndex = 0;
+            this.ReturnButton.BorderColor = System.Drawing.Color.Black;
+            this.ReturnButton.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
+            this.ReturnButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ReturnButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.ReturnButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ReturnButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReturnButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.ReturnButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
+            this.ReturnButton.Location = new System.Drawing.Point(114, 444);
+            this.ReturnButton.Name = "ReturnButton";
+            this.ReturnButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.ReturnButton.Size = new System.Drawing.Size(130, 33);
+            this.ReturnButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.ReturnButton.TabIndex = 17;
+            this.ReturnButton.Text = "Return";
+            this.ReturnButton.TextColor = System.Drawing.Color.White;
+            this.ReturnButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            this.ReturnButton.Click += new System.EventHandler(this.Returnbutton_Click_1);
             // 
-            // hopeForm1
+            // top1Button
             // 
-            this.hopeForm1.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
-            this.hopeForm1.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
-            this.hopeForm1.ControlBoxColorN = System.Drawing.Color.White;
-            this.hopeForm1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.hopeForm1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.hopeForm1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.hopeForm1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
-            this.hopeForm1.Image = ((System.Drawing.Image)(resources.GetObject("hopeForm1.Image")));
-            this.hopeForm1.Location = new System.Drawing.Point(0, 0);
-            this.hopeForm1.Name = "hopeForm1";
-            this.hopeForm1.Size = new System.Drawing.Size(348, 40);
-            this.hopeForm1.TabIndex = 15;
-            this.hopeForm1.Text = "Home";
-            this.hopeForm1.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
+            this.top1Button.BorderThickness = 7;
+            this.top1Button.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.top1Button.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.top1Button.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            this.top1Button.Font = new System.Drawing.Font("Roboto Mono", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.top1Button.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.top1Button.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.top1Button.HoverTextColor = System.Drawing.Color.White;
+            this.top1Button.Image = null;
+            this.top1Button.ImageSize = new System.Drawing.Size(64, 64);
+            this.top1Button.IsDerivedStyle = true;
+            this.top1Button.Location = new System.Drawing.Point(102, 155);
+            this.top1Button.Name = "top1Button";
+            this.top1Button.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.top1Button.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
+            this.top1Button.NormalTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.top1Button.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.top1Button.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.top1Button.PressTextColor = System.Drawing.Color.White;
+            this.top1Button.Size = new System.Drawing.Size(142, 142);
+            this.top1Button.Style = ReaLTaiizor.Enum.Metro.Style.Custom;
+            this.top1Button.StyleManager = null;
+            this.top1Button.TabIndex = 23;
+            this.top1Button.Text = "metroEllipse1";
+            this.top1Button.ThemeAuthor = "Taiizor";
+            this.top1Button.ThemeName = "MetroLight";
             // 
-            // profileButton
+            // top2Button
             // 
-            this.profileButton.BorderColor = System.Drawing.Color.Black;
-            this.profileButton.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
-            this.profileButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.profileButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
-            this.profileButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.profileButton.Font = new System.Drawing.Font("Roboto Mono", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.profileButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
-            this.profileButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.profileButton.Location = new System.Drawing.Point(12, 46);
-            this.profileButton.Name = "profileButton";
-            this.profileButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.profileButton.Size = new System.Drawing.Size(65, 41);
-            this.profileButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
-            this.profileButton.TabIndex = 16;
-            this.profileButton.Text = "Profile";
-            this.profileButton.TextColor = System.Drawing.Color.White;
-            this.profileButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
-            this.profileButton.Click += new System.EventHandler(this.profileButton_Click);
+            this.top2Button.BorderThickness = 7;
+            this.top2Button.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.top2Button.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.top2Button.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            this.top2Button.Font = new System.Drawing.Font("Roboto Mono", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.top2Button.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.top2Button.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.top2Button.HoverTextColor = System.Drawing.Color.White;
+            this.top2Button.Image = null;
+            this.top2Button.ImageSize = new System.Drawing.Size(64, 64);
+            this.top2Button.IsDerivedStyle = true;
+            this.top2Button.Location = new System.Drawing.Point(39, 303);
+            this.top2Button.Name = "top2Button";
+            this.top2Button.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.top2Button.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
+            this.top2Button.NormalTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.top2Button.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.top2Button.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.top2Button.PressTextColor = System.Drawing.Color.White;
+            this.top2Button.Size = new System.Drawing.Size(115, 115);
+            this.top2Button.Style = ReaLTaiizor.Enum.Metro.Style.Custom;
+            this.top2Button.StyleManager = null;
+            this.top2Button.TabIndex = 24;
+            this.top2Button.Text = "metroEllipse2";
+            this.top2Button.ThemeAuthor = "Taiizor";
+            this.top2Button.ThemeName = "MetroLight";
             // 
-            // homeButton
+            // top3Button
             // 
-            this.homeButton.BorderColor = System.Drawing.Color.Black;
-            this.homeButton.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
-            this.homeButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.homeButton.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
-            this.homeButton.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.homeButton.Font = new System.Drawing.Font("Roboto Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.homeButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(131)))), ((int)(((byte)(146)))));
-            this.homeButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.homeButton.Location = new System.Drawing.Point(109, 408);
-            this.homeButton.Name = "homeButton";
-            this.homeButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(226)))), ((int)(((byte)(167)))));
-            this.homeButton.Size = new System.Drawing.Size(130, 33);
-            this.homeButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
-            this.homeButton.TabIndex = 17;
-            this.homeButton.Text = "Home";
-            this.homeButton.TextColor = System.Drawing.Color.White;
-            this.homeButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
-            this.homeButton.Click += new System.EventHandler(this.homeButton_Click_1);
+            this.top3Button.BorderThickness = 7;
+            this.top3Button.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.top3Button.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.top3Button.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            this.top3Button.Font = new System.Drawing.Font("Roboto Mono", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.top3Button.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.top3Button.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
+            this.top3Button.HoverTextColor = System.Drawing.Color.White;
+            this.top3Button.Image = null;
+            this.top3Button.ImageSize = new System.Drawing.Size(64, 64);
+            this.top3Button.IsDerivedStyle = true;
+            this.top3Button.Location = new System.Drawing.Point(205, 303);
+            this.top3Button.Name = "top3Button";
+            this.top3Button.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.top3Button.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
+            this.top3Button.NormalTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.top3Button.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.top3Button.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.top3Button.PressTextColor = System.Drawing.Color.White;
+            this.top3Button.Size = new System.Drawing.Size(115, 115);
+            this.top3Button.Style = ReaLTaiizor.Enum.Metro.Style.Custom;
+            this.top3Button.StyleManager = null;
+            this.top3Button.TabIndex = 25;
+            this.top3Button.Text = "metroEllipse3";
+            this.top3Button.ThemeAuthor = "Taiizor";
+            this.top3Button.ThemeName = "MetroLight";
+            // 
+            // hopeRoundButton1
+            // 
+            this.hopeRoundButton1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(223)))), ((int)(((byte)(230)))));
+            this.hopeRoundButton1.ButtonType = ReaLTaiizor.Util.HopeButtonType.Info;
+            this.hopeRoundButton1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.hopeRoundButton1.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.hopeRoundButton1.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.hopeRoundButton1.Enabled = false;
+            this.hopeRoundButton1.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.hopeRoundButton1.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
+            this.hopeRoundButton1.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.hopeRoundButton1.Location = new System.Drawing.Point(107, 274);
+            this.hopeRoundButton1.Name = "hopeRoundButton1";
+            this.hopeRoundButton1.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(158)))), ((int)(((byte)(255)))));
+            this.hopeRoundButton1.Size = new System.Drawing.Size(129, 34);
+            this.hopeRoundButton1.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.hopeRoundButton1.TabIndex = 26;
+            this.hopeRoundButton1.Text = "TOP 1";
+            this.hopeRoundButton1.TextColor = System.Drawing.Color.White;
+            this.hopeRoundButton1.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            // 
+            // hopeRoundButton2
+            // 
+            this.hopeRoundButton2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(223)))), ((int)(((byte)(230)))));
+            this.hopeRoundButton2.ButtonType = ReaLTaiizor.Util.HopeButtonType.Info;
+            this.hopeRoundButton2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.hopeRoundButton2.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.hopeRoundButton2.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.hopeRoundButton2.Enabled = false;
+            this.hopeRoundButton2.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.hopeRoundButton2.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
+            this.hopeRoundButton2.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.hopeRoundButton2.Location = new System.Drawing.Point(46, 396);
+            this.hopeRoundButton2.Name = "hopeRoundButton2";
+            this.hopeRoundButton2.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(158)))), ((int)(((byte)(255)))));
+            this.hopeRoundButton2.Size = new System.Drawing.Size(101, 31);
+            this.hopeRoundButton2.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.hopeRoundButton2.TabIndex = 27;
+            this.hopeRoundButton2.Text = "TOP 2";
+            this.hopeRoundButton2.TextColor = System.Drawing.Color.White;
+            this.hopeRoundButton2.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            // 
+            // hopeRoundButton3
+            // 
+            this.hopeRoundButton3.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(223)))), ((int)(((byte)(230)))));
+            this.hopeRoundButton3.ButtonType = ReaLTaiizor.Util.HopeButtonType.Info;
+            this.hopeRoundButton3.Cursor = System.Windows.Forms.Cursors.Default;
+            this.hopeRoundButton3.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.hopeRoundButton3.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.hopeRoundButton3.Enabled = false;
+            this.hopeRoundButton3.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.hopeRoundButton3.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
+            this.hopeRoundButton3.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.hopeRoundButton3.Location = new System.Drawing.Point(214, 396);
+            this.hopeRoundButton3.Name = "hopeRoundButton3";
+            this.hopeRoundButton3.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(158)))), ((int)(((byte)(255)))));
+            this.hopeRoundButton3.Size = new System.Drawing.Size(101, 31);
+            this.hopeRoundButton3.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.hopeRoundButton3.TabIndex = 28;
+            this.hopeRoundButton3.Text = "TOP 3";
+            this.hopeRoundButton3.TextColor = System.Drawing.Color.White;
+            this.hopeRoundButton3.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            // 
+            // EndGameForm
+            // 
+            this.EndGameForm.ControlBoxColorH = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(231)))), ((int)(((byte)(237)))));
+            this.EndGameForm.ControlBoxColorHC = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.EndGameForm.ControlBoxColorN = System.Drawing.Color.White;
+            this.EndGameForm.Cursor = System.Windows.Forms.Cursors.Default;
+            this.EndGameForm.Dock = System.Windows.Forms.DockStyle.Top;
+            this.EndGameForm.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.EndGameForm.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
+            this.EndGameForm.Image = null;
+            this.EndGameForm.Location = new System.Drawing.Point(0, 0);
+            this.EndGameForm.Name = "EndGameForm";
+            this.EndGameForm.Size = new System.Drawing.Size(348, 40);
+            this.EndGameForm.TabIndex = 31;
+            this.EndGameForm.Text = "Score Board";
+            this.EndGameForm.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             // 
             // Form_End_Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
-            this.ClientSize = new System.Drawing.Size(348, 453);
-            this.Controls.Add(this.homeButton);
-            this.Controls.Add(this.profileButton);
-            this.Controls.Add(this.hopeForm1);
-            this.Controls.Add(this.rankListbox);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
+            this.BackgroundImage = global::Program.Properties.Resources.background_score;
+            this.ClientSize = new System.Drawing.Size(348, 502);
+            this.Controls.Add(this.EndGameForm);
+            this.Controls.Add(this.hopeRoundButton3);
+            this.Controls.Add(this.hopeRoundButton2);
+            this.Controls.Add(this.hopeRoundButton1);
+            this.Controls.Add(this.top3Button);
+            this.Controls.Add(this.top2Button);
+            this.Controls.Add(this.top1Button);
+            this.Controls.Add(this.ReturnButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_End_Game";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Leader board";
-            this.Load += new System.EventHandler(this.Form_End_Game_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox rankListbox;
-        private ReaLTaiizor.Forms.HopeForm hopeForm1;
-        private ReaLTaiizor.Controls.HopeButton profileButton;
-        private ReaLTaiizor.Controls.HopeButton homeButton;
+        private ReaLTaiizor.Controls.HopeButton ReturnButton;
+        private ReaLTaiizor.Controls.MetroEllipse top1Button;
+        private ReaLTaiizor.Controls.MetroEllipse top2Button;
+        private ReaLTaiizor.Controls.MetroEllipse top3Button;
+        private ReaLTaiizor.Controls.HopeRoundButton hopeRoundButton1;
+        private ReaLTaiizor.Controls.HopeRoundButton hopeRoundButton2;
+        private ReaLTaiizor.Controls.HopeRoundButton hopeRoundButton3;
+        private ReaLTaiizor.Forms.HopeForm EndGameForm;
     }
 }

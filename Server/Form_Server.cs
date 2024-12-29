@@ -26,6 +26,7 @@ namespace Server
             server.UpdateLog += UpdateLog;
             server.UpdateClientList += UpdateClientListView;
             server.UpdateRoomList += UpdateRoomListView;
+            
         }
 
         private void UpdateLog(string message)
@@ -49,8 +50,8 @@ namespace Server
             clientListView.GridLines = true;
 
             // Thêm các cột vào ListView
-            clientListView.Columns.Add("username", 95);
-            clientListView.Columns.Add("room", 95);
+            clientListView.Columns.Add("Username", 95);
+            clientListView.Columns.Add("Room", 95);
         }
 
         private void InitializeRoomList()
@@ -61,10 +62,10 @@ namespace Server
 
             // Thêm các cột vào ListView
             roomListView.Columns.Add("Room ID", 85);
-            roomListView.Columns.Add("Host", 85);
-            roomListView.Columns.Add("Status", 85);
-            roomListView.Columns.Add("Current Players", 85);
-            roomListView.Columns.Add("Max Players", 85);
+            roomListView.Columns.Add("Host", 80);
+            roomListView.Columns.Add("Status", 75);
+            roomListView.Columns.Add("Current Players", 95);
+            roomListView.Columns.Add("Max Players", 90);
         }
 
 
@@ -72,11 +73,17 @@ namespace Server
         {
             isServerStopping = false;
             server.StartServer();
+            startBtn.Enabled = false;
+            stopBtn.Enabled = true;
         }
 
         private void stopBtn_Click(object sender, EventArgs e)
         {
             server.StopServer();
+            clientListView.Items.Clear();
+            roomListView.Items.Clear();
+            startBtn.Enabled = true;
+            stopBtn.Enabled = false;
         }
 
         private void Form_Server_FormClosing(object sender, FormClosingEventArgs e)
@@ -94,6 +101,7 @@ namespace Server
             server.StopServer();
 
             base.OnFormClosing(e);
+
         }
 
         #region LIST VIEW
@@ -136,5 +144,6 @@ namespace Server
             }
         }
         #endregion
+
     }
 }

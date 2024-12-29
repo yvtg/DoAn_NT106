@@ -20,6 +20,20 @@ namespace Program
         {
             InitializeComponent();
             this.client = Form_Input_ServerIP.client;
+            client.ServerDisconnected += () =>
+            {
+                if (this.InvokeRequired) 
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Close(); // Đóng form trên luồng UI
+                    }));
+                }
+                else
+                {
+                    this.Close(); 
+                }
+            };
             this.username = username;
         }
 
@@ -30,15 +44,14 @@ namespace Program
             CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers}");
             client.SendPacket(createRoomPacket);
 
-            //đóng form create sau khi tạo phòng
             this.Close();
 
         }
 
         private void Form_Create_Load(object sender, EventArgs e)
         {
-            numeric.MinNum = 1;
-            numeric.MaxNum = 5;
+            numeric.MinNum = 2;
+            numeric.MaxNum = 10;
             numeric.ValueNumber = 2;
         }
 

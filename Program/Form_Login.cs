@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1;
 using Models;
+using ReaLTaiizor.Forms;
 
 namespace Program
 {
@@ -19,6 +20,20 @@ namespace Program
         {
             InitializeComponent();
             this.client = Form_Input_ServerIP.client;
+            client.ServerDisconnected += () =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Close(); // Đóng form trên luồng UI
+                    }));
+                }
+                else
+                {
+                    this.Close();
+                }
+            };
             client.LoginSuccessful += OnLoginSuccessful;
         }
 
@@ -29,7 +44,7 @@ namespace Program
 
             if (username == "" || password == "")
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin");
+                ShowMessage("Vui lòng nhập đầy đủ thông tin");
                 return;
             }
 
@@ -41,7 +56,7 @@ namespace Program
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi gửi thông tin đăng nhập: {ex.Message}");
+                ShowMessage($"Lỗi khi gửi thông tin đăng nhập: {ex.Message}");
             }
         }
         private void showPwCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -55,7 +70,7 @@ namespace Program
                 passTextbox.UseSystemPasswordChar = true; // Ẩn mật khẩu
             }
         }
-        
+
         private void OnLoginSuccessful()
         {
             if (this.InvokeRequired)
@@ -65,11 +80,22 @@ namespace Program
             }
 
             string username = usernameTextbox.Text;
-            Form_Home homeForm = new Form_Home(username);
-            homeForm.StartPosition = FormStartPosition.Manual; // Đặt hiển thị theo tọa độ
-            homeForm.Location = this.Location; // Đặt vị trí của Form_Home giống với Form_Background
-            homeForm.Show();
+
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form is Form_Home)
+                {
+                    form.Hide(); 
+                    break;
+                }
+            }
             this.Hide();
+
+            Form_Home homeForm = new Form_Home(username);
+            homeForm.StartPosition = FormStartPosition.Manual;
+            homeForm.Location = this.Location;
+            homeForm.Show();
+
             homeForm.FormClosed += (s, args) => this.Close();
         }
 
@@ -80,10 +106,9 @@ namespace Program
             Form_Law lawForm = new Form_Law();
             this.Hide(); 
             lawForm.StartPosition = FormStartPosition.Manual;
-            lawForm.Location = new Point(this.Location.X, this.Location.Y);
-            lawForm.ShowDialog();
-            this.Show();
-            lawForm.FormClosed += (s, args) => this.Close();
+            lawForm.Location = this.Location; // Đặt vị trí của Form_Home giống với Form_Background
+            lawForm.Show();
+            lawForm.FormClosed += (s, args) => this.Show();
         }
 
 
@@ -92,17 +117,16 @@ namespace Program
             Form_Register regForm = new Form_Register();
             this.Hide();
             regForm.StartPosition = FormStartPosition.Manual;
-            regForm.Location = new Point(this.Location.X, this.Location.Y);
-            regForm.ShowDialog();
-            this.Show();
-            regForm.FormClosed += (s, args) => this.Close();
+            regForm.Location = this.Location; // Đặt vị trí của Form_Home giống với Form_Background
+            regForm.Show();
+            regForm.FormClosed += (s, args) => this.Show();
         }
 
         private void Form_Login_FormClosing(object sender, FormClosingEventArgs e)
         {
             DisconnectPacket disconnectPacket = new DisconnectPacket("");
             client.SendPacket(disconnectPacket);
-            //client.Stop();
+            Application.Exit();
         }
 
         private void forgetLabel_Click(object sender, EventArgs e)
@@ -110,10 +134,51 @@ namespace Program
             Form_Forget_Password forgetForm = new Form_Forget_Password();
             this.Hide();
             forgetForm.StartPosition = FormStartPosition.Manual;
-            forgetForm.Location = new Point(this.Location.X, this.Location.Y);
-            forgetForm.ShowDialog();
-            this.Show();
-            forgetForm.FormClosed += (s, args) => this.Close();
+            forgetForm.Location = this.Location;
+            //forgetForm.FormClosed += (s, args) => this.Show(); // Hiển thị lại Form_Login khi ForgetForm đóng
+            forgetForm.Show();
         }
+
+        public void ShowMessage(string messsage)
+        {
+            Form_Message formmessage = new Form_Message(messsage);
+            formmessage.StartPosition = FormStartPosition.Manual;
+            int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
+            int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
+            formmessage.Location = new Point(centerY, centerY);
+
+            formmessage.Show();
+        }
+
+        #region dragging
+
+        private bool dragging = false;
+        private Point dragCursor;
+        private Point dragForm;
+
+        private void login_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                dragging = true;
+                dragCursor = Cursor.Position;
+                dragForm = this.Location;
+            }
+        }
+
+        private void login_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                Point delta = new Point(Cursor.Position.X - dragCursor.X, Cursor.Position.Y - dragCursor.Y);
+                this.Location = new Point(dragForm.X + delta.X, dragForm.Y + delta.Y);
+            }
+        }
+
+        private void login_MouseUp(object sender, MouseEventArgs e)
+        {
+            dragging = false;
+        }
+        #endregion
     }
 }
