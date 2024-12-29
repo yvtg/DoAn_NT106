@@ -159,7 +159,7 @@ namespace Program
         {
             roundTimer.Interval = 1000; // Gửi thông báo mỗi giây
             roundTimer.AutoReset = true; // Lặp lại mỗi giây
-            roundTime = 90; // 90 giây cho mỗi vòng chơi
+            roundTime = 5; // 90 giây cho mỗi vòng chơi /////////////////////////////////////////
             progressValue = 0;
 
             // Detach the event handler to prevent multiple subscriptions
@@ -190,44 +190,49 @@ namespace Program
             timeProgressBar.Value = progressValue;
 
             // Khi hết giờ
-            if (roundTime <= 0)
+            if (roundTime == 0)
             {
                 roundTimer.Stop();
-                // Hiển thị thông báo kết thúc vòng
-                if (timeLabel.InvokeRequired)
+                currentRound++;
+
+                if (currentRound > SelectRound )
                 {
-                    timeLabel.Invoke(new Action(() =>
+                    if (username==host)
                     {
-                        ShowChatMessage("Vòng chơi kết thúc! Các bạn chưa đoán được từ khóa, hãy bắt đầu một vòng chơi mới.");
-                    }));
+                        EndGamePacket endgamePacket = new EndGamePacket($"{roomId}");
+                        client.SendPacket(endgamePacket);
+                    }
+                    return;
                 }
                 else
                 {
-                    ShowChatMessage("Vòng chơi kết thúc! Các bạn chưa đoán được từ khóa, hãy bắt đầu một vòng chơi mới.");
-                }
-                if (currentRound<SelectRound)
-                {
-
-                    if (username == host)
+                    // Hiển thị thông báo kết thúc vòng
+                    if (timeLabel.InvokeRequired)
                     {
-                        currentRound++;
+                        timeLabel.Invoke(new Action(() =>
+                        {
+                            ShowChatMessage("Vòng chơi kết thúc! Các bạn chưa đoán được từ khóa, hãy bắt đầu một vòng chơi mới.");
+                        }));
+                    }
+                    else
+                    {
+                        ShowChatMessage("Vòng chơi kết thúc! Các bạn chưa đoán được từ khóa, hãy bắt đầu một vòng chơi mới.");
+                    }
+
+                    if (this.username == host)
+                    {
                         StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
                         client.SendPacket(startPacket);
                     }
+
                     timeLabel.Text = $"Time: {roundTime}";
                     timeProgressBar.Value = 90 - roundTime;
-                    wordLabel.Text = "key word: ";
+                    wordLabel.Text = "KEY WORD: ";
 
                     sendButton.Enabled = true;
                     ClearPictureBox();
                     pictureBox1.Enabled = true;
                 }
-                else
-                {
-                    EndGamePacket endgamePacket = new EndGamePacket($"{roomId}");
-                    client.SendPacket(endgamePacket);
-                }
-                
             }
         }
         #endregion
@@ -478,8 +483,11 @@ namespace Program
                             playerScores[username] = playerData;
                             if (currentRound==SelectRound)
                             {
-                                EndGamePacket endgamePacket = new EndGamePacket($"{roomId}");
-                                client.SendPacket(endgamePacket);
+                                if (this.username == host)
+                                {
+                                    EndGamePacket endgamePacket = new EndGamePacket($"{roomId}");
+                                    client.SendPacket(endgamePacket);
+                                }
                             }
                             else
                             {
@@ -658,9 +666,23 @@ namespace Program
         // nhận thông tin phòng (đổi host)
         private void HostChanged(string host)
         {
-            this.host = host;
-            hostText.Text = "Host: " + host;
+            if (hostText.InvokeRequired)
+            {
+                hostText.Invoke(new Action(() => HostChanged(host)));
+            }
+            else
+            {
+                this.host = host;
+                hostText.Text = "Host: " + host;
+
+                if (username == host)
+                {
+                    startButton.Show();
+                    roundComboBox.Show();
+                }
+            }
         }
+
 
         private void OnReceivedRoundUpdate(RoundUpdatePacket roundUpdatePacket)
         {
