@@ -21,7 +21,7 @@ namespace Models
         public Random random;
         public string host;
 
-        public User currentDrawer; // Người chơi hiện đang vẽ
+        public User? currentDrawer; // Người chơi hiện đang vẽ
         public int currentDrawerIndex; // Vị trí của người vẽ hiện tại trong danh sách người chơi
 
 
@@ -36,8 +36,16 @@ namespace Models
             this.host = host;
             this.currentKeyword = "";
             currentDrawer = player;
+        }
 
-
+        // reset lai phong choi
+        public void Clear()
+        {
+            currentDrawerIndex = -1;
+            currentDrawer = null;
+            currentKeyword = "";
+            status = "WAITING";
+            IsGameStarted = false;
         }
 
         // Bắt đầu vòng chơi mới
@@ -87,7 +95,7 @@ namespace Models
         // Kiểm tra đáp án của người chơi
         public bool CheckAnswer(string guess, User player)
         {
-            if (guess.Equals(currentKeyword, StringComparison.OrdinalIgnoreCase))
+            if (guess.Equals(currentKeyword, StringComparison.OrdinalIgnoreCase) && IsGameStarted)
             {
                 player.Score += 10;
                 return true;
@@ -95,16 +103,5 @@ namespace Models
             return false;
         }
 
-
-        // Lấy danh sách điểm của các người chơi dưới dạng chuỗi
-        public string GetScores()
-        {
-            List<string> scores = new List<string>();
-            foreach (var player in players)
-            {
-                scores.Add($"{player.Name}: {player.Score}");
-            }
-            return string.Join(", ", scores);
-        }
     }
 }
