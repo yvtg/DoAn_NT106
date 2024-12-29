@@ -65,7 +65,7 @@ namespace Program
 
             if (string.IsNullOrEmpty(userOtp))
             {
-                MessageBox.Show("Vui lòng nhập mã OTP.");
+                ShowMessage("Vui lòng nhập mã OTP.");
                 return;
             }
 
@@ -94,14 +94,19 @@ namespace Program
 
         public void ShowMessage(string message)
         {
-            Form_Message formMessage = new Form_Message(message);
-            formMessage.StartPosition = FormStartPosition.Manual;
+            using (Form_Message formMessage = new Form_Message(message))
+            {
+                formMessage.StartPosition = FormStartPosition.Manual;
 
-            int centerX = this.Location.X + (this.Width - formMessage.Width) / 2;
-            int centerY = this.Location.Y + (this.Height - formMessage.Height) / 2;
-            formMessage.Location = new Point(centerX, centerY);
+                formMessage.Load += (s, e) =>
+                {
+                    int centerX = this.Location.X + (this.Width - formMessage.Width) / 2;
+                    int centerY = this.Location.Y + (this.Height - formMessage.Height) / 2;
+                    formMessage.Location = new Point(centerX, centerY);
+                };
 
-            formMessage.ShowDialog();
+                formMessage.ShowDialog();
+            }
         }
         private void BackToPreviousForm()
         {

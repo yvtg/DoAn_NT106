@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Messaging;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -106,12 +107,11 @@ namespace Program
 
             if (status == "SUCCESS")
             {
-                foreach (Form form in Application.OpenForms)
+                foreach (Form form in Application.OpenForms.Cast<Form>().ToList())
                 {
-                    if (form is Form_Home)
+                    if (form != this)
                     {
-                        form.Hide(); 
-                        break;
+                        form.Close();
                     }
                 }
 
@@ -123,14 +123,21 @@ namespace Program
                 this.Close();
             }
         }
-        public void ShowMessage(string messsage)
+        public void ShowMessage(string message)
         {
-            Form_Message formmessage = new Form_Message(messsage);
-            formmessage.StartPosition = FormStartPosition.Manual;
-            int centerX = this.Location.X + (this.Width - formmessage.Width) / 2;
-            int centerY = this.Location.Y + (this.Height - formmessage.Height) / 2;
-            formmessage.Location = new Point(centerX, centerY);
-            formmessage.ShowDialog();
+            using (Form_Message formMessage = new Form_Message(message))
+            {
+                formMessage.StartPosition = FormStartPosition.Manual;
+
+                formMessage.Load += (s, e) =>
+                {
+                    int centerX = this.Location.X + (this.Width - formMessage.Width) / 2;
+                    int centerY = this.Location.Y + (this.Height - formMessage.Height) / 2;
+                    formMessage.Location = new Point(centerX, centerY);
+                };
+
+                formMessage.ShowDialog();
+            }
         }
 
         private void backButton_Click(object sender, EventArgs e)

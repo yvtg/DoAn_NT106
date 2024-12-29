@@ -71,14 +71,18 @@ namespace Program
             if (string.IsNullOrEmpty(email))
             {
                 ShowMessage("Vui lòng nhập email.");
+                sendButton.Enabled = true;
+
                 return;
             }
 
             if (!IsValidEmail(emailTextbox.Text.Trim()))
             {
                 ShowMessage("Email không hợp lệ. Vui lòng nhập lại.");
+                sendButton.Enabled = true;
                 return;
             }
+            sendButton.Enabled = false;
 
             // Gửi yêu cầu OTP tới server
             client.SendResetPasswordRequest(email);
@@ -107,14 +111,19 @@ namespace Program
         }
         public void ShowMessage(string message)
         {
-            Form_Message formMessage = new Form_Message(message);
-            formMessage.StartPosition = FormStartPosition.Manual;
+            using (Form_Message formMessage = new Form_Message(message))
+            {
+                formMessage.StartPosition = FormStartPosition.Manual;
 
-            int centerX = this.Location.X + (this.Width - formMessage.Width) / 2;
-            int centerY = this.Location.Y + (this.Height - formMessage.Height) / 2;
-            formMessage.Location = new Point(centerX, centerY);
+                formMessage.Load += (s, e) =>
+                {
+                    int centerX = this.Location.X + (this.Width - formMessage.Width) / 2;
+                    int centerY = this.Location.Y + (this.Height - formMessage.Height) / 2;
+                    formMessage.Location = new Point(centerX, centerY);
+                };
 
-            formMessage.ShowDialog();
+                formMessage.ShowDialog();
+            }
         }
         private void backButton_Click_1(object sender, EventArgs e)
         {

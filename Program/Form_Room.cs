@@ -283,7 +283,10 @@ namespace Program
             {
                 cursorPen.Color = Color.White;
             }
-
+            else
+            {
+                cursorPen.Color = penColor;
+            }
             if (cursorX != -1 && cursorY != -1 && isDrawing == true && gameStart)
             {
                 point = e.Location;
