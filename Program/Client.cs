@@ -18,14 +18,13 @@ namespace Program
         NetworkStream ns;
         StreamWriter sw;
         StreamReader sr;
-        private static RSAHelper rsaHelper;
+        private static RSAHelper rsaHelper = new RSAHelper();
         private static string publicKey;
         private static string privateKey;
         private static string serverPublicKey;
 
         public Client()
         {
-            rsaHelper = new RSAHelper();
             publicKey = rsaHelper.GetPublicKey();
             privateKey = rsaHelper.GetPrivateKey();
         }
@@ -184,7 +183,7 @@ namespace Program
                         receivedData =  sr.ReadLine();
 
                         // Giải mã thông điệp nhận được
-                        string decryptedData = rsaHelper.Decrypt(receivedData, privateKey);
+                        string decryptedData = rsaHelper.Decrypt(receivedData, rsaHelper.GetPublicKey());
 
                         Console.WriteLine(decryptedData);
                         if (!string.IsNullOrEmpty(decryptedData))
@@ -202,13 +201,13 @@ namespace Program
                     }
                     catch (Exception ex)
                     {
-                        ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
+                        ShowMessage("Lỗi khi nhận dữ liệu 1: " + ex.Message);
                     }
                 }
             }
             catch (Exception ex)
             {
-                ShowMessage("Lỗi khi nhận dữ liệu: " + ex.Message);
+                ShowMessage("Lỗi khi nhận dữ liệu 2: " + ex.Message);
             }
         }
 
