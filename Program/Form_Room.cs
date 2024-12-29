@@ -159,7 +159,7 @@ namespace Program
         {
             roundTimer.Interval = 1000; // Gửi thông báo mỗi giây
             roundTimer.AutoReset = true; // Lặp lại mỗi giây
-            roundTime = 5; // 90 giây cho mỗi vòng chơi /////////////////////////////////////////
+            roundTime = 90; // 90 giây cho mỗi vòng chơi 
             progressValue = 0;
 
             // Detach the event handler to prevent multiple subscriptions
