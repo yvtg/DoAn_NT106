@@ -74,7 +74,7 @@ namespace Program
                 {
                     this.Invoke(new Action(() =>
                     {
-                        this.Close(); // Đóng form trên luồng UI
+                        this.Close();
                     }));
                 }
             };
@@ -130,6 +130,9 @@ namespace Program
 
             // nhận tín hiệu kết thúc game
             client.EndGameReceived += EndGame;
+
+            // cập nhật thông tin phòng
+            client.HostChanged += HostChanged;
 
             // Cài đặt bộ đếm thời gian cho vòng chơi
             roundTimer = new System.Timers.Timer();
@@ -652,6 +655,12 @@ namespace Program
             }
         }
         #endregion
+        // nhận thông tin phòng (đổi host)
+        private void HostChanged(string host)
+        {
+            this.host = host;
+            hostText.Text = "Host: " + host;
+        }
 
         private void OnReceivedRoundUpdate(RoundUpdatePacket roundUpdatePacket)
         {

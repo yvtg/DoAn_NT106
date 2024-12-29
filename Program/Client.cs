@@ -29,6 +29,7 @@ namespace Program
         public event Action<ProfileResultPacket> ProfileReceived; // nhận thông tin profile
         public event Action ServerDisconnected; // server ngắt kết nối
         public event Action<string> ResetPasswordResult;
+        public event Action<string> HostChanged;
         CancellationTokenSource cancellationTokenSource;
 
         public bool Connect(string serverIP, int port)
@@ -276,7 +277,11 @@ namespace Program
                     status = roomInfoPacket.Status;
                     playerCount = roomInfoPacket.CurrentPlayers;
                     maxPlayer = roomInfoPacket.MaxPlayers;
-                    ReceiveRoomInfo?.Invoke(roomId, host, maxPlayer);
+                    if (roomInfoPacket.Status == "HOST_CHANGED")
+                    {
+                        HostChanged?.Invoke(roomInfoPacket.Host);
+                    }
+                    else ReceiveRoomInfo?.Invoke(roomId, host, maxPlayer);
                     break;
                 case PacketType.JOIN_RESULT:
                     JoinResultPacket joinResultPacket = (JoinResultPacket)packet;

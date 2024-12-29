@@ -486,6 +486,13 @@ namespace Server
                         {
                             rooms.Remove(room);
                         }
+                        else if (client.Name == room.host)
+                        {
+                            room.host = room.players[0].Name;
+                            // cap nhat thong tin phong
+                            roomInfo = new RoomInfoPacket($"{roomId};{room.host};HOST_CHANGED;{room.maxPlayers};{room.players.Count};{room.currentRound}");
+                            BroadcastPacket(room, roomInfo);
+                        }
                         UpdateClientList?.Invoke();
                         UpdateRoomList?.Invoke();
                         UpdateLog.Invoke($"{client.Name} đã rời phòng {roomId}");
@@ -509,6 +516,10 @@ namespace Server
                         string isdraw = room.currentDrawer.IsDrawing.ToString();
                         string name = room.currentDrawer.Name;
                         string word = room.currentKeyword;
+
+                        // cập nhật phòng
+                        room.currentRound = currentRound;
+
                         // Gửi thông báo về người vẽ cho tất cả người chơi trong phòng
                         foreach (var user in room.players)
                         {

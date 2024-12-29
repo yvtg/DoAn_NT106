@@ -20,6 +20,7 @@ namespace Models
         public int maxPlayers; // Số lượng người chơi tối đa trong phòng
         public Random random;
         public string host;
+        public int currentRound;
 
         public User? currentDrawer; // Người chơi hiện đang vẽ
         public int currentDrawerIndex; // Vị trí của người vẽ hiện tại trong danh sách người chơi
@@ -36,6 +37,7 @@ namespace Models
             this.host = host;
             this.currentKeyword = "";
             currentDrawer = player;
+            currentRound = 0;
         }
 
         // reset lai phong choi
