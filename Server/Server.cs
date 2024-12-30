@@ -50,6 +50,7 @@ namespace Server
 
         private async Task InitializeServer()
         {
+            int port = 8080;
             EndPoint ipEP = new IPEndPoint(IPAddress.Any, 8080);
 
             // Khởi tạo server
@@ -58,7 +59,7 @@ namespace Server
             serverSocket.Bind(ipEP);
             serverSocket.Listen(10);
 
-            UpdateLog?.Invoke($"Server đã khởi động trên {ipEP}. Đang chờ kết nối...");
+            UpdateLog?.Invoke($"Server đã khởi động trên port {port}. Đang chờ kết nối...");
 
             while (isRunning)
             {
@@ -71,6 +72,7 @@ namespace Server
 
                 // Chờ kết nối từ client
                 Socket clientSocket = await serverSocket.AcceptAsync();
+                UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
                 TcpClient tcpClient = new TcpClient { Client = clientSocket };
                 HandleClientConnection(tcpClient);
             }
@@ -85,7 +87,6 @@ namespace Server
                 clients.Add(client);
                 UpdateClientList?.Invoke();
             }
-            UpdateLog?.Invoke($"Đã kết nối với {tcpClient.Client.RemoteEndPoint}");
 
             Task.Run(() =>
             {
@@ -140,7 +141,7 @@ namespace Server
                         client.Stop(true);
                         UpdateClientList?.Invoke();
                     }
-                    UpdateLog?.Invoke($"Client đã ngắt kết nối: {client.tcpClient.Client.RemoteEndPoint}");
+                    UpdateLog?.Invoke($"{client.tcpClient.Client.RemoteEndPoint} đã ngắt kết nối");
                 }
             });
         }
@@ -539,6 +540,13 @@ namespace Server
                         {
                             rooms.Remove(room);
                         }
+                        else if (client.Name == room.host)
+                        {
+                            room.host = room.players[0].Name;
+                            // cap nhat thong tin phong
+                            roomInfo = new RoomInfoPacket($"{roomId};{room.host};HOST_CHANGED;{room.maxPlayers};{room.players.Count};{room.currentRound}");
+                            BroadcastPacket(room, roomInfo);
+                        }
                         UpdateClientList?.Invoke();
                         UpdateRoomList?.Invoke();
                         UpdateLog.Invoke($"{client.Name} đã rời phòng {roomId}");
@@ -562,6 +570,10 @@ namespace Server
                         string isdraw = room.currentDrawer.IsDrawing.ToString();
                         string name = room.currentDrawer.Name;
                         string word = room.currentKeyword;
+
+                        // cập nhật phòng
+                        room.currentRound = currentRound;
+
                         // Gửi thông báo về người vẽ cho tất cả người chơi trong phòng
                         foreach (var user in room.players)
                         {
@@ -570,6 +582,7 @@ namespace Server
                         }
 
                         UpdateLog.Invoke($"Phòng {roomId}: Trò chơi bắt đầu. Người vẽ là {room.currentDrawer.Name} và từ khóa là {room.currentKeyword}");
+                        UpdateRoomList?.Invoke();
                     }
                     else
                     {
@@ -596,7 +609,7 @@ namespace Server
                     if (room.CheckAnswer(msg, client))
                     {
                         // gui diem cho client de cap nhat
-                        OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};GUESS");
+                        OtherInfoPacket otherInfo = new OtherInfoPacket($"{roomId};{username};{client.Score};GUESS_RIGHT");
                         BroadcastPacket(room, otherInfo);
                     }
                     break;
@@ -606,7 +619,8 @@ namespace Server
                     room = rooms.FirstOrDefault(r => r.RoomId == roomId);
                     if (room != null)
                     {
-                        room.status = "WAITING";
+                        client.Score = 0;
+                        room.Clear();
                         UpdateRoomList?.Invoke();
                         BroadcastPacket(room, endGamePacket);
                     }
@@ -705,11 +719,11 @@ namespace Server
             }
         }
 
+
         private void HandleResetPasswordRequest(Models.User client, ResetPasswordRequestPacket packet)
         {
             string email = packet.Email.Trim();
 
-            // tìm kiếm email trong database
             var user = db.GetAllDocuments<BsonDocument>("User")
                          .FirstOrDefault(u => u["Email"].AsString == email);
 
@@ -717,47 +731,41 @@ namespace Server
             {
                 try
                 {
-                    // tạo mã OTP
                     string otp = ForgetPassword.GenerateOTP();
                     otpStorage[email] = otp; // Lưu OTP
 
-                    // gửi email
                     ForgetPassword.SendEmail(email, otp);
-                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_SENT")); // Gửi OTP thành công
+                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_SENT"));
                 }
                 catch (Exception)
                 {
-                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_FAIL")); // Lỗi khi gửi email
+                    sendPacket(client, new ResetPasswordResultPacket("EMAIL_FAIL"));
                 }
             }
             else
             {
-                sendPacket(client, new ResetPasswordResultPacket("NOT_FOUND")); // Không tìm thấy email
+                sendPacket(client, new ResetPasswordResultPacket("NOT_FOUND"));
             }
         }
+
 
         private void HandleVerifyOTP(Models.User client, VerifyOTPRequestPacket packet)
         {
             try
             {
-                // Lấy thông tin từ gói tin
                 string email = packet.Email;
                 string otp = packet.OTP;
 
-                // Kiểm tra OTP
                 if (otpStorage.TryGetValue(email, out var storedOtp) && storedOtp == otp)
                 {
                     otpStorage.Remove(email); // Xóa OTP sau khi sử dụng
 
                     // Gửi phản hồi đã mã hóa
-                    string responsePayload = Convert.ToBase64String(AES.EncryptAES("OTP_VERIFIED"));
-                    sendPacket(client, new ResetPasswordResultPacket(responsePayload));
+                    sendPacket(client, new ResetPasswordResultPacket("OTP_VERIFIED"));
                 }
                 else
                 {
-                    // Gửi phản hồi đã mã hóa
-                    string responsePayload = Convert.ToBase64String(AES.EncryptAES("OTP_FAIL"));
-                    sendPacket(client, new ResetPasswordResultPacket(responsePayload));
+                    sendPacket(client, new ResetPasswordResultPacket("OTP_FAIL"));
                 }
             }
             catch (Exception ex)

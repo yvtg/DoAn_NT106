@@ -45,6 +45,14 @@ namespace Program
             var sortedPlayers = playerScores.OrderByDescending(p => p.Value.score); // Sắp xếp theo điểm số giảm dần
             int previousScore = -1; // Giá trị điểm số trước đó (khởi tạo bằng giá trị không hợp lệ)
             int buttonIndex = 1; // Chỉ số để gán vào các nút
+
+            // hiển thị mặc định
+            hopeRoundButton1.Visible = false;
+            top1Button.Text = "No one win";
+
+            hopeRoundButton2.Visible = false;
+            top2Button.Visible = false;
+
             top3Button.Visible = false;
             hopeRoundButton3.Visible = false;
 
@@ -58,9 +66,16 @@ namespace Program
 
                 // Gán tên người chơi vào button tương ứng
                 if (buttonIndex == 1)
+                {
                     top1Button.Text = player.Value.name;
+                    hopeRoundButton1.Visible = true;
+                }
                 else if (buttonIndex == 2)
+                {
                     top2Button.Text = player.Value.name;
+                    top2Button.Visible = true;
+                    hopeRoundButton2.Visible = true;
+                }
                 else if (buttonIndex == 3)
                 {
                     top3Button.Text = player.Value.name;

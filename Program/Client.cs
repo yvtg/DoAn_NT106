@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Models;
 using System.IO;
 using System.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 
 namespace Program
@@ -29,6 +30,7 @@ namespace Program
         public event Action<ProfileResultPacket> ProfileReceived; // nhận thông tin profile
         public event Action ServerDisconnected; // server ngắt kết nối
         public event Action<string> ResetPasswordResult;
+        public event Action<string> HostChanged;
         CancellationTokenSource cancellationTokenSource;
 
         public bool Connect(string serverIP, int port)
@@ -90,6 +92,7 @@ namespace Program
         }
 
         // send packet bình thường
+        // Ví dụ về gửi một gói dữ liệu
         public void SendPacket(Packet packet)
         {
             if (tcpClient != null && tcpClient.Connected)
@@ -273,7 +276,11 @@ namespace Program
                     status = roomInfoPacket.Status;
                     playerCount = roomInfoPacket.CurrentPlayers;
                     maxPlayer = roomInfoPacket.MaxPlayers;
-                    ReceiveRoomInfo?.Invoke(roomId, host, maxPlayer);
+                    if (roomInfoPacket.Status == "HOST_CHANGED")
+                    {
+                        HostChanged?.Invoke(roomInfoPacket.Host);
+                    }
+                    else ReceiveRoomInfo?.Invoke(roomId, host, maxPlayer);
                     break;
                 case PacketType.JOIN_RESULT:
                     JoinResultPacket joinResultPacket = (JoinResultPacket)packet;
@@ -356,6 +363,37 @@ namespace Program
             formmessage.BringToFront();
             formmessage.ShowDialog();
         }
+        public void HandleMessageReceived(string encryptedMessage)
+        {
+            try
+            {
+                // Giải mã tin nhắn
+                string decryptedMessage = AES.DecryptAES(Convert.FromBase64String(encryptedMessage));
+                Console.WriteLine($"Tin nhắn giải mã: {decryptedMessage}");
+
+                string[] messageParts = decryptedMessage.Split(';');
+
+                if (messageParts.Length >= 3)
+                {
+                    string roomId = messageParts[0];
+                    string username = messageParts[1];
+                    string message = messageParts[2];
+
+                    // Thực hiện các hành động với tin nhắn đã giải mã
+                    ReceiveMessage?.Invoke(roomId, username, message);
+                }
+                else
+                {
+                    Console.WriteLine("Tin nhắn không hợp lệ.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi giải mã tin nhắn: {ex.Message}");
+            }
+        }
+
+
 
         // Gửi yêu cầu mã OTP
         public void SendResetPasswordRequest(string email)
