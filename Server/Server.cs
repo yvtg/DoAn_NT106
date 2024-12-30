@@ -706,10 +706,7 @@ namespace Server
             string email = packet.Email;
             string newPassword = packet.NewPassword;
 
-            // Mã hóa mật khẩu mới
-            string encryptedPassword = Convert.ToBase64String(AES.EncryptAES(newPassword));
-
-            if (db.UpdatePassword(email, encryptedPassword))
+            if (db.UpdatePassword(email, newPassword))
             {
                 sendPacket(client, new ResetPasswordResultPacket("SUCCESS"));
             }
@@ -761,13 +758,11 @@ namespace Server
                     otpStorage.Remove(email); // Xóa OTP sau khi sử dụng
 
                     // Gửi phản hồi đã mã hóa
-                    string responsePayload = Convert.ToBase64String(AES.EncryptAES("OTP_VERIFIED"));
-                    sendPacket(client, new ResetPasswordResultPacket(responsePayload));
+                    sendPacket(client, new ResetPasswordResultPacket("OTP_VERIFIED"));
                 }
                 else
                 {
-                    string responsePayload = Convert.ToBase64String(AES.EncryptAES("OTP_FAIL"));
-                    sendPacket(client, new ResetPasswordResultPacket(responsePayload));
+                    sendPacket(client, new ResetPasswordResultPacket("OTP_FAIL"));
                 }
             }
             catch (Exception ex)

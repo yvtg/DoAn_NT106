@@ -91,7 +91,7 @@ namespace Program
                 resetPasswordForm.Show();
                 this.Close();
             }
-            else
+            else if (status == "OTP_FAIL")
             {
                 ShowMessage("Mã OTP không hợp lệ.");
             }
