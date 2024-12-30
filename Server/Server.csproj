@@ -190,7 +190,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoomServer.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="UserServer.cs" />
     <EmbeddedResource Include="Form_Server.resx">
       <DependentUpon>Form_Server.cs</DependentUpon>
     </EmbeddedResource>

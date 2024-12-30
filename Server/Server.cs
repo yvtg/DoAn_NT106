@@ -36,7 +36,23 @@ namespace Server
         public event Action UpdateRoomList; // cập nhật danh sách phòng trên UI
         public event Action UpdateClientList; // cập nhật danh sách client trên UI
 
-        
+        // Kết nối đến UserServer
+        private TcpClient userServerClient1;
+        private System.IO.StreamWriter userServerWriter1;
+        private System.IO.StreamReader userServerReader1;
+
+        private TcpClient userServerClient2;
+        private System.IO.StreamWriter userServerWriter2;
+        private System.IO.StreamReader userServerReader2;
+
+        // Kết nối đến RoomServer
+        private TcpClient roomServerClient1;
+        private System.IO.StreamWriter roomServerWriter1;
+        private System.IO.StreamReader roomServerReader1;
+
+        private TcpClient roomServerClient2;
+        private System.IO.StreamWriter roomServerWriter2;
+        private System.IO.StreamReader roomServerReader2;
 
         #region Connect
         public void StartServer()
@@ -59,7 +75,14 @@ namespace Server
             serverSocket.Bind(ipEP);
             serverSocket.Listen(10);
 
-            UpdateLog?.Invoke($"Server đã khởi động trên port {port}. Đang chờ kết nối...");
+            UpdateLog?.Invoke($"Server chính đã khởi động trên port {port}. Đang chờ kết nối...");
+
+            // Kết nối tới UserServer
+            ConnectToUserServer();
+
+            // Kết nối tới RoomServer
+            ConnectToRoomServer();
+
 
             while (isRunning)
             {
@@ -74,50 +97,144 @@ namespace Server
                 Socket clientSocket = await serverSocket.AcceptAsync();
                 UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
                 TcpClient tcpClient = new TcpClient { Client = clientSocket };
+                // Xử lý kết nối từ client
                 HandleClientConnection(tcpClient);
+            }
+        }
+
+        private void ConnectToUserServer()
+        {
+            try
+            {
+                userServerClient1 = new TcpClient("127.0.0.1", 8081); // Địa chỉ IP và port của UserServer
+                UpdateLog?.Invoke($"Đã kết nối tới UserServer port 8081.");
+                var userServerStream = userServerClient1.GetStream();
+                userServerWriter1 = new System.IO.StreamWriter(userServerStream) { AutoFlush = true };
+                userServerReader1 = new System.IO.StreamReader(userServerStream);
+                // Bắt đầu nhận dữ liệu từ UserServer
+                Task.Run(() => ReceiveFromUserServer(userServerReader1, 8081));
+                userServerClient2 = new TcpClient("127.0.0.1", 8082); // Địa chỉ IP và port của UserServer
+                UpdateLog?.Invoke($"Đã kết nối tới UserServer port 8082.");
+                var userServerStream2 = userServerClient2.GetStream();
+                userServerWriter2 = new System.IO.StreamWriter(userServerStream2) { AutoFlush = true };
+                userServerReader2 = new System.IO.StreamReader(userServerStream2);
+                // Bắt đầu nhận dữ liệu từ UserServer
+                Task.Run(() => ReceiveFromUserServer(userServerReader2, 8082));
+            }
+            catch (Exception ex)
+            {
+                UpdateLog?.Invoke($"Lỗi khi kết nối tới UserServer: {ex.Message}");
+            }
+        }
+
+        private void ConnectToRoomServer()
+        {
+            try
+            {
+                roomServerClient1 = new TcpClient("127.0.0.1", 8083); // Địa chỉ IP và port của RoomServer
+                UpdateLog?.Invoke($"Đã kết nối tới RoomServer port 8083.");
+                var roomServerStream = roomServerClient1.GetStream();
+                roomServerWriter1 = new System.IO.StreamWriter(roomServerStream) { AutoFlush = true };
+                roomServerReader1 = new System.IO.StreamReader(roomServerStream);
+                // Bắt đầu nhận dữ liệu từ RoomServer
+                Task.Run(() => ReceiveFromRoomServer(roomServerReader1, 8083));
+                roomServerClient2 = new TcpClient("127.0.0.1", 8084); // Địa chỉ IP và port của RoomServer
+                UpdateLog?.Invoke($"Đã kết nối tới RoomServer port 8084.");
+                var roomServerStream2 = roomServerClient2.GetStream();
+                roomServerWriter2 = new System.IO.StreamWriter(roomServerStream2) { AutoFlush = true };
+                roomServerReader2 = new System.IO.StreamReader(roomServerStream2);
+                // Bắt đầu nhận dữ liệu từ RoomServer
+                Task.Run(() => ReceiveFromRoomServer(roomServerReader2, 8084));
+            }
+            catch (Exception ex)
+            {
+                UpdateLog?.Invoke($"Lỗi khi kết nối tới RoomServer: {ex.Message}");
+            }
+        }
+
+
+        private async Task ReceiveFromUserServer(System.IO.StreamReader reader, int port)
+        {
+            while (isRunning && userServerClient1 != null && userServerClient1.Connected)
+            {
+                try
+                {
+                    string message = await reader.ReadLineAsync();
+                    if (!string.IsNullOrEmpty(message))
+                    {
+                        UpdateLog?.Invoke($"UserServer gửi từ port {port}: {message}");
+                        // Xử lý dữ liệu từ UserServer nếu cần
+                    }
+                    else
+                    {
+                        //user server bị đóng
+                        UpdateLog?.Invoke($"UserServer đã đóng kết nối từ port {port}.");
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    UpdateLog?.Invoke($"Lỗi khi nhận dữ liệu từ UserServer từ port {port}: {ex.Message}");
+                    break;
+                }
+            }
+        }
+
+        private async Task ReceiveFromRoomServer(System.IO.StreamReader reader, int port)
+        {
+            while (isRunning && roomServerClient1 != null && roomServerClient1.Connected)
+            {
+                try
+                {
+                    string message = await reader.ReadLineAsync();
+                    if (!string.IsNullOrEmpty(message))
+                    {
+                        UpdateLog?.Invoke($"RoomServer gửi từ port {port}: {message}");
+                        // Xử lý dữ liệu từ RoomServer nếu cần
+                    }
+                    else
+                    {
+                        //room server bị đóng
+                        UpdateLog?.Invoke($"RoomServer đã đóng kết nối từ port {port}.");
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    UpdateLog?.Invoke($"Lỗi khi nhận dữ liệu từ RoomServer từ port {port}: {ex.Message}");
+                    break;
+                }
             }
         }
 
         private void HandleClientConnection(TcpClient tcpClient)
         {
             Models.User client = new Models.User(tcpClient);
-
             if (client != null)
             {
                 clients.Add(client);
                 UpdateClientList?.Invoke();
             }
 
-            Task.Run( () =>
+            Task.Run(() =>
             {
                 try
                 {
-                    while (client.IsConnected)
+                    using (System.IO.StreamReader sr = new System.IO.StreamReader(tcpClient.GetStream()))
                     {
-                        if (serverSocket == null || !serverSocket.IsBound)
+                        while (isRunning && tcpClient.Connected)
                         {
-                            UpdateLog?.Invoke("Socket server đã bị đóng.");
-                            break;
-                        }
+                            string msg = sr.ReadLine(); // Đọc dữ liệu từ client
 
-                        string msg = client.sr.ReadLine(); // Đọc dữ liệu từ client
-
-                        if (!string.IsNullOrEmpty(msg))
-                        {
-                            UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
-
-                            if (msg.StartsWith("{") && msg.EndsWith("}"))
+                            if (!string.IsNullOrEmpty(msg))
                             {
-                                HandleDrawPacket(client, msg); // Xử lý gói tin vẽ
+                                UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
+                                // xử lý dữ liệu từ client nếu cần
                             }
-                            else
-                            {
-                                Packet packet = ParsePacket(client, msg); // Phân tích gói tin
-                                analyzingPacket(client, packet);          // Xử lý gói tin
-                            }
+                            else break;
                         }
-                        else break;
                     }
+
                 }
                 catch (OperationCanceledException)
                 {
@@ -132,10 +249,11 @@ namespace Server
                         client.Stop(true);
                         UpdateClientList?.Invoke();
                     }
-                    UpdateLog?.Invoke($"{client.tcpClient.Client.RemoteEndPoint} đã ngắt kết nối");
+                    UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint} đã ngắt kết nối");
                 }
             });
         }
+
 
         public void StopServer()
         {
@@ -145,8 +263,6 @@ namespace Server
             // Đóng tất cả kết nối client
             foreach (var client in clients.ToArray())
             {
-                // gửi thông báo đóng kết nối đến client
-                sendPacket(client, new DisconnectPacket(""));
                 client.Stop();
                 client.sr.Close();
                 client.sw.Close();
@@ -173,9 +289,73 @@ namespace Server
                 }
             }
 
+            // Đóng kết nối đến UserServer và RoomServer
+            CloseServerConnections();
 
             clients.Clear();
             UpdateLog?.Invoke("Server đã ngừng hoạt động.");
+        }
+
+        private void CloseServerConnections()
+        {
+            if (userServerClient1 != null)
+            {
+                try
+                {
+                    userServerWriter1?.Close();
+                    userServerReader1?.Close();
+                    userServerClient1.Close();
+                    UpdateLog?.Invoke("Đã đóng kết nối đến UserServer port 8081.");
+                }
+                catch (Exception ex)
+                {
+                    UpdateLog?.Invoke($"Lỗi khi đóng kết nối đến UserServer port 8081: {ex.Message}");
+                }
+            }
+
+            if (userServerClient2 != null)
+            {
+                try
+                {
+                    userServerWriter2?.Close();
+                    userServerReader2?.Close();
+                    userServerClient2.Close();
+                    UpdateLog?.Invoke("Đã đóng kết nối đến UserServer port 8082.");
+                }
+                catch (Exception ex)
+                {
+                    UpdateLog?.Invoke($"Lỗi khi đóng kết nối đến UserServer port 8082: {ex.Message}");
+                }
+            }
+
+            if (roomServerClient1 != null)
+            {
+                try
+                {
+                    roomServerWriter1?.Close();
+                    roomServerReader1?.Close();
+                    roomServerClient1.Close();
+                    UpdateLog?.Invoke("Đã đóng kết nối đến RoomServer port 8083.");
+                }
+                catch (Exception ex)
+                {
+                    UpdateLog?.Invoke($"Lỗi khi đóng kết nối đến RoomServer port 8083: {ex.Message}");
+                }
+            }
+            if (roomServerClient2 != null)
+            {
+                try
+                {
+                    roomServerWriter2?.Close();
+                    roomServerReader2?.Close();
+                    roomServerClient2.Close();
+                    UpdateLog?.Invoke("Đã đóng kết nối đến RoomServer port 8084.");
+                }
+                catch (Exception ex)
+                {
+                    UpdateLog?.Invoke($"Lỗi khi đóng kết nối đến RoomServer port 8084: {ex.Message}");
+                }
+            }
         }
         #endregion
 
