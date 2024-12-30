@@ -142,7 +142,7 @@ namespace Program
                         try
                         {
                             string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(receivedData));
-                            Console.WriteLine($"Giải mã Payload: {receivedData}");
+                            Console.WriteLine($"Giải mã Payload: {decryptedPayload}");
 
                             Packet packet = ParsePacket(decryptedPayload);
                             if (packet != null)
@@ -165,15 +165,19 @@ namespace Program
 
         private Packet ParsePacket(string msg)
         {
-            string[] payload = msg.Split(new[] { ';' }, 2, StringSplitOptions.None);
-            if (payload.Length < 2) return null;
-
-            string packetType = payload[0];
-            string remainingMsg = payload[1];
-
-            if (Enum.TryParse(packetType, out PacketType type))
+            string[] payload = msg.Split(';');
+            if (payload.Length == 0)
             {
-                switch (type)
+                return null; // Không có dữ liệu
+            }
+            // Lấy phần còn lại của msg, bỏ payload[0] (command)
+            string remainingMsg = string.Join(";", payload.Skip(1));
+
+            // Xác định loại packet dựa trên phần tử đầu tiên
+            PacketType packetType;
+            if (Enum.TryParse(payload[0], out packetType))
+            {
+                switch (packetType)
                 {
                     case PacketType.LOGIN_RESULT:
                         return new LoginResultPacket(remainingMsg);
@@ -206,7 +210,6 @@ namespace Program
                         break;
                 }
             }
-
             return null;
         }
 

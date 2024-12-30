@@ -195,53 +195,19 @@ namespace Server
         {
             try
             {
-                // Kiểm tra loại gói tin và tạo gói tin thích hợp
-                if (packet is VerifyOTPRequestPacket verifyPacket)
-                {
-                    // Gửi gói tin VerifyOTPRequestPacket
-                    client.SendPacket(verifyPacket);
-                }
-                else if (packet is LoginPacket loginPacket)
-                {
-                    // Gửi gói tin LoginPacket
-                    client.SendPacket(loginPacket);
-                }
-                // Bạn có thể thêm các loại packet khác ở đây nếu cần
-                else
-                {
-                    // Kiểm tra loại packet và gửi gói tin thích hợp
-                    string encryptedPayload = Convert.ToBase64String(AES.EncryptAES(packet.Payload));
+                // Chuẩn bị dữ liệu để gửi
+                client.SendPacket(packet);
 
-                    switch (packet.Type)
-                    {
-                        case PacketType.CREATE_ROOM:
-                            client.SendPacket(new CreateRoomPacket(encryptedPayload)); // Tạo gói tin CreateRoomPacket
-                            break;
-                        case PacketType.JOIN_ROOM:
-                            client.SendPacket(new JoinRoomPacket(encryptedPayload)); // Tạo gói tin JoinRoomPacket
-                            break;
-                        case PacketType.START:
-                            client.SendPacket(new StartPacket(encryptedPayload)); // Tạo gói tin StartPacket
-                            break;
-                        // Thêm các loại packet khác nếu cần
-                        default:
-                            // Nếu không phải các loại đã kiểm tra, gửi gói tin mặc định
-                            client.SendPacket(new GenericPacket(packet.Type, encryptedPayload)); // Gửi gói tin mặc định
-                            break;
-                    }
-                }
-
-                UpdateLog?.Invoke($"Đã gửi Packet cho {client.tcpClient.Client.RemoteEndPoint}");
+                UpdateLog?.Invoke($"Đã gửi dữ liệu cho {client.tcpClient.Client.RemoteEndPoint} {packet.Type};{packet.Payload}");
             }
             catch (SocketException ex)
             {
                 UpdateLog?.Invoke("Socket exception: " + ex.Message);
-
                 // Xử lý client bị mất kết nối
                 clients.Remove(client);
                 client.Stop();
-                client.sr?.Close();
-                client.sw?.Close();
+                client.sr.Close();
+                client.sw.Close();
                 UpdateClientList?.Invoke();
             }
         }
@@ -280,15 +246,7 @@ namespace Server
         {
             foreach (var client in room.players)
             {
-                try
-                {
-                    string encryptedPayload = Convert.ToBase64String(AES.EncryptAES(Newtonsoft.Json.JsonConvert.SerializeObject(drawPacket)));
-                    sendPacket(client, new DescribePacket(encryptedPayload));
-                }
-                catch (Exception ex)
-                {
-                    UpdateLog?.Invoke($"Lỗi khi broadcast DrawPacket: {ex.Message}");
-                }
+                sendPacket(client, drawPacket);
             }
         }
 
@@ -684,21 +642,12 @@ namespace Server
 
         private void HandleDrawPacket(Models.User client, string msg)
         {
-            try
+            DrawPacket drawPacket = Newtonsoft.Json.JsonConvert.DeserializeObject<DrawPacket>(msg);
+            string roomId = drawPacket.RoomId;
+            Room room = rooms.FirstOrDefault(r => r.RoomId == roomId);
+            if (room != null)
             {
-                string decryptedMsg = AES.DecryptAES(Convert.FromBase64String(msg));
-                DrawPacket drawPacket = Newtonsoft.Json.JsonConvert.DeserializeObject<DrawPacket>(decryptedMsg);
-
-                string roomId = drawPacket.RoomId;
-                Room room = rooms.FirstOrDefault(r => r.RoomId == roomId);
-                if (room != null)
-                {
-                    BroadcastPacket(room, drawPacket);
-                }
-            }
-            catch (Exception ex)
-            {
-                UpdateLog?.Invoke($"Lỗi khi xử lý DrawPacket: {ex.Message}");
+                BroadcastPacket(room, drawPacket);
             }
         }
         #endregion
