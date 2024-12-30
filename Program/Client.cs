@@ -136,19 +136,12 @@ namespace Program
 
                     if (!string.IsNullOrEmpty(receivedData))
                     {
-                        string[] parts = receivedData.Split(new[] { ';' }, 2, StringSplitOptions.None);
-                        if (parts.Length < 2) continue;
-
-                        string packetType = parts[0];
-                        string encryptedPayload = parts[1];
-
-                        // Kiểm tra Base64 trước khi giải mã
                         try
                         {
-                            string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(encryptedPayload));
-                            Console.WriteLine($"Giải mã Payload: {decryptedPayload}");
+                            string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(receivedData));
+                            Console.WriteLine($"Giải mã Payload: {receivedData}");
 
-                            Packet packet = ParsePacket(packetType + ";" + decryptedPayload);
+                            Packet packet = ParsePacket(decryptedPayload);
                             if (packet != null)
                             {
                                 AnalyzingPacket(packet);

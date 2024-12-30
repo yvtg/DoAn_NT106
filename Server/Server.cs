@@ -103,8 +103,6 @@ namespace Server
 
                         if (!string.IsNullOrEmpty(encryptedMsg))
                         {
-                            UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {encryptedMsg}");
-
                             try
                             {
 
@@ -296,64 +294,53 @@ namespace Server
 
         private Packet ParsePacket(Models.User client, string msg)
         {
-            string[] parts = msg.Split(new[] { ';' }, 2, StringSplitOptions.None);
-            if (parts.Length < 2) return null;
-
-            string packetType = parts[0];
-            string encryptedPayload = parts[1];
-
-            // Giải mã payload
-            string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(encryptedPayload));
-            UpdateLog?.Invoke($"Payload sau khi giải mã: {decryptedPayload}");
-
-            // Tạo packet từ dữ liệu đã giải mã
-            if (Enum.TryParse(packetType, out PacketType type))
+            string[] payload = msg.Split(';');
+            if (payload.Length == 0)
             {
-                switch (type)
+                return null; // Không có dữ liệu
+            }
+
+            // Lấy phần còn lại của msg, bỏ payload[0] (command)
+            string remainingMsg = string.Join(";", payload.Skip(1));
+
+            // Xác định loại packet dựa trên phần tử đầu tiên
+            PacketType packetType;
+            if (Enum.TryParse(payload[0], out packetType))
+            {
+                switch (packetType)
                 {
                     case PacketType.LOGIN:
-                        return new LoginPacket(decryptedPayload);
+                        return new LoginPacket(remainingMsg);
                     case PacketType.REGISTER:
-                        return new RegisterPacket(decryptedPayload);
+                        return new RegisterPacket(remainingMsg);
                     case PacketType.LOGOUT:
-                        return new LogoutPacket(decryptedPayload);
+                        return new LogoutPacket(remainingMsg);
                     case PacketType.RESET_PASSWORD_REQUEST:
-                        return new ResetPasswordRequestPacket(decryptedPayload);
+                        return new ResetPasswordRequestPacket(remainingMsg);
                     case PacketType.VERIFY_OTP:
-                        // Tách decryptedPayload thành email và otp
-                        var payloadParts = decryptedPayload.Split(';');
-                        if (payloadParts.Length == 2)
-                        {
-                            return new VerifyOTPRequestPacket(payloadParts[0], payloadParts[1]); // Chuyển đổi thành hai tham số
-                        }
-                        return null;
+                        return new VerifyOTPRequestPacket(payload[1], payload[2]);
                     case PacketType.RESET_PASSWORD:
-                        var resetPasswordParts = decryptedPayload.Split(';');
-                        if (resetPasswordParts.Length == 2)
-                        {
-                            return new ResetPasswordPacket(resetPasswordParts[0], resetPasswordParts[1]);
-                        }
-                        return null;
+                        return new ResetPasswordPacket(payload[1], payload[2]);
                     case PacketType.CREATE_ROOM:
-                        return new CreateRoomPacket(decryptedPayload);
+                        return new CreateRoomPacket(remainingMsg);
                     case PacketType.JOIN_ROOM:
-                        return new JoinRoomPacket(decryptedPayload);
+                        return new JoinRoomPacket(remainingMsg);
                     case PacketType.LEAVE_ROOM:
-                        return new LeaveRoomPacket(decryptedPayload);
+                        return new LeaveRoomPacket(remainingMsg);
                     case PacketType.START:
-                        return new StartPacket(decryptedPayload);
+                        return new StartPacket(remainingMsg);
                     case PacketType.DESCRIBE:
-                        return new DescribePacket(decryptedPayload);
+                        return new DescribePacket(remainingMsg);
                     case PacketType.GUESS:
-                        return new GuessPacket(decryptedPayload);
+                        return new GuessPacket(remainingMsg);
                     case PacketType.DISCONNECT:
-                        return new DisconnectPacket(decryptedPayload);
+                        return new DisconnectPacket(remainingMsg);
                     case PacketType.PROFILE_REQUEST:
-                        return new ProfileRequest(decryptedPayload);
+                        return new ProfileRequest(remainingMsg);
                     case PacketType.PROFILE_UPDATE:
-                        return new ProfileUpdatePacket(decryptedPayload);
+                        return new ProfileUpdatePacket(remainingMsg);
                     case PacketType.END_GAME:
-                        return new EndGamePacket(decryptedPayload);
+                        return new EndGamePacket(remainingMsg);
                     default:
                         return null;
                 }
