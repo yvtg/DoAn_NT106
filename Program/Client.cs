@@ -38,7 +38,7 @@ namespace Program
             try
             {
                 IPAddress ipServer = IPAddress.Parse(serverIP);
-                IPEndPoint ipEP = new IPEndPoint(ipServer, port); 
+                IPEndPoint ipEP = new IPEndPoint(ipServer, port);
                 tcpClient.Connect(ipEP);
                 cancellationTokenSource = new CancellationTokenSource();
                 var token = cancellationTokenSource.Token;
@@ -106,16 +106,12 @@ namespace Program
                     }
 
                     // Mã hóa payload
-                    byte[] encryptedBytes = AES.EncryptAES(packet.Payload);
+                    string msg = packet.Type + ";" + packet.Payload;
+                    byte[] encryptedBytes = AES.EncryptAES(msg);
                     string encryptedPayload = Convert.ToBase64String(encryptedBytes);
-                    encryptedPayload = EnsureValidBase64Padding(encryptedPayload);
-
-                    string encryptedPacket = packet.Type + ";" + encryptedPayload;
-
-                    Console.WriteLine($"Gửi Packet (mã hóa): {encryptedPacket}");
 
                     // Gửi dữ liệu đã mã hóa
-                    sw.WriteLine(encryptedPacket);
+                    sw.WriteLine(encryptedPayload);
                     sw.Flush();
                 }
                 catch (Exception ex)
@@ -127,20 +123,6 @@ namespace Program
             {
                 ShowMessage("Client không kết nối với server.");
             }
-        }
-
-        private string EnsureValidBase64Padding(string str)
-        {
-            int padding = str.Length % 4;
-            if (padding == 2)
-            {
-                str += "==";
-            }
-            else if (padding == 3)
-            {
-                str += "=";
-            }
-            return str;
         }
 
         public void ReceiveData()
@@ -157,36 +139,20 @@ namespace Program
 
                     if (!string.IsNullOrEmpty(receivedData))
                     {
-                        string[] parts = receivedData.Split(new[] { ';' }, 2, StringSplitOptions.None);
-                        if (parts.Length < 2) continue;
-
-                        string packetType = parts[0];
-                        string encryptedPayload = parts[1];
-
-                        // Kiểm tra Base64 trước khi giải mã
-                        if (IsBase64String(encryptedPayload))
+                        try
                         {
-                            encryptedPayload = EnsureValidBase64Padding(encryptedPayload);
+                            string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(receivedData));
+                            Console.WriteLine($"Giải mã Payload: {receivedData}");
 
-                            try
+                            Packet packet = ParsePacket(decryptedPayload);
+                            if (packet != null)
                             {
-                                string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(encryptedPayload));
-                                Console.WriteLine($"Giải mã Payload: {decryptedPayload}");
-
-                                Packet packet = ParsePacket(packetType + ";" + decryptedPayload);
-                                if (packet != null)
-                                {
-                                    AnalyzingPacket(packet);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"Lỗi khi giải mã payload: {ex.Message}");
+                                AnalyzingPacket(packet);
                             }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            Console.WriteLine("Payload không phải Base64 hợp lệ.");
+                            Console.WriteLine($"Lỗi khi giải mã payload: {ex.Message}");
                         }
                     }
                 }
@@ -194,21 +160,6 @@ namespace Program
             catch (Exception ex)
             {
                 Console.WriteLine($"Lỗi khi khởi tạo luồng: {ex.Message}");
-            }
-        }
-
-
-        private bool IsBase64String(string str)
-        {
-            try
-            {
-                str = str.Replace("\n", "").Replace("\r", "").Trim();
-                Convert.FromBase64String(str);
-                return true;
-            }
-            catch
-            {
-                return false;
             }
         }
 
@@ -279,7 +230,7 @@ namespace Program
                     break;
                 case PacketType.REGISTER_RESULT:
                     RegisterResultPacket registerResultPacket = (RegisterResultPacket)packet;
-                    if (registerResultPacket.result== "SUCCESS")
+                    if (registerResultPacket.result == "SUCCESS")
                     {
                         ShowMessage("Đăng ký thành công");
                         RegisterSuccessful?.Invoke();
@@ -364,13 +315,13 @@ namespace Program
                     else if (status == "LEAVE")
                     {
                         ReceiveMessage?.Invoke(roomId, username, "đã rời phòng");
-                    }   
+                    }
 
                     ReceiveOtherInfo?.Invoke(roomId, username, score, status);
                     break;
                 case PacketType.ROUND_UPDATE:
-                     RoundUpdatePacket roundUpdatePacket = (RoundUpdatePacket)packet;
-                     RoundUpdateReceived?.Invoke(roundUpdatePacket);
+                    RoundUpdatePacket roundUpdatePacket = (RoundUpdatePacket)packet;
+                    RoundUpdateReceived?.Invoke(roundUpdatePacket);
                     break;
                 case PacketType.GUESS:
                     GuessPacket guessPacket = (GuessPacket)packet;
@@ -461,71 +412,9 @@ namespace Program
         // Gửi yêu cầu đặt lại mật khẩu
         public void SendResetPassword(string email, string newPassword)
         {
-            string encryptedPassword = Convert.ToBase64String(AES.EncryptAES(newPassword));
-
-            ResetPasswordPacket resetPacket = new ResetPasswordPacket(email, encryptedPassword);
+            ResetPasswordPacket resetPacket = new ResetPasswordPacket(email, newPassword);
             SendPacket(resetPacket);
         }
-        public void HandleOTPResponse(string encryptedPayload, string email)
-        {
-            try
-            {
-                // Giải mã payload từ server
-                string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(encryptedPayload));
-                Console.WriteLine($"Kết quả từ server: {decryptedPayload}");
-
-                if (decryptedPayload == "OTP_VERIFIED")
-                {
-                    Console.WriteLine("OTP đã được xác thực thành công.");
-
-                    // Gọi form reset mật khẩu
-                    ShowResetPasswordForm(email);
-                }
-                else if (decryptedPayload == "OTP_FAIL")
-                {
-                    Console.WriteLine("OTP không hợp lệ.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Lỗi khi xử lý phản hồi OTP: {ex.Message}");
-            }
-        }
-
-
-        private void ShowResetPasswordForm(string email)
-        {
-            Form_Reset_Password resetPasswordForm = new Form_Reset_Password(email); // Sử dụng this.email
-            resetPasswordForm.ShowDialog();
-        }
-
-        public void SendLoginRequest(string username, string password)
-        {
-            // Mã hóa mật khẩu
-            string payload = $"{username};{password}";
-
-            // Tạo đối tượng LoginPacket với payload
-            LoginPacket loginRequestPacket = new LoginPacket(payload);
-
-            // Gửi packet
-            SendPacket(loginRequestPacket);
-        }
-        public void SendRegisterRequest(string username, string password, string email)
-        {
-            // Mã hóa mật khẩu
-            string encryptedPassword = Convert.ToBase64String(AES.EncryptAES(password));
-
-            // Tạo payload theo định dạng: username;email;encryptedPassword
-            string payload = $"{username};{email};{encryptedPassword}";
-
-            // Tạo đối tượng RegisterPacket với payload
-            RegisterPacket registerRequestPacket = new RegisterPacket(payload);
-
-            // Gửi packet
-            SendPacket(registerRequestPacket);
-        }
-
-
 
     }
 }

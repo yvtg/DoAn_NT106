@@ -337,6 +337,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form_Create.resx">
       <DependentUpon>Form_Create.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_End_Game.resx">
       <DependentUpon>Form_End_Game.cs</DependentUpon>
@@ -346,6 +347,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Home.resx">
       <DependentUpon>Form_Home.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Input_ServerIP.resx">
       <DependentUpon>Form_Input_ServerIP.cs</DependentUpon>
