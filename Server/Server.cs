@@ -100,22 +100,21 @@ namespace Server
                             break;
                         }
 
-                        string msg = client.sr.ReadLine(); // Đọc dữ liệu mã hóa từ client
+                        string encryptedMsg = client.sr.ReadLine(); // Đọc dữ liệu mã hóa từ client
 
-                        if (!string.IsNullOrEmpty(msg))
+                        if (!string.IsNullOrEmpty(encryptedMsg))
                         {
                             UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
-
-                            try
-                            {
-                                UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
-
-                                if (msg.StartsWith("{") && msg.EndsWith("}"))
+        
+                                if (encryptedMsg.StartsWith("{") && encryptedMsg.EndsWith("}"))
                                 {
-                                    HandleDrawPacket(client, msg); // Xử lý gói tin vẽ
+                                    UpdateLog?.Invoke($"{tcpClient.CLient.RemoteEndPoint}:{encryptedMsg}");
+                                    HandleDrawPacket(client, encryptedMsg); // Xử lý gói tin vẽ
                                 }
                                 else
                                 {
+                                    string msg = AES.DecryptAES(Convert.FromBase64String(encryptedMsg));
+                                    UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}:{Msg}");
                                     Packet packet = ParsePacket(client, msg); // Phân tích gói tin
                                     analyzingPacket(client, packet);          // Xử lý gói tin
                                 }
