@@ -32,7 +32,10 @@ namespace Models
         }
         public void SendPacket(Packet packet)
         {
-            this.sw.WriteLine(packet.Type+";"+packet.Payload);
+            string msg = packet.Type + ";" + packet.Payload;
+            byte[] encryptedBytes = AES.EncryptAES(msg);
+            string encryptedPayload = Convert.ToBase64String(encryptedBytes);
+            this.sw.WriteLine(encryptedPayload);
             this.sw.Flush();
         }
 

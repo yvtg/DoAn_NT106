@@ -36,7 +36,7 @@ namespace Server
         public event Action UpdateRoomList; // cập nhật danh sách phòng trên UI
         public event Action UpdateClientList; // cập nhật danh sách client trên UI
 
-        
+
 
         #region Connect
         public void StartServer()
@@ -99,22 +99,24 @@ namespace Server
                             break;
                         }
 
-                        string msg = client.sr.ReadLine(); // Đọc dữ liệu mã hóa từ client
+                        string encryptedMsg = client.sr.ReadLine(); // Đọc dữ liệu mã hóa từ client
 
-                        if (!string.IsNullOrEmpty(msg))
+                        if (!string.IsNullOrEmpty(encryptedMsg))
                         {
-                            UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
+                            UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {encryptedMsg}");
 
                             try
                             {
-                                UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
 
-                                if (msg.StartsWith("{") && msg.EndsWith("}"))
+                                if (encryptedMsg.StartsWith("{") && encryptedMsg.EndsWith("}"))
                                 {
-                                    HandleDrawPacket(client, msg); // Xử lý gói tin vẽ
+                                    UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {encryptedMsg}");
+                                    HandleDrawPacket(client, encryptedMsg); // Xử lý gói tin vẽ
                                 }
                                 else
                                 {
+                                    string msg = AES.DecryptAES(Convert.FromBase64String(encryptedMsg));
+                                    UpdateLog?.Invoke($"{tcpClient.Client.RemoteEndPoint}: {msg}");
                                     Packet packet = ParsePacket(client, msg); // Phân tích gói tin
                                     analyzingPacket(client, packet);          // Xử lý gói tin
                                 }
@@ -356,7 +358,7 @@ namespace Server
                         return null;
                 }
             }
-                return null;
+            return null;
         }
 
         // tạo mã phòng random
@@ -577,7 +579,7 @@ namespace Server
                         foreach (var user in room.players)
                         {
                             RoundUpdatePacket RoundUpdate = new RoundUpdatePacket($"{roomId};{name};{isdraw};{word};{currentRound}");
-                            user.SendPacket( RoundUpdate);
+                            user.SendPacket(RoundUpdate);
                         }
 
                         UpdateLog.Invoke($"Phòng {roomId}: Trò chơi bắt đầu. Người vẽ là {room.currentDrawer.Name} và từ khóa là {room.currentKeyword}");
