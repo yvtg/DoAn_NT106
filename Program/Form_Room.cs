@@ -41,7 +41,7 @@ namespace Program
         private bool isErasing = false;
         private int penSize;
         private Color penColor;
-        private Pen cursorPen = new Pen(Color.Black,2);
+        private Pen cursorPen = new Pen(Color.Black, 2);
         private int cursorX = -1;
         private int cursorY = -1;
         private Point point = new Point();
@@ -195,9 +195,9 @@ namespace Program
                 roundTimer.Stop();
                 currentRound++;
 
-                if (currentRound > SelectRound )
+                if (currentRound > SelectRound)
                 {
-                    if (username==host)
+                    if (username == host)
                     {
                         EndGamePacket endgamePacket = new EndGamePacket($"{roomId}");
                         client.SendPacket(endgamePacket);
@@ -287,7 +287,7 @@ namespace Program
         // Rê chuột để vẽ hoặc xóa
         private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isErasing==true) // Nếu đang chọn chức năng xóa
+            if (isErasing == true) // Nếu đang chọn chức năng xóa
             {
                 cursorPen.Color = Color.White;
             }
@@ -339,7 +339,7 @@ namespace Program
                     Points_2 = points_2,
                     Position = pos
                 };
-                
+
                 client.SendDrawPacket(packet);
 
                 isDrawing = false;
@@ -415,12 +415,12 @@ namespace Program
                 gameStart = true;
                 SelectRound = Int32.Parse(roundComboBox.SelectedItem.ToString());
 
-                if (username==host)
+                if (username == host)
                 {
                     currentRound++;
                     StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
                     client.SendPacket(startPacket);
-                }    
+                }
 
                 startButton.Enabled = false;
                 roundComboBox.Hide();
@@ -481,7 +481,7 @@ namespace Program
 
                             // Ghi lại cập nhật vào playerScores
                             playerScores[username] = playerData;
-                            if (currentRound==SelectRound)
+                            if (currentRound == SelectRound)
                             {
                                 if (this.username == host)
                                 {
@@ -493,7 +493,7 @@ namespace Program
                             {
                                 ShowChatMessage($"{username} đã đoán đúng từ khóa, được cộng 10 điểm");
 
-                                if (this.username==host)
+                                if (this.username == host)
                                 {
                                     currentRound++;
                                     StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
@@ -513,7 +513,7 @@ namespace Program
                             if (user.Text == username)
                             {
                                 timeLabel.Text = $"Time: {roundTime}";
-                                timeProgressBar.Value = 90-roundTime;
+                                timeProgressBar.Value = 90 - roundTime;
                                 user.SubItems[1].Text = Score.ToString(); // Update score    
                                 break;
                             }
@@ -694,7 +694,7 @@ namespace Program
             gameStart = true;
             ClearPictureBox();
             StartTimer();
-            currentRound = roundUpdatePacket.Round; 
+            currentRound = roundUpdatePacket.Round;
             roundLabel.Text = $"Round: {currentRound}";
 
             if (roundUpdatePacket.Name == username)
@@ -787,7 +787,7 @@ namespace Program
             // Kiểm tra nếu đã có form thông báo đang hiển thị
             if (activeMessageForm != null && !activeMessageForm.IsDisposed)
             {
-                return; 
+                return;
             }
 
             activeMessageForm = new Form_Message(username, message);

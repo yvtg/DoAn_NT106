@@ -137,23 +137,28 @@ namespace Program
                     string receivedData = sr.ReadLine();
                     Console.WriteLine($"Nhận Packet (mã hóa): {receivedData}");
 
-                    if (!string.IsNullOrEmpty(receivedData))
+                    try
                     {
-                        try
-                        {
-                            string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(receivedData));
-                            Console.WriteLine($"Giải mã Payload: {decryptedPayload}");
 
-                            Packet packet = ParsePacket(decryptedPayload);
-                            if (packet != null)
+                        if (!string.IsNullOrEmpty(receivedData))
+                        {
+                            if (receivedData.StartsWith("{") && receivedData.EndsWith("}"))
                             {
-                                AnalyzingPacket(packet);
+                                HandleDrawPacket( receivedData); // Xử lý gói tin vẽ
+                            }
+                            else
+                            {
+                                string decryptedPayload = AES.DecryptAES(Convert.FromBase64String(receivedData));
+                                Console.WriteLine($"Giải mã Payload: {decryptedPayload}");
+                                Packet packet = ParsePacket(decryptedPayload); // Phân tích gói tin
+                                AnalyzingPacket(packet);          // Xử lý gói tin
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Lỗi khi giải mã payload: {ex.Message}");
-                        }
+                        else break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Lỗi khi giải mã payload: {ex.Message}");
                     }
                 }
             }
@@ -365,35 +370,6 @@ namespace Program
             formmessage.StartPosition = FormStartPosition.Manual;
             formmessage.BringToFront();
             formmessage.ShowDialog();
-        }
-        public void HandleMessageReceived(string encryptedMessage)
-        {
-            try
-            {
-                // Giải mã tin nhắn
-                string decryptedMessage = AES.DecryptAES(Convert.FromBase64String(encryptedMessage));
-                Console.WriteLine($"Tin nhắn giải mã: {decryptedMessage}");
-
-                string[] messageParts = decryptedMessage.Split(';');
-
-                if (messageParts.Length >= 3)
-                {
-                    string roomId = messageParts[0];
-                    string username = messageParts[1];
-                    string message = messageParts[2];
-
-                    // Thực hiện các hành động với tin nhắn đã giải mã
-                    ReceiveMessage?.Invoke(roomId, username, message);
-                }
-                else
-                {
-                    Console.WriteLine("Tin nhắn không hợp lệ.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Lỗi khi giải mã tin nhắn: {ex.Message}");
-            }
         }
 
 
