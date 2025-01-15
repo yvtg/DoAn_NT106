@@ -66,6 +66,7 @@ namespace Program
         private string revealedKeyword;
         private System.Timers.Timer hintTimer;
         private int hintStep;
+        private bool isDrawer;
 
         private void InitializeHintSystem(string keyword)
         {
@@ -80,7 +81,7 @@ namespace Program
 
         private void OnHintTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            if (!gameStart) return;
+            if (!gameStart || isDrawer) return; // Skip hint logic for the drawer
 
             hintStep++;
 
@@ -123,10 +124,19 @@ namespace Program
             }, null);
         }
 
-        private void StartNewRound(string keyword)
+        private void StartNewRound(string keyword, bool isDrawer)
         {
-            InitializeHintSystem(keyword);
-            wordLabel.Text = $"KEY WORD: {new string('_', keyword.Length)}";
+            this.isDrawer = isDrawer;
+
+            if (isDrawer)
+            {
+                wordLabel.Text = $"KEY WORD: {keyword}"; // Show full keyword to the drawer
+            }
+            else
+            {
+                InitializeHintSystem(keyword);
+                wordLabel.Text = $"KEY WORD: {new string('_', keyword.Length)}"; // Show hidden keyword to guessers
+            }
         }
 
         public Form_Room(string roomId, string host, int max_player, string username)
@@ -772,7 +782,7 @@ namespace Program
                 wordLabel.Text = $"KEY WORD: {roundUpdatePacket.Word}";
                 ShowMessage($"Bạn là người vẽ! từ khóa là {roundUpdatePacket.Word}");
 
-                InitializeHintSystem(roundUpdatePacket.Word); // Start hint system for the keyword
+                StartNewRound(roundUpdatePacket.Word, true); // The drawer sees the full keyword
             }
             else
             {
@@ -780,7 +790,7 @@ namespace Program
                 sendButton.Enabled = true;
                 ShowChatMessage($"Người vẽ là {roundUpdatePacket.Name}. Trong 60s hãy đoán từ khóa!");
 
-                StartNewRound(roundUpdatePacket.Word); // Start hint system for guessers
+                StartNewRound(roundUpdatePacket.Word, false); // Guessers see the hidden keyword with hints
             }
 
             startButton.Enabled = false;
