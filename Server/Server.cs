@@ -39,19 +39,18 @@ namespace Server
 
 
         #region Connect
-        public void StartServer()
+        public void StartServer(int port)
         {
             if (isRunning) return;
 
             isRunning = true;
 
-            Task.Run(() => InitializeServer());
+            Task.Run(() => InitializeServer(port));
         }
 
-        private async Task InitializeServer()
+        private async Task InitializeServer(int port)
         {
-            int port = 8080;
-            EndPoint ipEP = new IPEndPoint(IPAddress.Any, 8080);
+            EndPoint ipEP = new IPEndPoint(IPAddress.Any, port);
 
             // Khởi tạo server
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
