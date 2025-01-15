@@ -62,6 +62,73 @@ namespace Program
         int progressValue = 0;
         private Form_Message activeMessageForm = null;
 
+        private string fullKeyword;
+        private string revealedKeyword;
+        private System.Timers.Timer hintTimer;
+        private int hintStep;
+
+        private void InitializeHintSystem(string keyword)
+        {
+            fullKeyword = keyword;
+            revealedKeyword = new string('_', fullKeyword.Length);
+            hintStep = 0;
+
+            hintTimer = new System.Timers.Timer(1000); // Set interval to 1 second
+            hintTimer.Elapsed += OnHintTimerElapsed;
+            hintTimer.Start();
+        }
+
+        private void OnHintTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!gameStart) return;
+
+            hintStep++;
+
+            switch (hintStep)
+            {
+                case 60:
+                    RevealKeywordCharacters(2);
+                    break;
+                case 70:
+                    RevealKeywordCharacters(2);
+                    break;
+                case 75:
+                    RevealKeywordCharacters(2);
+                    break;
+                case 80:
+                    RevealKeywordCharacters(2);
+                    break;
+                case 85:
+                    RevealKeywordCharacters(2);
+                    hintTimer.Stop(); // Stop the timer after the last hint
+                    break;
+            }
+        }
+
+        private void RevealKeywordCharacters(int count)
+        {
+            int revealedCount = revealedKeyword.Count(c => c != '_');
+            char[] revealedArray = revealedKeyword.ToCharArray();
+
+            for (int i = revealedCount; i < revealedCount + count && i < fullKeyword.Length; i++)
+            {
+                revealedArray[i] = fullKeyword[i];
+            }
+
+            revealedKeyword = new string(revealedArray);
+
+            context.Post(_ =>
+            {
+                wordLabel.Text = $"KEY WORD: {revealedKeyword}";
+            }, null);
+        }
+
+        private void StartNewRound(string keyword)
+        {
+            InitializeHintSystem(keyword);
+            wordLabel.Text = $"KEY WORD: {new string('_', keyword.Length)}";
+        }
+
         public Form_Room(string roomId, string host, int max_player, string username)
         {
             InitializeComponent();
@@ -691,6 +758,7 @@ namespace Program
                 this.Invoke(new Action(() => OnReceivedRoundUpdate(roundUpdatePacket)));
                 return;
             }
+
             gameStart = true;
             ClearPictureBox();
             StartTimer();
@@ -704,15 +772,20 @@ namespace Program
                 wordLabel.Text = $"KEY WORD: {roundUpdatePacket.Word}";
                 ShowMessage($"Bạn là người vẽ! từ khóa là {roundUpdatePacket.Word}");
 
+                InitializeHintSystem(roundUpdatePacket.Word); // Start hint system for the keyword
             }
             else
             {
                 pictureBox1.Enabled = false;
                 sendButton.Enabled = true;
                 ShowChatMessage($"Người vẽ là {roundUpdatePacket.Name}. Trong 60s hãy đoán từ khóa!");
+
+                StartNewRound(roundUpdatePacket.Word); // Start hint system for guessers
             }
+
             startButton.Enabled = false;
         }
+
 
         private void EndGame(string roomID)
         {
