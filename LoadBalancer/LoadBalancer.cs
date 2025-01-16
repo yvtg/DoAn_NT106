@@ -33,6 +33,7 @@ namespace LoadBalancer
             Task.Run(() => InitializeLoadBalancer());
         }
 
+        // khởi tạo load balancer
         private async void InitializeLoadBalancer()
         {
             int port = 8080;
@@ -64,10 +65,17 @@ namespace LoadBalancer
             }
         }
 
+        // xử lý client
         private async void HandleClient(TcpClient client)
         {
             try
             {
+                if (!client.Connected)
+                {
+                    UpdateLog?.Invoke("Client không kết nối.");
+                    return;
+                }
+
                 clients.Add(client);
 
                 // Lấy server mục tiêu theo Round Robin
@@ -76,7 +84,7 @@ namespace LoadBalancer
                 // Tăng tải cho server mục tiêu
                 IncreaseServerLoad(targetServer.IP, targetServer.Port, 1);
 
-                UpdateLog?.Invoke($"Chuyển tiếp tới server: {targetServer.IP}:{targetServer.Port}");
+                UpdateLog?.Invoke($"Chuyển tiếp {client.Client.RemoteEndPoint} tới server: {targetServer.IP}:{targetServer.Port}");
 
                 // Kết nối tới server mục tiêu
                 using (TcpClient server = new TcpClient(targetServer.IP, targetServer.Port))
@@ -91,9 +99,6 @@ namespace LoadBalancer
 
                     await Task.WhenAll(clientToServer, serverToClient); // Bất đồng bộ
                 }
-
-                // Giảm tải sau khi xử lý xong client
-                DecreaseServerLoad(targetServer.IP, targetServer.Port, 1);
             }
             catch (Exception ex)
             {
@@ -101,18 +106,33 @@ namespace LoadBalancer
             }
             finally
             {
-                clients.Remove(client); // Loại bỏ client
-                client.Close();
-                UpdateLog?.Invoke("Client disconnected.");
+                try
+                {
+                    clients.Remove(client); // Loại bỏ client
+                    if (client.Connected)
+                    {
+                        client.Close(); // Đóng kết nối nếu còn mở
+                    }
+                }
+                catch (Exception ex)
+                {
+                    UpdateLog?.Invoke($"Lỗi khi đóng kết nối {ex.Message}");
+                }
+                UpdateLog?.Invoke("Client đã ngắt kết nối.");
             }
         }
 
-
-
+        // Chuyển tiếp dữ liệu giữa 2 luồng
         private async Task ForwardData(Stream input, Stream output)
         {
             try
             {
+                if (!input)
+                {
+                    UpdateLog?.Invoke("Client không kết nối.");
+                    return;
+                }
+
                 using (var reader = new StreamReader(input, Encoding.UTF8))
                 using (var writer = new StreamWriter(output, Encoding.UTF8) { AutoFlush = true })
                 {
@@ -124,11 +144,21 @@ namespace LoadBalancer
                     }
                 }
             }
+            catch (ObjectDisposedException)
+            {
+                UpdateLog?.Invoke("Stream has been disposed.");
+            }
+            catch (IOException ex)
+            {
+                UpdateLog?.Invoke($"IO Error: {ex.Message}");
+            }
             catch (Exception ex)
             {
-                UpdateLog?.Invoke($"Error: {ex.Message}");
+                UpdateLog?.Invoke($"Unexpected error: {ex.Message}");
             }
         }
+
+        // Kiểm tra trạng thái của server
         public bool IsServerActive(string IP, int Port)
         {
             try
@@ -152,6 +182,8 @@ namespace LoadBalancer
                 return false; // Server không hoạt động hoặc không thể kết nối
             }
         }
+
+        // Kiểm tra trạng thái của tất cả server
         private void CheckServerStatus()
         {
             foreach (var server in Servers)
@@ -214,6 +246,7 @@ namespace LoadBalancer
             }
         }
 
+        // Dừng Load Balancer
         public void StopLB()
         {
             Console.WriteLine("Stopping Load Balancer...");

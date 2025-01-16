@@ -35,6 +35,7 @@ namespace Program
                 }
             };
             client.LoginSuccessful += OnLoginSuccessful;
+            client.RedirectReceived += ShowServerInfo;
         }
 
         private void loginButton_Click_1(object sender, EventArgs e)
@@ -148,6 +149,11 @@ namespace Program
             formmessage.Location = new Point(centerY, centerY);
 
             formmessage.Show();
+        }
+
+        private void ShowServerInfo(string IP, int Port)
+        {
+            serverLabel.Text = $"Server: {IP}:{Port}";
         }
 
         #region dragging

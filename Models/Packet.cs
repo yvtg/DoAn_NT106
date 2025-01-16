@@ -40,7 +40,8 @@ namespace Models
         PROFILE_REQUEST,
         PROFILE_RESULT,
         PROFILE_UPDATE,
-        END_GAME
+        END_GAME,
+        REDIRECT
     }
     public abstract class Packet
     {
@@ -692,18 +693,29 @@ namespace Models
         }
     }
 
-    public class GenericPacket : Packet
+    #endregion
+
+    public class RedirectPacket : Packet
     {
-        public GenericPacket(PacketType type, string payload)
-            : base(type, payload)
+        public string IP { get; set; }
+        public int Port { get; set; }
+        public RedirectPacket(string payload) : base(PacketType.REDIRECT, payload)
         {
+            string[] parsePayload = payload.Split(';');
+            if (parsePayload.Length >= 2)
+            {
+                IP = parsePayload[0];
+                Port = Int32.Parse(parsePayload[1]);
+            }
+            else
+            {
+                throw new ArgumentException("Payload không hợp lệ");
+            }
         }
 
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"GENERIC_PACKET;{Payload}");
+            return Encoding.UTF8.GetBytes($"REDIRECT;{IP};{Port}");
         }
     }
-
-    #endregion
 }
