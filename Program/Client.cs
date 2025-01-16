@@ -31,6 +31,7 @@ namespace Program
         public event Action ServerDisconnected; // server ngắt kết nối
         public event Action<string> ResetPasswordResult;
         public event Action<string> HostChanged;
+        public event Action<string, int> RedirectReceived;
         CancellationTokenSource cancellationTokenSource;
 
         public bool Connect(string serverIP, int port)
@@ -210,6 +211,8 @@ namespace Program
                         return new DisconnectPacket(remainingMsg);
                     case PacketType.END_GAME:
                         return new EndGamePacket(remainingMsg);
+                    case PacketType.REDIRECT:
+                        return new RedirectPacket(remainingMsg);
                     default:
                         HandleDrawPacket(msg);
                         break;
@@ -352,6 +355,12 @@ namespace Program
                     ServerDisconnected?.Invoke();
                     tcpClient.Close();
                     Application.Exit();
+                    break;
+                case PacketType.REDIRECT:
+                    RedirectPacket redirectPacket = (RedirectPacket)packet;
+                    string ip = redirectPacket.IP;
+                    int port = redirectPacket.Port;
+                    RedirectReceived?.Invoke(ip, port);
                     break;
                 default:
                     break;

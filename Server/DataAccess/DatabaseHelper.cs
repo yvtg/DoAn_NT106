@@ -133,7 +133,7 @@ namespace Server.DataAccess
             return VerifyPassword(storedHashedPassword, password); // So sánh mật khẩu đã mã hóa
         }
 
-        
+
         public bool UpdatePassword(string email, string newPassword)
         {
             try

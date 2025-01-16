@@ -39,19 +39,18 @@ namespace Server
 
 
         #region Connect
-        public void StartServer()
+        public void StartServer(int port)
         {
             if (isRunning) return;
 
             isRunning = true;
 
-            Task.Run(() => InitializeServer());
+            Task.Run(() => InitializeServer(port));
         }
 
-        private async Task InitializeServer()
+        private async Task InitializeServer(int port)
         {
-            int port = 8080;
-            EndPoint ipEP = new IPEndPoint(IPAddress.Any, 8080);
+            EndPoint ipEP = new IPEndPoint(IPAddress.Any, port);
 
             // Khởi tạo server
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -99,6 +98,11 @@ namespace Server
                             UpdateLog?.Invoke("Socket server đã bị đóng.");
                             break;
                         }
+                        // gửi thông tin server hiện tại đến client
+                        string serverIP = ((IPEndPoint)serverSocket.LocalEndPoint).Address.ToString();
+                        int serverPort = ((IPEndPoint)serverSocket.LocalEndPoint).Port;
+                        RedirectPacket redirectPacket = new RedirectPacket($"{serverIP};{serverPort}");
+                        sendPacket(client, redirectPacket);
 
                         string encryptedMsg = client.sr.ReadLine(); // Đọc dữ liệu mã hóa từ client
 
