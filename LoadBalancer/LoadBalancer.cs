@@ -21,7 +21,7 @@ namespace LoadBalancer
 
         private (string IP, int Port, int currentLoad)[] Servers = {
             ("127.0.0.1", 8081, 0),
-            ("127.0.0.1", 8082, 0)
+            ("192.168.220.18", 8081, 0)
         };
         private static int currentServerIndex = 0;
 
@@ -202,20 +202,32 @@ namespace LoadBalancer
             {
                 var server = Servers[currentServerIndex];
 
-                // Nếu tải server chưa đạt mức tối đa, chọn server đó
-                if (server.currentLoad < MaxLoad && IsServerActive(server.IP,server.Port))
+                // Kiểm tra nếu server không hoạt động
+                if (!IsServerActive(server.IP, server.Port))
                 {
-                    currentServerIndex = (currentServerIndex + 1) % Servers.Length;
-                    return (server.IP, server.Port);
+                    UpdateLog?.Invoke($"Server {server.IP}:{server.Port} không hoạt động. Giữ nguyên server hiện tại.");
+                    // Không thay đổi currentServerIndex, tiếp tục kiểm tra server hiện tại
+                    continue;
                 }
 
-                // Chuyển sang server tiếp theo
+                // Kiểm tra nếu server bị đầy
+                if (server.currentLoad > MaxLoad)
+                {
+                    UpdateLog?.Invoke($"Server {server.IP}:{server.Port} bị đầy (Load: {server.currentLoad}/{MaxLoad}). Chuyển sang server tiếp theo.");
+                    currentServerIndex = (currentServerIndex + 1) % Servers.Length;
+                    continue;
+                }
+
+                // Nếu server phù hợp, trả về server và cập nhật chỉ số
                 currentServerIndex = (currentServerIndex + 1) % Servers.Length;
+                return (server.IP, server.Port);
 
             } while (currentServerIndex != startIndex); // Nếu vòng lặp trở về vị trí ban đầu
 
-            throw new InvalidOperationException("Tất cả server đều đã đầy.");
+            throw new InvalidOperationException("Tất cả server đều đã đầy hoặc không hoạt động.");
         }
+
+
 
         // Tăng tải cho server
         private void IncreaseServerLoad(string IP, int Port, int load)
@@ -225,8 +237,6 @@ namespace LoadBalancer
                 if (Servers[i].IP == IP && Servers[i].Port == Port)
                 {
                     Servers[i].currentLoad += load;
-                    if (Servers[i].currentLoad == MaxLoad)
-                        UpdateLog?.Invoke($"Server {IP}:{Port} đã đầy.");
                     break;
                 }
             }
