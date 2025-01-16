@@ -211,8 +211,8 @@ namespace Program
                         return new DisconnectPacket(remainingMsg);
                     case PacketType.END_GAME:
                         return new EndGamePacket(remainingMsg);
-                    case PacketType.REDIRECT:
-                        return new RedirectPacket(remainingMsg);
+                    case PacketType.CONNECT:
+                        return new ConnectPacket(remainingMsg);
                     default:
                         HandleDrawPacket(msg);
                         break;
@@ -356,8 +356,8 @@ namespace Program
                     tcpClient.Close();
                     Application.Exit();
                     break;
-                case PacketType.REDIRECT:
-                    RedirectPacket redirectPacket = (RedirectPacket)packet;
+                case PacketType.CONNECT:
+                    ConnectPacket redirectPacket = (ConnectPacket)packet;
                     string ip = redirectPacket.IP;
                     int port = redirectPacket.Port;
                     RedirectReceived?.Invoke(ip, port);
