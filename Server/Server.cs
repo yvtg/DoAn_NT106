@@ -114,11 +114,6 @@ namespace Server
                             UpdateLog?.Invoke("Socket server đã bị đóng.");
                             break;
                         }
-                        // gửi thông tin server hiện tại đến client
-                        string serverIP = GetLocalIPv4Addresses();
-                        int serverPort = ((IPEndPoint)serverSocket.LocalEndPoint).Port;
-                        RedirectPacket redirectPacket = new RedirectPacket($"{serverIP};{serverPort}");
-                        sendPacket(client, redirectPacket);
 
                         string encryptedMsg = client.sr.ReadLine(); // Đọc dữ liệu mã hóa từ client
 

@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Models;
 
 namespace LoadBalancer
 {
@@ -78,11 +79,20 @@ namespace LoadBalancer
 
                 UpdateLog?.Invoke($"Client {client.Client.RemoteEndPoint} được chuyển tới server: {targetServer.IP}:{targetServer.Port}");
 
+                // gửi thông tin server hiện tại đến client
+                string serverIP = targetServer.IP;
+                int serverPort = targetServer.Port;
+                string redirectPacket = $"CONNECT;{serverIP};{serverPort}";
+                byte[] encryptedBytes = AES.EncryptAES(redirectPacket);
+                string encryptedPayload = Convert.ToBase64String(encryptedBytes);
+                NetworkStream clientStream = client.GetStream();
+                StreamWriter sw = new StreamWriter(clientStream) { AutoFlush = true };
+                await sw.WriteLineAsync(encryptedPayload);
+
                 CheckServerStatus(); // Cập nhật trạng thái server sau khi thêm client mới
 
                 using (TcpClient server = new TcpClient(targetServer.IP, targetServer.Port))
                 {
-                    NetworkStream clientStream = client.GetStream();
                     NetworkStream serverStream = server.GetStream();
 
                     var clientToServer = ForwardData(clientStream, serverStream);

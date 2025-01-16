@@ -41,7 +41,7 @@ namespace Models
         PROFILE_RESULT,
         PROFILE_UPDATE,
         END_GAME,
-        REDIRECT
+        CONNECT
     }
     public abstract class Packet
     {
@@ -695,11 +695,11 @@ namespace Models
 
     #endregion
 
-    public class RedirectPacket : Packet
+    public class ConnectPacket : Packet
     {
         public string IP { get; set; }
         public int Port { get; set; }
-        public RedirectPacket(string payload) : base(PacketType.REDIRECT, payload)
+        public ConnectPacket(string payload) : base(PacketType.CONNECT, payload)
         {
             string[] parsePayload = payload.Split(';');
             if (parsePayload.Length >= 2)
@@ -715,7 +715,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"REDIRECT;{IP};{Port}");
+            return Encoding.UTF8.GetBytes($"CONNECT;{IP};{Port}");
         }
     }
 }
