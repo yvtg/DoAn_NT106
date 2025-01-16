@@ -127,7 +127,7 @@ namespace LoadBalancer
         {
             try
             {
-                if (!input)
+                if (input == null)
                 {
                     UpdateLog?.Invoke("Client không kết nối.");
                     return;
@@ -146,7 +146,7 @@ namespace LoadBalancer
             }
             catch (ObjectDisposedException)
             {
-                UpdateLog?.Invoke("Stream has been disposed.");
+                UpdateLog?.Invoke("Luồng đã đóng.");
             }
             catch (IOException ex)
             {
