@@ -18,10 +18,11 @@ namespace LoadBalancer
         private bool isRunning;
         public Socket loadBalancerSocket;
         int MaxLoad = 3;
+        private (string IP, int Port) targetServer = (null, 0);
         private int currentServerIndex = 0; // Biến giữ trạng thái server hiện tại
 
         private (string IP, int Port, int currentLoad)[] Servers = {
-            ("192.168.220.18", 8081, 0),
+            ("127.0.0.1", 8081, 0),
             ("192.168.220.119", 8081, 0)
           
         };
@@ -64,7 +65,6 @@ namespace LoadBalancer
 
         private async void HandleClient(TcpClient client)
         {
-            (string IP, int Port) targetServer = (null, 0);
             try
             {
                 if (!client.Connected)
@@ -76,25 +76,40 @@ namespace LoadBalancer
                 clients.Add(client);
 
                 targetServer = GetNextAvailableServer();
+
+                if (targetServer.IP == "NULL")
+                {
+                    // gửi thông tin đến client
+                    string serverIP = targetServer.IP;
+                    int serverPort = targetServer.Port;
+                    string redirectPacket = $"CONNECT;NULL;0";
+                    byte[] encryptedBytes = AES.EncryptAES(redirectPacket);
+                    string encryptedPayload = Convert.ToBase64String(encryptedBytes);
+                    NetworkStream clientStream = client.GetStream();
+                    StreamWriter writer = new StreamWriter(clientStream, Encoding.UTF8) { AutoFlush = true };
+                    await writer.WriteLineAsync(encryptedPayload);
+                    return;
+                }
+
                 IncreaseServerLoad(targetServer.IP, targetServer.Port, 1);
 
                 UpdateLog?.Invoke($"Client {client.Client.RemoteEndPoint} được chuyển tới server: {targetServer.IP}:{targetServer.Port}");
-
-                // gửi thông tin server hiện tại đến client
-                string serverIP = targetServer.IP;
-                int serverPort = targetServer.Port;
-                string redirectPacket = $"CONNECT;{serverIP};{serverPort}";
-                byte[] encryptedBytes = AES.EncryptAES(redirectPacket);
-                string encryptedPayload = Convert.ToBase64String(encryptedBytes);
-                NetworkStream clientStream = client.GetStream();
-                StreamWriter sw = new StreamWriter(clientStream) { AutoFlush = true };
-                await sw.WriteLineAsync(encryptedPayload);
 
                 CheckServerStatus(); // Cập nhật trạng thái server sau khi thêm client mới
 
                 using (TcpClient server = new TcpClient(targetServer.IP, targetServer.Port))
                 {
+                    NetworkStream clientStream = client.GetStream();
                     NetworkStream serverStream = server.GetStream();
+
+                    // gửi thông tin server hiện tại đến client
+                    string serverIP = targetServer.IP;
+                    int serverPort = targetServer.Port;
+                    string redirectPacket = $"CONNECT;{serverIP};{serverPort}";
+                    byte[] encryptedBytes = AES.EncryptAES(redirectPacket);
+                    string encryptedPayload = Convert.ToBase64String(encryptedBytes);
+                    StreamWriter writer = new StreamWriter(clientStream, Encoding.UTF8) { AutoFlush = true };
+                    await writer.WriteLineAsync(encryptedPayload);
 
                     var clientToServer = ForwardData(clientStream, serverStream);
                     var serverToClient = ForwardData(serverStream, clientStream);
@@ -158,11 +173,11 @@ namespace LoadBalancer
         private (string IP, int Port) GetNextAvailableServer()
         {
             // Chỉ thay đổi server khi server hiện tại đã đầy
-            var currentServer = Servers[currentServerIndex];
-            if (currentServer.currentLoad < MaxLoad)
-            {
-                return (currentServer.IP, currentServer.Port);
-            }
+            //var currentServer = Servers[currentServerIndex];
+            //if (currentServer.currentLoad < MaxLoad)
+            //{
+            //    return (currentServer.IP, currentServer.Port);
+            //}
 
             // Tìm server khác trong danh sách
             for (int i = 1; i <= Servers.Length; i++)
@@ -170,15 +185,15 @@ namespace LoadBalancer
                 int index = (currentServerIndex + i) % Servers.Length;
                 var server = Servers[index];
 
-                if (server.currentLoad < MaxLoad)
+                if (server.currentLoad < MaxLoad && IsServerActive(server.IP, server.Port))
                 {
                     currentServerIndex = index; // Cập nhật chỉ số server hiện tại
                     return (server.IP, server.Port);
                 }
             }
 
-            UpdateLog?.Invoke("Tất cả server đều đã đầy.");
-            throw new InvalidOperationException("Không có server khả dụng để xử lý yêu cầu.");
+            UpdateLog?.Invoke("Tất cả server đều đã đầy hoặc không hoạt động.");
+            return ("NULL",0);
         }
 
         private void IncreaseServerLoad(string IP, int Port, int load)
@@ -208,11 +223,42 @@ namespace LoadBalancer
             }
         }
 
+        public bool IsServerActive(string IP, int Port)
+        {
+            try
+            {
+                using (var tcpClient = new TcpClient())
+                {
+                    // Cố gắng kết nối tới server trong khoảng thời gian timeout (e.g., 1000ms)
+                    var result = tcpClient.BeginConnect(IP, Port, null, null);
+                    bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(1000));
+                    if (success)
+                    {
+                        tcpClient.EndConnect(result);
+                        return true; // Server hoạt động
+                    }
+                    return false; // Kết nối không thành công
+                }
+            }
+            catch
+            {
+                return false; // Server không hoạt động hoặc không thể kết nối
+            }
+        }
+
         private void CheckServerStatus()
         {
             foreach (var server in Servers)
             {
-                UpdateLog?.Invoke($"Server {server.IP}:{server.Port} - Load: {server.currentLoad}/{MaxLoad}");
+                if (IsServerActive(server.IP, server.Port))
+                {
+                    UpdateLog?.Invoke($"Server {server.IP}:{server.Port} - Đang hoạt động");
+                    UpdateLog?.Invoke($"Server {server.IP}:{server.Port} - Load: {server.currentLoad}/{MaxLoad}");
+                }
+                else
+                {
+                    UpdateLog?.Invoke($"Server {server.IP}:{server.Port} - Không hoạt động");
+                }
             }
         }
 

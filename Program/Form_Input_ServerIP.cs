@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
@@ -18,9 +19,13 @@ namespace Program
         public Form_Input_ServerIP()
         {
             InitializeComponent();
+            Client.ServerInvalid += () =>
+            {
+                ShowMessage("Hệ thống hiện đang không hoạt động hoặc quá tải.");
+            };
         }
 
-        private bool Connect(string serverIP, int port)
+        private bool isConnect(string serverIP, int port)
         {
             client = new Client();
             bool isConnected = client.Connect(serverIP, port);
@@ -35,7 +40,7 @@ namespace Program
             bool isServerIPValid = System.Net.IPAddress.TryParse(serverIP, out _);
             if (isServerIPValid && isPortValid)
             {
-                if (!Connect(serverIP, port))
+                if (!isConnect(serverIP, port))
                 {
                     return;
                 }

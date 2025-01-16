@@ -8,6 +8,7 @@ using Models;
 using System.IO;
 using System.Threading;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Collections.Specialized;
 
 
 namespace Program
@@ -32,12 +33,16 @@ namespace Program
         public event Action<string> ResetPasswordResult;
         public event Action<string> HostChanged;
         public event Action<string, int> RedirectReceived;
+        public static event Action ServerInvalid;
         CancellationTokenSource cancellationTokenSource;
+
+        public bool connectStatus = false;
 
         public bool Connect(string serverIP, int port)
         {
             try
             {
+                connectStatus = true;
                 IPAddress ipServer = IPAddress.Parse(serverIP);
                 IPEndPoint ipEP = new IPEndPoint(ipServer, port);
                 tcpClient.Connect(ipEP);
@@ -89,6 +94,9 @@ namespace Program
             else
             {
                 ShowMessage("Client không kết nối với server.");
+                connectStatus = false;
+                tcpClient.Close();
+                Application.Exit();
             }
         }
 
@@ -123,6 +131,9 @@ namespace Program
             else
             {
                 ShowMessage("Client không kết nối với server.");
+                connectStatus = false;
+                tcpClient.Close();
+                Application.Exit();
             }
         }
 
@@ -352,6 +363,7 @@ namespace Program
                     break;
                 case PacketType.DISCONNECT:
                     ShowMessage("Server đã đóng kết nối!");
+                    connectStatus = false;
                     ServerDisconnected?.Invoke();
                     tcpClient.Close();
                     Application.Exit();
@@ -360,7 +372,17 @@ namespace Program
                     ConnectPacket redirectPacket = (ConnectPacket)packet;
                     string ip = redirectPacket.IP;
                     int port = redirectPacket.Port;
-                    RedirectReceived?.Invoke(ip, port);
+                    if (ip == "NULL")
+                    {
+                        ServerInvalid?.Invoke();
+                        connectStatus = false;
+                        tcpClient.Close();
+                        Application.Exit();
+                    }
+                    else
+                    {
+                        RedirectReceived?.Invoke(ip, port);
+                    }
                     break;
                 default:
                     break;
