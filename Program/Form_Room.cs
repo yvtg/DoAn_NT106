@@ -71,7 +71,14 @@ namespace Program
         private void InitializeHintSystem(string keyword)
         {
             fullKeyword = keyword;
-            revealedKeyword = new string('_', fullKeyword.Length);
+            revealedKeyword = ""; // Từ khóa đã được tiết lộ
+            foreach (char c in fullKeyword)
+            {
+                if (c == ' ')
+                    revealedKeyword += " "; // Giữ nguyên khoảng trắng
+                else
+                    revealedKeyword += "_"; // Thay thế ký tự khác bằng _
+            }
             hintStep = 0;
 
             hintTimer = new System.Timers.Timer(1000); // Set interval to 1 second
@@ -87,10 +94,10 @@ namespace Program
 
             switch (hintStep)
             {
-                case 60:
+                case 45:
                     RevealKeywordCharacters(2);
                     break;
-                case 70:
+                case 60:
                     RevealKeywordCharacters(2);
                     break;
                 case 75:
