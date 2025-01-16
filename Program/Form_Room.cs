@@ -71,14 +71,7 @@ namespace Program
         private void InitializeHintSystem(string keyword)
         {
             fullKeyword = keyword;
-            revealedKeyword = ""; // Từ khóa đã được tiết lộ
-            foreach (char c in fullKeyword)
-            {
-                if (c == ' ')
-                    revealedKeyword += " "; // Giữ nguyên khoảng trắng
-                else
-                    revealedKeyword += "_"; // Thay thế ký tự khác bằng _
-            }
+            revealedKeyword = string.Concat(keyword.Select(c => c == ' ' ? ' ' : '_'));
             hintStep = 0;
 
             hintTimer = new System.Timers.Timer(1000); // Set interval to 1 second
@@ -95,10 +88,10 @@ namespace Program
             switch (hintStep)
             {
                 case 45:
-                    RevealKeywordCharacters(2);
+                    RevealKeywordCharacters(1);
                     break;
                 case 60:
-                    RevealKeywordCharacters(2);
+                    RevealKeywordCharacters(1);
                     break;
                 case 75:
                     RevealKeywordCharacters(2);
@@ -118,9 +111,13 @@ namespace Program
             int revealedCount = revealedKeyword.Count(c => c != '_');
             char[] revealedArray = revealedKeyword.ToCharArray();
 
-            for (int i = revealedCount; i < revealedCount + count && i < fullKeyword.Length; i++)
+            for (int i = 0, revealed = 0; i < fullKeyword.Length && revealed < count; i++)
             {
-                revealedArray[i] = fullKeyword[i];
+                if (revealedArray[i] == '_' && fullKeyword[i] != ' ')
+                {
+                    revealedArray[i] = fullKeyword[i];
+                    revealed++;
+                }
             }
 
             revealedKeyword = new string(revealedArray);
@@ -142,9 +139,10 @@ namespace Program
             else
             {
                 InitializeHintSystem(keyword);
-                wordLabel.Text = $"KEY WORD: {new string('_', keyword.Length)}"; // Show hidden keyword to guessers
+                wordLabel.Text = $"KEY WORD: {revealedKeyword}"; // Show hidden keyword to guessers with spaces preserved
             }
         }
+
 
         public Form_Room(string roomId, string host, int max_player, string username)
         {

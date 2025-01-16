@@ -21,8 +21,9 @@ namespace LoadBalancer
         private int currentServerIndex = 0; // Biến giữ trạng thái server hiện tại
 
         private (string IP, int Port, int currentLoad)[] Servers = {
-            ("192.168.220.119", 8081, 0),
-            ("192.168.220.18", 8081, 0)
+            ("192.168.220.18", 8081, 0),
+            ("192.168.220.119", 8081, 0)
+          
         };
 
         public void StartLB()
