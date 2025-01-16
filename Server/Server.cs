@@ -48,6 +48,22 @@ namespace Server
             Task.Run(() => InitializeServer(port));
         }
 
+       string GetLocalIPv4Addresses()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            var ipv4Addresses = new List<string>();
+
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork) // Chỉ lấy IPv4
+                {
+                    ipv4Addresses.Add(ip.ToString());
+                }
+            }
+
+            return ipv4Addresses.ToString();
+        }
+
         private async Task InitializeServer(int port)
         {
             EndPoint ipEP = new IPEndPoint(IPAddress.Any, port);
@@ -99,7 +115,7 @@ namespace Server
                             break;
                         }
                         // gửi thông tin server hiện tại đến client
-                        string serverIP = ((IPEndPoint)serverSocket.LocalEndPoint).Address.ToString();
+                        string serverIP = GetLocalIPv4Addresses();
                         int serverPort = ((IPEndPoint)serverSocket.LocalEndPoint).Port;
                         RedirectPacket redirectPacket = new RedirectPacket($"{serverIP};{serverPort}");
                         sendPacket(client, redirectPacket);

@@ -16,7 +16,7 @@ namespace LoadBalancer
         private List<TcpClient> clients = new List<TcpClient>();
         private bool isRunning;
         public Socket loadBalancerSocket;
-        int MaxLoad = 2;
+        int MaxLoad = 3;
         private int currentServerIndex = 0; // Biến giữ trạng thái server hiện tại
 
         private (string IP, int Port, int currentLoad)[] Servers = {

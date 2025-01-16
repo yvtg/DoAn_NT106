@@ -40,7 +40,6 @@
             this.forgetLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.login = new ReaLTaiizor.Forms.HopeForm();
-            this.serverLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -210,7 +209,7 @@
             this.forgetLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.forgetLabel.Font = new System.Drawing.Font("Cooper Black", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.forgetLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.forgetLabel.Location = new System.Drawing.Point(197, 427);
+            this.forgetLabel.Location = new System.Drawing.Point(178, 416);
             this.forgetLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.forgetLabel.Name = "forgetLabel";
             this.forgetLabel.Size = new System.Drawing.Size(134, 16);
@@ -251,26 +250,12 @@
             this.login.MouseMove += new System.Windows.Forms.MouseEventHandler(this.login_MouseMove);
             this.login.MouseUp += new System.Windows.Forms.MouseEventHandler(this.login_MouseUp);
             // 
-            // serverLabel
-            // 
-            this.serverLabel.AutoSize = true;
-            this.serverLabel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.serverLabel.Font = new System.Drawing.Font("Cooper Black", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.serverLabel.Location = new System.Drawing.Point(11, 427);
-            this.serverLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.serverLabel.Name = "serverLabel";
-            this.serverLabel.Size = new System.Drawing.Size(64, 17);
-            this.serverLabel.TabIndex = 30;
-            this.serverLabel.Text = "Server:";
-            // 
             // Form_Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(348, 453);
-            this.Controls.Add(this.serverLabel);
             this.Controls.Add(this.lawBtn);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.login);
@@ -310,6 +295,5 @@
         private System.Windows.Forms.Label forgetLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private ReaLTaiizor.Forms.HopeForm login;
-        private System.Windows.Forms.Label serverLabel;
     }
 }
