@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Models;
 
 namespace Program
 {
@@ -32,7 +33,7 @@ namespace Program
             // Loại bỏ phần "Server" trong đường dẫn
             filePath = filePath.Replace(@"\Server", "");
 
-            // Lấy đường dẫn tuyệt đối của file Keyword.txt
+            // Lấy đường dẫn tuyệt đối của file Food.txt
             string fileFood = Path.Combine(projectDirectory, @"..\..\Models\Food.txt");
 
             // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
@@ -50,7 +51,10 @@ namespace Program
             {
                 Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
             }
-
+            FoodBtn.Enabled = false;
+            AnimalBtn.Enabled = true;
+            ActiveBtn.Enabled = true;
+            SportBtn.Enabled = true;
         }
 
         private void AnimalBtn_Click(object sender, EventArgs e)
@@ -64,7 +68,7 @@ namespace Program
             // Loại bỏ phần "Server" trong đường dẫn
             filePath = filePath.Replace(@"\Server", "");
 
-            // Lấy đường dẫn tuyệt đối của file Keyword.txt
+            // Lấy đường dẫn tuyệt đối của file Animal.txt
             string fileAnimal = Path.Combine(projectDirectory, @"..\..\Models\Animal.txt");
 
             // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
@@ -82,6 +86,11 @@ namespace Program
             {
                 Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
             }
+            FoodBtn.Enabled = true;
+            AnimalBtn.Enabled = false;
+            ActiveBtn.Enabled = true;
+            SportBtn.Enabled = true;
+
         }
 
         private void SportBtn_Click(object sender, EventArgs e)
@@ -95,7 +104,7 @@ namespace Program
             // Loại bỏ phần "Server" trong đường dẫn
             filePath = filePath.Replace(@"\Server", "");
 
-            // Lấy đường dẫn tuyệt đối của file Keyword.txt
+            // Lấy đường dẫn tuyệt đối của file Sport.txt
             string fileSport = Path.Combine(projectDirectory, @"..\..\Models\Sport.txt");
 
             // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
@@ -113,6 +122,11 @@ namespace Program
             {
                 Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
             }
+            FoodBtn.Enabled = true;
+            AnimalBtn.Enabled = true;
+            ActiveBtn.Enabled = true;
+            SportBtn.Enabled = false;
+
         }
 
         private void ActiveBtn_Click(object sender, EventArgs e)
@@ -126,7 +140,7 @@ namespace Program
             // Loại bỏ phần "Server" trong đường dẫn
             filePath = filePath.Replace(@"\Server", "");
 
-            // Lấy đường dẫn tuyệt đối của file Keyword.txt
+            // Lấy đường dẫn tuyệt đối của file Active.txt
             string fileActive = Path.Combine(projectDirectory, @"..\..\Models\Active.txt");
 
             // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
@@ -144,6 +158,10 @@ namespace Program
             {
                 Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
             }
+            FoodBtn.Enabled = true;
+            AnimalBtn.Enabled = true;
+            ActiveBtn.Enabled = false;
+            SportBtn.Enabled = true;
         }
     }
 }

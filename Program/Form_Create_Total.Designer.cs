@@ -36,6 +36,7 @@
             // 
             // AnimalBtn
             // 
+            this.AnimalBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.AnimalBtn.BorderColor = System.Drawing.Color.Black;
             this.AnimalBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
             this.AnimalBtn.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -57,6 +58,7 @@
             // 
             // ActiveBtn
             // 
+            this.ActiveBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.ActiveBtn.BorderColor = System.Drawing.Color.Black;
             this.ActiveBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
             this.ActiveBtn.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -78,6 +80,7 @@
             // 
             // SportBtn
             // 
+            this.SportBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.SportBtn.BorderColor = System.Drawing.Color.Black;
             this.SportBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
             this.SportBtn.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -99,6 +102,7 @@
             // 
             // FoodBtn
             // 
+            this.FoodBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.FoodBtn.BorderColor = System.Drawing.Color.Black;
             this.FoodBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
             this.FoodBtn.Cursor = System.Windows.Forms.Cursors.Hand;

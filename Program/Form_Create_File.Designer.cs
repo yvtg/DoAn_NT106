@@ -39,6 +39,7 @@
             // 
             // textBox1
             // 
+            this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(236)))), ((int)(((byte)(201)))));
             this.textBox1.Location = new System.Drawing.Point(70, 64);
             this.textBox1.Name = "textBox1";
@@ -48,6 +49,7 @@
             // 
             // Browserbtn
             // 
+            this.Browserbtn.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.Browserbtn.BorderColor = System.Drawing.Color.Black;
             this.Browserbtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
             this.Browserbtn.Cursor = System.Windows.Forms.Cursors.Hand;

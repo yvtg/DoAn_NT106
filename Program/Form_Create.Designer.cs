@@ -41,6 +41,7 @@
             // 
             // createBtn
             // 
+            this.createBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.createBtn.BorderColor = System.Drawing.Color.Black;
             this.createBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
             this.createBtn.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -62,6 +63,7 @@
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
@@ -73,6 +75,7 @@
             // 
             // numeric
             // 
+            this.numeric.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.numeric.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
             this.numeric.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.numeric.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
@@ -117,6 +120,7 @@
             // 
             // panelBody
             // 
+            this.panelBody.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panelBody.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.panelBody.EdgeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(41)))), ((int)(((byte)(50)))));
             this.panelBody.Location = new System.Drawing.Point(12, 82);
@@ -129,6 +133,7 @@
             // 
             // DefaultBtn
             // 
+            this.DefaultBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.DefaultBtn.BorderColor = System.Drawing.Color.Black;
             this.DefaultBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
             this.DefaultBtn.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -150,6 +155,7 @@
             // 
             // TotalBtn
             // 
+            this.TotalBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.TotalBtn.BorderColor = System.Drawing.Color.Black;
             this.TotalBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
             this.TotalBtn.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -171,6 +177,7 @@
             // 
             // UpfileBtn
             // 
+            this.UpfileBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.UpfileBtn.BorderColor = System.Drawing.Color.Black;
             this.UpfileBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
             this.UpfileBtn.Cursor = System.Windows.Forms.Cursors.Hand;

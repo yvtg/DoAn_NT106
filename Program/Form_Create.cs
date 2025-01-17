@@ -75,10 +75,16 @@ namespace Program
         private void UpfileBtn_Click( object sender, EventArgs e )
         {
             OpenChildForm(new Form_Create_File());
+            UpfileBtn.Enabled = false;
+            TotalBtn.Enabled = true;
+            DefaultBtn.Enabled = true;
         }
         private void TotalBtn_Click(object sender, EventArgs e )
         {
             OpenChildForm(new Form_Create_Total());
+            UpfileBtn.Enabled = true;
+            TotalBtn.Enabled = false;
+            DefaultBtn.Enabled = true;
         }
 
         private void DefaultBtn_Click(object sender, EventArgs e)
@@ -116,6 +122,9 @@ namespace Program
             {
                 Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
             }
+            UpfileBtn.Enabled = true;
+            TotalBtn.Enabled = true;
+            DefaultBtn.Enabled = false;
         }
     }
 }
