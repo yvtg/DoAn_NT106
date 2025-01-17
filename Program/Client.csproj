@@ -253,6 +253,18 @@
     <Compile Include="Form_Create.Designer.cs">
       <DependentUpon>Form_Create.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Create_File.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Create_File.Designer.cs">
+      <DependentUpon>Form_Create_File.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Create_Total.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Create_Total.Designer.cs">
+      <DependentUpon>Form_Create_Total.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Input_ServerIP.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -338,6 +350,12 @@
     <EmbeddedResource Include="Form_Create.resx">
       <DependentUpon>Form_Create.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Create_File.resx">
+      <DependentUpon>Form_Create_File.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Create_Total.resx">
+      <DependentUpon>Form_Create_Total.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_End_Game.resx">
       <DependentUpon>Form_End_Game.cs</DependentUpon>

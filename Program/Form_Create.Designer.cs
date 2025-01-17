@@ -33,6 +33,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numeric = new ReaLTaiizor.Controls.HopeNumeric();
             this.create = new ReaLTaiizor.Forms.HopeForm();
+            this.panelBody = new ReaLTaiizor.Controls.Panel();
+            this.DefaultBtn = new ReaLTaiizor.Controls.HopeButton();
+            this.TotalBtn = new ReaLTaiizor.Controls.HopeButton();
+            this.UpfileBtn = new ReaLTaiizor.Controls.HopeButton();
             this.SuspendLayout();
             // 
             // createBtn
@@ -45,7 +49,7 @@
             this.createBtn.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.createBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.createBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.createBtn.Location = new System.Drawing.Point(183, 78);
+            this.createBtn.Location = new System.Drawing.Point(346, 257);
             this.createBtn.Name = "createBtn";
             this.createBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
             this.createBtn.Size = new System.Drawing.Size(97, 54);
@@ -61,7 +65,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.label1.Location = new System.Drawing.Point(28, 71);
+            this.label1.Location = new System.Drawing.Point(191, 250);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(136, 19);
             this.label1.TabIndex = 19;
@@ -81,7 +85,7 @@
             this.numeric.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.numeric.HoverButtonTextColorA = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
             this.numeric.HoverButtonTextColorB = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
-            this.numeric.Location = new System.Drawing.Point(31, 106);
+            this.numeric.Location = new System.Drawing.Point(194, 285);
             this.numeric.MaxNum = 10F;
             this.numeric.MinNum = 0F;
             this.numeric.Name = "numeric";
@@ -106,17 +110,96 @@
             this.create.Image = null;
             this.create.Location = new System.Drawing.Point(0, 0);
             this.create.Name = "create";
-            this.create.Size = new System.Drawing.Size(308, 40);
+            this.create.Size = new System.Drawing.Size(632, 40);
             this.create.TabIndex = 28;
             this.create.Text = "Create Room";
             this.create.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            // 
+            // panelBody
+            // 
+            this.panelBody.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
+            this.panelBody.EdgeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(41)))), ((int)(((byte)(50)))));
+            this.panelBody.Location = new System.Drawing.Point(12, 82);
+            this.panelBody.Name = "panelBody";
+            this.panelBody.Padding = new System.Windows.Forms.Padding(5);
+            this.panelBody.Size = new System.Drawing.Size(608, 160);
+            this.panelBody.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            this.panelBody.TabIndex = 29;
+            this.panelBody.Text = "panel1";
+            // 
+            // DefaultBtn
+            // 
+            this.DefaultBtn.BorderColor = System.Drawing.Color.Black;
+            this.DefaultBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
+            this.DefaultBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.DefaultBtn.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.DefaultBtn.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.DefaultBtn.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DefaultBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.DefaultBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
+            this.DefaultBtn.Location = new System.Drawing.Point(12, 46);
+            this.DefaultBtn.Name = "DefaultBtn";
+            this.DefaultBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.DefaultBtn.Size = new System.Drawing.Size(202, 30);
+            this.DefaultBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.DefaultBtn.TabIndex = 18;
+            this.DefaultBtn.Text = "Default";
+            this.DefaultBtn.TextColor = System.Drawing.Color.White;
+            this.DefaultBtn.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            this.DefaultBtn.Click += new System.EventHandler(this.DefaultBtn_Click);
+            // 
+            // TotalBtn
+            // 
+            this.TotalBtn.BorderColor = System.Drawing.Color.Black;
+            this.TotalBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
+            this.TotalBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.TotalBtn.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.TotalBtn.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.TotalBtn.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TotalBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.TotalBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
+            this.TotalBtn.Location = new System.Drawing.Point(215, 46);
+            this.TotalBtn.Name = "TotalBtn";
+            this.TotalBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.TotalBtn.Size = new System.Drawing.Size(202, 30);
+            this.TotalBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.TotalBtn.TabIndex = 18;
+            this.TotalBtn.Text = "Total";
+            this.TotalBtn.TextColor = System.Drawing.Color.White;
+            this.TotalBtn.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            this.TotalBtn.Click += new System.EventHandler(this.TotalBtn_Click);
+            // 
+            // UpfileBtn
+            // 
+            this.UpfileBtn.BorderColor = System.Drawing.Color.Black;
+            this.UpfileBtn.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
+            this.UpfileBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.UpfileBtn.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
+            this.UpfileBtn.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.UpfileBtn.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpfileBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.UpfileBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
+            this.UpfileBtn.Location = new System.Drawing.Point(418, 46);
+            this.UpfileBtn.Name = "UpfileBtn";
+            this.UpfileBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
+            this.UpfileBtn.Size = new System.Drawing.Size(202, 30);
+            this.UpfileBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
+            this.UpfileBtn.TabIndex = 18;
+            this.UpfileBtn.Text = "Your File";
+            this.UpfileBtn.TextColor = System.Drawing.Color.White;
+            this.UpfileBtn.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
+            this.UpfileBtn.Click += new System.EventHandler(this.UpfileBtn_Click);
             // 
             // Form_Create
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
-            this.ClientSize = new System.Drawing.Size(308, 166);
+            this.ClientSize = new System.Drawing.Size(632, 344);
+            this.Controls.Add(this.TotalBtn);
+            this.Controls.Add(this.UpfileBtn);
+            this.Controls.Add(this.panelBody);
+            this.Controls.Add(this.DefaultBtn);
             this.Controls.Add(this.create);
             this.Controls.Add(this.numeric);
             this.Controls.Add(this.label1);
@@ -139,5 +222,9 @@
         private System.Windows.Forms.Label label1;
         private ReaLTaiizor.Controls.HopeNumeric numeric;
         private ReaLTaiizor.Forms.HopeForm create;
+        private ReaLTaiizor.Controls.Panel panelBody;
+        private ReaLTaiizor.Controls.HopeButton DefaultBtn;
+        private ReaLTaiizor.Controls.HopeButton TotalBtn;
+        private ReaLTaiizor.Controls.HopeButton UpfileBtn;
     }
 }
