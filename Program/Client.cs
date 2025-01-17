@@ -259,7 +259,7 @@ namespace Program
                     }
                     else
                     {
-                        ShowMessage("Username đã tồn tại!");
+                        ShowMessage("Username hoặc email đã tồn tại! (hoặc email không hợp lệ)");
                     }
                     break;
                 case PacketType.RESET_PASSWORD_RESULT:
