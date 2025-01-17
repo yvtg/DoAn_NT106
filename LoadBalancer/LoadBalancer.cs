@@ -17,14 +17,13 @@ namespace LoadBalancer
         private List<TcpClient> clients = new List<TcpClient>();
         private bool isRunning;
         public Socket loadBalancerSocket;
-        int MaxLoad = 3;
+        int MaxLoad = 2;
         private (string IP, int Port) targetServer = (null, 0);
         private int currentServerIndex = 0; // Biến giữ trạng thái server hiện tại
 
         private (string IP, int Port, int currentLoad)[] Servers = {
-            ("127.0.0.1", 8081, 0),
-            ("192.168.220.119", 8081, 0)
-          
+            ("192.168.208.119", 8081, 0),
+            ("192.168.208.18", 8081, 0)
         };
 
         public void StartLB()
@@ -172,12 +171,12 @@ namespace LoadBalancer
 
         private (string IP, int Port) GetNextAvailableServer()
         {
-            // Chỉ thay đổi server khi server hiện tại đã đầy
-            //var currentServer = Servers[currentServerIndex];
-            //if (currentServer.currentLoad < MaxLoad)
-            //{
-            //    return (currentServer.IP, currentServer.Port);
-            //}
+            //Chỉ thay đổi server khi server hiện tại đã đầy
+            var currentServer = Servers[currentServerIndex];
+            if (currentServer.currentLoad < MaxLoad)
+            {
+                return (currentServer.IP, currentServer.Port);
+            }
 
             // Tìm server khác trong danh sách
             for (int i = 1; i <= Servers.Length; i++)

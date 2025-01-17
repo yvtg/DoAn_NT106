@@ -10,11 +10,14 @@ using System.Windows.Forms;
 
 namespace RoomServer
 {
-    public partial class Form1 : Form
+    public partial class RoomServer : Form
     {
-        public Form1()
+        public RoomServer()
         {
             InitializeComponent();
         }
+
+
+
     }
 }
