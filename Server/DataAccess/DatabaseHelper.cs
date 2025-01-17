@@ -90,6 +90,14 @@ namespace Server.DataAccess
 
             var collection = GetCollection<BsonDocument>("User");
             var existingUser = collection.Find(Builders<BsonDocument>.Filter.Eq("Email", email)).FirstOrDefault();
+
+            // Kiểm tra xem tên người dùng đã tồn tại hay chưa
+            var existingUsername = collection.Find(Builders<BsonDocument>.Filter.Eq("Username", username)).FirstOrDefault();
+            if (existingUsername != null)
+            {
+                return false; // Tên người dùng đã tồn tại
+            }
+
             if (existingUser != null)
             {
                 return false; // Email đã tồn tại
