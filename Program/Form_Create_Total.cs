@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Models;
+using SharpCompress.Common;
 
 namespace Program
 {
@@ -19,37 +20,28 @@ namespace Program
             InitializeComponent();
         }
 
-        // Lấy thư mục gốc của ứng dụng
-        string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
         private void FoodBtn_Click(object sender, EventArgs e)
         {
-            // Lấy đường dẫn tuyệt đối của file Keyword.txt
-            string filePath = Path.Combine(projectDirectory, @"..\..\Models\Keyword.txt");
+            string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string sourcePath = Path.Combine(projectDirectory, @"..\\..\\Models\\Food.txt");
+            string destinationPath = Path.Combine(projectDirectory, @"..\\..\\Models\\Keyword.txt");
 
-            // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
-            filePath = Path.GetFullPath(filePath);
-
-            // Loại bỏ phần "Server" trong đường dẫn
-            filePath = filePath.Replace(@"\Server", "");
-
-            // Lấy đường dẫn tuyệt đối của file Food.txt
-            string fileFood = Path.Combine(projectDirectory, @"..\..\Models\Food.txt");
-
-            // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
-            fileFood = Path.GetFullPath(fileFood);
-
-            // Loại bỏ phần "Server" trong đường dẫn
-            fileFood = fileFood.Replace(@"\Server", "");
+            sourcePath = Path.GetFullPath(sourcePath);
+            destinationPath = Path.GetFullPath(destinationPath);
+            sourcePath = sourcePath.Replace(@"\Program", "");
+            destinationPath = destinationPath.Replace(@"\Program", "");
 
             try
             {
-                string content = File.ReadAllText(fileFood);
-                File.WriteAllText(filePath, content);
+                // Đọc nội dung từ Sport.txt
+                string content = File.ReadAllText(sourcePath);
+
+                // Ghi đè dữ liệu vào Keyword.txt
+                File.WriteAllText(destinationPath, content);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
+                MessageBox.Show("Đã xảy ra lỗi: " + ex.Message, "Lỗi");
             }
             FoodBtn.Enabled = false;
             AnimalBtn.Enabled = true;
@@ -59,32 +51,26 @@ namespace Program
 
         private void AnimalBtn_Click(object sender, EventArgs e)
         {
-            // Lấy đường dẫn tuyệt đối của file Keyword.txt
-            string filePath = Path.Combine(projectDirectory, @"..\..\Models\Keyword.txt");
+            string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string sourcePath = Path.Combine(projectDirectory, @"..\\..\\Models\\Animal.txt");
+            string destinationPath = Path.Combine(projectDirectory, @"..\\..\\Models\\Keyword.txt");
 
-            // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
-            filePath = Path.GetFullPath(filePath);
-
-            // Loại bỏ phần "Server" trong đường dẫn
-            filePath = filePath.Replace(@"\Server", "");
-
-            // Lấy đường dẫn tuyệt đối của file Animal.txt
-            string fileAnimal = Path.Combine(projectDirectory, @"..\..\Models\Animal.txt");
-
-            // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
-            fileAnimal = Path.GetFullPath(fileAnimal);
-
-            // Loại bỏ phần "Server" trong đường dẫn
-            fileAnimal = fileAnimal.Replace(@"\Server", "");
+            sourcePath = Path.GetFullPath(sourcePath);
+            destinationPath = Path.GetFullPath(destinationPath);
+            sourcePath = sourcePath.Replace(@"\Program", "");
+            destinationPath = destinationPath.Replace(@"\Program", "");
 
             try
             {
-                string content = File.ReadAllText(fileAnimal);
-                File.WriteAllText(filePath, content);
+                // Đọc nội dung từ Sport.txt
+                string content = File.ReadAllText(sourcePath);
+
+                // Ghi đè dữ liệu vào Keyword.txt
+                File.WriteAllText(destinationPath, content);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
+                MessageBox.Show("Đã xảy ra lỗi: " + ex.Message, "Lỗi");
             }
             FoodBtn.Enabled = true;
             AnimalBtn.Enabled = false;
@@ -95,32 +81,26 @@ namespace Program
 
         private void SportBtn_Click(object sender, EventArgs e)
         {
-            // Lấy đường dẫn tuyệt đối của file Keyword.txt
-            string filePath = Path.Combine(projectDirectory, @"..\..\Models\Keyword.txt");
+            string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string sourcePath = Path.Combine(projectDirectory, @"..\\..\\Models\\Sport.txt");
+            string destinationPath = Path.Combine(projectDirectory, @"..\\..\\Models\\Keyword.txt");
 
-            // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
-            filePath = Path.GetFullPath(filePath);
-
-            // Loại bỏ phần "Server" trong đường dẫn
-            filePath = filePath.Replace(@"\Server", "");
-
-            // Lấy đường dẫn tuyệt đối của file Sport.txt
-            string fileSport = Path.Combine(projectDirectory, @"..\..\Models\Sport.txt");
-
-            // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
-            fileSport = Path.GetFullPath(fileSport);
-
-            // Loại bỏ phần "Server" trong đường dẫn
-            fileSport = fileSport.Replace(@"\Server", "");
+            sourcePath = Path.GetFullPath(sourcePath);
+            destinationPath = Path.GetFullPath(destinationPath);
+            sourcePath = sourcePath.Replace(@"\Program", "");
+            destinationPath = destinationPath.Replace(@"\Program", "");
 
             try
             {
-                string content = File.ReadAllText(fileSport);
-                File.WriteAllText(filePath, content);
+                // Đọc nội dung từ Sport.txt
+                string content = File.ReadAllText(sourcePath);
+
+                // Ghi đè dữ liệu vào Keyword.txt
+                File.WriteAllText(destinationPath, content);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
+                MessageBox.Show("Đã xảy ra lỗi: " + ex.Message, "Lỗi");
             }
             FoodBtn.Enabled = true;
             AnimalBtn.Enabled = true;
@@ -131,32 +111,26 @@ namespace Program
 
         private void ActiveBtn_Click(object sender, EventArgs e)
         {
-            // Lấy đường dẫn tuyệt đối của file Keyword.txt
-            string filePath = Path.Combine(projectDirectory, @"..\..\Models\Keyword.txt");
+            string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string sourcePath = Path.Combine(projectDirectory, @"..\\..\\Models\\Active.txt");
+            string destinationPath = Path.Combine(projectDirectory, @"..\\..\\Models\\Keyword.txt");
 
-            // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
-            filePath = Path.GetFullPath(filePath);
-
-            // Loại bỏ phần "Server" trong đường dẫn
-            filePath = filePath.Replace(@"\Server", "");
-
-            // Lấy đường dẫn tuyệt đối của file Active.txt
-            string fileActive = Path.Combine(projectDirectory, @"..\..\Models\Active.txt");
-
-            // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
-            fileActive = Path.GetFullPath(fileActive);
-
-            // Loại bỏ phần "Server" trong đường dẫn
-            fileActive = fileActive.Replace(@"\Server", "");
+            sourcePath = Path.GetFullPath(sourcePath);
+            destinationPath = Path.GetFullPath(destinationPath);
+            sourcePath = sourcePath.Replace(@"\Program", "");
+            destinationPath = destinationPath.Replace(@"\Program", "");
 
             try
             {
-                string content = File.ReadAllText(fileActive);
-                File.WriteAllText(filePath, content);
+                // Đọc nội dung từ Sport.txt
+                string content = File.ReadAllText(sourcePath);
+
+                // Ghi đè dữ liệu vào Keyword.txt
+                File.WriteAllText(destinationPath, content);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
+                MessageBox.Show("Đã xảy ra lỗi: " + ex.Message, "Lỗi");
             }
             FoodBtn.Enabled = true;
             AnimalBtn.Enabled = true;

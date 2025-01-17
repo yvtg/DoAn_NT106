@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Models;
+using SharpCompress.Common;
 
 namespace Program
 {
@@ -28,36 +29,29 @@ namespace Program
                 {
                     textBox1.Text = "Your File: " + openFileDialog.FileName;
 
-                    // Lấy thư mục gốc của ứng dụng
                     string projectDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    string sourcePath = openFileDialog.FileName;
+                    string destinationPath = Path.Combine(projectDirectory, @"..\\..\\Models\\Keyword.txt");
 
-                    // Lấy đường dẫn tuyệt đối của file Keyword.txt
-                    string filePath = Path.Combine(projectDirectory, @"..\..\Models\Keyword.txt");
-
-                    // Chuyển đường dẫn từ "..\.." thành đường dẫn tuyệt đối
-                    filePath = Path.GetFullPath(filePath);
-
-                    // Loại bỏ phần "Server" trong đường dẫn
-                    filePath = filePath.Replace(@"\Server", "");
-
-                    string destinationPath = openFileDialog.FileName;
+                    sourcePath = Path.GetFullPath(sourcePath);
+                    destinationPath = Path.GetFullPath(destinationPath);
+                    sourcePath = sourcePath.Replace(@"\Program", "");
+                    destinationPath = destinationPath.Replace(@"\Program", "");
 
                     try
                     {
-                        string content = File.ReadAllText(destinationPath);
-                        File.WriteAllText(filePath, content);
+                        // Đọc nội dung từ Sport.txt
+                        string content = File.ReadAllText(sourcePath);
+
+                        // Ghi đè dữ liệu vào Keyword.txt
+                        File.WriteAllText(destinationPath, content);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
+                        MessageBox.Show("Đã xảy ra lỗi: " + ex.Message, "Lỗi");
                     }
                 }
             }
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
