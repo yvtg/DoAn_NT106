@@ -71,7 +71,6 @@ namespace Program
             if (string.IsNullOrEmpty(email))
             {
                 ShowMessage("Vui lòng nhập email.");
-                sendButton.Enabled = true;
 
                 return;
             }
@@ -79,10 +78,8 @@ namespace Program
             if (!IsValidEmail(emailTextbox.Text.Trim()))
             {
                 ShowMessage("Email không hợp lệ. Vui lòng nhập lại.");
-                sendButton.Enabled = true;
                 return;
             }
-            sendButton.Enabled = false;
 
             // Gửi yêu cầu OTP tới server
             client.SendResetPasswordRequest(email);
