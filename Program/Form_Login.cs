@@ -35,6 +35,12 @@ namespace Program
                 }
             };
             client.LoginSuccessful += OnLoginSuccessful;
+            client.RedirectReceived += RedirectInfo;
+        }
+
+        private void RedirectInfo(string ip, int port)
+        {
+            serverLabel.Text = $"Server: {ip}:{port}";
         }
 
         private void loginButton_Click_1(object sender, EventArgs e)
@@ -124,8 +130,11 @@ namespace Program
 
         private void Form_Login_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DisconnectPacket disconnectPacket = new DisconnectPacket("");
-            client.SendPacket(disconnectPacket);
+            if (client.connectStatus)
+            {
+                DisconnectPacket disconnectPacket = new DisconnectPacket("");
+                client.SendPacket(disconnectPacket);
+            }
             Application.Exit();
         }
 
@@ -149,6 +158,8 @@ namespace Program
 
             formmessage.Show();
         }
+
+
 
         #region dragging
 

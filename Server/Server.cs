@@ -39,19 +39,34 @@ namespace Server
 
 
         #region Connect
-        public void StartServer()
+        public void StartServer(int port)
         {
             if (isRunning) return;
 
             isRunning = true;
 
-            Task.Run(() => InitializeServer());
+            Task.Run(() => InitializeServer(port));
         }
 
-        private async Task InitializeServer()
+       string GetLocalIPv4Addresses()
         {
-            int port = 8080;
-            EndPoint ipEP = new IPEndPoint(IPAddress.Any, 8080);
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            var ipv4Addresses = new List<string>();
+
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork) // Chỉ lấy IPv4
+                {
+                    ipv4Addresses.Add(ip.ToString());
+                }
+            }
+
+            return ipv4Addresses.ToString();
+        }
+
+        private async Task InitializeServer(int port)
+        {
+            EndPoint ipEP = new IPEndPoint(IPAddress.Any, port);
 
             // Khởi tạo server
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

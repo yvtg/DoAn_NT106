@@ -62,6 +62,88 @@ namespace Program
         int progressValue = 0;
         private Form_Message activeMessageForm = null;
 
+        private string fullKeyword;
+        private string revealedKeyword;
+        private System.Timers.Timer hintTimer;
+        private int hintStep;
+        private bool isDrawer;
+
+        private void InitializeHintSystem(string keyword)
+        {
+            fullKeyword = keyword;
+            revealedKeyword = string.Concat(keyword.Select(c => c == ' ' ? ' ' : '_'));
+            hintStep = 0;
+
+            hintTimer = new System.Timers.Timer(1000); // Set interval to 1 second
+            hintTimer.Elapsed += OnHintTimerElapsed;
+            hintTimer.Start();
+        }
+
+        private void OnHintTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!gameStart || isDrawer) return; // Skip hint logic for the drawer
+
+            hintStep++;
+
+            switch (hintStep)
+            {
+                case 45:
+                    RevealKeywordCharacters(1);
+                    break;
+                case 60:
+                    RevealKeywordCharacters(1);
+                    break;
+                case 75:
+                    RevealKeywordCharacters(2);
+                    break;
+                case 80:
+                    RevealKeywordCharacters(2);
+                    break;
+                case 85:
+                    RevealKeywordCharacters(2);
+                    hintTimer.Stop(); // Stop the timer after the last hint
+                    break;
+            }
+        }
+
+        private void RevealKeywordCharacters(int count)
+        {
+            int revealedCount = revealedKeyword.Count(c => c != '_');
+            char[] revealedArray = revealedKeyword.ToCharArray();
+
+            for (int i = 0, revealed = 0; i < fullKeyword.Length && revealed < count; i++)
+            {
+                if (revealedArray[i] == '_' && fullKeyword[i] != ' ')
+                {
+                    revealedArray[i] = fullKeyword[i];
+                    revealed++;
+                }
+            }
+
+            revealedKeyword = new string(revealedArray);
+
+            context.Post(_ =>
+            {
+                wordLabel.Text = $"KEY WORD: {revealedKeyword}";
+            }, null);
+        }
+
+        private void StartNewRound(string keyword, bool isDrawer)
+        {
+            this.isDrawer = isDrawer;
+
+            if (isDrawer)
+            {
+                wordLabel.Text = $"KEY WORD: {keyword}"; // Show full keyword to the drawer
+            }
+            else
+            {
+                InitializeHintSystem(keyword);
+                wordLabel.Text = $"KEY WORD: {revealedKeyword}"; // Show hidden keyword to guessers with spaces preserved
+            }
+        }
+
+
         public Form_Room(string roomId, string host, int max_player, string username)
         {
             InitializeComponent();
@@ -691,6 +773,7 @@ namespace Program
                 this.Invoke(new Action(() => OnReceivedRoundUpdate(roundUpdatePacket)));
                 return;
             }
+
             gameStart = true;
             ClearPictureBox();
             StartTimer();
@@ -704,15 +787,20 @@ namespace Program
                 wordLabel.Text = $"KEY WORD: {roundUpdatePacket.Word}";
                 ShowMessage($"Bạn là người vẽ! từ khóa là {roundUpdatePacket.Word}");
 
+                StartNewRound(roundUpdatePacket.Word, true); // The drawer sees the full keyword
             }
             else
             {
                 pictureBox1.Enabled = false;
                 sendButton.Enabled = true;
                 ShowChatMessage($"Người vẽ là {roundUpdatePacket.Name}. Trong 60s hãy đoán từ khóa!");
+
+                StartNewRound(roundUpdatePacket.Word, false); // Guessers see the hidden keyword with hints
             }
+
             startButton.Enabled = false;
         }
+
 
         private void EndGame(string roomID)
         {
