@@ -1,0 +1,41 @@
+﻿Pizza
+Hamburger
+Hotdog
+Bánh mì
+Bánh quy
+Bánh sinh nhật
+Khoai tây chiên
+Kem
+Trái cây
+Táo
+Chuối
+Dưa hấu
+Dâu tây
+Nho
+Cam
+Xoài
+Kiwi
+Đào
+Nước suối
+Nước cam
+Nước chanh
+Sữa
+Cà phê
+Trà
+Trà đá
+Trà sữa
+Cacao nóng
+Nước ngọt
+Soda
+Sinh tố
+Sữa chua
+Nước ép táo
+Nước dừa
+Rượu vang
+Cốc-tai
+Bia
+Latte
+Cà phê
+Sữa
+Trà xanh
+Chocolate
