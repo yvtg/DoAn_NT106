@@ -191,5 +191,23 @@ namespace Program
             dragging = false;
         }
         #endregion
+
+        private void usernameTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                passTextbox.Focus();
+                e.Handled = true; e.SuppressKeyPress = true;
+            }    
+        }
+
+        private void passTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                loginButton_Click_1(sender, e);
+                e.Handled = true; e.SuppressKeyPress = true;
+            }    
+        }
     }
 }

@@ -115,6 +115,7 @@
             this.sendTextBox.TabIndex = 27;
             this.sendTextBox.TabStop = false;
             this.sendTextBox.UseSystemPasswordChar = false;
+            this.sendTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sendTextBox_KeyDown);
             // 
             // label2
             // 
@@ -132,13 +133,13 @@
             // wordLabel
             // 
             this.wordLabel.AutoSize = true;
-            this.wordLabel.Font = new System.Drawing.Font("Roboto Mono", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.wordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.wordLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.wordLabel.Location = new System.Drawing.Point(206, 106);
             this.wordLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.wordLabel.Name = "wordLabel";
             this.wordLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.wordLabel.Size = new System.Drawing.Size(100, 21);
+            this.wordLabel.Size = new System.Drawing.Size(114, 20);
             this.wordLabel.TabIndex = 31;
             this.wordLabel.Text = "KEY WORD: ";
             // 
@@ -171,7 +172,7 @@
             this.panel1.Controls.Add(this.EraserPictureBox);
             this.panel1.Controls.Add(this.PencilPictureBox);
             this.panel1.Location = new System.Drawing.Point(172, 385);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(400, 50);
             this.panel1.TabIndex = 34;
@@ -224,7 +225,7 @@
             this.EraserPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.EraserPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("EraserPictureBox.Image")));
             this.EraserPictureBox.Location = new System.Drawing.Point(73, 4);
-            this.EraserPictureBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.EraserPictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.EraserPictureBox.Name = "EraserPictureBox";
             this.EraserPictureBox.Size = new System.Drawing.Size(38, 41);
             this.EraserPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -238,7 +239,7 @@
             this.PencilPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PencilPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("PencilPictureBox.Image")));
             this.PencilPictureBox.Location = new System.Drawing.Point(12, 4);
-            this.PencilPictureBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.PencilPictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.PencilPictureBox.Name = "PencilPictureBox";
             this.PencilPictureBox.Size = new System.Drawing.Size(38, 41);
             this.PencilPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -338,7 +339,7 @@
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Location = new System.Drawing.Point(172, 144);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(400, 244);
             this.pictureBox1.TabIndex = 28;
@@ -433,7 +434,8 @@
             this.Controls.Add(this.timeLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Room";

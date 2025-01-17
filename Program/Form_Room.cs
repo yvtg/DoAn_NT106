@@ -920,6 +920,15 @@ namespace Program
         }
 
         #endregion
+
+        private void sendTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                sendButton_Click(sender, e);
+                e.Handled = true; e.SuppressKeyPress = true;
+            }
+        }
     }
 
 

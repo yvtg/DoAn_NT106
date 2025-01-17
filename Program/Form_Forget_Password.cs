@@ -63,6 +63,14 @@ namespace Program
             }
         }
 
+        private void emailTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                sendButton_Click_1(sender, e);
+                e.Handled = true; e.SuppressKeyPress = true;
+            }
+        }
 
         private void sendButton_Click_1(object sender, EventArgs e)
         {

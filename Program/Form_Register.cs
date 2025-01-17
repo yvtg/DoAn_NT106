@@ -146,5 +146,41 @@ namespace Program
             this.Close();
         }
         #endregion
+
+        private void usernameTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                emailTextbox.Focus();
+                e.Handled = true; e.SuppressKeyPress = true;
+            }
+        }
+
+        private void emailTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                passwordTextbox.Focus();
+                e.Handled = true; e.SuppressKeyPress = true;
+            }
+        }
+
+        private void passwordTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                confirmpassTextbox.Focus();
+                e.Handled = true; e.SuppressKeyPress = true;
+            }
+        }
+
+        private void confirmpassTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                registerButton_Click_1(sender, e);
+                e.Handled = true; e.SuppressKeyPress = true;
+            }
+        }
     }
 }

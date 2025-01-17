@@ -112,9 +112,10 @@
             this.emailTextbox.SelectionLength = 0;
             this.emailTextbox.SelectionStart = 0;
             this.emailTextbox.Size = new System.Drawing.Size(227, 33);
-            this.emailTextbox.TabIndex = 21;
+            this.emailTextbox.TabIndex = 1;
             this.emailTextbox.TabStop = false;
             this.emailTextbox.UseSystemPasswordChar = false;
+            this.emailTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.emailTextbox_KeyDown);
             // 
             // usernameTextbox
             // 
@@ -136,9 +137,10 @@
             this.usernameTextbox.SelectionLength = 0;
             this.usernameTextbox.SelectionStart = 0;
             this.usernameTextbox.Size = new System.Drawing.Size(227, 33);
-            this.usernameTextbox.TabIndex = 20;
+            this.usernameTextbox.TabIndex = 0;
             this.usernameTextbox.TabStop = false;
             this.usernameTextbox.UseSystemPasswordChar = false;
+            this.usernameTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.usernameTextbox_KeyDown);
             // 
             // confirmpassTextbox
             // 
@@ -159,9 +161,10 @@
             this.confirmpassTextbox.SelectionLength = 0;
             this.confirmpassTextbox.SelectionStart = 0;
             this.confirmpassTextbox.Size = new System.Drawing.Size(227, 33);
-            this.confirmpassTextbox.TabIndex = 23;
+            this.confirmpassTextbox.TabIndex = 3;
             this.confirmpassTextbox.TabStop = false;
             this.confirmpassTextbox.UseSystemPasswordChar = true;
+            this.confirmpassTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.confirmpassTextbox_KeyDown);
             // 
             // passwordTextbox
             // 
@@ -183,9 +186,10 @@
             this.passwordTextbox.SelectionLength = 0;
             this.passwordTextbox.SelectionStart = 0;
             this.passwordTextbox.Size = new System.Drawing.Size(227, 33);
-            this.passwordTextbox.TabIndex = 22;
+            this.passwordTextbox.TabIndex = 2;
             this.passwordTextbox.TabStop = false;
             this.passwordTextbox.UseSystemPasswordChar = true;
+            this.passwordTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.passwordTextbox_KeyDown);
             // 
             // registerButton
             // 
@@ -203,7 +207,7 @@
             this.registerButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.registerButton.Size = new System.Drawing.Size(104, 36);
             this.registerButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
-            this.registerButton.TabIndex = 25;
+            this.registerButton.TabIndex = 4;
             this.registerButton.Text = "Register";
             this.registerButton.TextColor = System.Drawing.Color.White;
             this.registerButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
@@ -225,7 +229,7 @@
             this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.backButton.Size = new System.Drawing.Size(104, 36);
             this.backButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
-            this.backButton.TabIndex = 24;
+            this.backButton.TabIndex = 5;
             this.backButton.Text = "Back";
             this.backButton.TextColor = System.Drawing.Color.White;
             this.backButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
@@ -303,6 +307,7 @@
             this.Controls.Add(this.usernameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);

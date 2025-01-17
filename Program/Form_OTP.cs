@@ -139,6 +139,13 @@ namespace Program
             otpTimer.Stop();
         }
 
-       
+        private void otpTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                confirmButton_Click_1(sender, e);
+                e.Handled = true; e.SuppressKeyPress = true;
+            }
+        }
     }
 }

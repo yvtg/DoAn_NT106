@@ -59,5 +59,14 @@ namespace Program
             client.SendPacket(joinRoomPacket);
             this.Close();
         }
+
+        private void idTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                joinButton_Click(sender, e);
+                e.Handled = true; e.SuppressKeyPress = true;
+            }    
+        }
     }
 }

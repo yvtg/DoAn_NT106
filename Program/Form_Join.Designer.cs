@@ -40,10 +40,11 @@
             this.idLabel.AutoSize = true;
             this.idLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.idLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.idLabel.Location = new System.Drawing.Point(15, 85);
+            this.idLabel.Location = new System.Drawing.Point(11, 69);
+            this.idLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.idLabel.Name = "idLabel";
             this.idLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.idLabel.Size = new System.Drawing.Size(98, 23);
+            this.idLabel.Size = new System.Drawing.Size(80, 19);
             this.idLabel.TabIndex = 0;
             this.idLabel.Text = "Room ID";
             // 
@@ -56,8 +57,8 @@
             this.idTextbox.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.idTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.idTextbox.Hint = "";
-            this.idTextbox.Location = new System.Drawing.Point(143, 80);
-            this.idTextbox.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
+            this.idTextbox.Location = new System.Drawing.Point(107, 65);
+            this.idTextbox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.idTextbox.MaxLength = 32767;
             this.idTextbox.Multiline = false;
             this.idTextbox.Name = "idTextbox";
@@ -66,10 +67,11 @@
             this.idTextbox.SelectedText = "";
             this.idTextbox.SelectionLength = 0;
             this.idTextbox.SelectionStart = 0;
-            this.idTextbox.Size = new System.Drawing.Size(200, 40);
-            this.idTextbox.TabIndex = 16;
+            this.idTextbox.Size = new System.Drawing.Size(150, 35);
+            this.idTextbox.TabIndex = 0;
             this.idTextbox.TabStop = false;
             this.idTextbox.UseSystemPasswordChar = false;
+            this.idTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.idTextbox_KeyDown);
             // 
             // joinButton
             // 
@@ -81,11 +83,10 @@
             this.joinButton.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.joinButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.joinButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.joinButton.Location = new System.Drawing.Point(108, 142);
-            this.joinButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.joinButton.Location = new System.Drawing.Point(81, 115);
             this.joinButton.Name = "joinButton";
             this.joinButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
-            this.joinButton.Size = new System.Drawing.Size(139, 44);
+            this.joinButton.Size = new System.Drawing.Size(104, 36);
             this.joinButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.joinButton.TabIndex = 18;
             this.joinButton.Text = "Join";
@@ -105,27 +106,27 @@
             this.join.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.join.Image = null;
             this.join.Location = new System.Drawing.Point(0, 0);
-            this.join.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.join.Name = "join";
-            this.join.Size = new System.Drawing.Size(359, 40);
+            this.join.Size = new System.Drawing.Size(269, 40);
             this.join.TabIndex = 28;
             this.join.Text = "Join Room";
             this.join.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             // 
             // Form_Join
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
-            this.ClientSize = new System.Drawing.Size(359, 208);
+            this.ClientSize = new System.Drawing.Size(269, 169);
             this.Controls.Add(this.join);
             this.Controls.Add(this.joinButton);
             this.Controls.Add(this.idTextbox);
             this.Controls.Add(this.idLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MaximumSize = new System.Drawing.Size(2560, 1270);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Join";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

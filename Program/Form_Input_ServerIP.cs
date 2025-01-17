@@ -96,5 +96,23 @@ namespace Program
             dragging = false;
         }
         #endregion
+
+        private void portTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                connectBtn_Click(sender, e);
+                e.Handled = true; e.SuppressKeyPress = true;
+            }
+        }
+
+        private void serverIPTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                portTextBox.Focus();
+                e.Handled = true; e.SuppressKeyPress = true;
+            }
+        }
     }
 }

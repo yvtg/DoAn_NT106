@@ -50,9 +50,8 @@
             this.ForgetPassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(246)))), ((int)(((byte)(252)))));
             this.ForgetPassword.Image = null;
             this.ForgetPassword.Location = new System.Drawing.Point(0, 0);
-            this.ForgetPassword.Margin = new System.Windows.Forms.Padding(4);
             this.ForgetPassword.Name = "ForgetPassword";
-            this.ForgetPassword.Size = new System.Drawing.Size(464, 40);
+            this.ForgetPassword.Size = new System.Drawing.Size(348, 40);
             this.ForgetPassword.TabIndex = 59;
             this.ForgetPassword.Text = "Forget Password";
             this.ForgetPassword.ThemeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
@@ -66,8 +65,7 @@
             this.emailTextbox.Font = new System.Drawing.Font("Cambria", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emailTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
             this.emailTextbox.Hint = "";
-            this.emailTextbox.Location = new System.Drawing.Point(95, 283);
-            this.emailTextbox.Margin = new System.Windows.Forms.Padding(4);
+            this.emailTextbox.Location = new System.Drawing.Point(71, 230);
             this.emailTextbox.MaxLength = 32767;
             this.emailTextbox.Multiline = false;
             this.emailTextbox.Name = "emailTextbox";
@@ -76,19 +74,21 @@
             this.emailTextbox.SelectedText = "";
             this.emailTextbox.SelectionLength = 0;
             this.emailTextbox.SelectionStart = 0;
-            this.emailTextbox.Size = new System.Drawing.Size(356, 38);
-            this.emailTextbox.TabIndex = 60;
+            this.emailTextbox.Size = new System.Drawing.Size(267, 33);
+            this.emailTextbox.TabIndex = 0;
             this.emailTextbox.TabStop = false;
             this.emailTextbox.UseSystemPasswordChar = false;
+            this.emailTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.emailTextbox_KeyDown);
             // 
             // emailLabel
             // 
             this.emailLabel.AutoSize = true;
             this.emailLabel.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emailLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.emailLabel.Location = new System.Drawing.Point(20, 298);
+            this.emailLabel.Location = new System.Drawing.Point(15, 242);
+            this.emailLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.emailLabel.Name = "emailLabel";
-            this.emailLabel.Size = new System.Drawing.Size(68, 23);
+            this.emailLabel.Size = new System.Drawing.Size(56, 19);
             this.emailLabel.TabIndex = 59;
             this.emailLabel.Text = "Email";
             // 
@@ -103,11 +103,10 @@
             this.sendButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.sendButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.sendButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.sendButton.Location = new System.Drawing.Point(152, 355);
-            this.sendButton.Margin = new System.Windows.Forms.Padding(4);
+            this.sendButton.Location = new System.Drawing.Point(114, 288);
             this.sendButton.Name = "sendButton";
             this.sendButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.sendButton.Size = new System.Drawing.Size(151, 48);
+            this.sendButton.Size = new System.Drawing.Size(113, 39);
             this.sendButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.sendButton.TabIndex = 74;
             this.sendButton.Text = "Send";
@@ -126,11 +125,10 @@
             this.backButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.backButton.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.backButton.Location = new System.Drawing.Point(152, 430);
-            this.backButton.Margin = new System.Windows.Forms.Padding(4);
+            this.backButton.Location = new System.Drawing.Point(114, 349);
             this.backButton.Name = "backButton";
             this.backButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
-            this.backButton.Size = new System.Drawing.Size(151, 49);
+            this.backButton.Size = new System.Drawing.Size(113, 40);
             this.backButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.backButton.TabIndex = 73;
             this.backButton.Text = "Back";
@@ -143,20 +141,19 @@
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox1.Image = global::Program.Properties.Resources.logo;
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(13, 94);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.Location = new System.Drawing.Point(10, 76);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(425, 151);
+            this.pictureBox1.Size = new System.Drawing.Size(319, 123);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 75;
             this.pictureBox1.TabStop = false;
             // 
             // Form_Forget_Password
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
-            this.ClientSize = new System.Drawing.Size(464, 558);
+            this.ClientSize = new System.Drawing.Size(348, 453);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.backButton);
@@ -165,8 +162,9 @@
             this.Controls.Add(this.emailLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MaximumSize = new System.Drawing.Size(1920, 1020);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximumSize = new System.Drawing.Size(1440, 829);
             this.MinimumSize = new System.Drawing.Size(190, 40);
             this.Name = "Form_Forget_Password";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

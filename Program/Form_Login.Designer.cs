@@ -84,7 +84,7 @@
             this.regBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.regBtn.Size = new System.Drawing.Size(114, 36);
             this.regBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
-            this.regBtn.TabIndex = 8;
+            this.regBtn.TabIndex = 4;
             this.regBtn.Text = "Register";
             this.regBtn.TextColor = System.Drawing.Color.White;
             this.regBtn.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
@@ -106,7 +106,7 @@
             this.loginButton.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(168)))), ((int)(((byte)(117)))));
             this.loginButton.Size = new System.Drawing.Size(114, 36);
             this.loginButton.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
-            this.loginButton.TabIndex = 9;
+            this.loginButton.TabIndex = 2;
             this.loginButton.Text = "Login";
             this.loginButton.TextColor = System.Drawing.Color.White;
             this.loginButton.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
@@ -132,9 +132,10 @@
             this.usernameTextbox.SelectionLength = 0;
             this.usernameTextbox.SelectionStart = 0;
             this.usernameTextbox.Size = new System.Drawing.Size(215, 35);
-            this.usernameTextbox.TabIndex = 10;
+            this.usernameTextbox.TabIndex = 0;
             this.usernameTextbox.TabStop = false;
             this.usernameTextbox.UseSystemPasswordChar = false;
+            this.usernameTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.usernameTextbox_KeyDown);
             // 
             // passTextbox
             // 
@@ -156,9 +157,10 @@
             this.passTextbox.SelectionLength = 0;
             this.passTextbox.SelectionStart = 0;
             this.passTextbox.Size = new System.Drawing.Size(215, 35);
-            this.passTextbox.TabIndex = 11;
+            this.passTextbox.TabIndex = 1;
             this.passTextbox.TabStop = false;
             this.passTextbox.UseSystemPasswordChar = true;
+            this.passTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.passTextbox_KeyDown);
             // 
             // showPwCheckBox
             // 
@@ -177,7 +179,7 @@
             this.showPwCheckBox.Margin = new System.Windows.Forms.Padding(2);
             this.showPwCheckBox.Name = "showPwCheckBox";
             this.showPwCheckBox.Size = new System.Drawing.Size(147, 20);
-            this.showPwCheckBox.TabIndex = 13;
+            this.showPwCheckBox.TabIndex = 3;
             this.showPwCheckBox.Text = "Show Password";
             this.showPwCheckBox.UseVisualStyleBackColor = true;
             this.showPwCheckBox.CheckedChanged += new System.EventHandler(this.showPwCheckBox_CheckedChanged);
@@ -283,6 +285,7 @@
             this.Controls.Add(this.usernameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(1920, 1032);
             this.MinimumSize = new System.Drawing.Size(190, 40);

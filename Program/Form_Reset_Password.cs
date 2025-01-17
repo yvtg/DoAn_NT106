@@ -163,5 +163,23 @@ namespace Program
                 confirmpassTextbox.UseSystemPasswordChar = true;
             }
         }
+
+        private void passwordTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                confirmpassTextbox.Focus();
+                e.Handled = true; e.SuppressKeyPress = true;
+            }
+        }
+
+        private void confirmpassTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                resetButton_Click(sender, e);
+                e.Handled = true; e.SuppressKeyPress = true;
+            }
+        }
     }
 }
