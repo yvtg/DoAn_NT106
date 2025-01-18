@@ -177,6 +177,15 @@ namespace Program
             hostText.Text += host;
             maxText.Text += max_player;
 
+            if (isblindround)
+            {
+                roomForm.Text += "- Blind mode";
+            }
+            else
+            {
+                roomForm.Text += "- Default mode";
+            }
+
             // khởi tạo track bar kích thước bút
             sizeTrackBar.Minimum = 1;
             sizeTrackBar.Maximum = 20;
