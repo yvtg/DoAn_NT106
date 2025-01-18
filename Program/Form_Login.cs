@@ -43,7 +43,7 @@ namespace Program
             serverLabel.Text = $"Server: {ip}:{port}";
         }
 
-        private void loginButton_Click_1(object sender, EventArgs e)
+        private async void loginButton_Click_1(object sender, EventArgs e)
         {
             string username = usernameTextbox.Text;
             string password = passTextbox.Text;
@@ -58,7 +58,7 @@ namespace Program
             {
                 // Gửi thông tin đăng nhập lên server
                 LoginPacket packet = new LoginPacket($"{username};{password}");
-                client.SendPacket(packet);
+                await client.SendPacket(packet);
             }
             catch (Exception ex)
             {
@@ -128,12 +128,12 @@ namespace Program
             regForm.FormClosed += (s, args) => this.Show();
         }
 
-        private void Form_Login_FormClosing(object sender, FormClosingEventArgs e)
+        private async void Form_Login_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (client.connectStatus)
             {
                 DisconnectPacket disconnectPacket = new DisconnectPacket("");
-                client.SendPacket(disconnectPacket);
+                await client.SendPacket(disconnectPacket);
             }
             Application.Exit();
         }

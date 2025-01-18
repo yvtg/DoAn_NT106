@@ -39,14 +39,13 @@ namespace Program
             this.username = username;
         }
 
-        private void createBtn_Click(object sender, EventArgs e)
+        private async void createBtn_Click(object sender, EventArgs e)
         {
 
             int maxPlayers = (int)numeric.ValueNumber;
             bool isblindround = ModeComboBox.SelectedItem?.ToString() == "Blind";
             CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers};{isblindround}");
-            client.SendPacket(createRoomPacket);
-
+            await client.SendPacket(createRoomPacket);
             this.Close();
 
         }

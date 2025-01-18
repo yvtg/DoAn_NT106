@@ -17,7 +17,7 @@ namespace LoadBalancer
         private List<TcpClient> clients = new List<TcpClient>();
         private bool isRunning;
         public Socket loadBalancerSocket;
-        int MaxLoad = 2;
+        int MaxLoad = 3;
         private (string IP, int Port) targetServer = (null, 0);
         private int currentServerIndex = 0; // Biến giữ trạng thái server hiện tại
 
@@ -55,10 +55,17 @@ namespace LoadBalancer
                     break;
                 }
 
-                Socket clientSocket = await loadBalancerSocket.AcceptAsync();
-                UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
-                TcpClient tcpClient = new TcpClient { Client = clientSocket };
-                HandleClient(tcpClient);
+                try
+                {
+                    Socket clientSocket = await loadBalancerSocket.AcceptAsync();
+                    UpdateLog?.Invoke($"Đã kết nối với {clientSocket.RemoteEndPoint}");
+                    TcpClient tcpClient = new TcpClient { Client = clientSocket };
+                    HandleClient(tcpClient);
+                }
+                catch (SocketException ex)
+                {
+                    UpdateLog?.Invoke($"Socket exception: {ex.Message}");
+                }
             }
         }
 
@@ -66,9 +73,9 @@ namespace LoadBalancer
         {
             try
             {
-                if (!client.Connected)
+                if (client == null || !client.Connected)
                 {
-                    UpdateLog?.Invoke("Client không kết nối.");
+                    UpdateLog?.Invoke("Client is not connected.");
                     return;
                 }
 
@@ -125,26 +132,48 @@ namespace LoadBalancer
                 try
                 {
                     clients.Remove(client);
-                    if (client.Connected) client.Close();
+                    if (client != null && client.Connected)
+                    {
+                        // gửi tín hiệu ngắn kết nối cho client
+                        string disconnectPacket = $"DISCONNECT;";
+                        byte[] encryptedBytes = AES.EncryptAES(disconnectPacket);
+                        string encryptedPayload = Convert.ToBase64String(encryptedBytes);
+                        NetworkStream clientStream = client.GetStream();
+                        StreamWriter writer = new StreamWriter(clientStream, Encoding.UTF8) { AutoFlush = true };
+                        await writer.WriteLineAsync(encryptedPayload);
+
+                        UpdateLog?.Invoke($"Client {client.Client.RemoteEndPoint} đã ngắt kết nối khỏi server {targetServer.IP}:{targetServer.Port}");
+
+                        client.Close();
+                        client.Dispose();
+                    }
 
                     if (targetServer.IP != null)
+                    {
                         DecreaseServerLoad(targetServer.IP, targetServer.Port, 1);
+                    }
 
-                    UpdateLog?.Invoke($"Client {client.Client.RemoteEndPoint} đã ngắt kết nối khỏi server {targetServer.IP}:{targetServer.Port}");
 
                     CheckServerStatus(); // Cập nhật trạng thái server sau khi client ngắt kết nối
                 }
+                catch (ObjectDisposedException ex)
+                {
+                    UpdateLog?.Invoke($"Lỗi ObjectDisposedException: {ex.Message}");
+                }
                 catch (Exception ex)
                 {
-                    UpdateLog?.Invoke($"Lỗi khi đóng kết nối {ex.Message}");
+                    UpdateLog?.Invoke($"Lỗi khi đóng kết nối: {ex.Message}");
                 }
             }
+
         }
 
         private async Task ForwardData(Stream input, Stream output)
         {
             try
             {
+                if (input == null || output == null) return;
+
                 using (var reader = new StreamReader(input, Encoding.UTF8))
                 using (var writer = new StreamWriter(output, Encoding.UTF8) { AutoFlush = true })
                 {
@@ -155,23 +184,24 @@ namespace LoadBalancer
                     }
                 }
             }
+            catch (IOException)
+            {
+                UpdateLog?.Invoke("Client đã đóng kết nối");
+            }
+
             catch (ObjectDisposedException)
             {
                 UpdateLog?.Invoke("Luồng đã đóng.");
             }
-            catch (IOException ex)
-            {
-                UpdateLog?.Invoke($"IO Error: {ex.Message}");
-            }
             catch (Exception ex)
             {
-                UpdateLog?.Invoke($"Unexpected error: {ex.Message}");
+                UpdateLog?.Invoke($"Lỗi: {ex.Message}");
             }
         }
 
         private (string IP, int Port) GetNextAvailableServer()
         {
-            //Chỉ thay đổi server khi server hiện tại đã đầy
+            // Chỉ thay đổi server khi server hiện tại đã đầy
             var currentServer = Servers[currentServerIndex];
             if (currentServer.currentLoad < MaxLoad)
             {
@@ -192,7 +222,7 @@ namespace LoadBalancer
             }
 
             UpdateLog?.Invoke("Tất cả server đều đã đầy hoặc không hoạt động.");
-            return ("NULL",0);
+            return ("NULL", 0);
         }
 
         private void IncreaseServerLoad(string IP, int Port, int load)
@@ -263,18 +293,26 @@ namespace LoadBalancer
 
         public void StopLB()
         {
-            Console.WriteLine("Stopping Load Balancer...");
             isRunning = false;
-
             try
             {
-                loadBalancerSocket.Close();
+                if (loadBalancerSocket != null)
+                {
+                    loadBalancerSocket.Close();
+                    loadBalancerSocket.Dispose();
+                    loadBalancerSocket = null;
+                }
                 UpdateLog?.Invoke("Load Balancer đã dừng.");
+            }
+            catch (ObjectDisposedException ex)
+            {
+                UpdateLog?.Invoke($"Socket đã bị đóng trước đó: {ex.Message}");
             }
             catch (Exception ex)
             {
                 UpdateLog?.Invoke($"Lỗi khi dừng Load Balancer: {ex.Message}");
             }
         }
+
     }
 }

@@ -64,7 +64,7 @@ namespace Program
         }
 
 
-        private void sendButton_Click_1(object sender, EventArgs e)
+        private async void sendButton_Click_1(object sender, EventArgs e)
         {
             string email = emailTextbox.Text.Trim();
 
@@ -82,7 +82,7 @@ namespace Program
             }
 
             // Gửi yêu cầu OTP tới server
-            client.SendResetPasswordRequest(email);
+            await client.SendResetPasswordRequest(email);
         }
 
         private void OnOTPRequestSuccessful( string status)

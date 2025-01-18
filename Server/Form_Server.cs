@@ -77,16 +77,16 @@ namespace Server
             stopBtn.Enabled = true;
         }
 
-        private void stopBtn_Click(object sender, EventArgs e)
+        private async void stopBtn_Click(object sender, EventArgs e)
         {
-            server.StopServer();
+            await server.StopServer();
             clientListView.Items.Clear();
             roomListView.Items.Clear();
             startBtn.Enabled = true;
             stopBtn.Enabled = false;
         }
 
-        private void Form_Server_FormClosing(object sender, FormClosingEventArgs e)
+        private async void Form_Server_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Nếu server đã dừng hoặc đang dừng, không thực hiện gì thêm
             if (isServerStopping)
@@ -98,7 +98,7 @@ namespace Server
             isServerStopping = true;
 
             // Dừng server
-            server.StopServer();
+            await server.StopServer();
 
             base.OnFormClosing(e);
 

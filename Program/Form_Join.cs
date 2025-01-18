@@ -46,7 +46,7 @@ namespace Program
             this.Close();
         }
 
-        private void joinButton_Click(object sender, EventArgs e)
+        private async void joinButton_Click(object sender, EventArgs e)
         {
             string roomId = idTextbox.Text;
             if (roomId == "")
@@ -56,7 +56,7 @@ namespace Program
             }
 
             JoinRoomPacket joinRoomPacket = new JoinRoomPacket($"{roomId};{username}");
-            client.SendPacket(joinRoomPacket);
+            await client.SendPacket(joinRoomPacket);
             this.Close();
         }
     }

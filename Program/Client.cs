@@ -38,23 +38,26 @@ namespace Program
 
         public bool connectStatus = false;
 
-        public bool Connect(string serverIP, int port)
+        public async Task<bool> Connect(string serverIP, int port)
         {
             try
             {
                 connectStatus = true;
                 IPAddress ipServer = IPAddress.Parse(serverIP);
                 IPEndPoint ipEP = new IPEndPoint(ipServer, port);
-                tcpClient.Connect(ipEP);
+                await tcpClient.ConnectAsync(ipServer,port);
+
                 cancellationTokenSource = new CancellationTokenSource();
                 var token = cancellationTokenSource.Token;
-                Task.Run(() =>
+
+                _ = Task.Run(async () =>
                 {
                     while (!token.IsCancellationRequested)
                     {
-                        ReceiveData();
+                        await ReceiveData();
                     }
                 }, token);
+
                 return true;
             }
             catch (Exception ex)
@@ -64,27 +67,22 @@ namespace Program
             }
         }
 
-
-        // gửi draw packet ( dạng json )
-        public void SendDrawPacket(DrawPacket drawPacket)
+        // gửi packet vẽ (dạng json)
+        public async Task SendDrawPacket(DrawPacket drawPacket)
         {
             if (tcpClient != null && tcpClient.Connected)
             {
                 try
                 {
-                    // Nếu NetworkStream chưa được khởi tạo, hãy khởi tạo
                     if (ns == null)
                     {
                         ns = tcpClient.GetStream();
-                        sw = new StreamWriter(ns);
+                        sw = new StreamWriter(ns) { AutoFlush = true };
                     }
 
                     string jsonPacket = Newtonsoft.Json.JsonConvert.SerializeObject(drawPacket);
-
-                    // gửi dữ liệu
-                    sw.WriteLine(jsonPacket);
+                    await sw.WriteLineAsync(jsonPacket);
                     Console.WriteLine(jsonPacket);
-                    sw.Flush();
                 }
                 catch (Exception ex)
                 {
@@ -100,9 +98,8 @@ namespace Program
             }
         }
 
-        // send packet bình thường
-        // Ví dụ về gửi một gói dữ liệu
-        public void SendPacket(Packet packet)
+        // gửi packet thông thường
+        public async Task SendPacket(Packet packet)
         {
             if (tcpClient != null && tcpClient.Connected)
             {
@@ -111,17 +108,14 @@ namespace Program
                     if (sw == null)
                     {
                         ns = tcpClient.GetStream();
-                        sw = new StreamWriter(ns);
+                        sw = new StreamWriter(ns) { AutoFlush = true };
                     }
 
-                    // Mã hóa payload
                     string msg = packet.Type + ";" + packet.Payload;
                     byte[] encryptedBytes = AES.EncryptAES(msg);
                     string encryptedPayload = Convert.ToBase64String(encryptedBytes);
 
-                    // Gửi dữ liệu đã mã hóa
-                    sw.WriteLine(encryptedPayload);
-                    sw.Flush();
+                    await sw.WriteLineAsync(encryptedPayload);
                 }
                 catch (Exception ex)
                 {
@@ -137,26 +131,29 @@ namespace Program
             }
         }
 
-        public void ReceiveData()
+        // nhận dữ liệu
+        public async Task ReceiveData()
         {
             try
             {
-                ns = tcpClient.GetStream();
-                sr = new StreamReader(ns);
+                if (ns == null)
+                {
+                    ns = tcpClient.GetStream();
+                    sr = new StreamReader(ns);
+                }
 
                 while (tcpClient.Connected)
                 {
-                    string receivedData = sr.ReadLine();
+                    string receivedData = await sr.ReadLineAsync();
                     Console.WriteLine($"Nhận Packet (mã hóa): {receivedData}");
 
                     try
                     {
-
                         if (!string.IsNullOrEmpty(receivedData))
                         {
                             if (receivedData.StartsWith("{") && receivedData.EndsWith("}"))
                             {
-                                HandleDrawPacket( receivedData); // Xử lý gói tin vẽ
+                                HandleDrawPacket(receivedData); // Xử lý gói tin vẽ
                             }
                             else
                             {
@@ -166,7 +163,10 @@ namespace Program
                                 AnalyzingPacket(packet);          // Xử lý gói tin
                             }
                         }
-                        else break;
+                        else
+                        {
+                            break;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -179,6 +179,7 @@ namespace Program
                 Console.WriteLine($"Lỗi khi khởi tạo luồng: {ex.Message}");
             }
         }
+
 
         private Packet ParsePacket(string msg)
         {
@@ -405,27 +406,25 @@ namespace Program
             formmessage.ShowDialog();
         }
 
-
-
         // Gửi yêu cầu mã OTP
-        public void SendResetPasswordRequest(string email)
+        public async Task SendResetPasswordRequest(string email)
         {
             ResetPasswordRequestPacket requestPacket = new ResetPasswordRequestPacket(email);
-            SendPacket(requestPacket);
+            await SendPacket(requestPacket);
         }
 
         // Gửi yêu cầu xác thực OTP
-        public void SendVerifyOTPRequest(string email, string otp)
+        public async Task SendVerifyOTPRequest(string email, string otp)
         {
             VerifyOTPRequestPacket otpPacket = new VerifyOTPRequestPacket(email, otp);
-            SendPacket(otpPacket);
+            await SendPacket(otpPacket);
         }
 
         // Gửi yêu cầu đặt lại mật khẩu
-        public void SendResetPassword(string email, string newPassword)
+        public async Task SendResetPassword(string email, string newPassword)
         {
             ResetPasswordPacket resetPacket = new ResetPasswordPacket(email, newPassword);
-            SendPacket(resetPacket);
+            await SendPacket(resetPacket);
         }
 
     }

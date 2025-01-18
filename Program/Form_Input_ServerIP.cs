@@ -25,14 +25,15 @@ namespace Program
             };
         }
 
-        private bool isConnect(string serverIP, int port)
+        private async Task<bool> isConnect(string serverIP, int port)
         {
             client = new Client();
-            bool isConnected = client.Connect(serverIP, port);
+            bool isConnected = await client.Connect(serverIP, port); // Sử dụng await để gọi phương thức bất đồng bộ
             return isConnected;
         }
 
-        private void connectBtn_Click(object sender, EventArgs e)
+
+        private async void connectBtn_Click(object sender, EventArgs e)
         {
             int port;
             string serverIP = serverIPTextBox.Text;
@@ -40,7 +41,7 @@ namespace Program
             bool isServerIPValid = System.Net.IPAddress.TryParse(serverIP, out _);
             if (isServerIPValid && isPortValid)
             {
-                if (!isConnect(serverIP, port))
+                if (!(await isConnect(serverIP, port)))
                 {
                     return;
                 }

@@ -46,16 +46,16 @@ namespace Program
 
         #region ĐIỀU HƯỚNG
 
-        private void profileButton_Click_1(object sender, EventArgs e)
+        private async void profileButton_Click_1(object sender, EventArgs e)
         {
             ProfileRequest profile = new ProfileRequest(username);
-            client.SendPacket(profile);
+            await client.SendPacket(profile);
         }
 
-        private void logoutBtn_Click_1(object sender, EventArgs e)
+        private async void logoutBtn_Click_1(object sender, EventArgs e)
         {
             LogoutPacket logoutPacket = new LogoutPacket(username);
-            client.SendPacket(logoutPacket);
+            await client.SendPacket(logoutPacket);
             Application.Exit();
         }
         private void createButton_Click(object sender, EventArgs e)

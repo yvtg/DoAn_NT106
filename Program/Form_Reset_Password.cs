@@ -43,7 +43,7 @@ namespace Program
             client.ResetPasswordResult += OnPasswordResetSuccessful;
         }
 
-        private void resetButton_Click(object sender, EventArgs e)
+        private async void resetButton_Click(object sender, EventArgs e)
         {
             string password = passwordTextbox.Text.Trim();
             string confirmpw = confirmpassTextbox.Text.Trim();
@@ -94,7 +94,7 @@ namespace Program
 
 
             // Gửi yêu cầu đặt lại mật khẩu đến server
-            client.SendResetPassword(email, password);
+            await client.SendResetPassword(email, password);
         }
 
         private void OnPasswordResetSuccessful(string status)

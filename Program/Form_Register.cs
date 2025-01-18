@@ -39,7 +39,7 @@ namespace Program
             InitializeComponent();
         }
 
-        private void registerButton_Click_1(object sender, EventArgs e)
+        private async void registerButton_Click_1(object sender, EventArgs e)
         {
             string username = usernameTextbox.Text;
             string password = passwordTextbox.Text;
@@ -98,7 +98,7 @@ namespace Program
 
             // Gửi thông tin đăng ký lên server
             RegisterPacket packet = new RegisterPacket($"{username};{email};{password}");
-            client.SendPacket(packet);
+            await client.SendPacket(packet);
         }
 
 
