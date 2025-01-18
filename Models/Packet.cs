@@ -290,7 +290,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"ROUND_UPDATE;{RoomId};{Name};{IsDrawing};{Word}");
+            return Encoding.UTF8.GetBytes($"ROUND_UPDATE;{RoomId};{Name};{IsDrawing};{Word};{Round}");
         }
     }
 
@@ -428,7 +428,7 @@ namespace Models
         public StartPacket(string payload) : base(PacketType.START, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 3)
+            if (parsePayload.Length >= 2)
             {
                 RoomId = parsePayload[0];
                 Round = Int32.Parse(parsePayload[1]);
