@@ -546,7 +546,6 @@ namespace Server
                         string name = room.currentDrawer.Name;
                         string word = room.currentKeyword;
                         Random random = new Random();
-                        bool isBlindRound = random.Next(1, startPacket.SelectRound + 1) == currentRound;
 
                         // cập nhật phòng
                         room.currentRound = currentRound;
@@ -554,11 +553,11 @@ namespace Server
                         // Gửi thông báo về người vẽ cho tất cả người chơi trong phòng
                         foreach (var user in room.players)
                         {
-                            RoundUpdatePacket RoundUpdate = new RoundUpdatePacket($"{roomId};{name};{isdraw};{word};{currentRound};{isBlindRound}");
+                            RoundUpdatePacket RoundUpdate = new RoundUpdatePacket($"{roomId};{name};{isdraw};{word};{currentRound}");
                             user.SendPacket(RoundUpdate);
                         }
 
-                        UpdateLog.Invoke($"Phòng {roomId}: Trò chơi bắt đầu. Người vẽ là {room.currentDrawer.Name} và từ khóa là {room.currentKeyword}, Vẽ mù: {isBlindRound}");
+                        UpdateLog.Invoke($"Phòng {roomId}: Trò chơi bắt đầu. Người vẽ là {room.currentDrawer.Name} và từ khóa là {room.currentKeyword}");
                         UpdateRoomList?.Invoke();
                     }
                     else
