@@ -253,7 +253,7 @@ namespace Program
             roundTimer.Start(); // Bắt đầu bộ đếm
         }
 
-        private void RoundTimerElapsed(object sender, ElapsedEventArgs e)
+        private async void RoundTimerElapsed(object sender, ElapsedEventArgs e)
         {
             roundTime--; // Giảm thời gian
             if (timeLabel.InvokeRequired)
@@ -282,7 +282,7 @@ namespace Program
                     if (username == host)
                     {
                         EndGamePacket endgamePacket = new EndGamePacket($"{roomId}");
-                        client.SendPacket(endgamePacket);
+                        await client.SendPacket(endgamePacket);
                     }
                     return;
                 }
@@ -304,7 +304,7 @@ namespace Program
                     if (this.username == host)
                     {
                         StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
-                        client.SendPacket(startPacket);
+                        await client.SendPacket(startPacket);
                     }
 
                     timeLabel.Text = $"Time: {roundTime}";
@@ -396,7 +396,7 @@ namespace Program
         }
 
         // Dừng vẽ khi nhả chuột
-        private void PictureBox_MouseUp(object sender, MouseEventArgs e)
+        private async void PictureBox_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && gameStart)
             {
@@ -422,7 +422,7 @@ namespace Program
                     Position = pos
                 };
 
-                client.SendDrawPacket(packet);
+                await client.SendDrawPacket(packet);
 
                 isDrawing = false;
                 cursorX = -1;
@@ -490,7 +490,7 @@ namespace Program
         }
         #endregion
 
-        private void startButton_Click(object sender, EventArgs e)
+        private async void startButton_Click(object sender, EventArgs e)
         {
             if (roundComboBox.SelectedItem != null)
             {
@@ -501,7 +501,7 @@ namespace Program
                 {
                     currentRound++;
                     StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
-                    client.SendPacket(startPacket);
+                    await client.SendPacket(startPacket);
                 }
 
                 startButton.Enabled = false;
@@ -515,7 +515,7 @@ namespace Program
         #region thong tin danh sach user
 
 
-        private void OnRecivedOtherInfo(string roomId, string username, int Score, string status)
+        private async void OnRecivedOtherInfo(string roomId, string username, int Score, string status)
         {
             if (this.InvokeRequired)
             {
@@ -568,7 +568,7 @@ namespace Program
                                 if (this.username == host)
                                 {
                                     EndGamePacket endgamePacket = new EndGamePacket($"{roomId}");
-                                    client.SendPacket(endgamePacket);
+                                    await client.SendPacket(endgamePacket);
                                 }
                             }
                             else
@@ -579,7 +579,7 @@ namespace Program
                                 {
                                     currentRound++;
                                     StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
-                                    client.SendPacket(startPacket);
+                                    await client.SendPacket(startPacket);
                                 }
 
                                 roundTimer.Stop();
@@ -732,7 +732,7 @@ namespace Program
             flowLayoutPanel.ScrollControlIntoView(contentLabel);
         }
 
-        private void sendButton_Click(object sender, EventArgs e)
+        private async void sendButton_Click(object sender, EventArgs e)
         {
 
             string msg = sendTextBox.Text;
@@ -740,7 +740,7 @@ namespace Program
             if (!string.IsNullOrEmpty(msg))
             {
                 GuessPacket packet = new GuessPacket($"{roomId};{username};{msg}");
-                client.SendPacket(packet);
+                await client.SendPacket(packet);
                 sendTextBox.Clear();
             }
         }
@@ -858,10 +858,10 @@ namespace Program
             }
         }
 
-        private void leaveBtn_Click(object sender, EventArgs e)
+        private async void leaveBtn_Click(object sender, EventArgs e)
         {
             LeaveRoomPacket packet = new LeaveRoomPacket($"{roomId};{username}");
-            client.SendPacket(packet);
+            await client.SendPacket(packet);
 
             // Hủy đăng ký sự kiện
             client.RoundUpdateReceived -= OnReceivedRoundUpdate;

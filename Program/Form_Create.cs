@@ -38,12 +38,12 @@ namespace Program
             this.username = username;
         }
 
-        private void createBtn_Click(object sender, EventArgs e)
+        private async void createBtn_Click(object sender, EventArgs e)
         {
 
             int maxPlayers = (int)numeric.ValueNumber;
             CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers}");
-            client.SendPacket(createRoomPacket);
+            await client.SendPacket(createRoomPacket);
 
             this.Close();
 

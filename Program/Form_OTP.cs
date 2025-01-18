@@ -59,7 +59,7 @@ namespace Program
                 BackToPreviousForm();
             }
         }
-        private void confirmButton_Click_1(object sender, EventArgs e)
+        private async void confirmButton_Click_1(object sender, EventArgs e)
         {
             string userOtp = otpTextbox.Text.Trim();
 
@@ -70,7 +70,7 @@ namespace Program
             }
 
             // Gửi yêu cầu xác thực OTP đến server
-            client.SendVerifyOTPRequest(email, userOtp);
+            await client.SendVerifyOTPRequest(email, userOtp);
         }
         private void OnReceiveOTP(string status)
         {

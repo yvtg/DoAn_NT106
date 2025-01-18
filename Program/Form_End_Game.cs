@@ -40,7 +40,7 @@ namespace Program
             DisplayPlayerRanks();
         }
 
-        private void DisplayPlayerRanks()
+        private async void DisplayPlayerRanks()
         {
             var sortedPlayers = playerScores.OrderByDescending(p => p.Value.score); // Sắp xếp theo điểm số giảm dần
             int previousScore = -1; // Giá trị điểm số trước đó (khởi tạo bằng giá trị không hợp lệ)
@@ -92,7 +92,7 @@ namespace Program
 
             // Cập nhật điểm cao nhất và số lượt chơi của người chơi hiện tại
             ProfileUpdatePacket profileUpdatePacket = new ProfileUpdatePacket($"{username};{score}");
-            client.SendPacket(profileUpdatePacket);
+            await client.SendPacket(profileUpdatePacket);
         }
 
 

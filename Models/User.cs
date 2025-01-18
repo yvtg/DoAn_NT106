@@ -30,20 +30,21 @@ namespace Models
             this.sr = new StreamReader(stream);
             this.sw = new StreamWriter(stream) { AutoFlush = true };
         }
-        public void SendPacket(Packet packet)
+
+        public async Task SendPacket(Packet packet)
         {
             string msg = packet.Type + ";" + packet.Payload;
             byte[] encryptedBytes = AES.EncryptAES(msg);
             string encryptedPayload = Convert.ToBase64String(encryptedBytes);
-            this.sw.WriteLine(encryptedPayload);
-            this.sw.Flush();
+            await this.sw.WriteLineAsync(encryptedPayload);
+            await this.sw.FlushAsync();
         }
 
-        public void SendPacket(DrawPacket drawPacket)
+        public async Task SendPacket(DrawPacket drawPacket)
         {
             var jsonDrawPacket = drawPacket.ToJson();
-            this.sw.WriteLine(jsonDrawPacket);
-            this.sw.Flush();
+            await this.sw.WriteLineAsync(jsonDrawPacket);
+            await this.sw.FlushAsync();
         }
 
         public void Stop(bool abortThread = false)
