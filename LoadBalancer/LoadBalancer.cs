@@ -24,7 +24,6 @@ namespace LoadBalancer
         private (string IP, int Port, int currentLoad)[] Servers = {
             ("127.0.0.1", 8081, 0),
             ("192.168.220.119", 8081, 0)
-
         };
 
         public void StartLB()

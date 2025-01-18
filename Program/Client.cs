@@ -22,7 +22,7 @@ namespace Program
 
         public static event Action RegisterSuccessful; // đăng kí thành công
         public event Action LoginSuccessful; // đăng nhập thành công
-        public event Action<string, string, int> ReceiveRoomInfo; // nhận thông tin phòng
+        public event Action<string, string, int, bool> ReceiveRoomInfo; // nhận thông tin phòng
         public event Action<string, string, string> ReceiveMessage; // nhận message trong phòng (guess)
         public event Action<string, string, int, string> ReceiveOtherInfo; // nhận thông tin của người chơi khác trong phòng
         public event Action<RoundUpdatePacket> RoundUpdateReceived; // round mới
@@ -238,6 +238,7 @@ namespace Program
         {
             string roomId, host, status = "";
             int playerCount, maxPlayer, score = 0;
+            bool isblindround = false;
             switch (packet.Type)
             {
                 case PacketType.LOGIN_RESULT:
@@ -299,11 +300,12 @@ namespace Program
                     status = roomInfoPacket.Status;
                     playerCount = roomInfoPacket.CurrentPlayers;
                     maxPlayer = roomInfoPacket.MaxPlayers;
+                    isblindround = roomInfoPacket.isblindround;
                     if (roomInfoPacket.Status == "HOST_CHANGED")
                     {
                         HostChanged?.Invoke(roomInfoPacket.Host);
                     }
-                    else ReceiveRoomInfo?.Invoke(roomId, host, maxPlayer);
+                    else ReceiveRoomInfo?.Invoke(roomId, host, maxPlayer,isblindround);
                     break;
                 case PacketType.JOIN_RESULT:
                     JoinResultPacket joinResultPacket = (JoinResultPacket)packet;

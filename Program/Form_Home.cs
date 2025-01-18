@@ -97,16 +97,16 @@ namespace Program
             childForm.Location = new Point(centerX, centerY);
         }
 
-        private void OnReceiveRoomInfo(string roomId, string host, int maxPlayers)
+        private void OnReceiveRoomInfo(string roomId, string host, int maxPlayers, bool isblindround)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action(() => OnReceiveRoomInfo(roomId, host, maxPlayers)));
+                this.Invoke(new Action(() => OnReceiveRoomInfo(roomId, host, maxPlayers, isblindround)));
                 return;
             }
 
             this.Hide();
-            Form_Room formRoom = new Form_Room(roomId, host, maxPlayers, username);
+            Form_Room formRoom = new Form_Room(roomId, host, maxPlayers, username, isblindround);
             formRoom.StartPosition = FormStartPosition.Manual;
             formRoom.Location = this.Location;
             formRoom.Show();

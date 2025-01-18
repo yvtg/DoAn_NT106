@@ -33,6 +33,7 @@ namespace Program
         private int max_player;
         public Room room;
         private Client client;
+        bool isblindround;
 
         // Các thành phần liên quan đến tính năng vẽ
         private Bitmap drawingBitmap;
@@ -134,17 +135,21 @@ namespace Program
 
             if (isDrawer)
             {
-                wordLabel.Text = $"KEY WORD: {keyword}"; // Show full keyword to the drawer
+                  wordLabel.Text = $"KEY WORD: {keyword}";
+                    pictureBox1.Enabled = true;
+                    pictureBox1.Visible = true; 
             }
             else
             {
                 InitializeHintSystem(keyword);
-                wordLabel.Text = $"KEY WORD: {revealedKeyword}"; // Show hidden keyword to guessers with spaces preserved
+                wordLabel.Text = $"KEY WORD: {revealedKeyword}";
+                pictureBox1.Enabled = false;
+                pictureBox1.Visible = true; // Luôn hiển thị cho người đoán
             }
         }
 
 
-        public Form_Room(string roomId, string host, int max_player, string username)
+        public Form_Room(string roomId, string host, int max_player, string username, bool isblindround)
         {
             InitializeComponent();
             InitializeListView();
@@ -165,11 +170,21 @@ namespace Program
             this.host = host;
             this.max_player = max_player;
             this.username = username;
+            this.isblindround = isblindround;
 
             roomForm.Text += roomId;
             usernamText.Text += username;
             hostText.Text += host;
             maxText.Text += max_player;
+
+            if (isblindround)
+            {
+                roomForm.Text += "- Blind mode";
+            }
+            else
+            {
+                roomForm.Text += "- Default mode";
+            }
 
             // khởi tạo track bar kích thước bút
             sizeTrackBar.Minimum = 1;
@@ -303,7 +318,7 @@ namespace Program
 
                     if (this.username == host)
                     {
-                        StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
+                        StartPacket startPacket = new StartPacket($"{roomId};{currentRound};{SelectRound}");
                         await client.SendPacket(startPacket);
                     }
 
@@ -424,11 +439,17 @@ namespace Program
 
                 await client.SendDrawPacket(packet);
 
+                if(isDrawer && isblindround)
+                {
+                    ClearPictureBox();
+                }    
+
                 isDrawing = false;
                 cursorX = -1;
                 cursorY = -1;
                 points_1.Clear();
                 points_2.Clear();
+                    
             }
         }
 
@@ -578,7 +599,7 @@ namespace Program
                                 if (this.username == host)
                                 {
                                     currentRound++;
-                                    StartPacket startPacket = new StartPacket($"{roomId};{currentRound}");
+                                    StartPacket startPacket = new StartPacket($"{roomId};{currentRound};{SelectRound}");
                                     await client.SendPacket(startPacket);
                                 }
 
@@ -687,10 +708,6 @@ namespace Program
             flowLayoutPanel.ScrollControlIntoView(containerPanel);
         }
 
-
-
-
-
         private void OnReceivedMessage(string roomId, string sender, string message)
         {
             if (this.InvokeRequired)
@@ -779,12 +796,16 @@ namespace Program
             StartTimer();
             currentRound = roundUpdatePacket.Round;
             roundLabel.Text = $"Round: {currentRound}";
+            if(isblindround)
+            {
+                ShowChatMessage($"Bắt đầu vòn chơi vẽ mù. Người vẽ là {roundUpdatePacket.Name}. Trong 60s hãy đoán từ khóa!");
+            }    
 
             if (roundUpdatePacket.Name == username)
             {
                 pictureBox1.Enabled = true;
                 sendButton.Enabled = false;
-                wordLabel.Text = $"KEY WORD: {roundUpdatePacket.Word}";
+                wordLabel.Text = $"KEY WORD: {roundUpdatePacket.Word}";   
                 ShowMessage($"Bạn là người vẽ! từ khóa là {roundUpdatePacket.Word}");
 
                 StartNewRound(roundUpdatePacket.Word, true); // The drawer sees the full keyword

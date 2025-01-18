@@ -37,6 +37,8 @@
             this.DefaultBtn = new ReaLTaiizor.Controls.HopeButton();
             this.TotalBtn = new ReaLTaiizor.Controls.HopeButton();
             this.UpfileBtn = new ReaLTaiizor.Controls.HopeButton();
+            this.labelmode = new System.Windows.Forms.Label();
+            this.ModeComboBox = new ReaLTaiizor.Controls.HopeComboBox();
             this.SuspendLayout();
             // 
             // createBtn
@@ -50,10 +52,10 @@
             this.createBtn.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.createBtn.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.createBtn.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.createBtn.Location = new System.Drawing.Point(346, 257);
+            this.createBtn.Location = new System.Drawing.Point(471, 248);
             this.createBtn.Name = "createBtn";
             this.createBtn.PrimaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(107)))), ((int)(((byte)(111)))));
-            this.createBtn.Size = new System.Drawing.Size(97, 54);
+            this.createBtn.Size = new System.Drawing.Size(100, 56);
             this.createBtn.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
             this.createBtn.TabIndex = 18;
             this.createBtn.Text = "Create";
@@ -67,7 +69,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
-            this.label1.Location = new System.Drawing.Point(191, 250);
+            this.label1.Location = new System.Drawing.Point(248, 245);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(136, 19);
             this.label1.TabIndex = 19;
@@ -88,7 +90,7 @@
             this.numeric.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
             this.numeric.HoverButtonTextColorA = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
             this.numeric.HoverButtonTextColorB = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(230)))));
-            this.numeric.Location = new System.Drawing.Point(194, 285);
+            this.numeric.Location = new System.Drawing.Point(251, 272);
             this.numeric.MaxNum = 10F;
             this.numeric.MinNum = 0F;
             this.numeric.Name = "numeric";
@@ -125,7 +127,7 @@
             this.panelBody.EdgeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(41)))), ((int)(((byte)(50)))));
             this.panelBody.Location = new System.Drawing.Point(12, 82);
             this.panelBody.Name = "panelBody";
-            this.panelBody.Padding = new System.Windows.Forms.Padding(5);
+            this.panelBody.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.panelBody.Size = new System.Drawing.Size(608, 160);
             this.panelBody.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.panelBody.TabIndex = 29;
@@ -197,12 +199,42 @@
             this.UpfileBtn.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
             this.UpfileBtn.Click += new System.EventHandler(this.UpfileBtn_Click);
             // 
+            // labelmode
+            // 
+            this.labelmode.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelmode.AutoSize = true;
+            this.labelmode.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelmode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.labelmode.Location = new System.Drawing.Point(88, 245);
+            this.labelmode.Name = "labelmode";
+            this.labelmode.Size = new System.Drawing.Size(51, 19);
+            this.labelmode.TabIndex = 30;
+            this.labelmode.Text = "Mode";
+            // 
+            // ModeComboBox
+            // 
+            this.ModeComboBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ModeComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.ModeComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ModeComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ModeComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(63)))), ((int)(((byte)(88)))));
+            this.ModeComboBox.ItemHeight = 30;
+            this.ModeComboBox.Items.AddRange(new object[] {
+            "Default",
+            "Blind"});
+            this.ModeComboBox.Location = new System.Drawing.Point(64, 272);
+            this.ModeComboBox.Name = "ModeComboBox";
+            this.ModeComboBox.Size = new System.Drawing.Size(98, 36);
+            this.ModeComboBox.TabIndex = 45;
+            // 
             // Form_Create
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(632, 344);
+            this.Controls.Add(this.ModeComboBox);
+            this.Controls.Add(this.labelmode);
             this.Controls.Add(this.TotalBtn);
             this.Controls.Add(this.UpfileBtn);
             this.Controls.Add(this.panelBody);
@@ -233,5 +265,7 @@
         private ReaLTaiizor.Controls.HopeButton DefaultBtn;
         private ReaLTaiizor.Controls.HopeButton TotalBtn;
         private ReaLTaiizor.Controls.HopeButton UpfileBtn;
+        private System.Windows.Forms.Label labelmode;
+        private ReaLTaiizor.Controls.HopeComboBox ModeComboBox;
     }
 }
