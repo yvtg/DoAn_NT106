@@ -157,6 +157,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(246)))), ((int)(((byte)(211)))));
             this.ClientSize = new System.Drawing.Size(698, 467);
+            this.Controls.Add(this.logRichTextBox);
             this.Controls.Add(this.serverForm);
             this.Controls.Add(this.roomListView);
             this.Controls.Add(this.label2);
@@ -164,7 +165,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.stopBtn);
             this.Controls.Add(this.startBtn);
-            this.Controls.Add(this.logRichTextBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);

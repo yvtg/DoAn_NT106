@@ -72,7 +72,7 @@ namespace Server
         private void startBtn_Click(object sender, EventArgs e)
         {
             isServerStopping = false;
-            server.StartServer(8080);
+            server.StartServer(8081);
             startBtn.Enabled = false;
             stopBtn.Enabled = true;
         }
