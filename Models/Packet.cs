@@ -271,16 +271,18 @@ namespace Models
         public string IsDrawing { get; set; }
         public string Word { get; set; }
         public int Round { get; set; }
+        public bool IsBlindRound { get; set; }
         public RoundUpdatePacket(string payload) : base(PacketType.ROUND_UPDATE, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 5)
+            if (parsePayload.Length >= 6)
             {
                 RoomId = parsePayload[0];
                 Name = parsePayload[1];
                 IsDrawing = parsePayload[2];
                 Word = parsePayload[3];
                 Round = int.Parse(parsePayload[4]);
+                IsBlindRound = bool.Parse(parsePayload[5]);
             }
             else
             {
@@ -290,7 +292,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"ROUND_UPDATE;{RoomId};{Name};{IsDrawing};{Word}");
+            return Encoding.UTF8.GetBytes($"ROUND_UPDATE;{RoomId};{Name};{IsDrawing};{Word};{IsBlindRound}");
         }
     }
 
@@ -423,13 +425,17 @@ namespace Models
     {
         public string RoomId { get; set; }
         public int Round { get; set; }
+
+        public int SelectRound { get; set; }
+
         public StartPacket(string payload) : base(PacketType.START, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 2)
+            if (parsePayload.Length >= 3)
             {
                 RoomId = parsePayload[0];
                 Round = Int32.Parse(parsePayload[1]);
+                SelectRound = Int32.Parse(parsePayload[2]);
             }
             else
             {
@@ -438,7 +444,7 @@ namespace Models
         }
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"START;{RoomId};{Round}");
+            return Encoding.UTF8.GetBytes($"START;{RoomId};{Round};{SelectRound}");
         }
     }
 
