@@ -17,6 +17,7 @@ namespace Program
     {
         private string username;
         private Client client;
+        
         public Form_Create(string username)
         {
             InitializeComponent();
@@ -42,7 +43,8 @@ namespace Program
         {
 
             int maxPlayers = (int)numeric.ValueNumber;
-            CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers}");
+            bool isblindround = ModeComboBox.SelectedItem?.ToString() == "Blind";
+            CreateRoomPacket createRoomPacket = new CreateRoomPacket($"{username};{maxPlayers};{isblindround}");
             client.SendPacket(createRoomPacket);
 
             this.Close();
@@ -54,6 +56,7 @@ namespace Program
             numeric.MinNum = 2;
             numeric.MaxNum = 10;
             numeric.ValueNumber = 2;
+            ModeComboBox.SelectedIndex = 0;
         }
 
         private Form currentFormchild;

@@ -404,6 +404,7 @@ namespace Server
                     // Create a new room
                     string roomId = GenerateRoomId();
                     int maxPlayers = createRoomPacket.Max_player;
+                    
 
                     Room room = new Room(roomId, client.Name, maxPlayers, client);
                     rooms.Add(room);
@@ -411,11 +412,12 @@ namespace Server
                     client.RoomId = roomId;
                     client.Score = 0;
                     room.players.Add(client);
+                    room.isblindround = createRoomPacket.isblindround;
 
                     int currentPlayers = room.players.Count;
                     int currentRound = 0;
 
-                    RoomInfoPacket roomInfo = new RoomInfoPacket($"{roomId};{room.host};{room.status};{maxPlayers};{currentPlayers};{currentRound}");
+                    RoomInfoPacket roomInfo = new RoomInfoPacket($"{roomId};{room.host};{room.status};{maxPlayers};{currentPlayers};{currentRound};{room.isblindround}");
                     sendPacket(client, roomInfo);
 
                     OtherInfoPacket otherInfoPacket = new OtherInfoPacket($"{roomId};{client.Name};{client.Score};JOINING");
@@ -477,7 +479,7 @@ namespace Server
                         UpdateClientList?.Invoke();
 
                         // cap nhat thong tin phong
-                        roomInfo = new RoomInfoPacket($"{roomIdToJoin};{room.host};{room.status};{room.maxPlayers};{room.players.Count};0");
+                        roomInfo = new RoomInfoPacket($"{roomIdToJoin};{room.host};{room.status};{room.maxPlayers};{room.players.Count};0;{room.isblindround}");
                         sendPacket(client, roomInfo);
 
                         //cap nhat thong tin nhung nguoi co trong phong

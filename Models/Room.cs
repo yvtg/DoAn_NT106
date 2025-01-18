@@ -21,6 +21,7 @@ namespace Models
         public Random random;
         public string host;
         public int currentRound;
+        public bool isblindround;
 
         public User? currentDrawer; // Người chơi hiện đang vẽ
         public int currentDrawerIndex; // Vị trí của người vẽ hiện tại trong danh sách người chơi
@@ -38,6 +39,7 @@ namespace Models
             this.currentKeyword = "";
             currentDrawer = player;
             currentRound = 0;
+            isblindround = false;
         }
 
         // reset lai phong choi

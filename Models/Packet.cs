@@ -198,11 +198,12 @@ namespace Models
         public int MaxPlayers { get; set; }
         public int CurrentPlayers { get; set; }
         public int CurrentRound { get; set; }
+        public bool isblindround { get; set; }
 
         public RoomInfoPacket(string payload) : base(PacketType.ROOM_INFO, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 6)
+            if (parsePayload.Length >= 7)
             {
                 try
                 {
@@ -212,6 +213,7 @@ namespace Models
                     MaxPlayers = int.Parse(parsePayload[3]);
                     CurrentPlayers = int.Parse(parsePayload[4]);
                     CurrentRound = int.Parse(parsePayload[5]);
+                    isblindround = bool.Parse(parsePayload[6]);
                 }
                 catch (FormatException ex)
                 {
@@ -227,7 +229,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"ROOM_INFO;{RoomId};{Host};{Status};{MaxPlayers};{CurrentPlayers};{CurrentRound}");
+            return Encoding.UTF8.GetBytes($"ROOM_INFO;{RoomId};{Host};{Status};{MaxPlayers};{CurrentPlayers};{CurrentRound};{isblindround}");
         }
     }
 
@@ -349,13 +351,15 @@ namespace Models
     {
         public string username { get; set; }
         public int Max_player { get; set; }
+        public bool isblindround { get; set; }
         public CreateRoomPacket(string payload) : base(PacketType.CREATE_ROOM, payload)
         {
             string[] parsePayload = payload.Split(';');
-            if (parsePayload.Length >= 2)
+            if (parsePayload.Length >= 3)
             {
                 username = parsePayload[0];
                 Max_player = Int32.Parse(parsePayload[1]);
+                isblindround = bool.Parse(parsePayload[2]);
             }
             else
             {
@@ -365,7 +369,7 @@ namespace Models
 
         public override byte[] ToBytes()
         {
-            return Encoding.UTF8.GetBytes($"CREATE_ROOM;{username};{Max_player}");
+            return Encoding.UTF8.GetBytes($"CREATE_ROOM;{username};{Max_player};{isblindround}");
         }
     }
 

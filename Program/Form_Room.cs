@@ -33,6 +33,7 @@ namespace Program
         private int max_player;
         public Room room;
         private Client client;
+        bool isblindround;
 
         // Các thành phần liên quan đến tính năng vẽ
         private Bitmap drawingBitmap;
@@ -144,7 +145,7 @@ namespace Program
         }
 
 
-        public Form_Room(string roomId, string host, int max_player, string username)
+        public Form_Room(string roomId, string host, int max_player, string username, bool isblindround)
         {
             InitializeComponent();
             InitializeListView();
@@ -165,6 +166,7 @@ namespace Program
             this.host = host;
             this.max_player = max_player;
             this.username = username;
+            this.isblindround = isblindround;
 
             roomForm.Text += roomId;
             usernamText.Text += username;
@@ -423,7 +425,10 @@ namespace Program
                 };
 
                 client.SendDrawPacket(packet);
-
+                if(isDrawer && isblindround)
+                {
+                    ClearPictureBox();
+                }    
                 isDrawing = false;
                 cursorX = -1;
                 cursorY = -1;
@@ -779,7 +784,10 @@ namespace Program
             StartTimer();
             currentRound = roundUpdatePacket.Round;
             roundLabel.Text = $"Round: {currentRound}";
-
+            if(isblindround)
+            {
+                ShowChatMessage($"Bắt đầu vòn chơi vẽ mù. Người vẽ là {roundUpdatePacket.Name}. Trong 60s hãy đoán từ khóa!");
+            }    
             if (roundUpdatePacket.Name == username)
             {
                 pictureBox1.Enabled = true;
